@@ -1,6 +1,6 @@
 package at.fhooe.swe4.lab3.sort.api;
 
-public interface SorterStatistics {
+public interface CodeStatisticProvider {
 
 	/**
 	 * @return the comparision count
