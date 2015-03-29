@@ -33,10 +33,17 @@ public class HammingList {
 		}
 		this.n = n;
 	}
-	
+
+	/**
+	 * This method validates the current state of the hamming list instance. If
+	 * the state is invalid and exception will be thrown
+	 * 
+	 * @throws IllegalStateException
+	 *             if the set number is invalid (n<=0)
+	 */
 	private void validateState() {
 		if (this.n <= 0) {
-			throw new IllegalArgumentException("n must be greather than 0");
+			throw new IllegalStateException("n must be greather than 0");
 		}
 	}
 
@@ -46,12 +53,40 @@ public class HammingList {
 	 * @param n
 	 *            the number to calculate hammming list for. (n > 0)
 	 * @return the current instance
-	 * @throws IllegalArgumentException
+	 * @throws IllegalStateException
 	 *             if n <= 0
 	 */
 	public HammingList init(final long n) {
 		prepare(n);
 		validateState();
+		return this;
+	}
+
+	/**
+	 * This method calculates the hamming list for the set number.
+	 * 
+	 * @return the current instance
+	 * @throws IllegalStateException
+	 *             if the given number is not part of the hamming list. In this
+	 *             case the default state n=-1 will be restored.
+	 */
+	public HammingList calculate() {
+		long tmp = n;
+		long tmpOld = -1;
+		while ((tmp != 1) && (tmp != tmpOld)) {
+			tmpOld = tmp;
+			for (int prim : ALLOWED_PRIM) {
+				if (tmp % prim == 0) {
+					primPotMap.put(prim, primPotMap.get(prim) + 1);
+					tmpOld = tmp;
+					tmp = tmp / prim;
+				}
+			}
+		}
+		if (tmp != 1) {
+			prepare(-1);
+			throw new IllegalStateException("Cannot calculate hamming list for given number. State will be reseted to default.");
+		}
 		return this;
 	}
 
@@ -74,7 +109,8 @@ public class HammingList {
 	 * prime is part of the calculated prime factors.
 	 * 
 	 * @return the current instance
-	 * @throws Invalid
+	 * @throws IllegalStateException
+	 *             if the current state is invalid
 	 */
 	public HammingList print() {
 		validateState();
@@ -87,9 +123,9 @@ public class HammingList {
 				if ((i + 1) < ALLOWED_PRIM.length) {
 					sb.append(" * ");
 				}
-				sb.append(" = ").append(n);
 			}
 		}
+		sb.append(" = ").append(n);
 		System.out.println(sb.toString());
 		return this;
 	}
