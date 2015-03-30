@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import at.fhooe.swe4.lab3.sort.api.AbstractCodeStatisticsProvider;
+import org.omg.CORBA.CTX_RESTRICT_SCOPE;
+
 import at.fhooe.swe4.lab3.sort.api.Sorter;
-import at.fhooe.swe4.lab3.sort.api.Sorter.SortType;
+import at.fhooe.swe4.lab3.stat.StatisticContext;
+import at.fhooe.swe4.lab3.stat.StatisticsProvider;
+import at.fhooe.swe4.lab3.stat.DefaultStatisticsProviderImpl;
 
 /**
  * This is the heap sorter implementation of the Sorter interface.
@@ -17,7 +20,9 @@ import at.fhooe.swe4.lab3.sort.api.Sorter.SortType;
  *            the values type of the to sort array or collection managed
  *            elements
  */
-public class HeapSorter<V extends Comparable<V>> extends AbstractCodeStatisticsProvider implements Sorter<V> {
+public class HeapSorter<V extends Comparable<V>> implements Sorter<V> {
+
+	private final StatisticsProvider statProvider = new DefaultStatisticsProviderImpl(super.toString());
 
 	public HeapSorter() {
 		super();
@@ -40,6 +45,12 @@ public class HeapSorter<V extends Comparable<V>> extends AbstractCodeStatisticsP
 		while (heap.hasNext()) {
 			result.add(heap.dequeue());
 		}
+		statProvider.takeOver("heap-sorter", heap.getStatisitcs());
 		return result;
+	}
+
+	@Override
+	public StatisticsProvider getStatisitcs() {
+		return statProvider.endContext();
 	}
 }

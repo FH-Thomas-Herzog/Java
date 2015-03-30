@@ -1,9 +1,9 @@
 package at.fhooe.swe4.lab3.sort.api;
 
-import java.util.Comparator;
 import java.util.List;
 
 import at.fhooe.swe4.lab3.sort.heap.Heap.HeapType;
+import at.fhooe.swe4.lab3.stat.StatisticsProvider;
 
 /**
  * This interface specifies the sorter functionalities.
@@ -60,4 +60,11 @@ public interface Sorter<V extends Comparable<V>> {
 	 * @see SortType
 	 */
 	public List<V> sort(List<V> list, SortType sorterType);
+
+	/**
+	 * Gets the statistics of the current instance
+	 * 
+	 * @return the current statistics
+	 */
+	public StatisticsProvider getStatisitcs();
 }

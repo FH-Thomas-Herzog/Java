@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import at.fhooe.swe4.lab3.stat.CodeStatistics;
+import at.fhooe.swe4.lab3.stat.StatisticsProvider;
+import at.fhooe.swe4.lab3.stat.DefaultStatisticsProviderImpl;
+
 /**
  * This is the ArrayList implementation of the heap.
  * 
@@ -14,9 +18,12 @@ import java.util.List;
  */
 public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 
+	private int heapCounter = 0;
 	public HeapType heapType;
 	public int size;
 	public List<V> container = new ArrayList<V>();
+
+	public StatisticsProvider statProvider = new DefaultStatisticsProviderImpl("heap-array-list-impl");
 
 	/**
 	 * Empty constructor
@@ -55,12 +62,16 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 
 	@Override
 	public void init(final V[] originalArrayValues, final HeapType heapType) {
+		heapCounter++;
 		this.heapType = heapType;
 		container.clear();
 		size = ((originalArrayValues == null) || (originalArrayValues.length == 0)) ? 0 : originalArrayValues.length;
 		if (size > 0) {
 			container = new ArrayList<V>(originalArrayValues.length);
+			statProvider.initContext("heap." + heapCounter);
+			final CodeStatistics stat = statProvider.getCtx().newStatistic("init(array)");
 			for (V value : originalArrayValues) {
+				stat.incIdx().incIdx();
 				container.add(value);
 				upHeap(container);
 			}
@@ -111,18 +122,25 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 	}
 
 	private void upHeap(final List<V> container) {
+		final CodeStatistics stat = statProvider.getCtx().byKey("upHeap()", Boolean.TRUE);
+
 		int i = container.size() - 1;
+		stat.incIdx();
 		V tmp = container.get(i);
 		while ((i != 0) && (heapType.compare(container.get(parent(i)), tmp))) {
+			stat.incIf().incIf().incIdx().incIdx().incIdx();
 			container.set(i, container.get(parent(i)));
 			i = parent(i);
 		}
+		stat.incIdx();
 		container.set(i, tmp);
 	}
 
 	private void downHeap(final List<V> container) {
+		final CodeStatistics stat = statProvider.getCtx().byKey("downHeap()", Boolean.TRUE);
 		int i = 0;
 		V tmp = container.get(0);
+		stat.incIdx();
 		while (left(i) < container.size()) {
 			int j = left(i);
 			if ((right(j) < container.size()) && (heapType.compare(container.get(left(i)), container.get(right(i))))) {
@@ -133,8 +151,10 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 			}
 			container.set(i, container.get(j));
 			i = j;
+			stat.incIf().incIf().incIf().incIf().incIf().incIf().incIdx().incIdx().incIdx().incIdx();
 		}
 		container.set(i, tmp);
+		stat.incIdx();
 	}
 
 	private static int parent(final int i) {
@@ -155,6 +175,11 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 
 	public V[] toArray() {
 		return (V[]) container.toArray();
+	}
+
+	@Override
+	public StatisticsProvider getStatisitcs() {
+		return statProvider.endContext();
 	}
 
 	@Override

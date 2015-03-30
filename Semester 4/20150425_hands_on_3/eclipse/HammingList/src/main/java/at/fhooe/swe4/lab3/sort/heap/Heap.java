@@ -2,6 +2,8 @@ package at.fhooe.swe4.lab3.sort.heap;
 
 import java.util.List;
 
+import at.fhooe.swe4.lab3.stat.StatisticsProvider;
+
 /**
  * This interface specifies the heap functionalities.
  * 
@@ -119,4 +121,10 @@ public interface Heap<V extends Comparable<V>> {
 	 */
 	public int size();
 
+	/**
+	 * Gets the statistics of the current instance
+	 * 
+	 * @return the current statistics
+	 */
+	public StatisticsProvider getStatisitcs();
 }
