@@ -52,20 +52,24 @@ public class Heap<V extends Comparable<V>> {
 
 	public void downHeap() {
 		assert !isEmpty();
-		int i = 0;
+		int idx = 0;
+		int largeIdx;
 		V tmp = peak();
-		while (left(i) < values.size()) {
-			int j = left(i);
-			if ((right(j) < values.size()) && (less(values.get(left(i)), values.get(right(i))))) {
-				j = right(i);
+		while (idx < (values.size()/2)) {
+			int leftIdx = left(idx);
+			int rightIdx = right(idx);
+			if ((rightIdx < values.size()) && (less(values.get(leftIdx), values.get(rightIdx)))) {
+				largeIdx = rightIdx;
+			}else{
+				largeIdx = leftIdx;
 			}
-			if (!less(tmp, values.get(j))) {
+			if (!less(tmp, values.get(largeIdx))) {
 				break;
 			}
-			values.set(i, values.get(j));
-			i = j;
+			values.set(idx, values.get(largeIdx));
+			idx = largeIdx;
 		}
-		values.set(i,  tmp);
+		values.set(idx,  tmp);
 	}
 
 	public boolean isHeap() {

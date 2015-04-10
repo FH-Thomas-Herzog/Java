@@ -1,28 +1,21 @@
-<project name="Hello" default="compile" basedir=".">
-<property name="main.class" value="HelloWorld"/>
-<property name="program.jar" value="hello.jar"/>
-<target name="compile" description="Compile Java sources">
-<javac srcdir="." destdir="." includeantruntime="false">
-<include name="**/*.java"/>
-</javac>
-</target>
-<target name="run" depends="compile" description="Run Java Application">
-<java classname="${main.class}" fork="true" classpath="."/>
-</target>
-<target name="jar" depends="compile" description="Create Java Package">
-<jar destfile="${program.jar}">
-<fileset dir="." includes="**/*.class"/>
-<manifest>
-<attribute name="main-class" value="${main.class}"/>
-</manifest>
-</jar>
-</target>
-<target name="runjar" depends="jar" description="Run the JAR">
-<java jar="${program.jar}" fork="true" classpath="."/>
-</target>
-<target name="clean" description="Delete all build artefacts">
-<delete>
-<fileset dir="." includes="**/*.class"/>
-</delete>
-</target>
+<project name="HammingAndSorters" default="compile" basedir=".">
+	<property name="main.class" value="HelloWorld" />
+	<property name="program.jar" value="Herzog_Thomas.jar" />
+	<delete>
+		<fileset dir="target/classes" includes="**/*" />
+	</delete>
+	<target name="compile" description="Compile Java sources">
+		<javac srcdir="src/main/java" destdir="target/classes" includeantruntime="false" classpath="lib">
+			<include name="**/*.java" />
+		</javac>
+		<javac srcdir="src/test/java" destdir="target/test-classes" includeantruntime="false">
+			<include name="**/*.java" />
+		</javac>
+	</target>
+	<!-- JUNIT Tests -->
+	<target name="junit">
+		<junit haltonfailure="true" printsummary="true">
+			<test name="at.fhooe.swe4.lab3.test.hamming.list.HammingListTest" />
+		</junit>
+	</target>
 </project>

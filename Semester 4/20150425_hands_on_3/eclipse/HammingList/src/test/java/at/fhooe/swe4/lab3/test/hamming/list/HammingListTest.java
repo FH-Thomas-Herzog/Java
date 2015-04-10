@@ -35,12 +35,11 @@ public class HammingListTest {
 	@Test
 	public void test_heavy_number() {
 		final long startMillis = System.currentTimeMillis();
-		final long n = 288325195312500000L;
-		
+		final long n = 12; //288325195312500000L;
+
 		hl.init(n).calculate().print();
-		
-		final long endMillis = System.currentTimeMillis();
-		final long diffMillis = endMillis - startMillis;
+
+		final long diffMillis = System.currentTimeMillis() - startMillis;
 		System.out.println("Spend time in millis: " + diffMillis);
 	}
 }

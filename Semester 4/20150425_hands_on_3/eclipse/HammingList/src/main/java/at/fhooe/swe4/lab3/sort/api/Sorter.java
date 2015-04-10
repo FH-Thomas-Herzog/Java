@@ -2,7 +2,7 @@ package at.fhooe.swe4.lab3.sort.api;
 
 import java.util.List;
 
-import at.fhooe.swe4.lab3.sort.heap.Heap.HeapType;
+import at.fhooe.swe4.lab3.sort.api.Heap.HeapType;
 import at.fhooe.swe4.lab3.stat.StatisticsProvider;
 
 /**
@@ -22,18 +22,37 @@ public interface Sorter<V extends Comparable<V>> {
 	 */
 	public static enum SortType {
 		/**
-		 * WIll result an ascending ordered result
+		 * Will result in an ascending ordered result
 		 */
-		DESCENDING(HeapType.MAX_HEAP), /**
-		 * WIll result an descending ordered
-		 * result
+		DESCENDING,
+		/**
+		 * Will result in an descending ordered result
 		 */
-		ASCENDING(HeapType.MIN_HEAP);
+		ASCENDING;
 
-		public final HeapType heapType;
-
-		private SortType(HeapType heapType) {
-			this.heapType = heapType;
+		/**
+		 * Compares the two comparable instances.
+		 * <ul>
+		 * <li>
+		 * {@link SortType#DESCENDING} performs an x < 0 comparision</li>
+		 * <li>{@link SortType#ASCENDING} performs an x > 0 comparision</li>
+		 * </ul>
+		 * 
+		 * @param left
+		 *            the instance which invokes the comparesTo method
+		 * @param right
+		 *            the parameter for lefts compareTomethod invocation
+		 * @return the proper result for the specified heap type
+		 */
+		public <T extends Comparable<T>> boolean compare(T left, T right) {
+			switch (this) {
+			case DESCENDING:
+				return left.compareTo(right) > 0;
+			case ASCENDING:
+				return left.compareTo(right) <= 0;
+			default:
+				throw new IllegalStateException("This enum is not handled here but should. enum=" + this.name());
+			}
 		}
 	}
 

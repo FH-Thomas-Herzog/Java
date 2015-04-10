@@ -16,7 +16,7 @@ public class HeapTest {
 		System.out.println(h);
 
 		Random r = new Random();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			h.enqueue(r.nextInt(100));
 		}
 		System.out.println(h);
