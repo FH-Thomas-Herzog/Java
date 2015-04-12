@@ -1,6 +1,7 @@
 package at.fhooe.swe4.lab3.sort.heap.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,11 +20,10 @@ import at.fhooe.swe4.lab3.stat.DefaultStatisticsProviderImpl;
  */
 public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 
-	private int heapCounter = 0;
 	public HeapType heapType;
 	public List<V> container = new ArrayList<V>();
 
-	public StatisticsProvider statProvider = new DefaultStatisticsProviderImpl("heap-array-list-impl");
+	public StatisticsProvider statProvider = new DefaultStatisticsProviderImpl();
 
 	/**
 	 * Empty constructor
@@ -47,41 +47,42 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 	}
 
 	/**
-	 * Initializes the heap with the given iterable
+	 * Initializes the heap with the given collection
 	 * 
 	 * @param list
-	 *            the iterable providing the elements for the heap
+	 *            the collection providing the elements for the heap
 	 * @param heapType
 	 *            the type of the heap
 	 * @see HeapType
 	 */
-	public HeapArrayListImpl(final Iterable<V> list, final HeapType heapType) {
+	public HeapArrayListImpl(final Collection<V> list, final HeapType heapType) {
 		super();
 		init(list, heapType);
 	}
 
 	@Override
 	public void init(final V[] originalArrayValues, final HeapType heapType) {
-		heapCounter++;
 		this.heapType = heapType;
-		container.clear();
 		int size = ((originalArrayValues == null) || (originalArrayValues.length == 0)) ? 0 : originalArrayValues.length;
+		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(size).append("]").toString());
 		if (size > 0) {
-			container = new ArrayList<V>(originalArrayValues.length);
-			statProvider.initContext("heap." + heapCounter);
+			container = new ArrayList<V>(size);
 			final CodeStatistics stat = statProvider.getCtx().newStatistic("init(array)");
 			for (V value : originalArrayValues) {
 				enqueue(value);
 			}
+		} else {
+			container = new ArrayList<V>(0);
 		}
 	}
 
 	@Override
-	public void init(final Iterable<V> originalIterableValues, final HeapType heapType) {
+	public void init(final Collection<V> originalIterableValues, final HeapType heapType) {
 		this.heapType = heapType;
-		container.clear();
-		if ((originalIterableValues != null) && (originalIterableValues.iterator().hasNext())) {
-			container = new ArrayList<V>(100);
+		final int size = (originalIterableValues == null) ? 0 : originalIterableValues.size();
+		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(size).append("]").toString());
+		if (size > 0) {
+			container = new ArrayList<V>(size);
 			final Iterator<V> it = originalIterableValues.iterator();
 			while (it.hasNext()) {
 				enqueue(it.next());
@@ -116,62 +117,12 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 		return container.size();
 	}
 
-	private void upHeap(final List<V> container) {
-		final CodeStatistics stat = statProvider.getCtx().byKey("upHeap()", Boolean.TRUE);
-
-		int i = container.size() - 1;
-		stat.incIdx();
-		V tmp = container.get(i);
-		while ((i != 0) && (heapType.compare(container.get(parent(i)), tmp))) {
-			stat.incIf().incIf().incIdx().incIdx().incIdx();
-			container.set(i, container.get(parent(i)));
-			i = parent(i);
-		}
-		stat.incIdx();
-		container.set(i, tmp);
-	}
-
-	private void downHeap(final List<V> container) {
-		final CodeStatistics stat = statProvider.getCtx().byKey("downHeap()", Boolean.TRUE);
-		int idx = 0;
-		int largeIdx;
-		V tmp = container.get(0);
-		stat.incIdx();
-		while (idx < (container.size() / 2)) {
-			int leftIdx = left(idx);
-			int rightIdx = right(idx);
-			if ((rightIdx < container.size()) && (heapType.compare(container.get(leftIdx), container.get(rightIdx)))) {
-				largeIdx = rightIdx;
-			} else {
-				largeIdx = leftIdx;
-			}
-			if (!heapType.compare(tmp, container.get(largeIdx))) {
-				break;
-			}
-			container.set(idx, container.get(largeIdx));
-			idx = largeIdx;
-			stat.incIf().incIf().incIf().incIf().incIf().incIf().incIdx().incIdx().incIdx().incIdx();
-		}
-		container.set(idx, tmp);
-		stat.incIdx();
-	}
-
-	private static int parent(final int i) {
-		return (i - 1) / 2;
-	}
-
-	private static int left(final int i) {
-		return (i * 2) + 1;
-	}
-
-	private static int right(final int i) {
-		return (i * 2) + 2;
-	}
-
+	@Override
 	public List<V> toList() {
 		return new ArrayList<V>(container);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public V[] toArray() {
 		return (V[]) container.toArray();
@@ -180,6 +131,91 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 	@Override
 	public StatisticsProvider getStatisitcs() {
 		return statProvider.endContext();
+	}
+
+	// Private heap methods
+	/**
+	 * Performs an up heap on the given heap represented by the given list
+	 * 
+	 * @param container
+	 *            the list representing the heap
+	 */
+	private void upHeap(final List<V> container) {
+		final CodeStatistics stat = statProvider.getCtx().byKey("upHeap()", Boolean.TRUE);
+
+		int i = container.size() - 1;
+		V tmp = container.get(i);
+		while ((i != 0) && (heapType.compare(container.get(parent(i)), tmp))) {
+			stat.incIf().incSwap();
+			container.set(i, container.get(parent(i)));
+			i = parent(i);
+		}
+		container.set(i, tmp);
+	}
+
+	/**
+	 * Performs an down heap on the given heap represented by the given list
+	 * 
+	 * @param container
+	 *            the list representing the heap
+	 */
+	private void downHeap(final List<V> container) {
+		final CodeStatistics stat = statProvider.getCtx().byKey("downHeap()", Boolean.TRUE);
+		int idx = 0;
+		int largeIdx;
+		V tmp = container.get(0);
+		while (idx < (container.size() / 2)) {
+			int leftIdx = left(idx);
+			int rightIdx = right(idx);
+			stat.incIf();
+			if ((rightIdx < container.size()) && (heapType.compare(container.get(leftIdx), container.get(rightIdx)))) {
+				largeIdx = rightIdx;
+			} else {
+				largeIdx = leftIdx;
+			}
+			stat.incIf();
+			if (!heapType.compare(tmp, container.get(largeIdx))) {
+				break;
+			}
+			stat.incSwap();
+			container.set(idx, container.get(largeIdx));
+			idx = largeIdx;
+		}
+		container.set(idx, tmp);
+	}
+
+	// Private helper
+	/**
+	 * Gets the parent index of the element on index i
+	 * 
+	 * @param i
+	 *            the index to get its parent index
+	 * @return the parent index
+	 */
+	private static int parent(final int i) {
+		return (i - 1) / 2;
+	}
+
+	/**
+	 * Gets the left neighbor index of the element on index i
+	 * 
+	 * @param i
+	 *            the index to get its left neighbor index
+	 * @return the left neighbor index
+	 */
+	private static int left(final int i) {
+		return (i * 2) + 1;
+	}
+
+	/**
+	 * Gets the right neighbor index of the element on index i
+	 * 
+	 * @param i
+	 *            the index to get its right neighbor index
+	 * @return the right neighbor index
+	 */
+	private static int right(final int i) {
+		return (i * 2) + 2;
 	}
 
 	@Override

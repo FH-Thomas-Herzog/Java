@@ -1,4 +1,4 @@
-package at.fhooe.swe4.lab3.test.sort.heap;
+package at.fhooe.swe4.lab3.test.sort.quick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,23 +9,23 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import at.fhooe.swe4.lab3.sort.api.Sorter.SortType;
-import at.fhooe.swe4.lab3.sort.heap.impl.HeapSorter;
+import at.fhooe.swe4.lab3.sort.quick.QuickSorter;
 import at.fhooe.swe4.lab3.test.sort.AbstractSorterTest;
 
 /**
- * This tests test the HeapSorter implementation
+ * This class tests the {@link QuickSorter} implementation
  * 
  * @author Thomas Herzog
  *
  */
 @RunWith(JUnit4.class)
-public class HeapSorterTest extends AbstractSorterTest<Integer> {
+public class QuickSorterTest extends AbstractSorterTest<Integer> {
 
-	private HeapSorter<Integer> sorter;
+	private QuickSorter<Integer> sorter;
 
 	@Before
 	public void before() {
-		sorter = new HeapSorter<Integer>();
+		sorter = new QuickSorter<Integer>();
 	}
 
 	@Test(expected = IllegalArgumentException.class)

@@ -65,6 +65,8 @@ public interface Sorter<V extends Comparable<V>> {
 	 *            the type of the sorting
 	 * @return the sorted array
 	 * @see SortType
+	 * @throws IllegalArgumentException
+	 *             if the array is null, or the {@link SortType} is null
 	 */
 	public V[] sort(V[] array, SortType sorterType);
 
@@ -77,6 +79,8 @@ public interface Sorter<V extends Comparable<V>> {
 	 *            the type of the sorting
 	 * @return the sorted array
 	 * @see SortType
+	 * @throws IllegalArgumentException
+	 *             if the list is null, or the {@link SortType} is null
 	 */
 	public List<V> sort(List<V> list, SortType sorterType);
 

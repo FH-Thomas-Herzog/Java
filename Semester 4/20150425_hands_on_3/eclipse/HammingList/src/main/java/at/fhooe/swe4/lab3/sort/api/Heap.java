@@ -1,5 +1,6 @@
 package at.fhooe.swe4.lab3.sort.api;
 
+import java.util.Collection;
 import java.util.List;
 
 import at.fhooe.swe4.lab3.stat.StatisticsProvider;
@@ -66,7 +67,7 @@ public interface Heap<V extends Comparable<V>> {
 	public void init(V[] originalArrayValues, HeapType sortType);
 
 	/**
-	 * Initializes this heap with the given iterable which provides the
+	 * Initializes this heap with the given collection which provides the
 	 * elements.
 	 * 
 	 * @param originalArrayValues
@@ -74,7 +75,7 @@ public interface Heap<V extends Comparable<V>> {
 	 * @param sortType
 	 *            the type of how the elements should be
 	 */
-	public void init(Iterable<V> originalIterableValues, HeapType sortType);
+	public void init(Collection<V> originalIterableValues, HeapType sortType);
 
 	/**
 	 * Puts an element on the heap and keeps heap type specified order.

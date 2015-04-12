@@ -11,16 +11,16 @@ import org.apache.commons.lang3.StringUtils;
 public class CodeStatistics {
 
 	private int comparision;
-	private int iterations;
 	private int swaps;
-	private int indexing;
 
 	private final String key;
 
 	/**
 	 * 
 	 * @param key
-	 *            hte key for this statistics data.
+	 *            the key for this statistics data.
+	 * @throws IllegalArgumentException
+	 *             if the key is either null or an empty string
 	 */
 	public CodeStatistics(final String key) {
 		super();
@@ -31,74 +31,59 @@ public class CodeStatistics {
 		clear();
 	}
 
+	/**
+	 * The key of this instance
+	 * 
+	 * @return the instance key
+	 */
 	public String getKey() {
 		return key;
 	}
 
+	/**
+	 * Increase the comparison counter.
+	 * 
+	 * @return the current instance
+	 */
 	public CodeStatistics incIf() {
 		comparision++;
 		return this;
 	}
 
-	public CodeStatistics decIf() {
-		comparision--;
-		return this;
-	}
-
-	public CodeStatistics incIt() {
-		iterations++;
-		return this;
-	}
-
-	public CodeStatistics decIt() {
-		iterations--;
-		return this;
-	}
-
+	/**
+	 * Increases the swap counter
+	 * 
+	 * @return the current instance
+	 */
 	public CodeStatistics incSwap() {
 		swaps++;
 		return this;
 	}
 
-	public CodeStatistics decSwap() {
-		swaps--;
-		return this;
-	}
-
-	public CodeStatistics incIdx() {
-		indexing++;
-		return this;
-	}
-
-	public CodeStatistics decIdx() {
-		indexing--;
-		return this;
-	}
-
+	/**
+	 * Clears the code statistic by setting all counters to '0'
+	 * 
+	 * @return the current instance
+	 */
 	public CodeStatistics clear() {
 		comparision = 0;
-		indexing = 0;
-		iterations = 0;
 		swaps = 0;
 		return this;
 	}
 
 	// Sorter statistics
-
+	/**
+	 * @return the comparison counter
+	 */
 	public int getComparision() {
 		return comparision;
 	}
 
-	public int getIterations() {
-		return iterations;
-	}
-
+	/**
+	 * @return the swap counter
+	 */
 	public int getSwaps() {
 		return swaps;
-	}
-
-	public int getIndexing() {
-		return indexing;
 	}
 
 	public int hashCode() {
@@ -129,8 +114,8 @@ public class CodeStatistics {
 		final String ln = System.getProperty("line.separator");
 		final StringBuilder sb = new StringBuilder();
 		sb.append("## statistic-key: ").append(key).append(ln);
-		sb.append(String.format("## %15s %15s %15s %15s", "iterations", "comparisions", "indexing", "swaps")).append(ln);
-		sb.append(String.format("## %15s %15s %15s %15s", iterations, comparision, indexing, swaps));
+		sb.append(String.format("## %15s %15s", "comparisions", "swaps")).append(ln);
+		sb.append(String.format("## %15s %15s", comparision, swaps));
 		return sb.toString();
 	}
 }

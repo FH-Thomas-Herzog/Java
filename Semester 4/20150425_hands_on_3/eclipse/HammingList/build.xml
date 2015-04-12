@@ -1,21 +1,61 @@
 <project name="HammingAndSorters" default="compile" basedir=".">
 	<property name="main.class" value="HelloWorld" />
 	<property name="program.jar" value="Herzog_Thomas.jar" />
-	<delete>
-		<fileset dir="target/classes" includes="**/*" />
-	</delete>
+	<property name="target" value="target/classes" />
+	<property name="target-test" value="target/test-classes" />
+	<property name="lib" value="lib" />
+	<property name="src" value="src/main/java" />
+	<property name="src-test" value="src/test/java" />
+	<path id="lib-classpath">
+		<fileset dir="${lib}" includes="**/*.jar" />
+	</path>
+	<path id="target-classpath">
+		<fileset dir="${target}" includes="**/*.jar" />
+	</path>
+	<path id="target-test-classpath">
+		<fileset dir="${target-test}" includes="**/*.class" />
+	</path>
+
+	<!-- Compile sources -->
 	<target name="compile" description="Compile Java sources">
-		<javac srcdir="src/main/java" destdir="target/classes" includeantruntime="false" classpath="lib">
+		<delete>
+			<fileset dir="${target}" includes="**/*" />
+			<fileset dir="${target-test}" includes="**/*" />
+		</delete>
+		<javac srcdir="${src}" destdir="${target}" includeantruntime="false" classpathref="lib-classpath">
 			<include name="**/*.java" />
 		</javac>
-		<javac srcdir="src/test/java" destdir="target/test-classes" includeantruntime="false">
+		<javac srcdir="${src-test}" destdir="${target-test}" includeantruntime="false" classpathref="lib-classpath, target">
 			<include name="**/*.java" />
 		</javac>
 	</target>
+
+	<!-- Build jar -->
+	<target name="jar" depends="compile" description="Create JAR">
+		<jar destfile="${target}/${program.jar}">
+			<fileset dir="${target}" includes="**/*.class" />
+		</jar>
+	</target>
+
 	<!-- JUNIT Tests -->
-	<target name="junit">
-		<junit haltonfailure="true" printsummary="true">
-			<test name="at.fhooe.swe4.lab3.test.hamming.list.HammingListTest" />
+	<target name="junit" depends="jar">
+		<junit printsummary="yes" haltonfailure="true" haltonerror="true" maxmemory="256m">
+			<classpath>
+				<path refid="lib-classpath" />
+				<path refid="target-classpath" />
+			</classpath>
+
+			<formatter type="plain" />
+			<batchtest fork="yes" todir="${target-test}">
+				<fileset dir="src/test/java" includes="**/*Test.java" />
+			</batchtest>
 		</junit>
+	</target>
+
+	<target name="junitreport">
+		<junitreport todir="${target-test}">
+			<fileset dir="${target-test}" includes="TEST-*.xml" />
+			<report todir="${target-test}" />
+		</junitreport>
 	</target>
 </project>

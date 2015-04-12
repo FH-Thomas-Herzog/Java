@@ -20,9 +20,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 
-	private String ctxKey = null;
 	private StatisticContext ctx = null;
-
 	private final Map<String, StatisticsProvider> providers;
 	private final SortedSet<StatisticContext> statContextSet = new TreeSet<StatisticContext>(new Comparator<StatisticContext>() {
 		@Override
@@ -31,10 +29,15 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 		}
 	});
 
-	public DefaultStatisticsProviderImpl(final String contextKey) {
+	/**
+	 * Default constructor which creates an context with the given key
+	 * 
+	 * @param contextKey
+	 *            the key for the initial context
+	 */
+	public DefaultStatisticsProviderImpl() {
 		super();
 		this.providers = new HashMap<String, StatisticsProvider>();
-		initContext(contextKey);
 	}
 
 	@Override
@@ -45,14 +48,13 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 		if (StringUtils.isEmpty(contextKey)) {
 			throw new IllegalArgumentException("Context key must be given fopr context");
 		}
-		ctxKey = contextKey.trim().toLowerCase();
-		ctx = new StatisticContext(ctxKey);
+		ctx = new StatisticContext(contextKey.trim().toLowerCase());
 		ctx.setStartCalendar(Calendar.getInstance());
-		removeContext(contextKey);
 		statContextSet.add(ctx);
 		return this;
 	}
 
+	@Override
 	public StatisticsProvider endContext() {
 		if (ctx != null) {
 			ctx.setEndCalendar(Calendar.getInstance());
@@ -62,11 +64,11 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 	}
 
 	@Override
-	public StatisticsProvider removeContext(final String key) {
+	public StatisticsProvider removeContext(final String ctxDelKey) {
 		final StatisticContext ctxDel = CollectionUtils.find(statContextSet, new Predicate<StatisticContext>() {
 			@Override
 			public boolean evaluate(StatisticContext object) {
-				return object.getKey().equals(key);
+				return object.getKey().equals(ctxDelKey.trim().toLowerCase());
 			}
 		});
 		if (ctxDel != null) {
@@ -78,7 +80,7 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 	@Override
 	public StatisticsProvider takeOver(final String key, final StatisticsProvider provider) {
 		if (StringUtils.isEmpty(key) || (provider == null)) {
-			throw new IllegalArgumentException("KEy and provider must be given");
+			throw new IllegalArgumentException("Key and provider must be given");
 		}
 		this.providers.put(key, provider);
 		return this;

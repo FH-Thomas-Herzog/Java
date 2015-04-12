@@ -5,6 +5,10 @@ import java.util.Random;
 import at.fhooe.swe4.lab3.heap.Heap;
 
 public class HeapTest {
+	
+	
+	
+	
 	public static void main(String[] args) {
 
 		Heap<Integer> h = new Heap<Integer>();

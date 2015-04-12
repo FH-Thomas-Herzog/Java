@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import at.fhooe.swe4.lab3.sort.api.Sorter;
+import at.fhooe.swe4.lab3.stat.CodeStatistics;
+import at.fhooe.swe4.lab3.stat.DefaultStatisticsProviderImpl;
 import at.fhooe.swe4.lab3.stat.StatisticsProvider;
 
 /**
@@ -16,12 +18,18 @@ import at.fhooe.swe4.lab3.stat.StatisticsProvider;
  *            the values type of the to sort elements
  */
 public class QuickSorter<V extends Comparable<V>> implements Sorter<V> {
+
+	private final StatisticsProvider statProvider = new DefaultStatisticsProviderImpl();
+
 	public QuickSorter() {
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public V[] sort(final V[] array, final SortType sorterType) {
+		if (array == null) {
+			throw new IllegalArgumentException("Cannot sort null array");
+		}
 		final List<V> result = sort(Arrays.asList(array), sorterType);
 		return (V[]) result.toArray();
 	}
@@ -31,6 +39,10 @@ public class QuickSorter<V extends Comparable<V>> implements Sorter<V> {
 		if (sorterType == null) {
 			throw new IllegalArgumentException("SorterType not defined");
 		}
+		if (list == null) {
+			throw new IllegalArgumentException("Cannot sort null list");
+		}
+		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(list.size()).append("]").toString());
 		quicksort(list, 0, (list.size() - 1));
 		if (SortType.DESCENDING.equals(sorterType)) {
 			Collections.reverse(list);
@@ -49,6 +61,7 @@ public class QuickSorter<V extends Comparable<V>> implements Sorter<V> {
 	 *            the end index
 	 */
 	private void quicksort(final List<V> values, final int start, final int end) {
+		final CodeStatistics stat = statProvider.getCtx().byKey("quicksort", Boolean.TRUE);
 		int i = start;
 		int k = end;
 
@@ -56,15 +69,19 @@ public class QuickSorter<V extends Comparable<V>> implements Sorter<V> {
 			V pivot = values.get(start);
 			while (k > i) {
 				while ((values.get(i).compareTo(pivot) <= 0) && (i <= end) && (k > i)) {
+					stat.incIf();
 					i++;
 				}
 				while ((values.get(k).compareTo(pivot) > 0) && (k >= start) && (k >= i)) {
+					stat.incIf();
 					k--;
 				}
 				if (k > i) {
+					stat.incSwap();
 					swap(values, i, k);
 				}
 			}
+			stat.incSwap();
 			swap(values, start, k);
 			quicksort(values, start, k - 1);
 			quicksort(values, k + 1, end);
@@ -89,7 +106,6 @@ public class QuickSorter<V extends Comparable<V>> implements Sorter<V> {
 
 	@Override
 	public StatisticsProvider getStatisitcs() {
-		// TODO Auto-generated method stub
-		return null;
+		return statProvider.endContext();
 	}
 }
