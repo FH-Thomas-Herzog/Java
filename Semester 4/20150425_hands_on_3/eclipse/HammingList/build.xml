@@ -1,61 +1,101 @@
 <project name="HammingAndSorters" default="compile" basedir=".">
+	<!-- Define used properties -->
 	<property name="main.class" value="HelloWorld" />
-	<property name="program.jar" value="Herzog_Thomas.jar" />
+	<property name="output-jar" value="Herzog_Thomas.jar" />
+	<property name="output-test-jar" value="Herzog_Thomas_Test.jar" />
 	<property name="target" value="target/classes" />
 	<property name="target-test" value="target/test-classes" />
 	<property name="lib" value="lib" />
+	<property name="junit-report" value="junit-report" />
 	<property name="src" value="src/main/java" />
 	<property name="src-test" value="src/test/java" />
+
+	<!-- libary classpath. The used libraries are placed here -->
 	<path id="lib-classpath">
 		<fileset dir="${lib}" includes="**/*.jar" />
 	</path>
+
+	<!-- target classpath. The compiled sources are placed here-->
 	<path id="target-classpath">
 		<fileset dir="${target}" includes="**/*.jar" />
 	</path>
-	<path id="target-test-classpath">
-		<fileset dir="${target-test}" includes="**/*.class" />
+
+	<!-- test classpath. The compiled test sources are placed here-->
+	<path id="test-classpath">
+		<fileset dir="${target-test}" includes="**/*.jar" />
 	</path>
 
-	<!-- Compile sources -->
-	<target name="compile" description="Compile Java sources">
+	<!-- Cleanup output folders -->
+	<target name="cleanup" description="Deletes the resources from the output folders">
 		<delete>
 			<fileset dir="${target}" includes="**/*" />
 			<fileset dir="${target-test}" includes="**/*" />
 		</delete>
-		<javac srcdir="${src}" destdir="${target}" includeantruntime="false" classpathref="lib-classpath">
+	</target>
+
+	<!-- Compile the sources -->
+	<target name="compile-source" description="Compiles the sources">
+		<javac srcdir="${src}" destdir="${target}" includeantruntime="false">
 			<include name="**/*.java" />
+			<classpath refid="lib-classpath" />
 		</javac>
-		<javac srcdir="${src-test}" destdir="${target-test}" includeantruntime="false" classpathref="lib-classpath, target">
+	</target>
+	<target name="compile-test-source" description="Compiles the test sources">
+		<javac srcdir="${src-test}" destdir="${target-test}" includeantruntime="false">
 			<include name="**/*.java" />
+			<classpath refid="lib-classpath" />
+			<classpath refid="target-classpath" />
 		</javac>
 	</target>
 
-	<!-- Build jar -->
-	<target name="jar" depends="compile" description="Create JAR">
-		<jar destfile="${target}/${program.jar}">
+	<!-- Build the jars -->
+	<target name="jar" description="Creates the jar containing the compiled sources">
+		<jar destfile="${target}/${output-jar}">
 			<fileset dir="${target}" includes="**/*.class" />
 		</jar>
 	</target>
+	<target name="jar-test" description="Creates the jar containing the compiled test sources">
+		<jar destfile="${target-test}/${output-test-jar}">
+			<fileset dir="${target-test}" includes="**/*.class" />
+		</jar>
+	</target>
 
-	<!-- JUNIT Tests -->
-	<target name="junit" depends="jar">
+	<!-- Run the unit tests -->
+	<target name="junit">
 		<junit printsummary="yes" haltonfailure="true" haltonerror="true" maxmemory="256m">
 			<classpath>
 				<path refid="lib-classpath" />
-				<path refid="target-classpath" />
+				<path refid="test-classpath" />
 			</classpath>
 
-			<formatter type="plain" />
-			<batchtest fork="yes" todir="${target-test}">
-				<fileset dir="src/test/java" includes="**/*Test.java" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit-report}">
+				<fileset dir="${src-test}">
+					<include name="**/*Test.java" />
+					<exclude name="**/api/*" />
+				</fileset>
 			</batchtest>
 		</junit>
+		<junitreport todir="${junit-report}">
+			<fileset dir="${junit-report}" includes="TEST-*.xml" />
+			<report format="frames" todir="${junit-report}" />
+		</junitreport>
 	</target>
 
-	<target name="junitreport">
-		<junitreport todir="${target-test}">
-			<fileset dir="${target-test}" includes="TEST-*.xml" />
-			<report todir="${target-test}" />
-		</junitreport>
+	<!-- Performs a full build -->
+	<target name="compile" description="Performs a full build with tests">
+		<echo>Performing a full build including test</echo>
+		<antcall target="cleanup" />
+		<antcall target="compile-source" />
+		<antcall target="compile-test-source" />
+		<antcall target="jar" />
+		<antcall target="jar-test" />
+		<antcall target="junit" />
+	</target>
+
+	<!-- Performs only tests. Depends on existing packaged jars -->
+	<target name="test" description="Performs only test. Depends on existing packaged source and test source">
+		<echo>Run Junit Tests of ${output-test-jar}</echo>
+		<antcall target="junit" />
 	</target>
 </project>

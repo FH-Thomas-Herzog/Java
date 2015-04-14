@@ -42,7 +42,7 @@ public class HammingListTest {
 			System.out.println(new StringBuilder("Spend time in millis: '").append(diffMillis).append("' for '").append(count)
 					.append("' hamming numbers (including sorting)").toString());
 			System.out.println("----------------------------------------------------------------");
-			for (int j = 0; j < 10; j++) {
+			for (int j = 0; j < result.size(); j++) {
 				System.out.println(new StringBuilder().append(j + 1).append(": ").append(result.get(j)).toString());
 			}
 			if (result.size() > 10) {

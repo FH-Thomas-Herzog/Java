@@ -10,7 +10,7 @@ import org.junit.runners.JUnit4;
 
 import at.fhooe.swe4.lab3.sort.api.Sorter.SortType;
 import at.fhooe.swe4.lab3.sort.heap.impl.HeapSorter;
-import at.fhooe.swe4.lab3.test.sort.AbstractSorterTest;
+import at.fhooe.swe4.lab3.test.sort.api.AbstractSorterTest;
 
 /**
  * This tests test the HeapSorter implementation

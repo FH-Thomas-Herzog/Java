@@ -1,0 +1,118 @@
+% !TEX encoding = UTF-8 Unicode
+\documentclass[11pt, a4paper, twoside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\usepackage{listings}				% For Source Code displaying
+\usepackage[german]{babel}			% this end the next are needed for german umlaute
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% =============================================
+% Layout & Colors
+% =============================================
+\geometry{
+   a4paper,
+   total={210mm,297mm},
+   left=20mm,
+   right=20mm,
+   top=20mm,
+   bottom=30mm
+ }	
+
+\definecolor{myred}{rgb}{0.8,0,0}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+% the default java directory structure and the main packages
+\newcommand{\srcDir}{../src/main/java}
+\newcommand{\srcTestTir}{../src/test/java}
+\newcommand{\mainPackage}{\srcDir/at/fhooe/swe4/lab3}
+\newcommand{\mainTestPacakge}{\srcDir/at/fhooe/swe4/lab3/test}
+
+
+% =============================================
+% Code Settings
+% =============================================
+\lstset{ %
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=t,                    % sets the caption-position to top
+  commentstyle=\color{mygreen},    % comment style
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=JAVA, 
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% =============================================
+% Page Style, Footers & Headers, Title
+% =============================================
+\title{Übung 3}
+\author{Thomas Herzog}
+
+\lhead{Übung 3}
+\chead{}
+\rhead{\includegraphics[scale=0.10]{FHO_Logo_Students.jpg}}
+
+\lfoot{S1310307011}
+\cfoot{}
+\rfoot{ \thepage / \pageref{LastPage} }
+\renewcommand{\footrulewidth}{0.4pt}
+% =============================================
+% D O C U M E N T     C O N T E N T
+% =============================================
+\pagestyle{fancy}
+\begin{document}
+\setlength{\headheight}{15mm}
+% =============================================
+% Solution Idea
+% =============================================
+{\color{myred}
+	\section
+		{Übung 1.1}
+}
+
+\subsection{Solution Idea}
+This is my idea
+% =============================================
+% Code
+% =============================================
+\subsection{Source Code}
+\lstinputlisting{\mainPackage/hamming/Hamming.java}
+
+
+% =============================================
+% Test Results
+% =============================================
+\subsection{Tests}
+
+%\includegraphics[scale=0.5]{filename goes here}
+
+\begin{tabular}{|r|r|l|}
+\hline
+Input & Output & Comment \\
+\hline
+a = 100 & 3 & \\
+b = 200 & & \\
+\hline 
+\end{tabular}
+
+
+\end{document}  
