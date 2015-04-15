@@ -34,7 +34,7 @@ public class Hamming {
 		if (count <= 1) {
 			throw new IllegalArgumentException("The count must be at least one !!!");
 		}
-		final List<BigInteger> list = new ArrayList<BigInteger>();
+		final List<BigInteger> list = new ArrayList<BigInteger>((count + 4));
 		list.add(BigInteger.ONE);
 		// The allowed factors
 		final BigInteger second = BigInteger.valueOf(2);
@@ -44,7 +44,7 @@ public class Hamming {
 		// As long as all of the intended numbers have been calculated
 		// Calculate for 4 more elements because otherwise some numbers would be
 		// missing
-		for (int i = 0; ((list.size() - 4) < count); i++) {
+		for (int i = 0; (list.size() < (count + 4)); i++) {
 			BigInteger secondMult = list.get(i).multiply(second);
 			BigInteger threeMult = list.get(i).multiply(three);
 			BigInteger fiveMult = list.get(i).multiply(five);
