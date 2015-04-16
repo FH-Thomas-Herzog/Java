@@ -6,7 +6,7 @@
 	<property name="target" value="target/classes" />
 	<property name="target-test" value="target/test-classes" />
 	<property name="lib" value="lib" />
-	<property name="junit-report" value="junit-report" />
+	<property name="junit-report" value="doc/junit-report" />
 	<property name="src" value="src/main/java" />
 	<property name="src-test" value="src/test/java" />
 
@@ -30,6 +30,7 @@
 		<delete>
 			<fileset dir="${target}" includes="**/*" />
 			<fileset dir="${target-test}" includes="**/*" />
+			<fileset dir="${junit-report}" includes="**/*" />
 		</delete>
 	</target>
 

@@ -1,4 +1,4 @@
-% !TEX encoding = UTF-8 Unicode
+%!TEX encoding = UTF-8 Unicode
 \documentclass[11pt, a4paper, twoside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
 
 \usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
@@ -10,6 +10,7 @@
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{hyperref}
 % http://www.artofproblemsolving.com/wiki/index.php/LaTeX:Symbols#Operators
 % =============================================
 % Layout & Colors
@@ -33,6 +34,7 @@
 \newcommand{\srcTestDir}{../src/test/java}
 \newcommand{\mainPackage}{\srcDir/at/fhooe/swe4/lab3}
 \newcommand{\mainTestPackage}{\srcTestDir/at/fhooe/swe4/lab3/test}
+\newcommand{\junitReportDir}{junit-report}
 % the default subsection headers
 \newcommand{\ideaSection}{Lösungsidee}
 \newcommand{\sourceSection}{Source-Code}
@@ -55,7 +57,7 @@
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
   numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  rulecolor=\color{white},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
@@ -136,19 +138,41 @@ Wir könnten ein Set verwenden, was uns das Problem mit den Duplikaten ersparen 
 Die Verwendung von list.contains(obj) mag vielleicht nicht gerade perfekt sein jedoch sollte es kein Problem sein 10.000 Elemente der Hammingfolge unter 1 Sekunde zu ermitteln.\\\\
 Die verwendete ArrayList muss auf jeden Fall mit einer Kapazität $capicity = (n+ 4)$ initialisiert werden, da wir ansonsten das Problem haben das die ArrayList ein Array.copyOf(...) durchführen würde und dynamisch um den Faktor $1.5 \ast oldCapicity$ wachsen würde, was einerseits ein mehrmaliges kopieren des Arrays und andererseits schlussendlich ein Array produzieren würde, welches weitaus größer ist als benötigt.\\
 Da wir aber ohnehin wissen wie viele Elemente berechnet werden müssen kann dies über ein korrektes setzen der Kapazität vermieden werden.
+\newpage
 \subsection{\sourceSection}
 Folgend ist der Implementierte Source und Test-Source angeführt.
 \lstinputlisting{\mainPackage/hamming/Hamming.java}
 \lstinputlisting{\mainTestPackage/hamming/HammingTest.java}
 \subsection{\testSection}
 Folgend sind die Tests der Aufgabenstellung Hammingfolge angeführt.\\
+Aufgrund dessen das JUnit verwendet wurde und JUnit auch eine Report generiert wird hier auf das Einfügen der Tests verzichtet und nur der generierte JUnit Report verlinkt.\\\\
+{\color{myred} ACHTUNG: Da der Report mit einen relativen Pfad eingebunden wurde darf das Dokument nicht verschoben werden ohne das gewährleistet ist, dass das Verzeichnis "\junitReportDir", welches die JUnit Reports enthält, wieder relativ gesehen an derselben Position ist}\\\\
+JUnit Report öffnen (\href{\junitReportDir/index.html}{index.html})
 
+\newpage
 {\color{myred}
 	\section
-		{Hammingfolge}
+		{Sortieralgorithmen}
 }
-
-\subsection{Lösungsidee}
+\subsection{\ideaSection}
+Folgend sind die Lösungsideen der Sortierlagorithmen HeapSorter und QuickSorter angeführt.\\
+Da beide Algorithmen denselben output liefern sollen, soll hier ein Interface spezifiziert werden welches die Funktionalität bzw. die zu implementierenden Methoden Signaturen vorgibt. Die Aufgabenstelllung verlangt zwar das Sortieren auf Integer Felder, jedoch sollen die Algorithmen so implementiert werden, dass sie auf Typen, die das Interface Compareable<E> implementieren. Daher muss das Interface folgende Signatur vorweisen.
+\begin{lstlisting}
+public Sorter<E extends Comparable<E>> {...}
+\end{lstlisting}
+Aufgrund dessen das die Sortieralgorithmen mit Code Statistics versehen werden sollen, sollen Klassen implementiert werden, die es erlauben die verlangten Statistics zu ermitteln und auch einen Report dieser zu erstellen.\\
+Hierbei soll diese Code Statistics wie folgt aufgeteilt werden:
+\begin{enumerate}
+	\item \textbf{StatisticsProvider:} Das Interface welches die Spezifikation für den Code Statistics Provider entält.\\
+	Die Implementierung soll es ermöglichen mehrere Statistic Kontexte zu verwalten.
+	\item \textbf{StatisticContext:} Die Klasse, welche einen Statstic Kontext darstellt.\\
+	Dieser Kontext soll es ermöglichen mehrere CodeStatistic Instanzen pro Kontext zu verwalten.
+	\item \textbf{CodeStatistic:} Die Klasse, die die Code Statistic Informationen (swap, compare counts)
+	\item \textbf{DefaultStatisticProviderImpl:} Die default Implementierung des Interface StatisticProvider, welches die Funktionalitäten implementiert
+\end{enumerate}
+\subsubsection{HeapSorter}
+Folgend ist die Lösungsidee für die HeapSorter Implementierung angeführt.\\
+Da hierbei 
 %\includegraphics[scale=0.5]{filename goes here}
 
 \subsection{Source Code}
@@ -158,6 +182,7 @@ Folgend sind die Tests der Aufgabenstellung Hammingfolge angeführt.\\
 \lstinputlisting{\mainPackage/sort/heap/impl/HeapArrayListImpl.java}
 \lstinputlisting{\mainPackage/sort/heap/impl/HeapSorter.java}
 \lstinputlisting{\mainPackage/sort/quick/QuickSorter.java}
+\subsection{\testSection}
 
 \begin{tabular}{|r|r|l|}
 \hline
