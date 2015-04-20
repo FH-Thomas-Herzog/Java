@@ -37,7 +37,7 @@
 \newcommand{\srcTestDir}{../src/test/java}
 \newcommand{\mainPackage}{\srcDir/at/fhooe/swe4/lab3}
 \newcommand{\mainTestPackage}{\srcTestDir/at/fhooe/swe4/lab3/test}
-\newcommand{\junitReportDir}{junit-report}
+\newcommand{\imagesDir}{images}
 % the default subsection headers
 \newcommand{\ideaSection}{Lösungsidee}
 \newcommand{\sourceSection}{Source-Code}
@@ -47,7 +47,7 @@
 % =============================================
 % Code Settings
 % =============================================
-\lstset{ %
+\lstdefinestyle{sourceFileStyle}{ %
   basicstyle=\tiny,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
@@ -69,7 +69,16 @@
   tabsize=2,                       % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
-
+\lstdefinestyle{inlineSource}{ 
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  keepspaces=true,   
+  commentstyle=\color{mygreen},
+  keywordstyle=\color{blue},
+  language=JAVA
+}
+\newcommand{\inlinecode}{\lstinline[style=inlineSource]}
 % =============================================
 % Page Style, Footers & Headers, Title
 % =============================================
@@ -97,7 +106,11 @@
 	\section
 		{Hammingfolge}
 }
-
+% =============================================
+% 1. Hamming numbers
+% =============================================
+% Idea
+% =============================================
 \subsection{\ideaSection}
 Folgend ist die Lösungsidee für die Aufgabenstellung Hammingfolge berechnen angeführt.\\
 Da es sich hierbei lediglich um einen einzigen Algorithmus handelt soll dieser als Klassenmethode implementiert werden. Das diese Klasse lediglich diese Klasenmethode enthalten soll, soll in dieser Klasse ein Privater Konstruktor implementiert werden um zu verhindern, dass diese Klasse instanziert werden kann.\\\\
@@ -108,27 +121,65 @@ wissen wir dass folgende Elemente Aufgrund dessen das $1 \in H$ gilt in der Folg
 $1 \in H \wedge 2 \in H \wedge 3 \in H \wedge 5 \in H$\\
 daher können wir einen Algorithmus definieren der sich wie folgt verhalten soll:
 \begin{enumerate}
-	\item Instanziere eine NavigableSet\textless E\textgreater und initialisiere dieses Set mit dem Element 1
-	\item Instanziere eine ArrayList\textless E\textgreater welches die resultierenden Werte beinhaltet
+	\item Instanziere eine \inlinecode{TreeSet<E>} und initialisiere dieses Set mit dem Element 1
+	\item Instanziere eine \inlinecode{List<E>} welches die resultierenden Werte beinhaltet wird
 	\item Polle und entferne das erste Element aus dem Set
 	\item Füge dieses Element der resultierenden Liste hinzu.		
 	\item Berechne die nachfolgenden Hammingzahlen $(2 \ast polledValue \wedge 3 \ast polledValue \wedge 5 \ast polledValue)$ für dieses Element
 	\item Füge die Berechneten Elemente dem Set hinzu
-	\item Wiederhole Schritt 3 solange folgendes gilt: $list.size(i) < (n + 4)$
+	\item Wiederhole Schritt 3 solange folgendes gilt: $resultList.size(i) < n$
 \end{enumerate}
-Es soll eine TreeSet\textless E\textgreater Instanz verwendet werden. Es soll aber gegen NavigableSet\textless E\textgreater Interface und nicht SortedSet\textless E\textgreater gearbeitet werden da dieses Interface eine Methode namens pollFirst() zur Verfügung stellt, die das erste Element des Set liefert und es aus dem Set entfernt. Dadurch sollte das Set in seiner Größe beschränkt sein, was den Sortierungsaufwand des Set minimal halten sollte.\\
-Da TreeSet aber auch SortedSet implementiert sind die enthaltenen Werte implizit immer sortiert und dadurch auch die Werte in der resultierenden Liste, da die hinzugefügten Elemente immer sortiert eingefügt werden. Daher ist hier kein zusätzlicher Sortierungsaufwand nötig.
+Für das zu verwendende Set soll eine \inlinecode{TreeSet<E>}
+Instanz verwendet werden. Es soll aber gegen \inlinecode{NavigableSet<E>} Interface und nicht gegen \inlinecode{SortedSet<E>} gearbeitet werden, da dieses Interface eine Methode namens \inlinecode{instance.pollFirst()} zur Verfügung stellt, die das erste Element des Set liefert und es gleichzeitig aus dem Set entfernt. Dadurch sollte das Set in seiner Größe beschränkt halten, was den Sortierungsaufwand des Set minimal halten wird.\\
+Da \inlinecode{TreeSet<E>} aber auch \inlinecode{SortedSet<E>} implementiert sind die enthaltenen Werte implizit immer sortiert und dadurch auch die Werte in der resultierenden Liste, da die hinzugefügten Elemente immer sortiert eingefügt werden. Daher ist hier kein zusätzlicher Sortierungsaufwand nötig.
 \newpage
+% =============================================
+% Source
+% =============================================
 \subsection{\sourceSection}
 Folgend ist der Implementierte Source und Test-Source angeführt.
-\lstinputlisting{\mainPackage/hamming/Hamming.java}
-\lstinputlisting{\mainTestPackage/hamming/HammingTest.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/hamming/Hamming.java}
+\lstinputlisting[style=sourceFileStyle]{\mainTestPackage/hamming/HammingTest.java}
+% =============================================
+% Tests
+% =============================================
+\newpage
 \subsection{\testSection}
 Folgend sind die Tests der Aufgabenstellung Hammingfolge angeführt.\\
-Aufgrund dessen das JUnit verwendet wurde und JUnit auch eine Report generiert wird hier auf das Einfügen der Tests verzichtet und nur der generierte JUnit Report verlinkt.\\\\
-{\color{myred} ACHTUNG: Da der Report mit einen relativen Pfad eingebunden wurde darf das Dokument nicht verschoben werden ohne das gewährleistet ist, dass das Verzeichnis "\junitReportDir", welches die JUnit Reports enthält, wieder relativ gesehen an derselben Position ist}\\\\
-JUnit Report öffnen (\href{\junitReportDir/index.html}{index.html})
-
+Aufgrund dessen dass JUnit verwendet wurde und die Tests mithilfe der Entwicklungsumgebung Eclipse getestet wurden ist hier nur ein Screenshot der Eclipse Umgebung angeführt.\\
+Die Tests können in Eclipse erneut ausgeführt und dadurch auch reproduziert werden.\\ 
+Die Zeitangaben der Berechnungsdauer werden bei den Tests auf die Konsole ausgegeben.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{\imagesDir/tests_hamming_junit.JPG}
+  \caption[JUnit Reulstat]
+   {Diese Abbildung zeigt das Resultat der JUnit Tests im eclipse}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_hamming_console_1.JPG}
+  \caption[Konsolenausgabe der Berechnungszeiten]
+   {Diese Abbildung zeigt die Berechnungszeiten für 10 und 100 Hammingzahlen}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_hamming_console_2.JPG}
+  \caption[Konsolenausgabe der Berechnungszeiten]
+   {Diese Abbildung zeigt die Berechnungszeiten für 1000 und 10.000 Hammingzahlen}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+ \includegraphics[scale=0.8]{\imagesDir/tests_hamming_console_3.JPG}
+  \caption[Konsolenausgabe der Berechnungszeiten]
+   {Diese Abbildung zeigt die Berechnungszeiten für 100.000 und 1.000.000 Hammingzahlen}
+\end{figure}
+% =============================================
+% 2. Sorting algorithms
+% =============================================
+% Idea (common)
+% =============================================
 \newpage
 {\color{myred}
 	\section
@@ -136,49 +187,140 @@ JUnit Report öffnen (\href{\junitReportDir/index.html}{index.html})
 }
 \subsection{\ideaSection \hspace{2mm}(Allgemein)}
 Folgend sind die Lösungsideen der Sortierlagorithmen HeapSorter und QuickSorter angeführt.\\
-Da beide Algorithmen denselben output liefern sollen, soll hier ein Interface spezifiziert werden welches die Funktionalität bzw. die zu implementierenden Methoden Signaturen vorgibt. Die Aufgabenstellung verlangt zwar das Sortieren auf Integer Felder, jedoch sollen die Algorithmen so implementiert werden, dass sie auf Typen, die das Interface Compareable<E> implementieren. Daher muss das Interface folgende Signatur vorweisen.
-\begin{lstlisting}
-public Sorter<E extends Comparable<E>> {...}
-\end{lstlisting}
+Da beide Algorithmen denselben output liefern sollen, soll hier ein Interface spezifiziert werden welches die Funktionalität bzw. die zu implementierenden Methoden Signaturen vorgibt. Die Aufgabenstellung verlangt zwar nur das Sortieren auf Integer Felder, jedoch sollen die Algorithmen so implementiert werden, dass sie auf Typen, die das Interface \inlinecode{Compareable<E>} implementieren. Daher muss das Interface folgende Signatur vorweisen.\inlinecode|public Sorter<E extends Comparable<E>> {...}|
 \newpage
-\subsubsection{Source Code}
-\lstinputlisting{\mainPackage/sort/api/Sorter.java}
+% =============================================
+% Source (common)
+% =============================================
+\subsubsection{Source Code\hspace{2mm}{Allgemein}}
+Folgend sind die allgemeinen Sources der Sortieralgorithmen angeführt.
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/sort/api/Sorter.java}
 \newpage
+% =============================================
+% 2.1 Statistics
+% =============================================
+% Idea (stastistics)
+% =============================================
 \subsection{\ideaSection \hspace{2mm}(Statistics)}
-Aufgrund dessen das die Sortieralgorithmen mit Code Statistics versehen werden sollen, sollen Klassen implementiert werden, die es erlauben die verlangten Statistics zu ermitteln und auch einen Report dieser zu erstellen.\\
+Aufgrund dessen dass die Sortieralgorithmen mit Code Statistics versehen werden sollen, sollen Klassen implementiert werden, die es erlauben die verlangten Statistics zu ermitteln und auch einen Report dieser zu erstellen.\\
 Hierbei soll diese Code Statistics wie folgt aufgeteilt werden:
 \begin{enumerate}
-	\item \textbf{StatisticsProvider:} Das Interface welches die Spezifikation für den Code Statistics Provider enthalten soll.\\
-	Die Implementierung soll es ermöglichen mehrere Statistic Kontexte zu verwalten.
-	\item \textbf{StatisticContext:} Die Klasse, welche einen Statstic Kontext darstellt soll.\\
+	\item \textbf{StatisticsProvider:} Das Interface welches die Spezifikation für den Code Statistik Provider enthalten soll.\\
+	Die Implementierung soll es ermöglichen mehrere Statistik Kontexte zu verwalten.
+	\item \textbf{StatisticContext:} Die Klasse, welche einen Statistik Kontext darstellen soll.\\
 	Dieser Kontext soll es ermöglichen mehrere CodeStatistic Instanzen pro Kontext zu verwalten.
-	\item \textbf{CodeStatistic:} Die Klasse, die die Code Statistic Informationen (swap, compare counts) halten soll
+	\item \textbf{CodeStatistic:} Die Klasse, die die Code Statistik Informationen (swap, compare counts) halten soll
 	\item \textbf{DefaultStatisticProviderImpl:} Die default Implementierung des Interface StatisticProvider, welches die Funktionalitäten implementiert soll.
 \end{enumerate}
-Alle Klassen sollen die toString Methode überschreiben und jeweils ihre beinhaltenden Informationen als string zurückliefern, wobei ein Parent bzw. die Klasse die Isntanzen einer anderen verwaltet and deren toString() zu delegieren.
+Alle Klassen sollen die \inlinecode{instance.toString()}  Methode überschreiben und jeweils ihre beinhaltenden Informationen als \inlinecode{String} zurückliefern, wobei ein Parent bzw. die Klasse die Instanzen einer anderen verwaltet and deren \inlinecode{child.toString()} zu delegieren.
 \newpage
+% =============================================
+% Idea (statistics)
+% =============================================
 \subsubsection{Source Code}
-Folgend ist der Source der Statistics Implementierungen und Interfaces angeführt.
-\lstinputlisting{\mainPackage/stat/api/StatisticsProvider.java}
-\lstinputlisting{\mainPackage/stat/StatisticContext.java}
-\lstinputlisting{\mainPackage/stat/CodeStatistics.java}
-\lstinputlisting{\mainPackage/stat/DefaultStatisticsProviderImpl.java}
+Folgend ist der Source der Statistik Implementierungen und Interfaces angeführt.
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/stat/api/StatisticsProvider.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/stat/StatisticContext.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/stat/CodeStatistics.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/stat/DefaultStatisticsProviderImpl.java}
 
+% =============================================
+% 2.2 HeapSorter
+% =============================================
+% Idea (heapsorter)
+% =============================================
 \newpage
 \subsection{HeapSorter}
 Folgend ist die Lösungsidee für die HeapSorter Implementierung angeführt.\\
-Da hierbei eine Heap Implementierung von Nöten ist und diese aber auch anderweitig verwendet werden könnte soll ein Heap Implementiert werden, der unabhängig von einem HeapSorter verwendet werden kann. Da wir auch hier generisch bleiben sollen und es auch möglich sein soll eine Heap Implementierung mit einem anderen Container zu implementieren (Bsp.: ArrayList\textless E\textgreater, T[], usw.) soll ein Interface spezifiziert werden, welches die Funktionalitäten eines Heap spezifiziert. Es soll folgende Signatur haben
-\begin{lstlisting}
-public Heap<E extends Comparable<E>> {...}
-\end{lstlisting}
-Des Weiteren soll eine Enumeration spezifiziert werden, die es erlaubt zu definieren, ob der Heap ein upheap oder downheap sein soll, also ob der root das höchste oder kleinste Element ist.\\\\
+Da hierbei eine Heap Implementierung von Nöten ist und diese aber auch anderweitig verwendet werden könnte soll ein Heap Implementiert werden, der unabhängig von einem HeapSorter verwendet werden kann. Da wir auch hier generisch bleiben wollen und es auch möglich sein soll eine Heap Implementierung mit einem anderen Container zu implementieren (Bsp.: \inlinecode{ArrayList<E>}, \inlinecode{T[]}, usw.) soll ein Interface spezifiziert werden, welches die Funktionalitäten eines Heap spezifiziert. Es soll folgende Signatur haben
+\inlinecode|public Heap<E extends Comparable<E>> {...}|\\
+Des Weiteren soll eine Enumeration spezifiziert werden, die es erlaubt zu definieren, ob der Heap ein upheap oder downheap sein soll, also ob der root das höchste oder kleinste Element darstellt.\\\\
 Ansonsten soll der Heap wie bekannt implementiert werden.
+% =============================================
+% Source(heapsorter)
+% =============================================
 \subsubsection{Source Code}
 Folgend ist der Source der Interfaces und Implementierungen für Heap und Heap Sorter angeführt.
-\lstinputlisting{\mainPackage/sort/api/Heap.java}
-\lstinputlisting{\mainPackage/sort/heap/impl/HeapArrayListImpl.java}
-\lstinputlisting{\mainPackage/sort/heap/impl/HeapSorter.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/sort/api/Heap.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/sort/heap/impl/HeapArrayListImpl.java}
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/sort/heap/impl/HeapSorter.java}
+% =============================================
+% Tests (heapsorter)
+% =============================================
+\newpage
 \subsubsection{\testSection}
-see junit index.html
-
+Folgend sind die Tests für die HeapSorter Implementierung angeführt.\\
+Diese Tests können einfach in einem eclipse erneut ausgeführt und reproduziert werden, obwohl anzumerken ist, dass die Zeiten abhängig von den zu Verfügung stehenden Ressourcen abhängig sind.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{\imagesDir/tests_heap_junit.JPG}
+  \caption[JUnit Resultat]
+   {Diese Abbildung zeigt das Resultat der JUnit Tests in eclipse}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_heap_console_1.JPG}
+  \caption[Konsolenausgabe der Statistiken]
+   {Diese Abbildung zeigt die Statistiken für das Sortieren von 10, 100, 1.000 Elementen}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_heap_console_2.JPG}
+  \caption[Konsolenausgabe der Statistiken]
+   {Diese Abbildung zeigt die Statistiken für das Sortieren von 10.000, 100.000, 1.000.000 Elementen}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_heap_console_3.JPG}
+  \caption[Konsolenausgabe der Statistiken]
+   {Diese Abbildung zeigt die Statistiken für das Sortieren von 1.000 Elementen die bereits aufsteigend sortiert sind}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_heap_console_4.JPG}
+  \caption[Konsolenausgabe der Statistiken]
+   {Diese Abbildung zeigt die Statistiken für das Sortieren von 10, 100, 1.000 Elementen}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_heap_console_5.JPG}
+  \caption[Konsolenausgabe der Statistiken]
+   {Diese Abbildung zeigt die Statistiken für das Sortieren von 10.000, 100.000, 1.000.000 Elementen}
+\end{figure}
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{\imagesDir/tests_heap_console_6.JPG}
+  \caption[Konsolenausgabe der Statistiken]
+   {Diese Abbildung zeigt die Statistiken für das Sortieren 1.000 Elementen die bereits absteigend sortiert sind}
+\end{figure}
+% =============================================
+% 2.2 WucikSorter
+% =============================================
+% Idea (quicksorter)
+% =============================================
+\newpage
+\subsection{QuickSorter}
+Folgend ist die Dokumentation für den QuickSorter angeführt.\\
+Diese Implementierung soll ebenfalls das Interface \inlinecode{Sorter<E>} implementieren und die CodeStatistics verwenden.\\
+Entweder soll der Algorithmus so gewählt werden dass er aufsteigend und absteigend sortieren kann, oder die  Liste soll bei der inversen Sortierung mittels \inlinecode{Collections.reverse(list)} umgedreht werden.\\
+Ansonsten ist der QuickSort Algorithmus wie bekannt zu implementieren.
+% =============================================
+% Source(quicksorter)
+% =============================================
+\subsubsection{Source Code}
+Folgend ist der Source der QucikSort Implementierung angeführt.
+\lstinputlisting[style=sourceFileStyle]{\mainPackage/sort/quick/QuickSorter.java}
+% =============================================
+% Tests (quicksorter)
+% =============================================
+\newpage
+\subsubsection{\testSection}
+Folgend sind die Test für die QuickSort Implementierung angeführt.
+Diese Tests können einfach in einem eclipse erneut ausgeführt und reproduziert werden, obwohl anzumerken ist, dass die Zeiten abhängig von den zu Verfügung stehenden Ressourcen abhängig sind.
 \end{document}  

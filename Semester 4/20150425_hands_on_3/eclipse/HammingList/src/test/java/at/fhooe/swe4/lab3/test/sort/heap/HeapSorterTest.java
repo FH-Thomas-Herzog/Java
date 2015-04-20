@@ -56,6 +56,7 @@ public class HeapSorterTest extends AbstractSorterTest<Integer> {
 
 	@Test
 	public void test_already_ascending_sorted() {
+		System.out.println("test_already_ascending_sorted()");
 		final List<Integer> list = new ArrayList<Integer>(1000);
 		for (int i = 0; i < 1000; i++) {
 			list.add(i + 1);
@@ -67,6 +68,7 @@ public class HeapSorterTest extends AbstractSorterTest<Integer> {
 
 	@Test
 	public void test_already_descending_sorted() {
+		System.out.println("test_already_descending_sorted() ");
 		final List<Integer> list = new ArrayList<Integer>(1000);
 		for (int i = 1000; i > 0; i--) {
 			list.add(i + 1);
@@ -78,6 +80,7 @@ public class HeapSorterTest extends AbstractSorterTest<Integer> {
 
 	@Test
 	public void test_sort_ascending() {
+		System.out.println("test_sort_ascending() ");
 		int count = 1;
 		final int factor = 10;
 		final int repeation = 6;
@@ -91,6 +94,7 @@ public class HeapSorterTest extends AbstractSorterTest<Integer> {
 
 	@Test
 	public void test_sort_descending() {
+		System.out.println("test_sort_descending() ");
 		int count = 1;
 		final int factor = 10;
 		final int repeation = 6;

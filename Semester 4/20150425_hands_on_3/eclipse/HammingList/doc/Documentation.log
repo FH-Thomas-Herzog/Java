@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.14)  16 APR 2015 14:48
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.20)  21 APR 2015 00:16
 entering extended mode
 **Documentation.tex
 
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\doc\Documentation.tex"
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\doc\Documentation.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -64,7 +64,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@dimlist=\toks15
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.sty
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.sty
 \lst@mode=\count90
 \lst@gtempboxa=\box26
 \lst@token=\toks16
@@ -78,13 +78,13 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \lst@lineno=\count95
 \lst@maxwidth=\dimen114
 
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstmisc.sty
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstmisc.sty
 File: lstmisc.sty 2014/09/06 1.5e (Carsten Heinz)
 \c@lstnumber=\count96
 \lst@skipnumbers=\count97
 \lst@framebox=\box27
 )
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.cfg
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.cfg
 File: listings.cfg 2014/09/06 1.5e listings configuration
 ))
 Package: listings 2014/09/06 1.5e (Carsten Heinz)
@@ -362,7 +362,7 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 \Gin@req@height=\dimen116
 \Gin@req@width=\dimen117
 )
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\titlesec\titlesec.sty
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\titlesec\titlesec.sty
 Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \ttl@box=\box28
 \beforetitleunit=\skip43
@@ -374,7 +374,7 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \titlewidthlast=\dimen121
 \titlewidthfirst=\dimen122
 )
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\fancyhdr\fancyhdr.sty
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\fancyhdr\fancyhdr.sty
 \fancy@headwidth=\skip45
 \f@ncyO@elh=\skip46
 \f@ncyO@erh=\skip47
@@ -385,7 +385,7 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \f@ncyO@olf=\skip52
 \f@ncyO@orf=\skip53
 )
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\lastpage\lastpage.sty
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\lastpage\lastpage.sty
 Package: lastpage 2013/01/28 v1.2l Refers to last page's name (HMM; JPG)
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty"
@@ -463,7 +463,7 @@ Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
 \c@Hy@tempcnt=\count103
 
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\url\url.sty
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\url\url.sty
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
@@ -508,25 +508,23 @@ Package geometry Warning: Over-specification in `h'-direction.
 Package geometry Warning: Over-specification in `v'-direction.
     `height' (845.04684pt) is ignored.
 
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
-File: lstlang1.sty 2014/09/06 1.5e listings language file
-)
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\doc\Documentation.aux")
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 91.
-LaTeX Font Info:    ... okay on input line 91.
+
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\doc\Documentation.aux")
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -563,7 +561,7 @@ LaTeX Font Info:    ... okay on input line 91.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count110
-(C:\Users\Thomas\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count111
 \scratchdimen=\dimen127
@@ -583,9 +581,9 @@ Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             or
 (lastpage)             http://www.ctan.org/tex-archive/ 
 (lastpage)             install/macros/latex/contrib/pageslts.tds.zip
-(lastpage)             ! on input line 91.
+(lastpage)             ! on input line 100.
 \AtBeginShipoutBox=\box30
-Package hyperref Info: Link coloring OFF on input line 91.
+Package hyperref Info: Link coloring OFF on input line 100.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -594,39 +592,43 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count117
 )
-LaTeX Info: Redefining \ref on input line 91.
-LaTeX Info: Redefining \pageref on input line 91.
-LaTeX Info: Redefining \nameref on input line 91.
+LaTeX Info: Redefining \ref on input line 100.
+LaTeX Info: Redefining \pageref on input line 100.
+LaTeX Info: Redefining \nameref on input line 100.
 
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\doc\Documentation.out")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\doc\Documentation.out")
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\doc\Documentation.out")
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\doc\Documentation.out")
 \@outlinefile=\write3
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 105.
+(Font)              <10.95> on input line 118.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 105.
+(Font)              <8> on input line 118.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 105.
+(Font)              <6> on input line 118.
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--110
+Underfull \hbox (badness 10000) in paragraph at lines 115--123
 
  []
 
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 111.
+(C:\Users\cchet\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
+File: lstlang1.sty 2014/09/06 1.5e listings language file
+)
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 124.
+
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omlcmr.fd"
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 111.
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <9> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 124.
 
-<FHO_Logo_Students.jpg, id=51, 569.0058pt x 476.0184pt>
+<FHO_Logo_Students.jpg, id=63, 569.0058pt x 476.0184pt>
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 121.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 135.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -635,16 +637,13 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
+[1{C:/Users/cchet/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
-LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 121.
-
-[1{C:/Users/Thomas/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
-
- <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/Java/Semester 4/20150425
-_hands_on_3/eclipse/HammingList/doc/FHO_Logo_Students.jpg>]
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\hamming\Hammin
-g.java"
+ <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semester 4
+/20150425_hands_on_3/eclipse/HammingList/doc/FHO_Logo_Students.jpg>]
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\hammi
+ng\Hamming.java"
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 9.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -654,268 +653,345 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <6> not available
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <6> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 35.
 )
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\test\java\at\fhooe\swe4\lab3\test\hamming\H
-ammingTest.java"
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\test\java\at\fhooe\swe4\lab3\test\
+hamming\HammingTest.java"
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 23.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 29.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 31.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 29.
-
-[2])
-Underfull \hbox (badness 10000) in paragraph at lines 127--131
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 127--131
-
- []
-
+ [2])
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 132.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 132.
-
-[3]
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 143.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 143.
-
-[4]
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\api\Sorte
-r.java")
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
 Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 146.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [3]
+<images/tests_hamming_junit.JPG, id=210, 1095.3422pt x 124.21407pt>
+File: images/tests_hamming_junit.JPG Graphic file (type jpg)
 
+<use images/tests_hamming_junit.JPG>
+Package pdftex.def Info: images/tests_hamming_junit.JPG used on input line 154.
 
-LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 146.
+(pdftex.def)             Requested size: 483.69687pt x 54.85335pt.
 
-[5]
+<images/tests_hamming_console_1.JPG, id=211, 401.24907pt x 487.06969pt>
+File: images/tests_hamming_console_1.JPG Graphic file (type jpg)
+
+<use images/tests_hamming_console_1.JPG>
+Package pdftex.def Info: images/tests_hamming_console_1.JPG used on input line 
+160.
+(pdftex.def)             Requested size: 320.99968pt x 389.65627pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 159.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 164.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [4 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semeste
+r 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_hamming_junit.JPG>
+ <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semester 4
+/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_hamming_console_1.JPG
+>]
+<images/tests_hamming_console_2.JPG, id=219, 401.24907pt x 627.09282pt>
+File: images/tests_hamming_console_2.JPG Graphic file (type jpg)
+
+<use images/tests_hamming_console_2.JPG>
+Package pdftex.def Info: images/tests_hamming_console_2.JPG used on input line 
+167.
+(pdftex.def)             Requested size: 320.99968pt x 501.67494pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 171.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [5 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semeste
+r 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_hamming_console_2.
+JPG>]
+<images/tests_hamming_console_3.JPG, id=226, 399.74344pt x 619.56468pt>
+File: images/tests_hamming_console_3.JPG Graphic file (type jpg)
+
+<use images/tests_hamming_console_3.JPG>
+Package pdftex.def Info: images/tests_hamming_console_3.JPG used on input line 
+174.
+(pdftex.def)             Requested size: 319.79517pt x 495.6524pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 183.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [6 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semeste
+r 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_hamming_console_3.
+JPG>]
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 190.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 191.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [7]
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\
+api\Sorter.java")
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 198.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [8]
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 216.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
+[9]
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\
+api\StatisticsProvider.java")
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\
+StatisticContext.java"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 30.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [10]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 159.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
-[6]
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\api\Stati
-sticsProvider.java")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\Statistic
-Context.java"
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 127.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [11])
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\
+CodeStatistics.java"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 13.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [12]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 112.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [13])
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\
+DefaultStatisticsProviderImpl.java"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 85.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [14])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 232.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [15]
+Underfull \hbox (badness 10000) in paragraph at lines 234--242
+
+ []
+
+
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\
+api\Heap.java"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 69.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [16])
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\
+heap\impl\HeapArrayListImpl.java"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
 Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 31.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 7 undefined on input line 31.
-
-[7]
+ [17]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 128.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 127.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 128.
-
-[8])
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\CodeStati
-stics.java"
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 14.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 9 undefined on input line 14.
-
-[9]
+ [18]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 113.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 225.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 10 undefined on input line 113.
-
-[10])
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\stat\DefaultSt
-atisticsProviderImpl.java"
+ [19])
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\
+heap\impl\HeapSorter.java"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 86.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 79.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 11 undefined on input line 86.
-
-[11])
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 167.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 12 undefined on input line 167.
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 174--176
-
- []
-
-
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\api\Heap.
-java"
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 62.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 13 undefined on input line 62.
-
-[13])
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\heap\impl
-\HeapArrayListImpl.java"
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 26.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 14 undefined on input line 26.
-
-[14]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+ [20])
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 121.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 250.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [21]
+<images/tests_heap_junit.JPG, id=1372, 1230.84843pt x 191.9672pt>
+File: images/tests_heap_junit.JPG Graphic file (type jpg)
 
+<use images/tests_heap_junit.JPG>
+Package pdftex.def Info: images/tests_heap_junit.JPG used on input line 256.
+(pdftex.def)             Requested size: 483.69687pt x 75.43808pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 260.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [22 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_junit.JPG>]
+<images/tests_heap_console_1.JPG, id=1379, 509.65407pt x 612.03656pt>
+File: images/tests_heap_console_1.JPG Graphic file (type jpg)
 
-LaTeX Warning: Reference `LastPage' on page 15 undefined on input line 121.
+<use images/tests_heap_console_1.JPG>
+Package pdftex.def Info: images/tests_heap_console_1.JPG used on input line 263
+.
+(pdftex.def)             Requested size: 407.7238pt x 489.62991pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 267.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [23 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_console_1.JP
+G>]
+<images/tests_heap_console_2.JPG, id=1386, 511.15968pt x 536.75531pt>
+File: images/tests_heap_console_2.JPG Graphic file (type jpg)
 
-[15]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+<use images/tests_heap_console_2.JPG>
+Package pdftex.def Info: images/tests_heap_console_2.JPG used on input line 270
+.
+(pdftex.def)             Requested size: 408.92828pt x 429.40482pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 274.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [24 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_console_2.JP
+G>]
+<images/tests_heap_console_3.JPG, id=1393, 500.62032pt x 252.19218pt>
+File: images/tests_heap_console_3.JPG Graphic file (type jpg)
 
+<use images/tests_heap_console_3.JPG>
+Package pdftex.def Info: images/tests_heap_console_3.JPG used on input line 277
+.
+(pdftex.def)             Requested size: 400.4968pt x 201.75401pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 281.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [25 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_console_3.JP
+G>]
+<images/tests_heap_console_4.JPG, id=1401, 502.12593pt x 609.02531pt>
+File: images/tests_heap_console_4.JPG Graphic file (type jpg)
+
+<use images/tests_heap_console_4.JPG>
+Package pdftex.def Info: images/tests_heap_console_4.JPG used on input line 284
+.
+(pdftex.def)             Requested size: 401.7013pt x 487.2209pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 288.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [26 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_console_4.JP
+G>]
+<images/tests_heap_console_5.JPG, id=1408, 509.65407pt x 354.57469pt>
+File: images/tests_heap_console_5.JPG Graphic file (type jpg)
+
+<use images/tests_heap_console_5.JPG>
+Package pdftex.def Info: images/tests_heap_console_5.JPG used on input line 291
+.
+(pdftex.def)             Requested size: 407.7238pt x 283.66013pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 295.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [27 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_console_5.JP
+G>]
+<images/tests_heap_console_6.JPG, id=1415, 505.13719pt x 488.57532pt>
+File: images/tests_heap_console_6.JPG Graphic file (type jpg)
+
+<use images/tests_heap_console_6.JPG>
+Package pdftex.def Info: images/tests_heap_console_6.JPG used on input line 298
+.
+(pdftex.def)             Requested size: 404.1103pt x 390.86078pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 307.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [28 <C:/Users/cchet/Documents/Git Repositories/Github/FH-Hagenberg/Java/Semest
+er 4/20150425_hands_on_3/eclipse/HammingList/doc/images/tests_heap_console_6.JP
+G>]
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\
+quick\QuickSorter.java"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 76.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [29])
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 219.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 322.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 16 undefined on input line 219.
-
-[16])
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\heap\impl
-\HeapSorter.java"
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 73.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 17 undefined on input line 73.
-
-[17])
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\src\main\java\at\fhooe\swe4\lab3\sort\quick\Qui
-ckSorter.java"
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 88.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 18 undefined on input line 88.
-
-[18])
-
-Package lastpage Warning: Rerun to get the references right on input line 185.
-
-
+ [30] 
 AED: lastpage setting LastPage
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 185.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 326.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+ [31]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 326.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 326.
 
-
-LaTeX Warning: Reference `LastPage' on page 19 undefined on input line 185.
-
-[19]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 185.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 185.
-
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425
-_hands_on_3\eclipse\HammingList\doc\Documentation.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 185.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 185.
+("C:\Users\cchet\Documents\Git Repositories\Github\FH-Hagenberg\Java\Semester 4
+\20150425_hands_on_3\eclipse\HammingList\doc\Documentation.aux")
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 326.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 326.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 9B7779050441E89F06F476C5E3A32D04;780.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 185.
+(rerunfilecheck)             Checksum: 1A438432FDB6AA7A593828A018262EF3;990.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 326.
  ) 
 Here is how much of TeX's memory you used:
- 9753 strings out of 493921
- 145650 string characters out of 3144873
- 619150 words of memory out of 3000000
- 11589 multiletter control sequences out of 15000+200000
- 7897 words of font info for 28 fonts, out of 3000000 for 9000
+ 9841 strings out of 493921
+ 147768 string characters out of 3144876
+ 616516 words of memory out of 3000000
+ 11640 multiletter control sequences out of 15000+200000
+ 8809 words of font info for 31 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,17n,43p,566b,1862s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,17n,48p,585b,1953s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/
 Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program File
-s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on Documentation.pdf (19 pages, 998586 bytes).
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x8
+6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+Output written on Documentation.pdf (31 pages, 1935312 bytes).
 PDF statistics:
- 1734 PDF objects out of 2073 (max. 8388607)
- 1328 named destinations out of 1440 (max. 500000)
- 102 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1859 PDF objects out of 2073 (max. 8388607)
+ 1349 named destinations out of 1440 (max. 500000)
+ 181 words of extra memory for PDF output out of 10000 (max. 10000000)
 

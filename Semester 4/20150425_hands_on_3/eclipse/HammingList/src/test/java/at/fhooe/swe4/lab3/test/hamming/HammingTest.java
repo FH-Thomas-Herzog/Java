@@ -32,7 +32,7 @@ public class HammingTest {
 	public void test_caluclation() {
 		int count = 1;
 		final int factor = 10;
-		final int repeation = 1;
+		final int repeation = 6;
 		for (int i = 0; i < repeation; i++) {
 			count *= factor;
 			final long startMillis = System.currentTimeMillis();
