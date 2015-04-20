@@ -3,7 +3,7 @@ package at.fhooe.swe4.lab3.sort.api;
 import java.util.Collection;
 import java.util.List;
 
-import at.fhooe.swe4.lab3.stat.StatisticsProvider;
+import at.fhooe.swe4.lab3.stat.api.StatisticsProvider;
 
 /**
  * This interface specifies the heap functionalities.

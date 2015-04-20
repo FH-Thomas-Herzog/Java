@@ -1,10 +1,9 @@
 <project name="HammingAndSorters" default="compile" basedir=".">
 	<!-- Define used properties -->
-	<property name="main.class" value="HelloWorld" />
 	<property name="output-jar" value="Herzog_Thomas.jar" />
 	<property name="output-test-jar" value="Herzog_Thomas_Test.jar" />
-	<property name="target" value="target/classes" />
-	<property name="target-test" value="target/test-classes" />
+	<property name="target" value="ant-target/classes" />
+	<property name="target-test" value="ant-target/test-classes" />
 	<property name="lib" value="lib" />
 	<property name="junit-report" value="doc/junit-report" />
 	<property name="src" value="src/main/java" />
@@ -17,17 +16,18 @@
 
 	<!-- target classpath. The compiled sources are placed here-->
 	<path id="target-classpath">
-		<fileset dir="${target}" includes="**/*.jar" />
+		<pathelement path="${target}"/>
 	</path>
 
 	<!-- test classpath. The compiled test sources are placed here-->
 	<path id="test-classpath">
-		<fileset dir="${target-test}" includes="**/*.jar" />
+		<pathelement path="${target-test}"/>
 	</path>
 
 	<!-- Cleanup output folders -->
 	<target name="cleanup" description="Deletes the resources from the output folders">
-		<delete>
+		<echo>Deleting ant output folders</echo>
+		<delete includeemptydirs="true">
 			<fileset dir="${target}" includes="**/*" />
 			<fileset dir="${target-test}" includes="**/*" />
 			<fileset dir="${junit-report}" includes="**/*" />
@@ -58,28 +58,52 @@
 	<target name="jar-test" description="Creates the jar containing the compiled test sources">
 		<jar destfile="${target-test}/${output-test-jar}">
 			<fileset dir="${target-test}" includes="**/*.class" />
+			<fileset dir="${target}" includes="**/*.class" />
 		</jar>
 	</target>
 
 	<!-- Run the unit tests -->
 	<target name="junit">
-		<junit printsummary="yes" haltonfailure="true" haltonerror="true" maxmemory="256m">
+		<mkdir dir="${junit-report}/hamming" />
+		<mkdir dir="${junit-report}/heap" />
+		<mkdir dir="${junit-report}/quick" />
+		<junit printsummary="yes" haltonerror="true">
 			<classpath>
 				<path refid="lib-classpath" />
+				<path refid="target-classpath" />
 				<path refid="test-classpath" />
 			</classpath>
-
 			<formatter type="xml" />
-			<batchtest fork="yes" todir="${junit-report}">
+			<batchtest fork="yes" todir="${junit-report}/hamming">
+				<fileset dir="${target-test}">
+					<include name="**/hamming/**/*Test*" />
+					<exclude name="**/Abstract*" />
+				</fileset>
+			</batchtest>
+			<batchtest fork="yes" todir="${junit-report}/heap">
 				<fileset dir="${src-test}">
-					<include name="**/*Test.java" />
-					<exclude name="**/api/*" />
+					<include name="**/heap/**/HeapSorterTest*" />
+					<exclude name="**/Abstract*" />
+				</fileset>
+			</batchtest>
+			<batchtest fork="yes" todir="${junit-report}/quick">
+				<fileset dir="${src-test}">
+					<include name="**/quick/**/QuickSorterTest*" />
+					<exclude name="**/Abstract*" />
 				</fileset>
 			</batchtest>
 		</junit>
-		<junitreport todir="${junit-report}">
-			<fileset dir="${junit-report}" includes="TEST-*.xml" />
-			<report format="frames" todir="${junit-report}" />
+		<junitreport todir="${junit-report}/hamming">
+			<fileset dir="${junit-report}/hamming" includes="TEST-*.xml" />
+			<report format="frames" todir="${junit-report}/hamming" />
+		</junitreport>
+		<junitreport todir="${junit-report}/heap">
+			<fileset dir="${junit-report}/heap" includes="TEST-*.xml" />
+			<report format="frames" todir="${junit-report}/heap" />
+		</junitreport>
+		<junitreport todir="${junit-report}/quick">
+			<fileset dir="${junit-report}/quick" includes="TEST-*.xml" />
+			<report format="frames" todir="${junit-report}/quick" />
 		</junitreport>
 	</target>
 

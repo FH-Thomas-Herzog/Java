@@ -29,6 +29,9 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+\setcounter{secnumdepth}{4}
+
+
 % the default java directory structure and the main packages
 \newcommand{\srcDir}{../src/main/java}
 \newcommand{\srcTestDir}{../src/test/java}
@@ -45,7 +48,7 @@
 % Code Settings
 % =============================================
 \lstset{ %
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  basicstyle=\tiny,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
   captionpos=t,                    % sets the caption-position to top
@@ -105,39 +108,16 @@ wissen wir dass folgende Elemente Aufgrund dessen das $1 \in H$ gilt in der Folg
 $1 \in H \wedge 2 \in H \wedge 3 \in H \wedge 5 \in H$\\
 daher können wir einen Algorithmus definieren der sich wie folgt verhalten soll:
 \begin{enumerate}
-	\item Erstelle eine Liste und initialisiere diese Liste mit dem Element 1
-		\item Berechne die nachfolgenden Hammingzahlen $(2 \ast list.get(i) \wedge 3 \ast list.get(i) \wedge 5 \ast list.get(i))$ für das Element am Index i
-		\begin{itemize}
-			\item Ist die Zahl vorhanden: Dann füge sie nicht der Liste hinzu
-			\item Ist die Zahl nicht vorhanden: Dann füge sie der Liste hinzu
-		\end{itemize}
-		\item Wiederhole Schritt 2 solange folgendes gilt: $list.size(i) < (n + 4)$
+	\item Instanziere eine NavigableSet\textless E\textgreater und initialisiere dieses Set mit dem Element 1
+	\item Instanziere eine ArrayList\textless E\textgreater welches die resultierenden Werte beinhaltet
+	\item Polle und entferne das erste Element aus dem Set
+	\item Füge dieses Element der resultierenden Liste hinzu.		
+	\item Berechne die nachfolgenden Hammingzahlen $(2 \ast polledValue \wedge 3 \ast polledValue \wedge 5 \ast polledValue)$ für dieses Element
+	\item Füge die Berechneten Elemente dem Set hinzu
+	\item Wiederhole Schritt 3 solange folgendes gilt: $list.size(i) < (n + 4)$
 \end{enumerate}
-Nun stellt sich die Frage warum folgende Schleifenbedingung gilt $list.size(i) < (n + 4)$\\
-Dies ist erforderlich da ansonsten nicht die Folge von Hammingzahlen bis zur Schranke n (=Anzahl) berechnet würde. Es würden zwar gültige Hammingzahlen in der Liste vorhanden sein, jedoch würden bei einer berechneten Hammingfolge die letzten berechneten Zahlen nicht die letzten Hammingzahlen der berechneten Folge sein.\\\\
-\underline{Im folgenden Beispiel wird Problematik genau erläutert:}\\
-Sei $n=10$ daraus folgt $H_{10} = \{1, 2, 3, 4, 5, 6, 8, 9, 10, 12\}$\\
-Mit dem oben beschriebenen Algorithmus würde nun folgende passieren, wobei die Aufzählungen dem Index $i = (x - 1)$ entsprechen 
-\begin{enumerate}
-	\item $1 \ast 2 = 2 \wedge 1 \ast 3 = 3 \wedge 1 \ast 5 = 5$\\
-	$H = \{1, 2, 3, 5\}$
-	\item $2 \ast 2 = 4 \wedge 2 \ast 3 = 6 \wedge 2 \ast 5 = 10$\\
-	$H = \{1, 2, 3, 5, 4, 6, 10\}$
-	\item $3 \ast 2= 6 \wedge 3 \ast 3 = 9 \wedge 3 \ast 5 = 15$\\
-	$H = \{1, 2, 3, 5, 4, 6, 10, 9, 15\}$
-	\item $5 \ast 2= 10 \wedge 5 \ast 3 = 15 \wedge 5 \ast 5 = 25$\\
-	$H = \{1, 2, 3, 5, 4, 6, 10, 9, 15, 25\}$
-\end{enumerate}
-Nun stop der Algorithmus, da wir bereits die definierte Schranke erreicht haben.\\
-Wenn wir die Liste sortieren dann erhalten wir folgende Folge $H = \{1, 2, 3, 4, 5, 6, 9, 10, 15, 25\}$. Diese Liste entspricht aber nicht der zu erwartenden Liste.\\
-Warum ist das so ?\\
-Das Problem liegt darin, dass wir zwar gültige Hammingzahlen berechnen aber diese unsortiert in der Liste vorkommen und wir daher Hammingzahlen berechnen, die in der zu erwartenden Folge nicht vorkommen dürfen.\\
-Daher müssen wir die Anzahl erhöhen um sicherzustellen das in der Liste alle zu erwartenden Hammingzahlen vorhanden sind.\\
-Die Zahlen die zu viel vorhanden sind können einfach am Ende des Algorithmus wieder entfernt werden wobei hier von $i = (list.size() - 1) \rightarrow i >= count$ iteriert wird und die Elemente, die zu viel sind wieder entfernt werden.\\\\
-Wir könnten ein Set verwenden, was uns das Problem mit den Duplikaten ersparen würde, hätten dann aber das Problem, dass wir während der Iteration über das Set keine Elemente hinzufügen können so wie bei der Liste. Ebenso könnte es der Performance schaden das Set bei jedem add zu sortieren (TreeSet).\\
-Die Verwendung von list.contains(obj) mag vielleicht nicht gerade perfekt sein jedoch sollte es kein Problem sein 10.000 Elemente der Hammingfolge unter 1 Sekunde zu ermitteln.\\\\
-Die verwendete ArrayList muss auf jeden Fall mit einer Kapazität $capicity = (n+ 4)$ initialisiert werden, da wir ansonsten das Problem haben das die ArrayList ein Array.copyOf(...) durchführen würde und dynamisch um den Faktor $1.5 \ast oldCapicity$ wachsen würde, was einerseits ein mehrmaliges kopieren des Arrays und andererseits schlussendlich ein Array produzieren würde, welches weitaus größer ist als benötigt.\\
-Da wir aber ohnehin wissen wie viele Elemente berechnet werden müssen kann dies über ein korrektes setzen der Kapazität vermieden werden.
+Es soll eine TreeSet\textless E\textgreater Instanz verwendet werden. Es soll aber gegen NavigableSet\textless E\textgreater Interface und nicht SortedSet\textless E\textgreater gearbeitet werden da dieses Interface eine Methode namens pollFirst() zur Verfügung stellt, die das erste Element des Set liefert und es aus dem Set entfernt. Dadurch sollte das Set in seiner Größe beschränkt sein, was den Sortierungsaufwand des Set minimal halten sollte.\\
+Da TreeSet aber auch SortedSet implementiert sind die enthaltenen Werte implizit immer sortiert und dadurch auch die Werte in der resultierenden Liste, da die hinzugefügten Elemente immer sortiert eingefügt werden. Daher ist hier kein zusätzlicher Sortierungsaufwand nötig.
 \newpage
 \subsection{\sourceSection}
 Folgend ist der Implementierte Source und Test-Source angeführt.
@@ -154,44 +134,52 @@ JUnit Report öffnen (\href{\junitReportDir/index.html}{index.html})
 	\section
 		{Sortieralgorithmen}
 }
-\subsection{\ideaSection}
+\subsection{\ideaSection \hspace{2mm}(Allgemein)}
 Folgend sind die Lösungsideen der Sortierlagorithmen HeapSorter und QuickSorter angeführt.\\
-Da beide Algorithmen denselben output liefern sollen, soll hier ein Interface spezifiziert werden welches die Funktionalität bzw. die zu implementierenden Methoden Signaturen vorgibt. Die Aufgabenstelllung verlangt zwar das Sortieren auf Integer Felder, jedoch sollen die Algorithmen so implementiert werden, dass sie auf Typen, die das Interface Compareable<E> implementieren. Daher muss das Interface folgende Signatur vorweisen.
+Da beide Algorithmen denselben output liefern sollen, soll hier ein Interface spezifiziert werden welches die Funktionalität bzw. die zu implementierenden Methoden Signaturen vorgibt. Die Aufgabenstellung verlangt zwar das Sortieren auf Integer Felder, jedoch sollen die Algorithmen so implementiert werden, dass sie auf Typen, die das Interface Compareable<E> implementieren. Daher muss das Interface folgende Signatur vorweisen.
 \begin{lstlisting}
 public Sorter<E extends Comparable<E>> {...}
 \end{lstlisting}
+\newpage
+\subsubsection{Source Code}
+\lstinputlisting{\mainPackage/sort/api/Sorter.java}
+\newpage
+\subsection{\ideaSection \hspace{2mm}(Statistics)}
 Aufgrund dessen das die Sortieralgorithmen mit Code Statistics versehen werden sollen, sollen Klassen implementiert werden, die es erlauben die verlangten Statistics zu ermitteln und auch einen Report dieser zu erstellen.\\
 Hierbei soll diese Code Statistics wie folgt aufgeteilt werden:
 \begin{enumerate}
-	\item \textbf{StatisticsProvider:} Das Interface welches die Spezifikation für den Code Statistics Provider entält.\\
+	\item \textbf{StatisticsProvider:} Das Interface welches die Spezifikation für den Code Statistics Provider enthalten soll.\\
 	Die Implementierung soll es ermöglichen mehrere Statistic Kontexte zu verwalten.
-	\item \textbf{StatisticContext:} Die Klasse, welche einen Statstic Kontext darstellt.\\
+	\item \textbf{StatisticContext:} Die Klasse, welche einen Statstic Kontext darstellt soll.\\
 	Dieser Kontext soll es ermöglichen mehrere CodeStatistic Instanzen pro Kontext zu verwalten.
-	\item \textbf{CodeStatistic:} Die Klasse, die die Code Statistic Informationen (swap, compare counts)
-	\item \textbf{DefaultStatisticProviderImpl:} Die default Implementierung des Interface StatisticProvider, welches die Funktionalitäten implementiert
+	\item \textbf{CodeStatistic:} Die Klasse, die die Code Statistic Informationen (swap, compare counts) halten soll
+	\item \textbf{DefaultStatisticProviderImpl:} Die default Implementierung des Interface StatisticProvider, welches die Funktionalitäten implementiert soll.
 \end{enumerate}
-\subsubsection{HeapSorter}
-Folgend ist die Lösungsidee für die HeapSorter Implementierung angeführt.\\
-Da hierbei 
-%\includegraphics[scale=0.5]{filename goes here}
+Alle Klassen sollen die toString Methode überschreiben und jeweils ihre beinhaltenden Informationen als string zurückliefern, wobei ein Parent bzw. die Klasse die Isntanzen einer anderen verwaltet and deren toString() zu delegieren.
+\newpage
+\subsubsection{Source Code}
+Folgend ist der Source der Statistics Implementierungen und Interfaces angeführt.
+\lstinputlisting{\mainPackage/stat/api/StatisticsProvider.java}
+\lstinputlisting{\mainPackage/stat/StatisticContext.java}
+\lstinputlisting{\mainPackage/stat/CodeStatistics.java}
+\lstinputlisting{\mainPackage/stat/DefaultStatisticsProviderImpl.java}
 
-\subsection{Source Code}
-\lstinputlisting{\mainPackage/hamming/Hamming.java}
-\lstinputlisting{\mainPackage/sort/api/Sorter.java}
+\newpage
+\subsection{HeapSorter}
+Folgend ist die Lösungsidee für die HeapSorter Implementierung angeführt.\\
+Da hierbei eine Heap Implementierung von Nöten ist und diese aber auch anderweitig verwendet werden könnte soll ein Heap Implementiert werden, der unabhängig von einem HeapSorter verwendet werden kann. Da wir auch hier generisch bleiben sollen und es auch möglich sein soll eine Heap Implementierung mit einem anderen Container zu implementieren (Bsp.: ArrayList\textless E\textgreater, T[], usw.) soll ein Interface spezifiziert werden, welches die Funktionalitäten eines Heap spezifiziert. Es soll folgende Signatur haben
+\begin{lstlisting}
+public Heap<E extends Comparable<E>> {...}
+\end{lstlisting}
+Des Weiteren soll eine Enumeration spezifiziert werden, die es erlaubt zu definieren, ob der Heap ein upheap oder downheap sein soll, also ob der root das höchste oder kleinste Element ist.\\\\
+Ansonsten soll der Heap wie bekannt implementiert werden.
+\subsubsection{Source Code}
+Folgend ist der Source der Interfaces und Implementierungen für Heap und Heap Sorter angeführt.
 \lstinputlisting{\mainPackage/sort/api/Heap.java}
 \lstinputlisting{\mainPackage/sort/heap/impl/HeapArrayListImpl.java}
 \lstinputlisting{\mainPackage/sort/heap/impl/HeapSorter.java}
-\lstinputlisting{\mainPackage/sort/quick/QuickSorter.java}
-\subsection{\testSection}
-
-\begin{tabular}{|r|r|l|}
-\hline
-Input & Output & Comment \\
-\hline
-a = 100 & 3 & \\
-b = 200 & & \\
-\hline 
-\end{tabular}
-
+\subsubsection{\testSection}
+Folgend sind die Tests für den HeapSorter angeführt.
+Für die TestResults siehe 
 
 \end{document}  

@@ -1,5 +1,7 @@
 package at.fhooe.swe4.lab3.test.sort.api;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +13,7 @@ public class AbstractSorterTest<T extends Comparable<T>> {
 	// protected helper
 	protected void assertSorted(final List<T> values, final SortType sorterType) {
 		for (int i = 0; i < (values.size() - 1); i++) {
-			compare(values.get(i), values.get(i + 1), sorterType);
+			assertTrue(values.get(i).toString() + " - " + values.get(i + 1).toString(), compare(values.get(i), values.get(i + 1), sorterType));
 		}
 	}
 

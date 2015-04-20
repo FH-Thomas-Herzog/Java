@@ -53,6 +53,7 @@ public class Hamming {
 			sortedSet.add(currentValue.multiply(second));
 			sortedSet.add(currentValue.multiply(three));
 			sortedSet.add(currentValue.multiply(five));
+			System.out.println("size: " + sortedSet.size());
 		}
 		// Returned list is implicitly sorted
 		return list;

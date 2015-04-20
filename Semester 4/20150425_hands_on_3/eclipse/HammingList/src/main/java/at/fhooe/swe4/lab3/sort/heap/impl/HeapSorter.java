@@ -7,7 +7,7 @@ import java.util.List;
 import at.fhooe.swe4.lab3.sort.api.Heap;
 import at.fhooe.swe4.lab3.sort.api.Heap.HeapType;
 import at.fhooe.swe4.lab3.sort.api.Sorter;
-import at.fhooe.swe4.lab3.stat.StatisticsProvider;
+import at.fhooe.swe4.lab3.stat.api.StatisticsProvider;
 
 /**
  * This is the heap sorter implementation of the Sorter interface.
@@ -69,9 +69,9 @@ public class HeapSorter<V extends Comparable<V>> implements Sorter<V> {
 	private HeapType convertToHeapType(final SortType sortType) {
 		switch (sortType) {
 		case ASCENDING:
-			return HeapType.MAX_HEAP;
-		case DESCENDING:
 			return HeapType.MIN_HEAP;
+		case DESCENDING:
+			return HeapType.MAX_HEAP;
 		default:
 			throw new IllegalArgumentException("SortType cannot bemapped to corresponding HeapType !!!");
 		}

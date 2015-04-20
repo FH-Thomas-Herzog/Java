@@ -7,8 +7,8 @@ import java.util.List;
 
 import at.fhooe.swe4.lab3.sort.api.Heap;
 import at.fhooe.swe4.lab3.stat.CodeStatistics;
-import at.fhooe.swe4.lab3.stat.StatisticsProvider;
 import at.fhooe.swe4.lab3.stat.DefaultStatisticsProviderImpl;
+import at.fhooe.swe4.lab3.stat.api.StatisticsProvider;
 
 /**
  * This is the ArrayList implementation of the heap.

@@ -7,7 +7,7 @@ import java.util.List;
 import at.fhooe.swe4.lab3.sort.api.Sorter;
 import at.fhooe.swe4.lab3.stat.CodeStatistics;
 import at.fhooe.swe4.lab3.stat.DefaultStatisticsProviderImpl;
-import at.fhooe.swe4.lab3.stat.StatisticsProvider;
+import at.fhooe.swe4.lab3.stat.api.StatisticsProvider;
 
 /**
  * This is the Sorter implementation for the quicksort algorithm

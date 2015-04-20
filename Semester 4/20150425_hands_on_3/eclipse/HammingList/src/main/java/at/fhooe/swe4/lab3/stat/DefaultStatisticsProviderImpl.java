@@ -12,6 +12,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.StringUtils;
 
+import at.fhooe.swe4.lab3.stat.api.StatisticsProvider;
+
 /**
  * This is the default statistics provider implementation.
  * 
@@ -96,7 +98,7 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 		final String ln = System.getProperty("line.separator");
 		final StringBuilder sb = new StringBuilder(500);
 		sb.append("#################################################################################").append(ln);
-		sb.append("## statistic-context-ptovider").append(ln).append("##").append(ln);
+		sb.append("## statistic-context-provider").append(ln).append("##").append(ln);
 		sb.append("## statistics-contexts-count:").append(statContextSet.size()).append(ln).append("##").append(ln);
 		for (StatisticContext ctx : statContextSet) {
 			sb.append(ctx.toString()).append(ln);

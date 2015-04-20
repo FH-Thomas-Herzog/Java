@@ -76,7 +76,7 @@ public class QuickSorterTest extends AbstractSorterTest<Integer> {
 			System.out.println(new StringBuilder("Sorting list with '").append(count).append("'").append("elements").toString());
 			System.out.println("------------------------------------------------------------");
 			final List<Integer> result = sorter.sort(createRandomIntegerList(count, 1000), SortType.DESCENDING);
-			assertSorted(result, SortType.ASCENDING);
+			assertSorted(result, SortType.DESCENDING);
 			System.out.println("------------------------------------------------------------");
 		}
 		System.out.println(sorter.getStatisitcs().toString());
