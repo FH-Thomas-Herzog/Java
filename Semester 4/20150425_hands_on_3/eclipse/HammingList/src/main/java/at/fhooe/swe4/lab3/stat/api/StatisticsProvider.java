@@ -2,7 +2,6 @@ package at.fhooe.swe4.lab3.stat.api;
 
 import at.fhooe.swe4.lab3.stat.StatisticContext;
 
-
 /**
  * This interfaces specifies the functionalities of an statistics provider
  * instance.

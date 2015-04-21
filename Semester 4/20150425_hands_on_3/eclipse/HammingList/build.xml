@@ -67,7 +67,7 @@
 		<mkdir dir="${junit-report}/hamming" />
 		<mkdir dir="${junit-report}/heap" />
 		<mkdir dir="${junit-report}/quick" />
-		<junit printsummary="yes" haltonerror="true">
+		<junit printsummary="yes" haltonerror="true" fork="true" maxmemory="1024m">
 			<classpath>
 				<path refid="lib-classpath" />
 				<path refid="target-classpath" />

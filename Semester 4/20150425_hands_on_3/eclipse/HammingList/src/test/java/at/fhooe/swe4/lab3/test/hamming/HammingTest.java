@@ -39,8 +39,8 @@ public class HammingTest {
 			final List<BigInteger> result = Hamming.calulcateHammingNumbers(count);
 			final long diffMillis = System.currentTimeMillis() - startMillis;
 			System.out.println("----------------------------------------------------------------");
-			System.out.println(new StringBuilder("Spend time in millis: '").append(diffMillis).append("' for '").append(count).append("' hamming numbers")
-					.toString());
+			System.out.println(new StringBuilder("Spend time in millis: '").append(diffMillis).append("' for '")
+					.append(count).append("' hamming numbers").toString());
 			for (int j = 0; (j < result.size()) && (j < 20); j++) {
 				System.out.println(new StringBuilder().append(j + 1).append(": ").append(result.get(j)).toString());
 			}

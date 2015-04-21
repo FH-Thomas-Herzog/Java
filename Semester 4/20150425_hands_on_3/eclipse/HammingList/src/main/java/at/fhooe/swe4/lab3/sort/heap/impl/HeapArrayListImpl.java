@@ -63,8 +63,10 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 	@Override
 	public void init(final V[] originalArrayValues, final HeapType heapType) {
 		this.heapType = heapType;
-		int size = ((originalArrayValues == null) || (originalArrayValues.length == 0)) ? 0 : originalArrayValues.length;
-		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(size).append("]").toString());
+		int size = ((originalArrayValues == null) || (originalArrayValues.length == 0)) ? 0
+				: originalArrayValues.length;
+		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(size)
+				.append("]").toString());
 		if (size > 0) {
 			container = new ArrayList<V>(size);
 			final CodeStatistics stat = statProvider.getCtx().newStatistic("init(array)");
@@ -80,7 +82,8 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 	public void init(final Collection<V> originalIterableValues, final HeapType heapType) {
 		this.heapType = heapType;
 		final int size = (originalIterableValues == null) ? 0 : originalIterableValues.size();
-		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(size).append("]").toString());
+		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(size)
+				.append("]").toString());
 		if (size > 0) {
 			container = new ArrayList<V>(size);
 			final Iterator<V> it = originalIterableValues.iterator();
@@ -230,7 +233,8 @@ public class HeapArrayListImpl<V extends Comparable<V>> implements Heap<V> {
 				sb.append(", ");
 			}
 			if ((i > 0) && (i % new_line_count == 0)) {
-				final int idxEnd = ((i + new_line_count) < container.size()) ? (i + new_line_count) : (container.size() - 1);
+				final int idxEnd = ((i + new_line_count) < container.size()) ? (i + new_line_count)
+						: (container.size() - 1);
 				sb.append(System.getProperty("line.separator"));
 				sb.append("idx[").append(i + 1).append(" - ").append(idxEnd).append("]: ");
 			}

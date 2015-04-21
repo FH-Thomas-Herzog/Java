@@ -42,7 +42,8 @@ public class QuickSorter<V extends Comparable<V>> implements Sorter<V> {
 		if (list == null) {
 			throw new IllegalArgumentException("Cannot sort null list");
 		}
-		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[").append(list.size()).append("]").toString());
+		statProvider.initContext(new StringBuilder(this.getClass().getSimpleName()).append(" elements[")
+				.append(list.size()).append("]").toString());
 		quicksort(list, 0, (list.size() - 1));
 		if (SortType.DESCENDING.equals(sorterType)) {
 			Collections.reverse(list);

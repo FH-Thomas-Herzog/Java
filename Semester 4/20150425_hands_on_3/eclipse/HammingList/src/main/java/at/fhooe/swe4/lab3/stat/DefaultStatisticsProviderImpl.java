@@ -1,12 +1,11 @@
 package at.fhooe.swe4.lab3.stat;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
@@ -24,12 +23,7 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 
 	private StatisticContext ctx = null;
 	private final Map<String, StatisticsProvider> providers;
-	private final SortedSet<StatisticContext> statContextSet = new TreeSet<StatisticContext>(new Comparator<StatisticContext>() {
-		@Override
-		public int compare(StatisticContext left, StatisticContext right) {
-			return left.getStartCalendar().compareTo(right.getStartCalendar());
-		}
-	});
+	private final List<StatisticContext> statContextList = new ArrayList<StatisticContext>();
 
 	/**
 	 * Default constructor which creates an context with the given key
@@ -52,7 +46,7 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 		}
 		ctx = new StatisticContext(contextKey.trim().toLowerCase());
 		ctx.setStartCalendar(Calendar.getInstance());
-		statContextSet.add(ctx);
+		statContextList.add(ctx);
 		return this;
 	}
 
@@ -67,14 +61,14 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 
 	@Override
 	public StatisticsProvider removeContext(final String ctxDelKey) {
-		final StatisticContext ctxDel = CollectionUtils.find(statContextSet, new Predicate<StatisticContext>() {
+		final StatisticContext ctxDel = CollectionUtils.find(statContextList, new Predicate<StatisticContext>() {
 			@Override
 			public boolean evaluate(StatisticContext object) {
 				return object.getKey().equals(ctxDelKey.trim().toLowerCase());
 			}
 		});
 		if (ctxDel != null) {
-			statContextSet.remove(ctxDel);
+			statContextList.remove(ctxDel);
 		}
 		return this;
 	}
@@ -99,8 +93,8 @@ public class DefaultStatisticsProviderImpl implements StatisticsProvider {
 		final StringBuilder sb = new StringBuilder(500);
 		sb.append("#################################################################################").append(ln);
 		sb.append("## statistic-context-provider").append(ln).append("##").append(ln);
-		sb.append("## statistics-contexts-count:").append(statContextSet.size()).append(ln).append("##").append(ln);
-		for (StatisticContext ctx : statContextSet) {
+		sb.append("## statistics-contexts-count:").append(statContextList.size()).append(ln).append("##").append(ln);
+		for (StatisticContext ctx : statContextList) {
 			sb.append(ctx.toString()).append(ln);
 		}
 		// Other providers
