@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="Herzog-Surface" name="at.fhooe.swe4.lab3.test.hamming.HammingTest" skipped="0" tests="3" time="0.047" timestamp="2015-04-17T13:21:15">
+  <properties>
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="output-test-jar" value="Herzog_Thomas_Test.jar" />
+    <property name="lib" value="lib" />
+    <property name="os.name" value="Windows 8.1" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_40\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_40\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_40\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_40\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_40\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_40\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_40\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_40\jre\classes" />
+    <property name="ant.file.type.HammingAndSorters" value="file" />
+    <property name="ant.file.HammingAndSorters" value="C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\build.xml" />
+    <property name="sun.desktop" value="windows" />
+    <property name="junit-report" value="doc/junit-report" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="ant.home" value="C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502" />
+    <property name="java.runtime.version" value="1.8.0_40-b26" />
+    <property name="user.name" value="Thomas" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_40\jre\bin" />
+    <property name="ant.project.default-target" value="compile" />
+    <property name="ant.project.name" value="HammingAndSorters" />
+    <property name="java.version" value="1.8.0_40" />
+    <property name="user.timezone" value="GMT+02:00" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_40\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="amd64" />
+    <property name="sun.jnu.encoding" value="Cp1252" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="java.class.version" value="52.0" />
+    <property name="src" value="src/main/java" />
+    <property name="user.country" value="US" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_40\jre" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="ant.file" value="C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\build.xml" />
+    <property name="os.version" value="6.3" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="25.40-b25" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502\lib" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="user.script" value="" />
+    <property name="main.class" value="HelloWorld" />
+    <property name="user.home" value="C:\Users\Thomas" />
+    <property name="output-jar" value="Herzog_Thomas.jar" />
+    <property name="target" value="target/classes" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_40\jre\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;C:/Program Files/Java/jre1.8.0_45/bin/server;C:/Program Files/Java/jre1.8.0_45/bin;C:/Program Files/Java/jre1.8.0_45/lib/amd64;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseGit\bin;C:\Program Files\Java\jdk1.8.0_40\bin;C:\windows\SysWOW64\;C:\Program Files (x86)\MiKTeX 2.9\miktex\bin\;C:\Users\Thomas\Applications\eclipse-luna;;." />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner at.fhooe.swe4.lab3.test.hamming.HammingTest filtertrace=true haltOnError=true haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\doc\junit-report\hamming\TEST-at.fhooe.swe4.lab3.test.hamming.HammingTest.xml crashfile=C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\junitvmwatcher8137042404984190132.properties propsfile=C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\junit5990829477232621248.properties" />
+    <property name="java.class.path" value="C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\Herzog_Thomas.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\ant-junit-1.9.4.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\commons-collections4-4.0-sources.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\commons-collections4-4.0.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\commons-lang3-3.3.2.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\hamcrest-core-1.3-sources.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\hamcrest-core-1.3.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\junit-4.12-sources.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\lib\junit.jar;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\target\classes;C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList\target\test-classes;C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502\lib\ant-launcher.jar;C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502\lib\ant.jar;C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502\lib\ant-junit.jar;C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502\lib\ant-junit4.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.9.2 compiled on July 8 2013" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="target-test" value="target/test-classes" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="java.io.tmpdir" value="C:\Users\Thomas\AppData\Local\Temp\" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="os.arch" value="amd64" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_40\jre\lib\ext;C:\windows\Sun\Java\lib\ext" />
+    <property name="user.dir" value="C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList" />
+    <property name="line.separator" value="&#xd;&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150425_hands_on_3\eclipse\HammingList" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="ant.core.lib" value="C:\Users\Thomas\Applications\eclipse-luna\plugins\org.apache.ant_1.9.2.v201404171502\lib\ant.jar" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="src-test" value="src/test/java" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="ant.project.invoked-targets" value="junit" />
+  </properties>
+  <testcase classname="at.fhooe.swe4.lab3.test.hamming.HammingTest" name="test_invalid_count_negativ" time="0.0" />
+  <testcase classname="at.fhooe.swe4.lab3.test.hamming.HammingTest" name="test_invalid_count_zeor" time="0.0" />
+  <testcase classname="at.fhooe.swe4.lab3.test.hamming.HammingTest" name="test_caluclation" time="0.0" />
+  <system-out><![CDATA[----------------------------------------------------------------
+Spend time in millis: '0' for '10' hamming numbers
+1: 1
+2: 2
+3: 3
+4: 4
+5: 5
+6: 6
+7: 8
+8: 9
+9: 10
+10: 12
+----------------------------------------------------------------
+----------------------------------------------------------------
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
