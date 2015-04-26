@@ -13,6 +13,12 @@ import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 
+/**
+ * This test class tests the method {@link Board#isValid()}.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Apr 26, 2015
+ */
 @RunWith(JUnit4.class)
 public class IsValidTest extends AbstractTest {
 
@@ -24,14 +30,14 @@ public class IsValidTest extends AbstractTest {
 	@Before
 	public void init() {
 		container = new ArrayList<Integer>(SIZE);
-		container.add(null);
-		for (int i = 0; i < (CONTAINER_SIZE - 1); i++) {
+		for (int i = 0; i < CONTAINER_SIZE; i++) {
 			container.add(i + 1);
 		}
 	}
 
 	@Test
 	public void multipleNull() {
+		container.set(0, null);
 		container.set(CONTAINER_SIZE - 1, null);
 		board = new BoardImpl<Integer>(SIZE, container);
 		assertFalse(board.isValid());
@@ -45,7 +51,14 @@ public class IsValidTest extends AbstractTest {
 	}
 
 	@Test
+	public void noEmptyTile() {
+		board = new BoardImpl<Integer>(SIZE, container);
+		assertFalse(board.isValid());
+	}
+
+	@Test
 	public void valid() {
+		container.set(0, null);
 		board = new BoardImpl<Integer>(SIZE, container);
 		assertTrue(board.isValid());
 	}

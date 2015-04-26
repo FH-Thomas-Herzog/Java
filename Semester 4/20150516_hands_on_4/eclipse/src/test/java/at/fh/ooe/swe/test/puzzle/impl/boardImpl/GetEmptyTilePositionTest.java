@@ -16,15 +16,16 @@ import org.junit.runners.JUnit4;
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
- * This test class tests the method {@link Board#getEmptyTileColumn()}
+ * This test class tests the method {@link Board#getEmptyTilePosition()}
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Apr 26, 2015
  */
 @RunWith(JUnit4.class)
-public class GetEmptyTileColumnTest extends AbstractTest {
+public class GetEmptyTilePositionTest extends AbstractTest {
 
 	private Board<Integer> board;
 	private List<Integer> container;
@@ -42,16 +43,16 @@ public class GetEmptyTileColumnTest extends AbstractTest {
 
 	@Test
 	public void multipleEmptyTiles() {
-		container.set((container.size() - 1), null);
+		container.set(0, null);
 		container.set((container.size() / 2), null);
 		board = new BoardImpl<Integer>(SIZE, container);
-		assertEquals(1, board.getEmptyTileColumn());
+		assertEquals(new Position(1, 1), board.getEmptyTilePosition());
 	}
 
 	@Test
 	public void noEmptyTiles() {
 		board = new BoardImpl<Integer>(SIZE, container);
-		assertEquals(-1, board.getEmptyTileColumn());
+		assertEquals(new Position(-1, -1), board.getEmptyTilePosition());
 	}
 
 	@Test
@@ -64,7 +65,7 @@ public class GetEmptyTileColumnTest extends AbstractTest {
 				container.set(idx, null);
 				oldIdx = idx;
 				board = new BoardImpl<Integer>(SIZE, container);
-				assertEquals((j + 1), board.getEmptyTileColumn());
+				assertEquals(new Position((i + 1), (j + 1)), board.getEmptyTilePosition());
 			}
 		}
 	}

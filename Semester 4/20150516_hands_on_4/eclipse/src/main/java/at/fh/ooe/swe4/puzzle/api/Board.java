@@ -21,7 +21,17 @@ import at.fh.ooe.swe4.puzzle.model.Position;
  * @param <T>
  *            the value type of the values on the board
  */
-public interface Board<T extends Number> extends Comparable<Board>, Cloneable {
+public interface Board<T extends Number> extends Comparable<Board<T>>, Cloneable {
+
+	/**
+	 * Specifies the directions the empty tile can be moved.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date Apr 26, 2015
+	 */
+	public static enum Direction {
+		UP, DOWN, LEFT, RIGHT;
+	}
 
 	/**
 	 * Returns the tile at the position i, j.
@@ -67,10 +77,10 @@ public interface Board<T extends Number> extends Comparable<Board>, Cloneable {
 	 * If multiple empty tiles are present on this board then this method will
 	 * return the first occurrence of an empty tile.
 	 * 
-	 * @return the column index, or -1 if the board does not contain an empty
-	 *         tile, which is the case if the board is invalid.
+	 * @return the position model with the indices, it will have the indices set
+	 *         to -1 if the empty tile could not be found
 	 */
-	public int getEmptyTileColumn();
+	public Position getEmptyTilePosition();
 
 	/**
 	 * Gets the size of the board, where the column index is equals to the row
@@ -94,16 +104,17 @@ public interface Board<T extends Number> extends Comparable<Board>, Cloneable {
 	public void shuffle();
 
 	/**
-	 * Moves the empty tile to the given position.
+	 * Moves the empty tile to the given position by switching the value on the
+	 * given position with the empty tile position.
 	 * 
-	 * @param i
+	 * @param rowIdx
 	 *            the row index
-	 * @param j
+	 * @param colIdx
 	 *            the column index
 	 * @throws InvalidBoardIndexException
-	 *             if the indices are invalid
+	 *             if either the indices or the board is invalid
 	 */
-	public void move(int i, int j);
+	public void move(int rowIdx, int colIdx);
 
 	/**
 	 * Moves the empty tile on step left.
@@ -147,5 +158,8 @@ public interface Board<T extends Number> extends Comparable<Board>, Cloneable {
 	 * @throws InvalidMoveException
 	 *             if the empty tile is tried to be moved out of the board
 	 */
-	public void makesMoves(Iterable<Position> moves);
+	public void makesMoves(Iterable<Direction> moves);
+
+	// Force overwrite of clone
+	public Board<T> clone();
 }

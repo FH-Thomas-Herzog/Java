@@ -13,6 +13,12 @@ import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 
+/**
+ * This test class tests the provided constructor of the class {@link BoardImpl}
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Apr 26, 2015
+ */
 @RunWith(JUnit4.class)
 public class CnstructorTest extends AbstractTest {
 

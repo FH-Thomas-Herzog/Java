@@ -1,11 +1,14 @@
 package at.fh.ooe.swe4.puzzle.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
+import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
 public class BoardImpl<T extends Number> implements Board<T> {
@@ -76,15 +79,17 @@ public class BoardImpl<T extends Number> implements Board<T> {
 		setTile(rowIdx, colIdx, (T) null);
 	}
 
-	public int getEmptyTileColumn() {
-		int idx = -1;
+	public Position getEmptyTilePosition() {
+		Position position = null;
 		for (int i = 0; i < container.size(); i++) {
 			if (container.get(i) == null) {
-				idx = i;
+				final int rowIdx = ((i / size) + 1);
+				final int colIdx = (i - ((rowIdx - 1) * size) + 1);
+				position = new Position(rowIdx, colIdx);
 				break;
 			}
 		}
-		return (idx != -1) ? ((idx - ((idx / size) * size)) + 1) : idx;
+		return (position == null) ? new Position(-1, -1) : position;
 	}
 
 	public int size() {
@@ -92,44 +97,66 @@ public class BoardImpl<T extends Number> implements Board<T> {
 	}
 
 	public boolean isValid() {
-		return new HashSet<T>(container).size() == (size * size);
+		// Check for duplicates
+		final int distinctedSize = new HashSet<T>(container).size();
+		boolean validSize = Boolean.FALSE;
+		boolean validEmpotyTile = Boolean.FALSE;
+		if (distinctedSize == container.size()) {
+			validSize = Boolean.TRUE;
+			// Check for empty tile
+			for (T value : container) {
+				if (value == null) {
+					validEmpotyTile = Boolean.TRUE;
+					break;
+				}
+			}
+		}
+		return validSize && validEmpotyTile;
 	}
 
 	public void shuffle() {
-		// TODO Auto-generated method stub
-
+		Collections.shuffle(container);
 	}
 
-	public void move(int i, int j) {
-		// TODO Auto-generated method stub
-
+	public void move(int rowIdx, int colIdx) {
+		if (!isValid()) {
+			throw new InvalidMoveException("Cannot perfom move of empty tile on invalid board");
+		}
+		final Position position = getEmptyTilePosition();
+		final int idx = calculateContainerIdx(rowIdx, colIdx);
+		final int emptyTileIdx = calculateContainerIdx(position.rowIdx, position.colIdx);
+		container.set(emptyTileIdx, container.get(idx));
+		container.set(idx, null);
 	}
 
 	public void moveLeft() {
-		// TODO Auto-generated method stub
-
+		move(Direction.LEFT);
 	}
 
 	public void moveRight() {
-		// TODO Auto-generated method stub
-
+		move(Direction.RIGHT);
 	}
 
 	public void moveUp() {
-		// TODO Auto-generated method stub
-
+		move(Direction.UP);
 	}
 
 	public void moveDown() {
-		// TODO Auto-generated method stub
-
+		move(Direction.DOWN);
 	}
 
-	public void makesMoves(Iterable<Position> moves) {
-		// TODO Auto-generated method stub
-
+	public void makesMoves(Iterable<Direction> moves) {
+		if (moves == null) {
+			throw new InvalidMoveException("Cannot perform moves because iterable instance is null");
+		}
+		Iterator<Direction> it = moves.iterator();
+		while (it.hasNext()) {
+			final Direction direction = it.next();
+			move(direction);
+		}
 	}
 
+	// Private helper
 	/**
 	 * Check if the given indices are valid for this board.
 	 * 
@@ -164,7 +191,74 @@ public class BoardImpl<T extends Number> implements Board<T> {
 		return ((rowIdx - 1) * size) + (colIdx - 1);
 	}
 
-	public int compareTo(Board o) {
+	/**
+	 * Performs a move operation into the intended direction.<br>
+	 * The move operation can be performed when the following conditions fit.
+	 * <ul>
+	 * <li>the board is valid</li>
+	 * <li>the new position is valid</li>
+	 * <li>the given direction is supported</li>
+	 * </ul>
+	 * 
+	 * @param direction
+	 *            the direction to move to
+	 * @throws InvalidMoveException
+	 *             if the element cannot be moved to the intended direction
+	 * @see BoardImpl#calculateContainerIdx(int, int)
+	 * @see BoardImpl#getEmptyTilePosition()
+	 */
+	private void move(final Direction direction) {
+		if (!isValid()) {
+			throw new InvalidMoveException("Cannot perform move on an invalid board");
+		}
+		if (direction == null) {
+			throw new InvalidMoveException("Cannot perform move operation with null direction");
+		}
+
+		int rowIdxDif = 0;
+		int colIdxDif = 0;
+		switch (direction) {
+		case UP:
+			rowIdxDif = -1;
+			break;
+		case DOWN:
+			rowIdxDif = 1;
+			break;
+		case LEFT:
+			colIdxDif = -1;
+			break;
+		case RIGHT:
+			colIdxDif = 1;
+			break;
+		default:
+			throw new IllegalArgumentException("Direction enum '" + direction.name() + "' is not handled");
+		}
+
+		try {
+			final Position oldPosition = getEmptyTilePosition();
+			final int oldIdx = calculateContainerIdx(oldPosition.rowIdx, oldPosition.colIdx);
+
+			final Position newPosition = new Position((oldPosition.rowIdx + rowIdxDif), (oldPosition.colIdx + colIdxDif));
+			final int newIdx = calculateContainerIdx(newPosition.rowIdx, newPosition.colIdx);
+
+			container.set(oldIdx, container.get(newIdx));
+			container.set(newIdx, null);
+		} catch (InvalidBoardIndexException e) {
+			throw new InvalidMoveException("Cannot move to the intended direction. direction: " + direction.name(), e);
+		}
+	}
+
+	public int compareTo(Board<T> o) {
 		return Integer.valueOf(this.size).compareTo(o.size());
+	}
+
+	@Override
+	public String toString() {
+		return container.toString();
+	}
+
+	@Override
+	public Board<T> clone() {
+		return new BoardImpl<T>(size, container);
 	}
 }
