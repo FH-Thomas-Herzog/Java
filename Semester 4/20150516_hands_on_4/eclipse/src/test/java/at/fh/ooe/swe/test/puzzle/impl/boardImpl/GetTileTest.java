@@ -2,7 +2,6 @@ package at.fh.ooe.swe.test.puzzle.impl.boardImpl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -27,16 +26,10 @@ public class GetTileTest extends AbstractTest {
 	private Board<Integer> board;
 	private List<Integer> container;
 
-	private static final int SIZE = 40;
-	private static final int CONTAINER_SIZE = (SIZE * SIZE);
-
 	@Before
 	public void init() {
-		container = new ArrayList<Integer>(CONTAINER_SIZE);
-		container.add(null);
-		for (int i = 0; i < (CONTAINER_SIZE - 1); i++) {
-			container.add(i + 1);
-		}
+		container = createContainer(CONTAINER_SIZE);
+		container.set(0, null);
 		board = new BoardImpl<Integer>(SIZE, container);
 	}
 

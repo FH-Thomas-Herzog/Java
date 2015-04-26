@@ -29,15 +29,9 @@ public class MakeMovesTest extends AbstractTest {
 
 	private List<Integer> container;
 
-	private static final int SIZE = 5;
-	private static final int CONTAINER_SIZE = (SIZE * SIZE);
-
 	@Before
 	public void init() {
-		container = new ArrayList<Integer>(CONTAINER_SIZE);
-		for (int i = 0; i < CONTAINER_SIZE; i++) {
-			container.add(i + 1);
-		}
+		container = createContainer(CONTAINER_SIZE);
 	}
 
 	@Test(expected = InvalidMoveException.class)

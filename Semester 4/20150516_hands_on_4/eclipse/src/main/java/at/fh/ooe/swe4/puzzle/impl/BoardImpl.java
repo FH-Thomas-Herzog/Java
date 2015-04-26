@@ -2,9 +2,9 @@ package at.fh.ooe.swe4.puzzle.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
@@ -80,16 +80,14 @@ public class BoardImpl<T extends Number> implements Board<T> {
 	}
 
 	public Position getEmptyTilePosition() {
-		Position position = null;
-		for (int i = 0; i < container.size(); i++) {
-			if (container.get(i) == null) {
-				final int rowIdx = ((i / size) + 1);
-				final int colIdx = (i - ((rowIdx - 1) * size) + 1);
-				position = new Position(rowIdx, colIdx);
-				break;
-			}
+		final int[] indices = IntStream.range(0, (int) Math.pow(size, 2)).filter(i -> container.get(i) == null).toArray();
+		if (indices.length > 0) {
+			final int rowIdx = ((indices[0] / size) + 1);
+			final int colIdx = (indices[0] - ((rowIdx - 1) * size) + 1);
+			return new Position(rowIdx, colIdx);
+		} else {
+			return new Position(-1, -1);
 		}
-		return (position == null) ? new Position(-1, -1) : position;
 	}
 
 	public int size() {
@@ -97,21 +95,7 @@ public class BoardImpl<T extends Number> implements Board<T> {
 	}
 
 	public boolean isValid() {
-		// Check for duplicates
-		final int distinctedSize = new HashSet<T>(container).size();
-		boolean validSize = Boolean.FALSE;
-		boolean validEmpotyTile = Boolean.FALSE;
-		if (distinctedSize == container.size()) {
-			validSize = Boolean.TRUE;
-			// Check for empty tile
-			for (T value : container) {
-				if (value == null) {
-					validEmpotyTile = Boolean.TRUE;
-					break;
-				}
-			}
-		}
-		return validSize && validEmpotyTile;
+		return (container.stream().distinct().count() == ((int) Math.pow(size, 2))) && (container.stream().filter(element -> element == null).count() == 1);
 	}
 
 	public void shuffle() {
@@ -149,11 +133,12 @@ public class BoardImpl<T extends Number> implements Board<T> {
 		if (moves == null) {
 			throw new InvalidMoveException("Cannot perform moves because iterable instance is null");
 		}
-		Iterator<Direction> it = moves.iterator();
-		while (it.hasNext()) {
-			final Direction direction = it.next();
-			move(direction);
-		}
+		moves.iterator().forEachRemaining(new Consumer<Direction>() {
+			@Override
+			public void accept(Direction t) {
+				move(t);
+			}
+		});
 	}
 
 	// Private helper

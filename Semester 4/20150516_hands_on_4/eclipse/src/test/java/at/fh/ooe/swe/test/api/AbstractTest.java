@@ -1,10 +1,16 @@
 package at.fh.ooe.swe.test.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
+
 import org.apache.log4j.Logger;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+
+import at.fh.ooe.swe4.junit.test.suite.watcher.LoggingTestClassWatcher;
+import at.fh.ooe.swe4.junit.test.suite.watcher.LoggingTestInvocationWatcher;
 
 /**
  * This is the base test which provides common resources for the test
@@ -15,9 +21,21 @@ import org.junit.runner.Description;
  */
 public abstract class AbstractTest {
 
-	public final Logger LOG;
+	protected final Logger LOG;
+	/**
+	 * This watcher watches the invocation of an Test class.
+	 */
+	@Rule
+	public final TestWatcher methodInvocationLogger = new LoggingTestInvocationWatcher();
 
-	private static final String LOG_FORMAT = "%1$-12s";
+	/**
+	 * This watcher is used for logging the test execution.
+	 */
+	@Rule
+	public TestWatcher testClassInvocationLogger = new LoggingTestClassWatcher();
+
+	protected static final int SIZE = 4;
+	protected static final int CONTAINER_SIZE = (int) Math.pow(SIZE, 2);
 
 	public AbstractTest() {
 		super();
@@ -25,41 +43,23 @@ public abstract class AbstractTest {
 	}
 
 	/**
-	 * This watcher watches the invocation of an Test class.
+	 * Creates a container with the given size and set it with integer values
+	 * from 1 -> size.<br>
+	 * This container will contain an null element.
+	 * 
+	 * @param size
+	 *            the size of the container
+	 * @return the created container
 	 */
-	@ClassRule
-	public static final TestWatcher w = new TestWatcher() {
-		private final Logger LOG = Logger.getLogger(AbstractTest.class);
+	protected List<Integer> createContainer(final int size) {
+		final List<Integer> container = new ArrayList<Integer>(size);
+		IntStream.range(1, (size + 1)).forEach(new IntConsumer() {
+			@Override
+			public void accept(int value) {
+				container.add(value);
+			}
+		});
 
-		protected void starting(Description description) {
-			LOG.info(String.format(LOG_FORMAT, "STARTED: " + description.getClassName()));
-		};
-
-		protected void succeeded(Description description) {
-			LOG.info(String.format(LOG_FORMAT, "FINISHED: " + description.getClassName()));
-		};
-	};
-
-	/**
-	 * This watcher is used for logging the test execution.
-	 */
-	@Rule
-	public TestWatcher watcher = new TestWatcher() {
-		@Override
-		protected void starting(Description description) {
-			LOG.info(String.format(LOG_FORMAT, "started:") + description.getMethodName());
-		}
-
-		@Override
-		protected void succeeded(Description description) {
-			LOG.info(String.format(LOG_FORMAT, "succeeded:") + description.getMethodName());
-		};
-
-		@Override
-		protected void failed(Throwable e, Description description) {
-			LOG.error(String.format(LOG_FORMAT, "failed:") + description.getMethodName(), e);
-		};
-
-	};
-
+		return container;
+	}
 }
