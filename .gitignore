@@ -1,7 +1,4 @@
 # target folders
 
-**/classes
-
-**/test-classes
-
+**/target
 **/junit-report/*
