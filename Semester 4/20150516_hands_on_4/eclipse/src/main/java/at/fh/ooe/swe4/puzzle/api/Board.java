@@ -1,5 +1,9 @@
 package at.fh.ooe.swe4.puzzle.api;
 
+import java.util.NoSuchElementException;
+import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
+
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.model.Position;
@@ -21,7 +25,7 @@ import at.fh.ooe.swe4.puzzle.model.Position;
  * @param <T>
  *            the value type of the values on the board
  */
-public interface Board<T extends Number> extends Comparable<Board<T>>, Cloneable {
+public interface Board<T extends Comparable> extends Comparable<Board<T>>, Cloneable {
 
 	/**
 	 * Specifies the directions the empty tile can be moved.
@@ -81,6 +85,17 @@ public interface Board<T extends Number> extends Comparable<Board<T>>, Cloneable
 	 *         to -1 if the empty tile could not be found
 	 */
 	public Position getEmptyTilePosition();
+
+	/**
+	 * Gets the Position of the given Tile value.
+	 * 
+	 * @param value
+	 *            the value to be searched on this board.
+	 * @return the found position
+	 * @throws NoSuchElementException
+	 *             if the value could not be found on the board
+	 */
+	public Position getTilePosition(final T value);
 
 	/**
 	 * Gets the size of the board, where the column index is equals to the row

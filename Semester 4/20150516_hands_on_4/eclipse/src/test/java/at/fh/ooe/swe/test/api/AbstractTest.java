@@ -1,5 +1,7 @@
 package at.fh.ooe.swe.test.api;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntConsumer;
@@ -53,7 +55,7 @@ public abstract class AbstractTest {
 	 */
 	protected List<Integer> createContainer(final int size) {
 		final List<Integer> container = new ArrayList<Integer>(size);
-		IntStream.range(1, (size + 1)).forEach(new IntConsumer() {
+		IntStream.range(1, (size + 1)).forEachOrdered(new IntConsumer() {
 			@Override
 			public void accept(int value) {
 				container.add(value);

@@ -5,16 +5,22 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 
-public class SearchNode<T extends Number> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>> {
+public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>> {
 
 	private int costsFormStart;
 	private SearchNode<T> predecessor;
 	private final Board<T> board;
+	/**
+	 * Labda expression for calculating
+	 */
+	public static final BiFunction<Position, Position, Integer> CALC_MANHATTAN_DIST = (root, goal) -> (Math
+			.abs((root.rowIdx - goal.rowIdx)) + Math.abs((root.colIdx - goal.colIdx)));
 
 	/**
 	 * Constructor which configures this SearchNode with the given board
@@ -23,17 +29,49 @@ public class SearchNode<T extends Number> implements Comparable<SearchNode<T>>, 
 	 * @param board
 	 *            the board to configure this SearchNode with
 	 * @throws IllegalArgumentException
-	 *             if the board is null
+	 *             if the board is null or represents an invalid board
 	 */
 	public SearchNode(final Board<T> board) {
-		if (board == null) {
-			throw new IllegalArgumentException("Cannot configure this searchNode with a null board");
+		if ((board == null) || (!board.isValid())) {
+			throw new IllegalArgumentException("Cannot configure this searchNode with a null or invalid board");
 		}
 		this.board = board;
+		costsFormStart = 0;
 	}
 
-	public int estimatedCostsToTarget() {
-		return -1;
+	/**
+	 * Calculates the Manhattan distance of all tiles on the board to their
+	 * actual position of the current board game state.
+	 * 
+	 * @return the Manhattan distance of this board state.
+	 * @throws IllegalArgumentException
+	 *             <ul>
+	 *             <li>the goal board is null</li>
+	 *             <li>the goal board has not the same size as the initial board
+	 *             </li>
+	 *             <li>the goal board is invalid</li>
+	 *             </ul>
+	 * @throws NoSuchElementException
+	 *             if the goal does not contain a value from the initial board
+	 * @see SearchNode#CALC_MANHATTAN_DIST
+	 */
+	public int estimatedCostsToTarget(final Board<T> goal) {
+		if ((goal == null) || (board.size() != goal.size()) || (!goal.isValid())) {
+			throw new IllegalArgumentException(
+					"The goal board is either null/invalid or has different size as the initial board");
+		}
+		int costs = 0;
+		for (int i = 1; i <= board.size(); i++) {
+			for (int j = 1; j <= board.size(); j++) {
+				final T tile = board.getTile(i, j);
+				// ignore empty tile
+				if (tile != null) {
+					final Position goalPosition = goal.getTilePosition(tile);
+					costs += CALC_MANHATTAN_DIST.apply(new Position(i, j), goalPosition);
+				}
+			}
+		}
+		return costs;
 	}
 
 	/**
@@ -111,7 +149,7 @@ public class SearchNode<T extends Number> implements Comparable<SearchNode<T>>, 
 	}
 
 	public int compareTo(SearchNode<T> o) {
-		return Integer.valueOf(o.costsFormStart);
+		return (o == null) ? -1 : Integer.valueOf(o.costsFormStart);
 	}
 
 	@Override

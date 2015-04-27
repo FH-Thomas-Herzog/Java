@@ -1,4 +1,5 @@
 # target folders
 
 **/target
+**/ant-target
 **/junit-report/*
