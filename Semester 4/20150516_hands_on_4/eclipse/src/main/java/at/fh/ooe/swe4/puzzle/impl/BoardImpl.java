@@ -1,10 +1,12 @@
 package at.fh.ooe.swe4.puzzle.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
@@ -86,8 +88,7 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 
 	@Override
 	public Position getEmptyTilePosition() {
-		final int[] indices = IntStream.range(0, (int) Math.pow(size, 2)).filter(i -> container.get(i) == null)
-				.toArray();
+		final int[] indices = IntStream.range(0, (int) Math.pow(size, 2)).filter(i -> container.get(i) == null).toArray();
 		if (indices.length > 0) {
 			final int rowIdx = ((indices[0] / size) + 1);
 			final int colIdx = (indices[0] - ((rowIdx - 1) * size) + 1);
@@ -107,8 +108,7 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 				}
 			}
 		}
-		throw new NoSuchElementException("Tile with value '" + ((value == null) ? "null" : value.toString())
-				+ "' does not exist on the board");
+		throw new NoSuchElementException("Tile with value '" + ((value == null) ? "null" : value.toString()) + "' does not exist on the board");
 	}
 
 	@Override
@@ -118,8 +118,7 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 
 	@Override
 	public boolean isValid() {
-		return (container.stream().distinct().count() == ((int) Math.pow(size, 2)))
-				&& (container.stream().filter(element -> element == null).count() == 1);
+		return (container.stream().distinct().count() == ((int) Math.pow(size, 2))) && (container.stream().filter(element -> element == null).count() == 1);
 	}
 
 	@Override
@@ -185,9 +184,8 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 	 */
 	private void checkForValidIndex(final int rowIdx, final int colIdx) {
 		if ((rowIdx > size) || (rowIdx <= 0) || (colIdx > size) || (colIdx <= 0)) {
-			throw new InvalidBoardIndexException(
-					"One of the indicies over or underlfows the border defined by size. rowIdx: " + rowIdx
-							+ " | colIdx: " + colIdx);
+			throw new InvalidBoardIndexException("One of the indicies over or underlfows the border defined by size. rowIdx: " + rowIdx + " | colIdx: "
+					+ colIdx);
 		}
 	}
 
@@ -255,8 +253,7 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 			final Position oldPosition = getEmptyTilePosition();
 			final int oldIdx = calculateContainerIdx(oldPosition.rowIdx, oldPosition.colIdx);
 
-			final Position newPosition = new Position((oldPosition.rowIdx + rowIdxDif),
-					(oldPosition.colIdx + colIdxDif));
+			final Position newPosition = new Position((oldPosition.rowIdx + rowIdxDif), (oldPosition.colIdx + colIdxDif));
 			final int newIdx = calculateContainerIdx(newPosition.rowIdx, newPosition.colIdx);
 
 			container.set(oldIdx, container.get(newIdx));
@@ -272,7 +269,15 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 
 	@Override
 	public String toString() {
-		return container.toString();
+		final List<T> copy = new ArrayList<T>(container);
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < size(); i++) {
+			final List<T> result = copy.stream().limit(size()).collect(Collectors.toList());
+			sb.append(result.stream().map(item -> ((item != null) ? item.toString() : "null")).collect(Collectors.joining(" - "))).append(
+					System.lineSeparator());
+			copy.removeAll(result);
+		}
+		return sb.toString();
 	}
 
 	@Override

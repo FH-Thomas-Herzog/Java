@@ -28,6 +28,7 @@ public class EqualsTest extends AbstractTest {
 	@Before
 	public void init() {
 		container = createContainer(CONTAINER_SIZE);
+		container.set(0, null);
 		board = new BoardImpl<Integer>(SIZE, container);
 	}
 

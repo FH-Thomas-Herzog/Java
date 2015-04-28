@@ -5,7 +5,7 @@ import java.util.List;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 import at.fh.ooe.swe4.puzzle.exception.NoSolutionExcption;
 
-public interface SlidingPuzzle<V extends Comparable> {
+public interface SlidingPuzzle<T extends Comparable<?>> {
 
 	/**
 	 * Initializes this instance with the given initial {@link Board}.
@@ -13,7 +13,7 @@ public interface SlidingPuzzle<V extends Comparable> {
 	 * @param initial
 	 *            the initial board representing the start of the game
 	 */
-	public abstract void init(Board<V> initial);
+	public SlidingPuzzle<T> init(Board<T> initial);
 
 	/**
 	 * Tries to solve the game to get to the intended result
@@ -24,7 +24,7 @@ public interface SlidingPuzzle<V extends Comparable> {
 	 * @throws NoSolutionExcption
 	 *             if the game cannot be resolved
 	 */
-	public abstract List<Direction> solve(final Board<V> goal) throws NoSolutionExcption;
+	public List<Direction> solve(final Board<T> goal) throws NoSolutionExcption;
 
 	/**
 	 * Prints the given moves performed on the given board.
@@ -32,11 +32,6 @@ public interface SlidingPuzzle<V extends Comparable> {
 	 * @param moves
 	 *            the moves to be performed on the given board.
 	 */
-	public abstract void printMoves(List<Direction> moves);
-
-	/**
-	 * Reset this instance
-	 */
-	public abstract void reset();
+	public SlidingPuzzle<T> printMoves(List<Direction> moves);
 
 }

@@ -7,20 +7,23 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 
-public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>> {
+public class SearchNode<T extends Comparable<?>> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>>, Cloneable {
 
 	private int costsFormStart;
 	private SearchNode<T> predecessor;
 	private final Board<T> board;
+	private Direction direction;
+
 	/**
 	 * Labda expression for calculating
 	 */
-	public static final BiFunction<Position, Position, Integer> CALC_MANHATTAN_DIST = (root, goal) -> (Math
-			.abs((root.rowIdx - goal.rowIdx)) + Math.abs((root.colIdx - goal.colIdx)));
+	public static final BiFunction<Position, Position, Integer> CALC_MANHATTAN_DIST = (root, goal) -> (Math.abs((root.rowIdx - goal.rowIdx)) + Math
+			.abs((root.colIdx - goal.colIdx)));
 
 	/**
 	 * Constructor which configures this SearchNode with the given board
@@ -57,8 +60,7 @@ public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T
 	 */
 	public int estimatedCostsToTarget(final Board<T> goal) {
 		if ((goal == null) || (board.size() != goal.size()) || (!goal.isValid())) {
-			throw new IllegalArgumentException(
-					"The goal board is either null/invalid or has different size as the initial board");
+			throw new IllegalArgumentException("The goal board is either null/invalid or has different size as the initial board");
 		}
 		int costs = 0;
 		for (int i = 1; i <= board.size(); i++) {
@@ -114,7 +116,7 @@ public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T
 		}
 
 		public boolean hasNext() {
-			return (node != null) && (node.getPredecessor() != null);
+			return node != null;
 		}
 
 		public SearchNode<T> next() {
@@ -148,8 +150,16 @@ public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T
 		return board;
 	}
 
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
 	public int compareTo(SearchNode<T> o) {
-		return (o == null) ? -1 : Integer.valueOf(o.costsFormStart);
+		return Integer.valueOf(costsFormStart).compareTo(o.costsFormStart);
 	}
 
 	@Override
@@ -157,6 +167,8 @@ public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((board == null) ? 0 : board.hashCode());
+		result = prime * result + costsFormStart;
+		result = prime * result + ((predecessor == null) ? 0 : predecessor.hashCode());
 		return result;
 	}
 
@@ -174,7 +186,26 @@ public class SearchNode<T extends Comparable> implements Comparable<SearchNode<T
 				return false;
 		} else if (!board.equals(other.board))
 			return false;
+		if (costsFormStart != other.costsFormStart)
+			return false;
+		if (predecessor == null) {
+			if (other.predecessor != null)
+				return false;
+		} else if (!predecessor.equals(other.predecessor))
+			return false;
 		return true;
 	}
 
+	@Override
+	public SearchNode<T> clone() {
+		return new SearchNode<T>(board.clone());
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("costs: ").append(costsFormStart).append(System.lineSeparator());
+		sb.append(board.toString());
+		return sb.toString();
+	}
 }
