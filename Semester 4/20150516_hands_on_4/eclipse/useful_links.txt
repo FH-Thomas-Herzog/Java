@@ -1,0 +1,8 @@
+# nice video with nice pseudo code
+https://www.youtube.com/watch?v=b19e0_NlD-U
+
+# StackOverflow with pseudo code not that nice but still a help
+http://stackoverflow.com/questions/26561349/a-algorithm-8-puzzle
+
+# another snippet 
+http://pastebin.com/Ei1t7wJD
