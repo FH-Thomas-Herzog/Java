@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,39 +25,60 @@ import at.fh.ooe.swe4.puzzle.model.Position;
 @RunWith(JUnit4.class)
 public class GetEmptyTilePositionTest extends AbstractTest {
 
-	private Board<Integer> board;
-	private List<Integer> container;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-	}
-
 	@Test
 	public void multipleEmptyTiles() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		container.set((container.size() / 2), null);
-		board = new BoardImpl<Integer>(SIZE, container);
-		assertEquals(new Position(1, 1), board.getEmptyTilePosition());
+		container.set(1, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		final Position position = board.getEmptyTilePosition();
+
+		// -- Then --
+		assertEquals(new Position(1, 1), position);
 	}
 
 	@Test
 	public void noEmptyTiles() {
-		board = new BoardImpl<Integer>(SIZE, container);
-		assertEquals(new Position(-1, -1), board.getEmptyTilePosition());
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		final Position position = board.getEmptyTilePosition();
+
+		// -- Then --
+		assertEquals(new Position(-1, -1), position);
 	}
 
+	/**
+	 * Moves the empty tile over the whole board and checks if the position is
+	 * properly determined from each set position.
+	 */
 	@Test
 	public void validAllRowsAndColumns() {
+		// -- Given --
+		final int size = 10;
 		int oldIdx = 0;
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				final int idx = ((i * SIZE) + j);
+
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				final int idx = ((i * size) + j);
+				final List<Integer> container = createContainer((int) Math.pow(size, 2));
 				container.set(oldIdx, container.get(idx));
 				container.set(idx, null);
 				oldIdx = idx;
-				board = new BoardImpl<Integer>(SIZE, container);
-				assertEquals(new Position((i + 1), (j + 1)), board.getEmptyTilePosition());
+				final Board<Integer> board = new BoardImpl<>(size, container);
+
+				// -- When --
+				final Position position = board.getEmptyTilePosition();
+
+				// -- Then --
+				assertEquals(new Position((i + 1), (j + 1)), position);
 			}
 		}
 	}

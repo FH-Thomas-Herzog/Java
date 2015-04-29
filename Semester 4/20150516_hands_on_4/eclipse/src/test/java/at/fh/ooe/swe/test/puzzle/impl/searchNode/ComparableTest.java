@@ -33,7 +33,7 @@ public class ComparableTest extends AbstractTest {
 	public void init() {
 		final List<Integer> container = createContainer(CONTAINER_SIZE);
 		container.set(0, null);
-		board = new BoardImpl<Integer>(SIZE, container);
+		board = new BoardImpl<>(SIZE, container);
 	}
 
 	@Test

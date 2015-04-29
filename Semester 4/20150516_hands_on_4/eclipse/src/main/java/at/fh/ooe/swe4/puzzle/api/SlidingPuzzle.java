@@ -5,7 +5,7 @@ import java.util.List;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 import at.fh.ooe.swe4.puzzle.exception.NoSolutionExcption;
 
-public interface SlidingPuzzle<T extends Comparable<?>> {
+public interface SlidingPuzzle<T extends Comparable<T>> {
 
 	/**
 	 * Initializes this instance with the given initial {@link Board}.

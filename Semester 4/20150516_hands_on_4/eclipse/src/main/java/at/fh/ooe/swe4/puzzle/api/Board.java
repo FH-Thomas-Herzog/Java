@@ -25,7 +25,7 @@ import at.fh.ooe.swe4.puzzle.model.Position;
  * @param <T>
  *            the value type of the values on the board
  */
-public interface Board<T extends Comparable> extends Comparable<Board<T>>, Cloneable {
+public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cloneable {
 
 	/**
 	 * Specifies the directions the empty tile can be moved.
@@ -174,6 +174,17 @@ public interface Board<T extends Comparable> extends Comparable<Board<T>>, Clone
 	 *             if the empty tile is tried to be moved out of the board
 	 */
 	public void makesMoves(Iterable<Direction> moves);
+
+	/**
+	 * Calculates the parity of this board.<br>
+	 * The parity is build as follows: <br>
+	 * <sum_of_ordered_pairs> + <row_idx_empty_tile>
+	 * 
+	 * @return the parity of this board
+	 * @throws IllegalStateException
+	 *             if this board is invalid
+	 */
+	public int calculateParity();
 
 	// Force overwrite of clone
 	public Board<T> clone();

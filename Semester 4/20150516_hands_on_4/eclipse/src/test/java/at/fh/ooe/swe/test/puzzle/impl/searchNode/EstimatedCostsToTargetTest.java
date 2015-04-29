@@ -39,7 +39,7 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 	public void init() {
 		container = createContainer(CONTAINER_SIZE);
 		container.set(0, null);
-		board = new BoardImpl<Integer>(SIZE, container);
+		board = new BoardImpl<>(SIZE, container);
 		node = new SearchNode<Integer>(board);
 	}
 
@@ -53,20 +53,20 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final int size = SIZE + 1;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> goal = new BoardImpl<Integer>(size, container);
+		final Board<Integer> goal = new BoardImpl<>(size, container);
 		node.estimatedCostsToTarget(goal);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void goalInvalid() {
 		final List<Integer> container = createContainer(CONTAINER_SIZE);
-		final Board<Integer> goal = new BoardImpl<Integer>(SIZE, container);
+		final Board<Integer> goal = new BoardImpl<>(SIZE, container);
 		node.estimatedCostsToTarget(goal);
 	}
 
 	@Test
 	public void validZeroDistance() {
-		final Board<Integer> goal = new BoardImpl<Integer>(board.size(), container);
+		final Board<Integer> goal = new BoardImpl<>(board.size(), container);
 		assertEquals(0, node.estimatedCostsToTarget(goal));
 	}
 
@@ -77,7 +77,7 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 			public void accept(int iterationCount) {
 				final List<Integer> goalContainer = new ArrayList<Integer>(container);
 				Collections.shuffle(goalContainer);
-				final Board<Integer> goal = new BoardImpl<Integer>(board.size(), goalContainer);
+				final Board<Integer> goal = new BoardImpl<>(board.size(), goalContainer);
 				int costs = 0;
 				for (int i = 1; i <= board.size(); i++) {
 					for (int j = 1; j <= board.size(); j++) {

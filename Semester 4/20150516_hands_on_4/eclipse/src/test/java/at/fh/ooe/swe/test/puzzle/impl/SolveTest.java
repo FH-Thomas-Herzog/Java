@@ -28,23 +28,21 @@ import at.fh.ooe.swe4.puzzle.impl.SlidingPuzzleImpl;
 @RunWith(JUnit4.class)
 public class SolveTest extends AbstractTest {
 
-	private Board<Integer> goal;
-	private List<Integer> container;
-
 	@Before
 	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-		container.set(0, null);
-		goal = new BoardImpl<Integer>(SIZE, container);
 	}
 
 	@Test
 	public void test() throws NoSolutionExcption {
-		goal.toString();
-		final List<Integer> other = new ArrayList<Integer>(container);
-		other.set(0, other.get(SIZE - 1));
-		other.set(SIZE - 1, null);
-		final Board<Integer> initial = new BoardImpl<Integer>(SIZE, other);
+		List<Integer> container = createContainer(2 * 2);
+		container.set(0, null);
+		final Board<Integer> goal = new BoardImpl<>(2, container);
+		final List<Integer> other = new ArrayList<>();
+		other.add(null);
+		other.add(4);
+		other.add(2);
+		other.add(3);
+		final Board<Integer> initial = new BoardImpl<>(2, other);
 		new SlidingPuzzleImpl<Integer>(initial).solve(goal);
 	}
 }

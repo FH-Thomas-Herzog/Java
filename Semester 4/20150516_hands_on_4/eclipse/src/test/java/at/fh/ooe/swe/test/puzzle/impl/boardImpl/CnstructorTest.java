@@ -14,7 +14,7 @@ import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 
 /**
- * This test class tests the provided constructor of the class {@link BoardImpl}
+ * This test class tests the provided constructor of the class {@link BoardImpl}.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Apr 26, 2015
@@ -22,45 +22,70 @@ import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 @RunWith(JUnit4.class)
 public class CnstructorTest extends AbstractTest {
 
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void defaultNegativeSize() {
-		new BoardImpl<Integer>(-1);
+		// -- Given --
+		final int size = -1;
+
+		// -- When --
+		new BoardImpl<>(size);
 	}
 
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void defaultZeroSize() {
-		new BoardImpl<Integer>(0);
+		// -- Given --
+		final int size = 0;
+
+		// -- Given | When --
+		new BoardImpl<>(size);
 	}
 
+	// -- Then --
+	@Test(expected = IllegalArgumentException.class)
+	public void copyNotCorresponding() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = new ArrayList<Integer>((int) Math.pow((size - 1), 2));
+
+		// -- When
+		new BoardImpl<>(size, container);
+	}
+
+	// -- Then --
+	@Test(expected = IllegalArgumentException.class)
+	public void copyNullContainer() {
+		// -- Given --
+		final int size = 9;
+		final List<Integer> container = null;
+
+		// -- Given --
+		new BoardImpl<>(size, container);
+	}
+
+	@Test
 	public void defaultConstructor() {
-		Board<Integer> board = new BoardImpl<Integer>(1);
+		// -- Given --
+		final int size = 1;
+
+		// -- When --
+		Board<Integer> board = new BoardImpl<>(size);
+
+		// -- Then --
 		assertNotNull(board);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void copyNegativSize() {
-		new BoardImpl<Integer>(-1);
-	}
+	@Test
+	public void copyConstructor() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 
-	@Test(expected = IllegalArgumentException.class)
-	public void copyZeroSize() {
-		new BoardImpl<Integer>(0);
-	}
+		// -- When--
+		final Board<Integer> board = new BoardImpl<>(size, container);
 
-	@Test(expected = IllegalArgumentException.class)
-	public void copyNotCorresponding() {
-		final List<Integer> container = new ArrayList<Integer>(10);
-		new BoardImpl<Integer>(9, container);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void copyNullContainer() {
-		new BoardImpl<Integer>(9, null);
-	}
-
-	public void copy() {
-		final List<Integer> container = new ArrayList<Integer>(10);
-		final Board<Integer> board = new BoardImpl<Integer>(10, container);
+		// -- Then --
 		assertNotNull(board);
 	}
 

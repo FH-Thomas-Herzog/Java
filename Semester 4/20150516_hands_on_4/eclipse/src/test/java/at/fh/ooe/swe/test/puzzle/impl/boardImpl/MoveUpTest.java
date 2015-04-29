@@ -1,16 +1,17 @@
 package at.fh.ooe.swe.test.puzzle.impl.boardImpl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
  * This test class tests the method {@link Board#moveUp()}.
@@ -20,52 +21,62 @@ import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
  */
 public class MoveUpTest extends AbstractTest {
 
-	private List<Integer> container;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-	}
-
+	// -- Then --
 	@Test(expected = InvalidMoveException.class)
 	public void invalidBoard() {
-		Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
 		board.moveUp();
 	}
 
 	@Test
 	public void alreadyOnTopAllColumns() {
+		final int size = 10;
 		int oldIdx = 0;
-		for (int i = 0; i < SIZE; i++) {
+		for (int i = 0; i < size; i++) {
 			try {
+				// -- Given --
+				final List<Integer> container = createContainer((int) Math.pow(size, 2));
 				container.set(oldIdx, container.get(i));
 				container.set(i, null);
 				oldIdx = i;
-				Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
+				final Board<Integer> board = new BoardImpl<>(size, container);
+
+				// -- When --
 				board.moveUp();
+
+				// -- Then -
 				fail("Expected InvalidMoveException");
 			} catch (InvalidMoveException e) {
+				// Should throw exception
 			}
 		}
 	}
 
 	@Test
 	public void validAllColsFormBottom() {
-		int lastRow = (SIZE * (SIZE - 1));
-		int oldIdx = lastRow;
-		for (int i = 0; i < SIZE; i++) {
-			int idx = lastRow + i;
-			container.set(oldIdx, container.get(idx));
+		// -- Given --
+		final int size = 10;
+		int lastRow = (size * (size - 1));
+		for (int i = 1; i <= size; i++) {
+			int idx = lastRow + (i - 1);
+			List<Integer> container = createContainer((int) Math.pow(size, 2));
 			container.set(idx, null);
-			LOG.info("Prepared board:");
-			LOG.info(container.toString());
-			Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
-			for (int j = 0; j < (SIZE - 1); j++) {
+			Board<Integer> board = new BoardImpl<>(size, container);
+
+			// -- When --
+			for (int j = 1; j < size; j++) {
 				board.moveUp();
 			}
-			LOG.info("Resulting board:");
-			LOG.info(board.toString());
-			oldIdx = idx;
+
+			// -- Then --
+			final Position emptyTilePosition = board.getEmptyTilePosition();
+			assertEquals(1, emptyTilePosition.rowIdx);
+			assertEquals(i, emptyTilePosition.colIdx);
 		}
 	}
 }

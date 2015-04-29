@@ -1,6 +1,6 @@
 package at.fh.ooe.swe4.puzzle.impl;
 
-import java.io.File;
+import java.nio.channels.IllegalSelectorException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
-public class BoardImpl<T extends Comparable> implements Board<T> {
+public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	private final int size;
 	private final List<T> container;
@@ -264,7 +264,7 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 	}
 
 	public int compareTo(Board<T> o) {
-		return Integer.valueOf(this.size).compareTo(o.size());
+		return Integer.valueOf(size).compareTo(o.size());
 	}
 
 	@Override
@@ -278,6 +278,28 @@ public class BoardImpl<T extends Comparable> implements Board<T> {
 			copy.removeAll(result);
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public int calculateParity() {
+		if (!isValid()) {
+			throw new IllegalStateException("Cannot calculate parity of an invalid board");
+		}
+		final Position position = getEmptyTilePosition();
+		final int emptyTileIdx = calculateContainerIdx(position.rowIdx, position.colIdx);
+		int parity = position.rowIdx;
+		for (int i = 0; i < container.size(); i++) {
+			// ignore empty tile
+			if (i != emptyTileIdx) {
+				for (int j = 0; j < i; j++) {
+					// ignore empty tile
+					if (j != emptyTileIdx) {
+						parity += (container.get(j).compareTo(container.get(i)) > 0) ? 1 : 0;
+					}
+				}
+			}
+		}
+		return parity;
 	}
 
 	@Override

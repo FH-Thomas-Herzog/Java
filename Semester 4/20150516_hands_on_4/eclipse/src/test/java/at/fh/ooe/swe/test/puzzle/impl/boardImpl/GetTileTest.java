@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -23,42 +22,78 @@ import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 @RunWith(JUnit4.class)
 public class GetTileTest extends AbstractTest {
 
-	private Board<Integer> board;
-	private List<Integer> container;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-		container.set(0, null);
-		board = new BoardImpl<Integer>(SIZE, container);
-	}
-
+	// -- Then --
 	@Test(expected = InvalidBoardIndexException.class)
 	public void invalidRowIndexUnderflow() {
-		board.getTile(0, 1);
+		// -- Given --
+		final int size = 10;
+		final int rowIdx = 0;
+		final int colIdx = 1;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		board.getTile(rowIdx, colIdx);
 	}
 
 	@Test(expected = InvalidBoardIndexException.class)
 	public void invalidColumnIndexUnderflow() {
-		board.getTile(1, 0);
+		// -- Given --
+		final int size = 10;
+		final int rowIdx = 1;
+		final int colIdx = 0;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		board.getTile(rowIdx, colIdx);
 	}
 
 	@Test(expected = InvalidBoardIndexException.class)
 	public void invalidRowIndexOverflow() {
-		board.getTile((board.size() + 1), 1);
+		// -- Given --
+		final int size = 10;
+		final int rowIdx = size + 1;
+		final int colIdx = 1;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		board.getTile(rowIdx, colIdx);
 	}
 
 	@Test(expected = InvalidBoardIndexException.class)
 	public void invalidColumnIndexOverflow() {
-		board.getTile(1, (board.size() + 1));
+		// -- Given --
+		final int size = 10;
+		final int rowIdx = 1;
+		final int colIdx = size + 1;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		board.getTile(rowIdx, colIdx);
 	}
 
+	/**
+	 * Tests if all retrieved tiles of the board can be retrieved validly.
+	 */
 	@Test
 	public void validAllRowsAndColumns() {
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				final int idx = ((i * SIZE) + j);
-				assertEquals(container.get(idx), board.getTile((i + 1), (j + 1)));
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		for (int i = 1; i <= size; i++) {
+			for (int j = 1; j <= size; j++) {
+				final int idx = (((i - 1) * size) + (j - 1));
+
+				// -- When --
+				final Integer value = board.getTile(i, j);
+
+				// -- Then --
+				assertEquals(container.get(idx), value);
 			}
 		}
 	}

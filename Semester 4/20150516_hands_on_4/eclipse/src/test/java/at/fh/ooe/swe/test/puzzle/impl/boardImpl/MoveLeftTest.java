@@ -1,6 +1,6 @@
 package at.fh.ooe.swe.test.puzzle.impl.boardImpl;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -11,61 +11,72 @@ import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
- * This test class tests the method {@link Board#moveLeft()}.
+ * This test class tests the method {@link Board#moveLeft()}.<br>
+ * This test class depends on proper functionality of method
+ * {@link Board#getEmptyTilePosition()}
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Apr 26, 2015
  */
 public class MoveLeftTest extends AbstractTest {
 
-	private List<Integer> container;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-	}
-
+	// -- Then --
 	@Test(expected = InvalidMoveException.class)
 	public void invalidBoard() {
-		Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
 		board.moveLeft();
 	}
 
 	@Test
 	public void alreadyLeftAllRows() {
-		int oldIdx = 0;
-		for (int i = 0; i < SIZE; i++) {
+		// -- Given --
+		final int size = 10;
+		for (int i = 1; i <= size; i++) {
 			try {
-				int idx = (SIZE * i);
-				container.set(oldIdx, container.get(idx));
+				int idx = (size * (i - 1));
+				final List<Integer> container = createContainer((int) Math.pow(size, 2));
 				container.set(idx, null);
-				oldIdx = idx;
-				Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
+				Board<Integer> board = new BoardImpl<>(size, container);
+
+				// -- When --
 				board.moveLeft();
+
+				// -- Then --
 				fail("Expected InvalidMoveException");
 			} catch (InvalidMoveException e) {
+				// should thorw exception
 			}
 		}
 	}
 
 	@Test
 	public void validAllRowsFromRight() {
-		int oldIdx = ((SIZE * SIZE) - 1);
-		for (int i = SIZE; i > 0; i--) {
-			int idx = (SIZE * i) - 1;
-			container.set(oldIdx, container.get(idx));
+		// -- Given --
+		final int size = 10;
+		int oldIdx = ((size * size) - 1);
+		for (int i = size; i > 0; i--) {
+			int idx = (size * i) - 1;
+			final List<Integer> container = createContainer((int) Math.pow(size, 2));
 			container.set(idx, null);
-			LOG.info("Prepared board:");
-			LOG.info(container.toString());
-			Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
-			for (int j = 0; j < (SIZE - 1); j++) {
+			final Board<Integer> board = new BoardImpl<>(size, container);
+
+			// -- When --
+			for (int j = 0; j < (size - 1); j++) {
 				board.moveLeft();
 			}
-			LOG.info("Resulting board:");
-			LOG.info(board.toString());
-			oldIdx = idx;
+
+			// -- Then --
+			final Position emptytilePosition = board.getEmptyTilePosition();
+			assertEquals(i, emptytilePosition.rowIdx);
+			assertEquals(1, emptytilePosition.colIdx);
 		}
 	}
 }

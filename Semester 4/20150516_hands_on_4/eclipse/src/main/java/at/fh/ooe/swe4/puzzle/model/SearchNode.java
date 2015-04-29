@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 
-public class SearchNode<T extends Comparable<?>> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>>, Cloneable {
+public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>>, Cloneable {
 
 	private int costsFormStart;
 	private SearchNode<T> predecessor;
@@ -167,11 +167,17 @@ public class SearchNode<T extends Comparable<?>> implements Comparable<SearchNod
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((board == null) ? 0 : board.hashCode());
-		result = prime * result + costsFormStart;
-		result = prime * result + ((predecessor == null) ? 0 : predecessor.hashCode());
 		return result;
 	}
 
+	/**
+	 * To search nodes are equal if they hold the same board state.
+	 * 
+	 * @param obj
+	 *            The object to be check if its equal to this instance
+	 * @return true if the object is of type SearchNode<T> and holds the same
+	 *         board as this instance.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -185,13 +191,6 @@ public class SearchNode<T extends Comparable<?>> implements Comparable<SearchNod
 			if (other.board != null)
 				return false;
 		} else if (!board.equals(other.board))
-			return false;
-		if (costsFormStart != other.costsFormStart)
-			return false;
-		if (predecessor == null) {
-			if (other.predecessor != null)
-				return false;
-		} else if (!predecessor.equals(other.predecessor))
 			return false;
 		return true;
 	}

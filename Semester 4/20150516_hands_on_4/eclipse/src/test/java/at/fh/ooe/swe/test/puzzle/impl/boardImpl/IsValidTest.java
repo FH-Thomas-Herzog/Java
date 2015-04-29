@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -23,38 +22,65 @@ import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 @RunWith(JUnit4.class)
 public class IsValidTest extends AbstractTest {
 
-	private List<Integer> container;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-	}
-
 	@Test
 	public void multipleNull() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		container.set(CONTAINER_SIZE - 1, null);
-		Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
-		assertFalse(board.isValid());
+		container.set(1, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		final boolean result = board.isValid();
+
+		// -- Then --
+		assertFalse(result);
 	}
 
 	@Test
 	public void multipleNumber() {
-		container.set(CONTAINER_SIZE - 1, container.get(CONTAINER_SIZE / 2));
-		Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
-		assertFalse(board.isValid());
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		container.set(1, 1);
+		container.set(2, 1);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		final boolean result = board.isValid();
+
+		// -- Then --
+		assertFalse(result);
 	}
 
 	@Test
 	public void noEmptyTile() {
-		Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
-		assertFalse(board.isValid());
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		final boolean result = board.isValid();
+
+		// -- Then --
+		assertFalse(result);
 	}
 
 	@Test
 	public void valid() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
-		assertTrue(board.isValid());
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
+		final boolean result = board.isValid();
+
+		// -- Then --
+		assertTrue(result);
 	}
 }

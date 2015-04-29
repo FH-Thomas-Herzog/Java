@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.junit.experimental.runners.Enclosed;
+
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 import at.fh.ooe.swe4.puzzle.api.SlidingPuzzle;
@@ -26,12 +28,11 @@ import at.fh.ooe.swe4.puzzle.model.SearchNode;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Apr 26, 2015
  */
-public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle<T> {
+public class SlidingPuzzleImpl<T extends Comparable<T>> implements SlidingPuzzle<T> {
 
 	private Board<T> board;
 	private Queue<SearchNode<T>> queue;
 	private SortedSet<SearchNode<T>> closed;
-	private Set<SearchNode<T>> openSet;
 
 	/**
 	 * Default constructor which does not initializes this instance.<br>
@@ -75,7 +76,6 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 			board = initial;
 			queue = new PriorityQueue<SearchNode<T>>((int) Math.pow(initial.size(), 2));
 			closed = new TreeSet<SearchNode<T>>();
-			openSet = new HashSet<SearchNode<T>>((int) Math.pow(initial.size(), 2));
 		}
 		return this;
 	}
@@ -88,10 +88,13 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 		if ((goal == null) || (goal.size() != board.size()) || (!goal.isValid())) {
 			throw new NoSolutionExcption("Cannot solve the board if the goal board is either null, invalid or of differen size");
 		}
+		if (!isResolvable(board, goal)) {
+			throw new NoSolutionExcption("The source board cannot be resolved to the goal board");
+		}
 
-		final SearchNode<T> target = new SearchNode<T>(goal);
-		final SearchNode<T> node = new SearchNode<T>(board);
-		openSet.add(node);
+		final SearchNode<T> target = new SearchNode<>(goal);
+		final SearchNode<T> node = new SearchNode<>(board);
+		final SearchNode<T> previous = null;
 		queue.add(node);
 		// search as long nodes are left
 		while (!queue.isEmpty()) {
@@ -102,7 +105,7 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 				return buildResult(current);
 			}
 			// perform all possible moves
-			final List<SearchNode<T>> successors = performMoves(current);
+			final List<SearchNode<T>> successors = performMoves(current, previous);
 			// handle found successors
 			for (SearchNode<T> successor : successors) {
 				// we found the solution
@@ -115,29 +118,30 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 				final Iterable<SearchNode<T>> iterable = () -> iterator;
 				final int costFromStartToParent = StreamSupport.stream(iterable.spliterator(), Boolean.FALSE).mapToInt(item -> item.getCostsFormStart()).sum();
 				// build sum for current predecessor
-				final int currentCosts = costFromStartToParent + current.estimatedCostsToTarget(goal);
+				final int currentCosts = costFromStartToParent + successor.estimatedCostsToTarget(goal);
 				/* Determine what to to with the successors */
-				// If present in one container then set the costs
+				// If not present in any of the container then add it to the
+				// queue
 				if ((!queue.contains(successor)) || (!closed.contains(successor))) {
 					successor.setCostsFormStart(currentCosts);
-					successor.setPredecessor(current);
 					queue.add(successor);
 				}
-				// if in open queue then set the costs
+				// if in open queue then check for lower costs
 				else if (queue.contains(successor)) {
-					queue.stream().filter(n -> (n.equals(successor))).collect(Collectors.toList()).get(0).setCostsFormStart(currentCosts);
+					final SearchNode<T> queuedNode = queue.stream().filter(n -> (n.equals(successor))).collect(Collectors.toList()).get(0);
+					// if currentCosts is lower then set it
+					if (queuedNode.getCostsFormStart() > currentCosts) {
+						queuedNode.setCostsFormStart(currentCosts);
+					}
 				}
-				// if in closed and costs are lower then already set then add to
-				// open queue and remove from closed
-				else {
-					final long count = closed.stream().filter(n -> (n.equals(successor))).count();
-					final SearchNode<T> enclosedNode = (count == 1) ? closed.stream().filter(n -> (n.equals(successor))).collect(Collectors.toList()).get(0)
-							: null;
-					if ((enclosedNode != null) && (currentCosts < enclosedNode.getCostsFormStart())) {
+				// if in closed then check for lower costs
+				else if (closed.contains(successor)) {
+					final SearchNode<T> enclosedNode = closed.stream().filter(n -> (n.equals(successor))).collect(Collectors.toList()).get(0);
+					// if currentCosts is lower then set it
+					if (enclosedNode.getCostsFormStart() > currentCosts) {
 						enclosedNode.setCostsFormStart(currentCosts);
-						enclosedNode.setPredecessor(current);
-						queue.add(enclosedNode);
 						closed.remove(enclosedNode);
+						queue.add(enclosedNode);
 					}
 				}
 			}
@@ -153,29 +157,33 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 	}
 
 	// Private helper
-	private List<SearchNode<T>> performMoves(final SearchNode<T> node) {
+	private List<SearchNode<T>> performMoves(final SearchNode<T> parent, SearchNode<T> previous) {
 		final List<SearchNode<T>> succesors = new ArrayList<SearchNode<T>>(Direction.values().length);
 		for (Direction direction : Direction.values()) {
-			SearchNode<T> current = node.clone();
+			SearchNode<T> successor = parent.clone();
 			try {
 				switch (direction) {
 				case UP:
-					current.getBoard().moveUp();
+					successor.getBoard().moveUp();
 					break;
 				case DOWN:
-					current.getBoard().moveDown();
+					successor.getBoard().moveDown();
 					break;
 				case LEFT:
-					current.getBoard().moveLeft();
+					successor.getBoard().moveLeft();
 					break;
 				case RIGHT:
-					current.getBoard().moveRight();
+					successor.getBoard().moveRight();
 					break;
 				default:
 					throw new UnsupportedOperationException("Direction with name '" + direction.name() + "' cannot not handeled");
 				}
-				current.setDirection(direction);
-				succesors.add(current);
+				// disallow previous investigated node
+				if (!succesors.equals(previous)) {
+					successor.setDirection(direction);
+					successor.setPredecessor(parent);
+					succesors.add(successor);
+				}
 			} catch (InvalidMoveException e) {
 				// do nothing on invalid move
 			}
@@ -195,7 +203,30 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 	 *         board.
 	 */
 	private List<Direction> buildResult(final SearchNode<T> target) {
+		final Iterator<SearchNode<T>> it = target.iterator();
+		while (it.hasNext()) {
+			System.out.println(it.next().toString());
+		}
 		return null;
+	}
+
+	/**
+	 * Answers the question if the source board is possible to be resolved to
+	 * the given target board.<br>
+	 * It is if the parity is either even or odd on both boards.
+	 * 
+	 * @param source
+	 *            the source board to be resolved to the target board
+	 * @param target
+	 *            the target board which represent the intended state.
+	 * @return true if the source board is possible to be resolved to the target
+	 *         board.
+	 */
+	private boolean isResolvable(final Board<T> source, final Board<T> target) {
+		final int sourceParity = board.calculateParity();
+		final int targetParity = target.calculateParity();
+		return (((sourceParity % source.size() != 0) && (targetParity % source.size() != 0)) || (((sourceParity % source.size() == 0) && (targetParity
+				% source.size() == 0))));
 	}
 
 	/**
@@ -204,7 +235,6 @@ public class SlidingPuzzleImpl<T extends Comparable<?>> implements SlidingPuzzle
 	private void reset() {
 		queue = null;
 		closed = null;
-		openSet = null;
 		board = null;
 	}
 }

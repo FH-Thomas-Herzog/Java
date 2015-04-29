@@ -27,7 +27,8 @@ public class EqualsTest extends AbstractTest {
 	@Before
 	public void init() {
 		container = createContainer(CONTAINER_SIZE);
-		board = new BoardImpl<Integer>(SIZE, container);
+		container.set(0, null);
+		board = new BoardImpl<>(SIZE, container);
 		node = new SearchNode<Integer>(board);
 		predecessor = new SearchNode<Integer>(board);
 		node.setPredecessor(predecessor);
@@ -46,22 +47,7 @@ public class EqualsTest extends AbstractTest {
 	@Test
 	public void notEqualNotSameBoard() {
 		Collections.shuffle(container);
-		final Board<Integer> other = new BoardImpl<Integer>(SIZE, container);
-		assertFalse(node.equals(new SearchNode<Integer>(other)));
-	}
-
-	@Test
-	public void notEqualNotSamePredecessor() {
-		assertFalse(node.equals(new SearchNode<Integer>(board)));
-	}
-
-	@Test
-	public void notEqualNotSamePredecessorChain() {
-		Collections.shuffle(container);
-		final Board<Integer> other = new BoardImpl<Integer>(SIZE, container);
-		final SearchNode<Integer> otherNode = new SearchNode<Integer>(board);
-		otherNode.setPredecessor(new SearchNode<Integer>(board));
-		node.setPredecessor(otherNode);
+		final Board<Integer> other = new BoardImpl<>(SIZE, container);
 		assertFalse(node.equals(new SearchNode<Integer>(other)));
 	}
 

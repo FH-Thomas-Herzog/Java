@@ -29,7 +29,7 @@ public class ConstructorTest extends AbstractTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invalidBoard() {
-		final Board<Integer> board = new BoardImpl<Integer>(SIZE, createContainer(CONTAINER_SIZE));
+		final Board<Integer> board = new BoardImpl<>(SIZE, createContainer(CONTAINER_SIZE));
 		new SearchNode<Integer>(board);
 	}
 
@@ -37,7 +37,7 @@ public class ConstructorTest extends AbstractTest {
 	public void valid() {
 		final List<Integer> container = createContainer(CONTAINER_SIZE);
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<Integer>(SIZE, container);
+		final Board<Integer> board = new BoardImpl<>(SIZE, container);
 		final SearchNode<Integer> node = new SearchNode<Integer>(board);
 		assertNotNull(node);
 		assertTrue(board.equals(node.getBoard()));
