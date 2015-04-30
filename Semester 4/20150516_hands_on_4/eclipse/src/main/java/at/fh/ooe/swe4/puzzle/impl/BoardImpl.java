@@ -3,11 +3,14 @@ package at.fh.ooe.swe4.puzzle.impl;
 import java.nio.channels.IllegalSelectorException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.apache.commons.lang.StringUtils;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
@@ -268,19 +271,6 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	}
 
 	@Override
-	public String toString() {
-		final List<T> copy = new ArrayList<T>(container);
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < size(); i++) {
-			final List<T> result = copy.stream().limit(size()).collect(Collectors.toList());
-			sb.append(result.stream().map(item -> ((item != null) ? item.toString() : "null")).collect(Collectors.joining(" - "))).append(
-					System.lineSeparator());
-			copy.removeAll(result);
-		}
-		return sb.toString();
-	}
-
-	@Override
 	public int calculateParity() {
 		if (!isValid()) {
 			throw new IllegalStateException("Cannot calculate parity of an invalid board");
@@ -332,4 +322,17 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final List<T> copy = new ArrayList<T>(container);
+		final int length = copy.stream().max(Comparator.comparing(item -> ((item != null) ? item.toString().length() : 0))).get().toString().length();
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < size(); i++) {
+			final List<T> result = copy.stream().limit(size()).collect(Collectors.toList());
+			sb.append(result.stream().map(item -> (StringUtils.center(((item != null) ? item.toString() : "X"), length))).collect(Collectors.joining(" - ")))
+					.append(System.lineSeparator());
+			copy.removeAll(result);
+		}
+		return sb.toString();
+	}
 }

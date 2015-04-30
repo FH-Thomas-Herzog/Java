@@ -7,11 +7,18 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.stream.StreamSupport;
 
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Direction;
 
+/**
+ * This class represents the search node for the solver algorithm.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Apr 30, 2015
+ * @param <T>
+ *            the {@link Comparable<T>} type which represents the board value
+ */
 public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>>, Cloneable {
 
 	private int costsFormStart;
@@ -87,7 +94,7 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 		final List<Direction> moves = new ArrayList<Direction>();
 		iterator().forEachRemaining(new Consumer<SearchNode<T>>() {
 			public void accept(SearchNode<T> t) {
-				// TODO Add the moves here
+				moves.add(t.getDirection());
 			}
 		});
 		Collections.reverse(moves);

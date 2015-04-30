@@ -1,4 +1,4 @@
-package at.fh.ooe.swe.test.puzzle.impl.searchNode;
+package at.fh.ooe.swe.test.puzzle.model.searchNode;
 
 import java.util.List;
 
@@ -22,23 +22,39 @@ import at.fh.ooe.swe4.puzzle.model.SearchNode;
 @RunWith(JUnit4.class)
 public class ConstructorTest extends AbstractTest {
 
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void boardNull() {
-		new SearchNode<Integer>((Board<Integer>) null);
+		// -- Given
+		final Board<Integer> board = null;
+
+		// -- When --
+		new SearchNode<Integer>(board);
 	}
 
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void invalidBoard() {
-		final Board<Integer> board = new BoardImpl<>(SIZE, createContainer(CONTAINER_SIZE));
+		// -- Given --
+		final int size = 10;
+		final Board<Integer> board = new BoardImpl<>(size, createContainer((int) Math.pow(size, 2)));
+
+		// -- When --
 		new SearchNode<Integer>(board);
 	}
 
 	@Test
 	public void valid() {
-		final List<Integer> container = createContainer(CONTAINER_SIZE);
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(SIZE, container);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+
+		// -- When --
 		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+
+		// -- Then --
 		assertNotNull(node);
 		assertTrue(board.equals(node.getBoard()));
 		assertEquals(0, node.getCostsFormStart());

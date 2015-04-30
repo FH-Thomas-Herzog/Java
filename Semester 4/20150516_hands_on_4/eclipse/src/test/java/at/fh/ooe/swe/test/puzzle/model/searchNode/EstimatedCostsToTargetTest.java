@@ -1,4 +1,4 @@
-package at.fh.ooe.swe.test.puzzle.impl.searchNode;
+package at.fh.ooe.swe.test.puzzle.model.searchNode;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,43 +30,70 @@ import at.fh.ooe.swe4.puzzle.model.SearchNode;
 @RunWith(JUnit4.class)
 public class EstimatedCostsToTargetTest extends AbstractTest {
 
-	private SearchNode<Integer> node;
-	private List<Integer> container;
-	private Board<Integer> board;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-		container.set(0, null);
-		board = new BoardImpl<>(SIZE, container);
-		node = new SearchNode<Integer>(board);
-	}
-
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void nullGoalBaord() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+
+		// -- When --
 		node.estimatedCostsToTarget(null);
 	}
 
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void goalOfDifferentSize() {
-		final int size = SIZE + 1;
+		// -- Given --
+		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> goal = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final int goalSize = size + 1;
+		final List<Integer> goalContainer = createContainer((int) Math.pow(goalSize, 2));
+		goalContainer.set(0, null);
+		final Board<Integer> goal = new BoardImpl<>(goalSize, goalContainer);
+
+		// -- When --
 		node.estimatedCostsToTarget(goal);
 	}
 
+	// -- Then --
 	@Test(expected = IllegalArgumentException.class)
 	public void goalInvalid() {
-		final List<Integer> container = createContainer(CONTAINER_SIZE);
-		final Board<Integer> goal = new BoardImpl<>(SIZE, container);
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final int goalSize = 10;
+		final List<Integer> goalContainer = createContainer((int) Math.pow(goalSize, 2));
+		final Board<Integer> goal = new BoardImpl<>(size, goalContainer);
+
+		// -- When --
 		node.estimatedCostsToTarget(goal);
 	}
 
 	@Test
 	public void validZeroDistance() {
-		final Board<Integer> goal = new BoardImpl<>(board.size(), container);
-		assertEquals(0, node.estimatedCostsToTarget(goal));
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
+		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final Board<Integer> goal = new BoardImpl<>(size, container);
+
+		// -- When --
+		final int cost = node.estimatedCostsToTarget(goal);
+
+		// -- Then --
+		assertEquals(0, cost);
 	}
 
 	@Test
@@ -75,6 +101,12 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		IntStream.range(0, 10).forEach(new IntConsumer() {
 			@Override
 			public void accept(int iterationCount) {
+				// -- Given --
+				final int size = 10;
+				final List<Integer> container = createContainer((int) Math.pow(size, 2));
+				container.set(0, null);
+				final Board<Integer> board = new BoardImpl<>(size, container);
+				final SearchNode<Integer> node = new SearchNode<Integer>(board);
 				final List<Integer> goalContainer = new ArrayList<Integer>(container);
 				Collections.shuffle(goalContainer);
 				final Board<Integer> goal = new BoardImpl<>(board.size(), goalContainer);
@@ -90,7 +122,12 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 						}
 					}
 				}
-				assertEquals(costs, node.estimatedCostsToTarget(goal));
+
+				// -- When --
+				final int cost = node.estimatedCostsToTarget(goal);
+
+				// -- Then --
+				assertEquals(costs, cost);
 			}
 		});
 	}

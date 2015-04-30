@@ -1,14 +1,12 @@
-package at.fh.ooe.swe.test.puzzle.impl.searchNode;
+package at.fh.ooe.swe.test.puzzle.model.searchNode;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,19 +28,17 @@ import at.fh.ooe.swe4.puzzle.model.SearchNode;
 @RunWith(JUnit4.class)
 public class IteratorTest extends AbstractTest {
 
-	private List<Integer> container;
-	private Board<Integer> board;
-
-	@Before
-	public void init() {
-		container = createContainer(CONTAINER_SIZE);
-		container.set(0, null);
-		board = new BoardImpl<>(SIZE, container);
-	}
-
+	// -- Then --
 	@Test(expected = NoSuchElementException.class)
 	public void overflow() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+
+		// -- When --
 		final Iterator<SearchNode<Integer>> it = node.iterator();
 		while (true) {
 			it.next();
@@ -51,18 +47,32 @@ public class IteratorTest extends AbstractTest {
 
 	@Test
 	public void noPredecessors() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+
+		// -- When --
 		final Iterator<SearchNode<Integer>> it = node.iterator();
 		int count = 0;
 		while (it.hasNext()) {
 			it.next();
 			count++;
 		}
+
+		// -- Then --
 		assertEquals(1, count);
 	}
 
 	@Test
 	public void valid() {
+		// -- Given --
+		final int size = 10;
+		final List<Integer> container = createContainer((int) Math.pow(size, 2));
+		container.set(0, null);
+		final Board<Integer> board = new BoardImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<Integer>(board);
 		final List<SearchNode<Integer>> nodes = new ArrayList<SearchNode<Integer>>();
 		nodes.add(node);
@@ -75,13 +85,19 @@ public class IteratorTest extends AbstractTest {
 			nodes.add(predecessor);
 			expectedCount++;
 		}
+
+		// -- When -
 		final Iterator<SearchNode<Integer>> it = node.iterator();
 		int count = 0;
 		while (it.hasNext()) {
 			final SearchNode<Integer> itNode = it.next();
+
+			// -- Then --
 			assertEquals(itNode, nodes.get(count));
 			count++;
 		}
+
+		// -- Then --
 		assertEquals(expectedCount, count);
 	}
 }

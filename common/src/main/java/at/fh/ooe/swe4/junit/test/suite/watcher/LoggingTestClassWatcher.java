@@ -1,5 +1,6 @@
 package at.fh.ooe.swe4.junit.test.suite.watcher;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -13,6 +14,8 @@ import org.junit.runners.model.Statement;
  */
 public class LoggingTestClassWatcher extends TestWatcher {
 
+	private int classNameLength = 15;
+	private String className;
 	private Logger log;
 	private static final String LOG_FORMAT = "%1$-12s";
 
@@ -27,16 +30,24 @@ public class LoggingTestClassWatcher extends TestWatcher {
 
 	@Override
 	protected void starting(Description description) {
-		log.info(String.format(LOG_FORMAT, "started:") + description.getMethodName());
+		className = description.getTestClass().getName();
+		classNameLength += className.length();
+		log.info(StringUtils.repeat("-", classNameLength));
+		log.info(String.format(LOG_FORMAT, "started:") + className);
+		log.info(StringUtils.repeat("-", classNameLength));
 	}
 
 	@Override
 	protected void succeeded(Description description) {
-		log.info(String.format(LOG_FORMAT, "succeeded:") + description.getMethodName());
+		log.info(StringUtils.repeat("-", classNameLength));
+		log.info(String.format(LOG_FORMAT, "succeeded:") + className);
+		log.info(StringUtils.repeat("-", classNameLength));
 	};
 
 	@Override
 	protected void failed(Throwable e, Description description) {
-		log.error(String.format(LOG_FORMAT, "failed:") + description.getMethodName(), e);
+		log.info(StringUtils.repeat("-", classNameLength));
+		log.error(String.format(LOG_FORMAT, "failed:") + className, e);
+		log.info(StringUtils.repeat("-", classNameLength));
 	};
 }

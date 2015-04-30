@@ -1,13 +1,12 @@
 package at.fh.ooe.swe.test.api;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 import org.apache.log4j.Logger;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 
@@ -33,21 +32,22 @@ public abstract class AbstractTest {
 	/**
 	 * This watcher is used for logging the test execution.
 	 */
-	@Rule
-	public TestWatcher testClassInvocationLogger = new LoggingTestClassWatcher();
+	@ClassRule
+	public static TestWatcher testClassInvocationLogger = new LoggingTestClassWatcher();
 
-	protected static final int SIZE = 4;
-	protected static final int CONTAINER_SIZE = (int) Math.pow(SIZE, 2);
-
+	/**
+	 * Default constructor which initializes the logger with the current test
+	 * class.
+	 */
 	public AbstractTest() {
 		super();
 		LOG = Logger.getLogger(this.getClass());
 	}
 
 	/**
-	 * Creates a container with the given size and set it with integer values
+	 * Creates a container with the given size and sets integer values i order
 	 * from 1 -> size.<br>
-	 * This container will contain an null element.
+	 * This container will contain no null element.
 	 * 
 	 * @param size
 	 *            the size of the container

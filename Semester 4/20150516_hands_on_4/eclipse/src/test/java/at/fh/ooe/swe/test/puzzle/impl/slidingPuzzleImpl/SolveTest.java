@@ -1,4 +1,4 @@
-package at.fh.ooe.swe.test.puzzle.impl;
+package at.fh.ooe.swe.test.puzzle.impl.slidingPuzzleImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,15 +34,28 @@ public class SolveTest extends AbstractTest {
 
 	@Test
 	public void test() throws NoSolutionExcption {
-		List<Integer> container = createContainer(2 * 2);
-		container.set(0, null);
-		final Board<Integer> goal = new BoardImpl<>(2, container);
+		List<Integer> container = new ArrayList<>();
+		container.add(1);
+		container.add(2);
+		container.add(3);
+		container.add(4);
+		container.add(5);
+		container.add(6);
+		container.add(7);
+		container.add(null);
+		container.add(8);
+		final Board<Integer> initial = new BoardImpl<>(3, container);
 		final List<Integer> other = new ArrayList<>();
 		other.add(null);
-		other.add(4);
+		other.add(1);
 		other.add(2);
 		other.add(3);
-		final Board<Integer> initial = new BoardImpl<>(2, other);
+		other.add(4);
+		other.add(5);
+		other.add(6);
+		other.add(7);
+		other.add(8);
+		final Board<Integer> goal = new BoardImpl<>(3, other);
 		new SlidingPuzzleImpl<Integer>(initial).solve(goal);
 	}
 }
