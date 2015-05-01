@@ -21,7 +21,7 @@ import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
- * This test class tests the method {@link Board#makesMoves(Iterable)}.<br>
+ * This test class tests the method {@link Board#makeMoves(Iterable)}.<br>
  * This test class depends on proper functionality of the method
  * {@link Board#getEmptyTilePosition()}
  * 
@@ -40,7 +40,7 @@ public class MakeMovesTest extends AbstractTest {
 		Board<Integer> board = new BoardImpl<>(size, container);
 
 		// -- When --
-		board.makesMoves((Iterable<Direction>) null);
+		board.makeMoves((Iterable<Direction>) null);
 	}
 
 	// -- Then --
@@ -57,7 +57,7 @@ public class MakeMovesTest extends AbstractTest {
 		moves.add(null);
 
 		// -- When --
-		board.makesMoves(moves);
+		board.makeMoves(moves);
 	}
 
 	// -- Then --
@@ -69,7 +69,7 @@ public class MakeMovesTest extends AbstractTest {
 		Board<Integer> board = new BoardImpl<>(size, container);
 
 		// -- When --
-		board.makesMoves(Arrays.asList(new Direction[] { Direction.DOWN }));
+		board.makeMoves(Arrays.asList(new Direction[] { Direction.DOWN }));
 	}
 
 	// -- Then -
@@ -86,7 +86,7 @@ public class MakeMovesTest extends AbstractTest {
 		}
 
 		// -- When --
-		board.makesMoves(moves);
+		board.makeMoves(moves);
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class MakeMovesTest extends AbstractTest {
 		}
 
 		// -- When --
-		board.makesMoves(moves);
+		board.makeMoves(moves);
 
 		// -- Then --
 		final Position emptyTilePosition = board.getEmptyTilePosition();

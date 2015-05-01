@@ -30,8 +30,7 @@ public class EqualsTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<>(board);
-
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 		// -- When --
 		final boolean result = node.equals(null);
 
@@ -46,7 +45,7 @@ public class EqualsTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 
 		// -- When --
 		final boolean result = node.equals(new Integer(0));
@@ -62,13 +61,13 @@ public class EqualsTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 		final List<Integer> otherContainer = createContainer((int) Math.pow(size, 2));
 		otherContainer.set(size - 1, null);
 		final Board<Integer> other = new BoardImpl<>(size, otherContainer);
 
 		// -- When --
-		final boolean result = node.equals(new SearchNode<Integer>(other));
+		final boolean result = node.equals(new SearchNode<Integer>(0, null, other, other, null));
 
 		// -- Then --
 		assertFalse(result);
@@ -81,11 +80,11 @@ public class EqualsTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 		final Board<Integer> other = new BoardImpl<>(size, container);
 
 		// -- When --
-		final boolean result = node.equals(new SearchNode<Integer>(other));
+		final boolean result = node.equals(new SearchNode<>(0, null, other, other, null));
 
 		// -- Then --
 		assertTrue(result);

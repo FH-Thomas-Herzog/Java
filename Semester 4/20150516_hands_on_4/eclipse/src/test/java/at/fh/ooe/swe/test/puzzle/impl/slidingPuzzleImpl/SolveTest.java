@@ -1,9 +1,9 @@
 package at.fh.ooe.swe.test.puzzle.impl.slidingPuzzleImpl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Level;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +11,9 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.api.SlidingPuzzle;
 import at.fh.ooe.swe4.puzzle.exception.NoSolutionExcption;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
-import at.fh.ooe.swe4.puzzle.impl.SlidingPuzzleImpl;
+import at.fh.ooe.swe4.puzzle.impl.SlidingPuzzle;
 
 /**
  * This test class test the method
@@ -34,28 +33,26 @@ public class SolveTest extends AbstractTest {
 
 	@Test
 	public void test() throws NoSolutionExcption {
+		final int size = 2;
 		List<Integer> container = new ArrayList<>();
-		container.add(1);
+		container.add(null);
+		container.add(4);
 		container.add(2);
 		container.add(3);
-		container.add(4);
-		container.add(5);
-		container.add(6);
-		container.add(7);
-		container.add(null);
-		container.add(8);
-		final Board<Integer> initial = new BoardImpl<>(3, container);
+		final Board<Integer> initial = new BoardImpl<>(size, container);
 		final List<Integer> other = new ArrayList<>();
 		other.add(null);
-		other.add(1);
 		other.add(2);
 		other.add(3);
 		other.add(4);
-		other.add(5);
-		other.add(6);
-		other.add(7);
-		other.add(8);
-		final Board<Integer> goal = new BoardImpl<>(3, other);
-		new SlidingPuzzleImpl<Integer>(initial).solve(goal);
+		final Board<Integer> goal = new BoardImpl<>(size, other);
+		new SlidingPuzzle<Integer>().start(initial)
+									.solve(goal)
+									.start()
+									.registerLogger(LOG, Level.INFO)
+									.printMoves()
+									.performMoves()
+									.end()
+									.end();
 	}
 }

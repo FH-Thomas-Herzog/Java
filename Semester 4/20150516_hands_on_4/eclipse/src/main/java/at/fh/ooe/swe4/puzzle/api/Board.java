@@ -173,7 +173,7 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	 * @throws InvalidMoveException
 	 *             if the empty tile is tried to be moved out of the board
 	 */
-	public void makesMoves(Iterable<Direction> moves);
+	public void makeMoves(Iterable<Direction> moves);
 
 	/**
 	 * Calculates the parity of this board.<br>

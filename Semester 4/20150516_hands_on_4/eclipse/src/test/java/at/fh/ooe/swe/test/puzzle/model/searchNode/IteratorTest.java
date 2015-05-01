@@ -36,7 +36,7 @@ public class IteratorTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 
 		// -- When --
 		final Iterator<SearchNode<Integer>> it = node.iterator();
@@ -52,7 +52,7 @@ public class IteratorTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 
 		// -- When --
 		final Iterator<SearchNode<Integer>> it = node.iterator();
@@ -73,13 +73,13 @@ public class IteratorTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 		final List<SearchNode<Integer>> nodes = new ArrayList<SearchNode<Integer>>();
 		nodes.add(node);
 		SearchNode<Integer> tmp = node;
 		int expectedCount = 1;
 		for (int i = 0; i < 10; i++) {
-			final SearchNode<Integer> predecessor = new SearchNode<Integer>(board);
+			final SearchNode<Integer> predecessor = new SearchNode<>(0, null, board, board, null);
 			tmp.setPredecessor(predecessor);
 			tmp = predecessor;
 			nodes.add(predecessor);

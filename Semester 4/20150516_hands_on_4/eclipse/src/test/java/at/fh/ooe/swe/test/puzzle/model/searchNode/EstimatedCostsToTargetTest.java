@@ -19,8 +19,7 @@ import at.fh.ooe.swe4.puzzle.model.Position;
 import at.fh.ooe.swe4.puzzle.model.SearchNode;
 
 /**
- * This test class tests the method
- * {@link SearchNode#estimatedCostsToTarget(Board)}.<br>
+ * This test class tests the method {@link SearchNode#estimatedCostsToTarget()}.<br>
  * This test class depends on proper functionality of the method
  * {@link Board#getTilePosition(Comparable)}
  * 
@@ -38,10 +37,10 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, null, null);
 
 		// -- When --
-		node.estimatedCostsToTarget(null);
+		node.estimatedCostsToTarget();
 	}
 
 	// -- Then --
@@ -52,14 +51,14 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
 		final int goalSize = size + 1;
 		final List<Integer> goalContainer = createContainer((int) Math.pow(goalSize, 2));
 		goalContainer.set(0, null);
 		final Board<Integer> goal = new BoardImpl<>(goalSize, goalContainer);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
 
 		// -- When --
-		node.estimatedCostsToTarget(goal);
+		node.estimatedCostsToTarget();
 	}
 
 	// -- Then --
@@ -70,13 +69,13 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
 		final int goalSize = 10;
 		final List<Integer> goalContainer = createContainer((int) Math.pow(goalSize, 2));
 		final Board<Integer> goal = new BoardImpl<>(size, goalContainer);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
 
 		// -- When --
-		node.estimatedCostsToTarget(goal);
+		node.estimatedCostsToTarget();
 	}
 
 	@Test
@@ -86,11 +85,11 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final SearchNode<Integer> node = new SearchNode<Integer>(board);
 		final Board<Integer> goal = new BoardImpl<>(size, container);
+		final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
 
 		// -- When --
-		final int cost = node.estimatedCostsToTarget(goal);
+		final int cost = node.estimatedCostsToTarget();
 
 		// -- Then --
 		assertEquals(0, cost);
@@ -98,37 +97,39 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 
 	@Test
 	public void validShuffledGoal() {
-		IntStream.range(0, 10).forEach(new IntConsumer() {
-			@Override
-			public void accept(int iterationCount) {
-				// -- Given --
-				final int size = 10;
-				final List<Integer> container = createContainer((int) Math.pow(size, 2));
-				container.set(0, null);
-				final Board<Integer> board = new BoardImpl<>(size, container);
-				final SearchNode<Integer> node = new SearchNode<Integer>(board);
-				final List<Integer> goalContainer = new ArrayList<Integer>(container);
-				Collections.shuffle(goalContainer);
-				final Board<Integer> goal = new BoardImpl<>(board.size(), goalContainer);
-				int costs = 0;
-				for (int i = 1; i <= board.size(); i++) {
-					for (int j = 1; j <= board.size(); j++) {
-						final Integer value = board.getTile(i, j);
-						if (value != null) {
-							final Position position = goal.getTilePosition(value);
-							// uses same algorithm as SearchNode via static
-							// final lambda member variable
-							costs += SearchNode.CALC_MANHATTAN_DIST.apply(new Position(i, j), position);
+		IntStream.range(0, 10)
+					.forEach(new IntConsumer() {
+						@Override
+						public void accept(int iterationCount) {
+							// -- Given --
+							final int size = 10;
+							final List<Integer> container = createContainer((int) Math.pow(size, 2));
+							container.set(0, null);
+							final Board<Integer> board = new BoardImpl<>(size, container);
+							final List<Integer> goalContainer = new ArrayList<Integer>(container);
+							Collections.shuffle(goalContainer);
+							final Board<Integer> goal = new BoardImpl<>(board.size(), goalContainer);
+							final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
+							int costs = 0;
+							for (int i = 1; i <= board.size(); i++) {
+								for (int j = 1; j <= board.size(); j++) {
+									final Integer value = board.getTile(i, j);
+									if (value != null) {
+										final Position position = goal.getTilePosition(value);
+										// uses same algorithm as SearchNode via
+										// static
+										// final lambda member variable
+										costs += SearchNode.CALC_MANHATTAN_DIST.apply(new Position(i, j), position);
+									}
+								}
+							}
+
+							// -- When --
+							final int cost = node.estimatedCostsToTarget();
+
+							// -- Then --
+							assertEquals(costs, cost);
 						}
-					}
-				}
-
-				// -- When --
-				final int cost = node.estimatedCostsToTarget(goal);
-
-				// -- Then --
-				assertEquals(costs, cost);
-			}
-		});
+					});
 	}
 }

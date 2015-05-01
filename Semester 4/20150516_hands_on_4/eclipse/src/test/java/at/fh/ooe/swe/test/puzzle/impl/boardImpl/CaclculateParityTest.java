@@ -11,6 +11,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
+import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 
 /**
@@ -23,7 +24,7 @@ import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 public class CaclculateParityTest extends AbstractTest {
 
 	// -- Then --
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = InvalidBoardIndexException.class)
 	public void invalidBoard() {
 		// -- Given --
 		final int size = 10;

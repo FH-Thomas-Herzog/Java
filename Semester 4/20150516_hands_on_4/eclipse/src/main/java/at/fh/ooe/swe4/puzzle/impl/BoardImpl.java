@@ -1,7 +1,7 @@
 package at.fh.ooe.swe4.puzzle.impl;
 
-import java.nio.channels.IllegalSelectorException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -91,14 +91,15 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	@Override
 	public Position getEmptyTilePosition() {
-		final int[] indices = IntStream.range(0, (int) Math.pow(size, 2)).filter(i -> container.get(i) == null).toArray();
+		final int[] indices = IntStream.range(0, (int) Math.pow(size, 2))
+										.filter(i -> container.get(i) == null)
+										.toArray();
 		if (indices.length > 0) {
 			final int rowIdx = ((indices[0] / size) + 1);
 			final int colIdx = (indices[0] - ((rowIdx - 1) * size) + 1);
 			return new Position(rowIdx, colIdx);
-		} else {
-			return new Position(-1, -1);
 		}
+		return new Position(-1, -1);
 	}
 
 	@Override
@@ -121,19 +122,43 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	@Override
 	public boolean isValid() {
-		return (container.stream().distinct().count() == ((int) Math.pow(size, 2))) && (container.stream().filter(element -> element == null).count() == 1);
+		return (container.stream()
+							.distinct()
+							.count() == ((int) Math.pow(size, 2))) && (container.stream()
+																				.filter(element -> element == null)
+																				.count() == 1);
 	}
 
 	@Override
 	public void shuffle() {
-		Collections.shuffle(container);
+		final boolean even = (calculateParity() % 2 == 0);
+		// We need to ensure the parity of the shuffled board
+		boolean shuffledEven = !even;
+
+		final List<Direction> moves = new ArrayList<Direction>(Direction.values().length * 4);
+		moves.addAll(Arrays.asList(Direction.values()));
+		moves.addAll(Arrays.asList(Direction.values()));
+		moves.addAll(Arrays.asList(Direction.values()));
+		moves.addAll(Arrays.asList(Direction.values()));
+
+		while (even != shuffledEven) {
+			Collections.shuffle(moves);
+			moves.forEach(new Consumer<Direction>() {
+				@Override
+				public void accept(Direction direction) {
+					try {
+						move(direction);
+					} catch (InvalidMoveException e) {
+						// expected because of random movements
+					}
+				}
+			});
+			shuffledEven = (calculateParity() % 2 == 0);
+		}
 	}
 
 	@Override
 	public void move(int rowIdx, int colIdx) {
-		if (!isValid()) {
-			throw new InvalidMoveException("Cannot perfom move of empty tile on invalid board");
-		}
 		final Position position = getEmptyTilePosition();
 		final int idx = calculateContainerIdx(rowIdx, colIdx);
 		final int emptyTileIdx = calculateContainerIdx(position.rowIdx, position.colIdx);
@@ -162,16 +187,17 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	}
 
 	@Override
-	public void makesMoves(Iterable<Direction> moves) {
+	public void makeMoves(Iterable<Direction> moves) {
 		if (moves == null) {
 			throw new InvalidMoveException("Cannot perform moves because iterable instance is null");
 		}
-		moves.iterator().forEachRemaining(new Consumer<Direction>() {
-			@Override
-			public void accept(Direction t) {
-				move(t);
-			}
-		});
+		moves.iterator()
+				.forEachRemaining(new Consumer<Direction>() {
+					@Override
+					public void accept(Direction t) {
+						move(t);
+					}
+				});
 	}
 
 	// Private helper
@@ -226,9 +252,6 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 * @see BoardImpl#getEmptyTilePosition()
 	 */
 	private void move(final Direction direction) {
-		if (!isValid()) {
-			throw new InvalidMoveException("Cannot perform move on an invalid board");
-		}
 		if (direction == null) {
 			throw new InvalidMoveException("Cannot perform move operation with null direction");
 		}
@@ -254,27 +277,30 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 		try {
 			final Position oldPosition = getEmptyTilePosition();
-			final int oldIdx = calculateContainerIdx(oldPosition.rowIdx, oldPosition.colIdx);
-
-			final Position newPosition = new Position((oldPosition.rowIdx + rowIdxDif), (oldPosition.colIdx + colIdxDif));
-			final int newIdx = calculateContainerIdx(newPosition.rowIdx, newPosition.colIdx);
-
-			container.set(oldIdx, container.get(newIdx));
-			container.set(newIdx, null);
+			checkForValidIndex(oldPosition.rowIdx, oldPosition.colIdx);
+			move((oldPosition.rowIdx + rowIdxDif), (oldPosition.colIdx + colIdxDif));
+			// final int oldIdx = calculateContainerIdx(oldPosition.rowIdx,
+			// oldPosition.colIdx);
+			//
+			// final Position newPosition = new Position((oldPosition.rowIdx +
+			// rowIdxDif), (oldPosition.colIdx + colIdxDif));
+			// final int newIdx = calculateContainerIdx(newPosition.rowIdx,
+			// newPosition.colIdx);
+			//
+			// container.set(oldIdx, container.get(newIdx));
+			// container.set(newIdx, null);
 		} catch (InvalidBoardIndexException e) {
 			throw new InvalidMoveException("Cannot move to the intended direction. direction: " + direction.name(), e);
 		}
 	}
 
 	public int compareTo(Board<T> o) {
-		return Integer.valueOf(size).compareTo(o.size());
+		return Integer.valueOf(size)
+						.compareTo(o.size());
 	}
 
 	@Override
 	public int calculateParity() {
-		if (!isValid()) {
-			throw new IllegalStateException("Cannot calculate parity of an invalid board");
-		}
 		final Position position = getEmptyTilePosition();
 		final int emptyTileIdx = calculateContainerIdx(position.rowIdx, position.colIdx);
 		int parity = position.rowIdx;
@@ -284,7 +310,8 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 				for (int j = 0; j < i; j++) {
 					// ignore empty tile
 					if (j != emptyTileIdx) {
-						parity += (container.get(j).compareTo(container.get(i)) > 0) ? 1 : 0;
+						parity += (container.get(j)
+											.compareTo(container.get(i)) > 0) ? 1 : 0;
 					}
 				}
 			}
@@ -325,12 +352,21 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	@Override
 	public String toString() {
 		final List<T> copy = new ArrayList<T>(container);
-		final int length = copy.stream().max(Comparator.comparing(item -> ((item != null) ? item.toString().length() : 0))).get().toString().length();
+		final int length = copy.stream()
+								.max(Comparator.comparing(item -> ((item != null) ? item.toString()
+																						.length() : 0)))
+								.get()
+								.toString()
+								.length();
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < size(); i++) {
-			final List<T> result = copy.stream().limit(size()).collect(Collectors.toList());
-			sb.append(result.stream().map(item -> (StringUtils.center(((item != null) ? item.toString() : "X"), length))).collect(Collectors.joining(" - ")))
-					.append(System.lineSeparator());
+			final List<T> result = copy.stream()
+										.limit(size())
+										.collect(Collectors.toList());
+			sb.append(result.stream()
+							.map(item -> (StringUtils.center(((item != null) ? item.toString() : "X"), length)))
+							.collect(Collectors.joining(" - ")))
+				.append(System.lineSeparator());
 			copy.removeAll(result);
 		}
 		return sb.toString();

@@ -34,28 +34,30 @@ public class ComparableTest extends AbstractTest {
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
 		final List<SearchNode<Integer>> orderedNodes = new ArrayList<SearchNode<Integer>>();
-		IntStream.range(0, 10).forEachOrdered(new IntConsumer() {
+		IntStream.range(0, 10)
+					.forEachOrdered(new IntConsumer() {
 
-			@Override
-			public void accept(int value) {
-				final SearchNode<Integer> node = new SearchNode<Integer>(board);
-				node.setCostsFormStart(value);
-				orderedNodes.add(node);
-			}
-		});
+						@Override
+						public void accept(int value) {
+							final SearchNode<Integer> node = new SearchNode<>(value, null, board, board, null);
+							orderedNodes.add(node);
+						}
+					});
 		final List<SearchNode<Integer>> shuffledNodes = new ArrayList<SearchNode<Integer>>(orderedNodes);
 		Collections.shuffle(shuffledNodes);
 		Collections.sort(shuffledNodes, SearchNode::compareTo);
 
 		// -- When --
-		IntStream.range(0, shuffledNodes.size()).forEachOrdered(new IntConsumer() {
+		IntStream.range(0, shuffledNodes.size())
+					.forEachOrdered(new IntConsumer() {
 
-			@Override
-			public void accept(int i) {
-				// - Then --
-				assertEquals(shuffledNodes.get(i).getCostsFormStart(), i);
-			}
-		});
+						@Override
+						public void accept(int i) {
+							// - Then --
+							assertEquals(shuffledNodes.get(i)
+														.getCostsFormStart(), i);
+						}
+					});
 	}
 
 }

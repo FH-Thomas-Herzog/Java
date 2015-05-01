@@ -19,9 +19,11 @@ import at.fh.ooe.swe4.puzzle.api.Board.Direction;
  * @param <T>
  *            the {@link Comparable<T>} type which represents the board value
  */
-public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>>, Cloneable {
+public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNode<T>>, Iterable<SearchNode<T>> {
 
 	private int costsFormStart;
+	private int manhattenDistance;
+	private int fullCosts;
 	private SearchNode<T> predecessor;
 	private final Board<T> board;
 	private Direction direction;
@@ -29,24 +31,39 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 	/**
 	 * Labda expression for calculating
 	 */
-	public static final BiFunction<Position, Position, Integer> CALC_MANHATTAN_DIST = (root, goal) -> (Math.abs((root.rowIdx - goal.rowIdx)) + Math
-			.abs((root.colIdx - goal.colIdx)));
+	public static final BiFunction<Position, Position, Integer> CALC_MANHATTAN_DIST = (root, goal) -> (Math.abs((root.rowIdx - goal.rowIdx)) + Math.abs((root.colIdx - goal.colIdx)));
 
 	/**
-	 * Constructor which configures this SearchNode with the given board
-	 * provided configuration.
+	 * Constructs this instance and calculates the Manhattan distance between
+	 * given board an goal.
 	 * 
+	 * @param costsFormStart
+	 *            the level the node represents
+	 * @param predecessor
+	 *            the predecessor can be null
 	 * @param board
-	 *            the board to configure this SearchNode with
+	 *            the board this node represents
+	 * @param goal
+	 *            the goal for calculating Manhattan distance
+	 * @param direction
+	 *            the direction performed to get to this state.
 	 * @throws IllegalArgumentException
-	 *             if the board is null or represents an invalid board
+	 *             if board or goal is null
 	 */
-	public SearchNode(final Board<T> board) {
-		if ((board == null) || (!board.isValid())) {
-			throw new IllegalArgumentException("Cannot configure this searchNode with a null or invalid board");
+	public SearchNode(int costsFormStart, SearchNode<T> predecessor, Board<T> board, Board<T> goal, Direction direction) {
+		super();
+		if ((board == null)) {
+			throw new IllegalArgumentException("Cannot configure this searchNode with a null board");
 		}
+		if ((goal == null)) {
+			throw new IllegalArgumentException("Cannot calculate manhattan distance on nul goal");
+		}
+		this.costsFormStart = costsFormStart;
+		this.predecessor = predecessor;
 		this.board = board;
-		costsFormStart = 0;
+		this.direction = direction;
+		this.manhattenDistance = calculateMahanttenDistance(goal);
+		this.fullCosts = costsFormStart + manhattenDistance;
 	}
 
 	/**
@@ -65,7 +82,11 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 	 *             if the goal does not contain a value from the initial board
 	 * @see SearchNode#CALC_MANHATTAN_DIST
 	 */
-	public int estimatedCostsToTarget(final Board<T> goal) {
+	public int estimatedCostsToTarget() {
+		return manhattenDistance;
+	}
+
+	private int calculateMahanttenDistance(final Board<T> goal) {
 		if ((goal == null) || (board.size() != goal.size()) || (!goal.isValid())) {
 			throw new IllegalArgumentException("The goal board is either null/invalid or has different size as the initial board");
 		}
@@ -83,6 +104,10 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 		return costs;
 	}
 
+	public int estimatedTotalCosts() {
+		return getCostsFormStart() + estimatedCostsToTarget();
+	}
+
 	/**
 	 * Converts the node list started from this node to a list of
 	 * {@link Direction} which represent the moves to make to get last node in
@@ -94,7 +119,9 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 		final List<Direction> moves = new ArrayList<Direction>();
 		iterator().forEachRemaining(new Consumer<SearchNode<T>>() {
 			public void accept(SearchNode<T> t) {
-				moves.add(t.getDirection());
+				if (t.getDirection() != null) {
+					moves.add(t.getDirection());
+				}
 			}
 		});
 		Collections.reverse(moves);
@@ -166,7 +193,8 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 	}
 
 	public int compareTo(SearchNode<T> o) {
-		return Integer.valueOf(costsFormStart).compareTo(o.costsFormStart);
+		return Integer.valueOf(fullCosts)
+						.compareTo(o.fullCosts);
 	}
 
 	@Override
@@ -174,17 +202,10 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((board == null) ? 0 : board.hashCode());
+		result = prime * result + fullCosts;
 		return result;
 	}
 
-	/**
-	 * To search nodes are equal if they hold the same board state.
-	 * 
-	 * @param obj
-	 *            The object to be check if its equal to this instance
-	 * @return true if the object is of type SearchNode<T> and holds the same
-	 *         board as this instance.
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -199,18 +220,17 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 				return false;
 		} else if (!board.equals(other.board))
 			return false;
+		if (fullCosts != other.fullCosts)
+			return false;
 		return true;
-	}
-
-	@Override
-	public SearchNode<T> clone() {
-		return new SearchNode<T>(board.clone());
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("costs: ").append(costsFormStart).append(System.lineSeparator());
+		sb.append("costs: ")
+			.append(costsFormStart)
+			.append(System.lineSeparator());
 		sb.append(board.toString());
 		return sb.toString();
 	}
