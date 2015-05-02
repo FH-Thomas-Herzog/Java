@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -17,6 +18,16 @@ import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
+/**
+ * This is the implementation of the {@link Board} interface.<br>
+ * This class provides possibility to define the tile value type which needs to
+ * implement {@link Comparable} interface.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date May 2, 2015
+ * @param <T>
+ *            the value type of the tile values
+ */
 public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	private final int size;
@@ -46,7 +57,8 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	/**
 	 * This constructor provides the size and container which contains the board
-	 * values.<br>
+	 * values, where the container will be copied and cannot be modified from
+	 * the outside.<br>
 	 * The container must be a flat representation of the board.<br>
 	 * It's size must be size*size which is the same as rows*columns.<br>
 	 * E.g.: A value positioned at (3,2) will have the container index
@@ -57,7 +69,11 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 * @param container
 	 *            the container holding the board values
 	 * @throws IllegalArgumentException
-	 *             if the size does not correspond to the container size
+	 *             <ul>
+	 *             <li>size <= 0</li>
+	 *             <li>container is null</li>
+	 *             <li>container.size() != (size*size)</li>
+	 *             </ul>
 	 */
 	public BoardImpl(final int size, final List<T> container) {
 		super();
@@ -67,7 +83,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 		if (container == null) {
 			throw new IllegalArgumentException("Container must not be null");
 		}
-		if ((size * size) != container.size()) {
+		if (((int) Math.pow(size, 2)) != container.size()) {
 			throw new IllegalArgumentException("Container size does not correspond to given board size");
 		}
 		this.size = size;
@@ -91,10 +107,10 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	@Override
 	public Position getEmptyTilePosition() {
-		final int[] indices = IntStream.range(0, (int) Math.pow(size, 2))
+		final int[] indices = IntStream.range(0, container.size())
 										.filter(i -> container.get(i) == null)
 										.toArray();
-		if (indices.length > 0) {
+		if (indices.length != 0) {
 			final int rowIdx = ((indices[0] / size) + 1);
 			final int colIdx = (indices[0] - ((rowIdx - 1) * size) + 1);
 			return new Position(rowIdx, colIdx);
@@ -104,7 +120,9 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	@Override
 	public Position getTilePosition(final T value) {
+		// row iteration
 		for (int i = 1; i <= size(); i++) {
+			// column iteration
 			for (int j = 1; j <= size(); j++) {
 				final T tile = getTile(i, j);
 				if (((tile == null) && (value == null)) || ((tile != null) && (tile.equals(value)))) {
@@ -124,35 +142,41 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	public boolean isValid() {
 		return (container.stream()
 							.distinct()
-							.count() == ((int) Math.pow(size, 2))) && (container.stream()
-																				.filter(element -> element == null)
-																				.count() == 1);
+							.count() == (container.size())) && (container.stream()
+																			.filter(element -> element == null)
+																			.count() == 1);
 	}
 
 	@Override
 	public void shuffle() {
-		final boolean even = (calculateParity() % 2 == 0);
 		// We need to ensure the parity of the shuffled board
+		final boolean even = (calculateParity() % 2 == 0);
 		boolean shuffledEven = !even;
 
-		final List<Direction> moves = new ArrayList<Direction>(Direction.values().length * 4);
-		moves.addAll(Arrays.asList(Direction.values()));
-		moves.addAll(Arrays.asList(Direction.values()));
-		moves.addAll(Arrays.asList(Direction.values()));
-		moves.addAll(Arrays.asList(Direction.values()));
+		// fill list with the possible moves
+		final List<Move> moves = new ArrayList<Move>(Move.values().length * 4);
+		moves.addAll(Arrays.asList(Move.values()));
+		moves.addAll(Arrays.asList(Move.values()));
+		moves.addAll(Arrays.asList(Move.values()));
+		moves.addAll(Arrays.asList(Move.values()));
 
+		// as long as parity is not equal to original one
 		while (even != shuffledEven) {
+			// shuffle the possible moves
 			Collections.shuffle(moves);
-			moves.forEach(new Consumer<Direction>() {
+			moves.forEach(new Consumer<Move>() {
 				@Override
-				public void accept(Direction direction) {
+				public void accept(Move direction) {
 					try {
+						// try to perform move
 						move(direction);
 					} catch (InvalidMoveException e) {
-						// expected because of random movements
+						// expected because random movements could try to move
+						// empty tile out of the board
 					}
 				}
 			});
+			// recalculate the parity of the shuffled board
 			shuffledEven = (calculateParity() % 2 == 0);
 		}
 	}
@@ -160,41 +184,39 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	@Override
 	public void move(int rowIdx, int colIdx) {
 		final Position position = getEmptyTilePosition();
-		final int idx = calculateContainerIdx(rowIdx, colIdx);
-		final int emptyTileIdx = calculateContainerIdx(position.rowIdx, position.colIdx);
-		container.set(emptyTileIdx, container.get(idx));
-		container.set(idx, null);
+		setTile(position.rowIdx, position.colIdx, container.get(calculateContainerIdx(rowIdx, colIdx)));
+		setTile(rowIdx, colIdx, null);
 	}
 
 	@Override
 	public void moveLeft() {
-		move(Direction.LEFT);
+		move(Move.LEFT);
 	}
 
 	@Override
 	public void moveRight() {
-		move(Direction.RIGHT);
+		move(Move.RIGHT);
 	}
 
 	@Override
 	public void moveUp() {
-		move(Direction.UP);
+		move(Move.UP);
 	}
 
 	@Override
 	public void moveDown() {
-		move(Direction.DOWN);
+		move(Move.DOWN);
 	}
 
 	@Override
-	public void makeMoves(Iterable<Direction> moves) {
+	public void makeMoves(Iterable<Move> moves) {
 		if (moves == null) {
 			throw new InvalidMoveException("Cannot perform moves because iterable instance is null");
 		}
 		moves.iterator()
-				.forEachRemaining(new Consumer<Direction>() {
+				.forEachRemaining(new Consumer<Move>() {
 					@Override
-					public void accept(Direction t) {
+					public void accept(Move t) {
 						move(t);
 					}
 				});
@@ -241,7 +263,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 * <ul>
 	 * <li>the board is valid</li>
 	 * <li>the new position is valid</li>
-	 * <li>the given direction is supported</li>
+	 * <li>the given {@link Move} enumeration is supported</li>
 	 * </ul>
 	 * 
 	 * @param direction
@@ -251,7 +273,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 * @see BoardImpl#calculateContainerIdx(int, int)
 	 * @see BoardImpl#getEmptyTilePosition()
 	 */
-	private void move(final Direction direction) {
+	private void move(final Move direction) {
 		if (direction == null) {
 			throw new InvalidMoveException("Cannot perform move operation with null direction");
 		}
@@ -279,21 +301,14 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 			final Position oldPosition = getEmptyTilePosition();
 			checkForValidIndex(oldPosition.rowIdx, oldPosition.colIdx);
 			move((oldPosition.rowIdx + rowIdxDif), (oldPosition.colIdx + colIdxDif));
-			// final int oldIdx = calculateContainerIdx(oldPosition.rowIdx,
-			// oldPosition.colIdx);
-			//
-			// final Position newPosition = new Position((oldPosition.rowIdx +
-			// rowIdxDif), (oldPosition.colIdx + colIdxDif));
-			// final int newIdx = calculateContainerIdx(newPosition.rowIdx,
-			// newPosition.colIdx);
-			//
-			// container.set(oldIdx, container.get(newIdx));
-			// container.set(newIdx, null);
 		} catch (InvalidBoardIndexException e) {
 			throw new InvalidMoveException("Cannot move to the intended direction. direction: " + direction.name(), e);
 		}
 	}
 
+	/**
+	 * Compares this instance to another by comparing the size of the board.
+	 */
 	public int compareTo(Board<T> o) {
 		return Integer.valueOf(size)
 						.compareTo(o.size());
@@ -358,14 +373,28 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 								.get()
 								.toString()
 								.length();
-		final StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder(container.size() * length * 2);
+		sb.append(System.lineSeparator());
 		for (int i = 0; i < size(); i++) {
 			final List<T> result = copy.stream()
 										.limit(size())
 										.collect(Collectors.toList());
 			sb.append(result.stream()
-							.map(item -> (StringUtils.center(((item != null) ? item.toString() : "X"), length)))
-							.collect(Collectors.joining(" - ")))
+							.map(new Function<T, String>() {
+								public String apply(T t) {
+									final String value;
+									int l = ((length > 1) && (length % 2 != 0)) ? (length + 1) : length;
+									if (t != null) {
+										value = t.toString();
+									} else {
+										value = " ";
+									}
+									return new StringBuilder("[").append(StringUtils.center(value, l))
+																	.append("]")
+																	.toString();
+								};
+							})
+							.collect(Collectors.joining(" ")))
 				.append(System.lineSeparator());
 			copy.removeAll(result);
 		}

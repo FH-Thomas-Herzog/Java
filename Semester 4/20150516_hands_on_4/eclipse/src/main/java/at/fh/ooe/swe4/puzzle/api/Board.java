@@ -33,12 +33,12 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
 	 * @date Apr 26, 2015
 	 */
-	public static enum Direction {
+	public static enum Move {
 		UP, DOWN, LEFT, RIGHT;
 	}
 
 	/**
-	 * Returns the tile at the position i, j.
+	 * Returns the tile at the position (rowIdx, colIdx).
 	 * 
 	 * @param rowIdx
 	 *            the row index
@@ -51,7 +51,7 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	public T getTile(int rowIdx, int colIdx);
 
 	/**
-	 * Sets an tile on the given position.
+	 * Sets an tile on the given position (rowIdx, colIdx).
 	 * 
 	 * @param rowIdx
 	 *            the row index
@@ -65,7 +65,7 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	public void setTile(int rowIdx, int colIdx, T value);
 
 	/**
-	 * Sets an empty tile on the given position.
+	 * Sets an empty tile on the given position (rowIdx, colIdx).
 	 * 
 	 * @param rowIdx
 	 *            the row index
@@ -77,50 +77,59 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	public void setEmptyTile(int rowIdx, int colIdx);
 
 	/**
-	 * Gets the column index of the empty tile.<br>
+	 * Gets position of the empty tile (rowIdx, colIdx).<br>
 	 * If multiple empty tiles are present on this board then this method will
-	 * return the first occurrence of an empty tile.
+	 * return the first occurrence of an empty tile.<br>
+	 * If no empty tile is present the returned position instance will contain
+	 * invalid indices.
 	 * 
 	 * @return the position model with the indices, it will have the indices set
-	 *         to -1 if the empty tile could not be found
+	 *         to (-1, -1) if no empty tile could not be found
 	 */
 	public Position getEmptyTilePosition();
 
 	/**
-	 * Gets the Position of the given Tile value.
+	 * Gets the Position of the tile with the given value.
 	 * 
 	 * @param value
 	 *            the value to be searched on this board.
-	 * @return the found position
+	 * @return the found tile position
 	 * @throws NoSuchElementException
 	 *             if the value could not be found on the board
 	 */
 	public Position getTilePosition(final T value);
 
 	/**
-	 * Gets the size of the board, where the column index is equals to the row
-	 * index.
+	 * Gets the size of the board N where the board will have the dimensions N x
+	 * N
 	 * 
 	 * @return the size of this board
 	 */
 	public int size();
 
 	/**
-	 * Answers the question if this board is a valid board.
+	 * Answers the question if this board is a valid board.<br>
+	 * A board is invalid if one of the following conditions fit
+	 * <ul>
+	 * <li>no empty tile present</li>
+	 * <li>tiles with duplicates values are present</li>
+	 * </ul>
 	 * 
 	 * @return true if this board is valid, false otherwise
 	 */
 	public boolean isValid();
 
 	/**
-	 * Shuffles all of the tiles on the boards, which means they get randomly
-	 * repositioned on the board.
+	 * Shuffles the board tiles by performing random moves on the board.<br>
+	 * It is ensured that the parity is kept (odd/even parity will be kept).
 	 */
 	public void shuffle();
 
 	/**
 	 * Moves the empty tile to the given position by switching the value on the
-	 * given position with the empty tile position.
+	 * given position with the empty tile position.<br>
+	 * This method does not ensure that the move is a valid one, which means it
+	 * is not ensured that the tile is only moved one position in any direction.
 	 * 
 	 * @param rowIdx
 	 *            the row index
@@ -164,16 +173,16 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	public void moveDown();
 
 	/**
-	 * Performs all of the moves of the empty tile defined by the given iterable
+	 * Performs all of the moves of the empty tile defined by the given Iterable
 	 * instance.
 	 * 
 	 * @param moves
-	 *            the iterable instance holding the move positions for the empty
+	 *            the Iterable instance holding the move positions for the empty
 	 *            tile
 	 * @throws InvalidMoveException
 	 *             if the empty tile is tried to be moved out of the board
 	 */
-	public void makeMoves(Iterable<Direction> moves);
+	public void makeMoves(Iterable<Move> moves);
 
 	/**
 	 * Calculates the parity of this board.<br>
@@ -187,5 +196,10 @@ public interface Board<T extends Comparable<T>> extends Comparable<Board<T>>, Cl
 	public int calculateParity();
 
 	// Force overwrite of clone
+	/**
+	 * Performs an deep copy of the current instance.
+	 * 
+	 * @return the copied instance
+	 */
 	public Board<T> clone();
 }

@@ -15,7 +15,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.api.Board.Direction;
+import at.fh.ooe.swe4.puzzle.api.Board.Move;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
 import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
 import at.fh.ooe.swe4.puzzle.model.Position;
@@ -40,7 +40,7 @@ public class MakeMovesTest extends AbstractTest {
 		Board<Integer> board = new BoardImpl<>(size, container);
 
 		// -- When --
-		board.makeMoves((Iterable<Direction>) null);
+		board.makeMoves((Iterable<Move>) null);
 	}
 
 	// -- Then --
@@ -50,8 +50,8 @@ public class MakeMovesTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		Board<Integer> board = new BoardImpl<>(size, container);
-		final List<Direction> moves = new ArrayList<Direction>(Direction.values().length + 1);
-		for (Direction direction : Direction.values()) {
+		final List<Move> moves = new ArrayList<Move>(Move.values().length + 1);
+		for (Move direction : Move.values()) {
 			moves.add(direction);
 		}
 		moves.add(null);
@@ -69,7 +69,7 @@ public class MakeMovesTest extends AbstractTest {
 		Board<Integer> board = new BoardImpl<>(size, container);
 
 		// -- When --
-		board.makeMoves(Arrays.asList(new Direction[] { Direction.DOWN }));
+		board.makeMoves(Arrays.asList(new Move[] { Move.DOWN }));
 	}
 
 	// -- Then -
@@ -80,9 +80,9 @@ public class MakeMovesTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final List<Direction> moves = new ArrayList<Direction>();
+		final List<Move> moves = new ArrayList<Move>();
 		for (int i = 0; i < size; i++) {
-			moves.add(Direction.RIGHT);
+			moves.add(Move.RIGHT);
 		}
 
 		// -- When --
@@ -96,28 +96,28 @@ public class MakeMovesTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		final Board<Integer> board = new BoardImpl<>(size, container);
-		final List<Direction> moves = new ArrayList<Direction>();
+		final List<Move> moves = new ArrayList<Move>();
 		boolean invert = Boolean.FALSE;
 		for (int i = 0; i <= size; i++) {
-			final Direction direction;
+			final Move direction;
 			if (invert) {
-				direction = Direction.LEFT;
+				direction = Move.LEFT;
 				invert = Boolean.FALSE;
 			} else {
-				direction = Direction.RIGHT;
+				direction = Move.RIGHT;
 				invert = Boolean.TRUE;
 			}
 			for (int j = 0; j < (size - 1); j++) {
 				moves.add(direction);
 			}
 			if (i < (size - 1)) {
-				moves.add(Direction.DOWN);
+				moves.add(Move.DOWN);
 			}
 		}
 
 		// -- When --
 		board.makeMoves(moves);
-
+		
 		// -- Then --
 		final Position emptyTilePosition = board.getEmptyTilePosition();
 		assertEquals(size, emptyTilePosition.rowIdx);

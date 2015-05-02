@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -22,18 +23,18 @@ import at.fh.ooe.swe4.junit.test.suite.watcher.LoggingTestInvocationWatcher;
  */
 public abstract class AbstractTest {
 
-	protected final Logger LOG;
+	protected final Logger log;
 	/**
 	 * This watcher watches the invocation of an Test class.
 	 */
 	@Rule
-	public final TestWatcher methodInvocationLogger = new LoggingTestInvocationWatcher();
+	public final TestWatcher methodInvocationLogger = new LoggingTestInvocationWatcher(Level.INFO);
 
 	/**
 	 * This watcher is used for logging the test execution.
 	 */
 	@ClassRule
-	public static TestWatcher testClassInvocationLogger = new LoggingTestClassWatcher();
+	public static TestWatcher testClassInvocationLogger = new LoggingTestClassWatcher(Level.INFO);
 
 	/**
 	 * Default constructor which initializes the logger with the current test
@@ -41,13 +42,13 @@ public abstract class AbstractTest {
 	 */
 	public AbstractTest() {
 		super();
-		LOG = Logger.getLogger(this.getClass());
+		log = Logger.getLogger(this.getClass());
 	}
 
 	/**
-	 * Creates a container with the given size and sets integer values i order
-	 * from 1 -> size.<br>
-	 * This container will contain no null element.
+	 * Creates a container with the given size and sets integer values i in
+	 * order from 1 to size.<br>
+	 * <b>This container will contain no null element.<b>
 	 * 
 	 * @param size
 	 *            the size of the container
@@ -55,12 +56,13 @@ public abstract class AbstractTest {
 	 */
 	protected List<Integer> createContainer(final int size) {
 		final List<Integer> container = new ArrayList<Integer>(size);
-		IntStream.range(1, (size + 1)).forEachOrdered(new IntConsumer() {
-			@Override
-			public void accept(int value) {
-				container.add(value);
-			}
-		});
+		IntStream.range(1, (size + 1))
+					.forEachOrdered(new IntConsumer() {
+						@Override
+						public void accept(int value) {
+							container.add(value);
+						}
+					});
 
 		return container;
 	}

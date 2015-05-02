@@ -58,7 +58,6 @@ public class ProvidedTests extends AbstractTest {
 
 		// -- Then --
 		assertEquals(0, costs);
-
 	}
 
 	@Test

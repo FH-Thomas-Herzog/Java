@@ -61,23 +61,6 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		node.estimatedCostsToTarget();
 	}
 
-	// -- Then --
-	@Test(expected = IllegalArgumentException.class)
-	public void goalInvalid() {
-		// -- Given --
-		final int size = 10;
-		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
-		final int goalSize = 10;
-		final List<Integer> goalContainer = createContainer((int) Math.pow(goalSize, 2));
-		final Board<Integer> goal = new BoardImpl<>(size, goalContainer);
-		final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
-
-		// -- When --
-		node.estimatedCostsToTarget();
-	}
-
 	@Test
 	public void validZeroDistance() {
 		// -- Given --

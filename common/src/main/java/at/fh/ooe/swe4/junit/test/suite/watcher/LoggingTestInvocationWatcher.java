@@ -1,9 +1,12 @@
 package at.fh.ooe.swe4.junit.test.suite.watcher;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+
+import at.fh.ooe.swe4.junit.test.suite.watcher.api.AbstractLoggerWatcher;
 
 /**
  * This class is the test method invocation logger watcher.
@@ -11,12 +14,10 @@ import org.junit.runners.model.Statement;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Apr 26, 2015
  */
-public class LoggingTestInvocationWatcher extends TestWatcher {
+public class LoggingTestInvocationWatcher extends AbstractLoggerWatcher {
 
-	private Logger log;
-	private static final String LOG_FORMAT = "%1$-12s";
-
-	public LoggingTestInvocationWatcher() {
+	public LoggingTestInvocationWatcher(final Level level) {
+		super(level);
 	}
 
 	@Override
@@ -27,17 +28,18 @@ public class LoggingTestInvocationWatcher extends TestWatcher {
 
 	@Override
 	protected void starting(Description description) {
-		log.info(String.format(LOG_FORMAT, "started:") + description.getMethodName());
+		log.log(level, StringUtils.repeat("-", SEPARATOR_REPEATIONS));
+		log.log(level, String.format(LOG_FORMAT, "started:") + description.getMethodName());
 	}
 
 	@Override
 	protected void succeeded(Description description) {
-		log.info(String.format(LOG_FORMAT, "succeeded:") + description.getMethodName());
+		log.log(level, String.format(LOG_FORMAT, "succeeded:") + description.getMethodName());
 	};
 
 	@Override
 	protected void failed(Throwable e, Description description) {
-		log.error(String.format(LOG_FORMAT, "failed:") + description.getMethodName(), e);
+		log.log(level, String.format(LOG_FORMAT, "failed:") + description.getMethodName(), e);
 	};
 
 }
