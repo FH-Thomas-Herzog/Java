@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.14)  3 MAY 2015 16:03
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.14)  3 MAY 2015 18:30
 entering extended mode
 **Documentation.tex
 
@@ -649,20 +649,20 @@ Package geometry Warning: Over-specification in `v'-direction.
 
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\Documentation.aux")
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -719,8 +719,8 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 88.
-Package hyperref Info: Link coloring OFF on input line 88.
+(lastpage)             ! on input line 101.
+Package hyperref Info: Link coloring OFF on input line 101.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -729,9 +729,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count131
 )
-LaTeX Info: Redefining \ref on input line 88.
-LaTeX Info: Redefining \pageref on input line 88.
-LaTeX Info: Redefining \nameref on input line 88.
+LaTeX Info: Redefining \ref on input line 101.
+LaTeX Info: Redefining \pageref on input line 101.
+LaTeX Info: Redefining \nameref on input line 101.
 
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\Documentation.out")
@@ -739,24 +739,24 @@ _hands_on_4\eclipse\doc\Documentation.out")
 _hands_on_4\eclipse\doc\Documentation.out")
 \@outlinefile=\write6
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--106
+Underfull \hbox (badness 10000) in paragraph at lines 115--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--110
+Underfull \hbox (badness 10000) in paragraph at lines 121--123
 
  []
 
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 115.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 128.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omlcmr.fd"
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/it' in size <10.95> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 115.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 128.
 
-Overfull \hbox (55.23177pt too wide) in paragraph at lines 115--116
+Overfull \hbox (55.23177pt too wide) in paragraph at lines 128--129
 \OT1/cmr/m/n/10.95 sol-len '\OT1/cmr/m/it/10.95 at.fh.ooe.swe.test.\OML/cmm/m/i
 t/10.95 <\OT1/cmr/m/it/10.95 sourcePackage\OML/cmm/m/it/10.95 >\OT1/cmr/m/it/10
 .95 .\OML/cmm/m/it/10.95 <\OT1/cmr/m/it/10.95 testedClassName\OML/cmm/m/it/10.9
@@ -765,17 +765,17 @@ t/10.95 <\OT1/cmr/m/it/10.95 sourcePackage\OML/cmm/m/it/10.95 >\OT1/cmr/m/it/10
  []
 
 
-Overfull \hbox (5.75053pt too wide) in paragraph at lines 116--118
+Overfull \hbox (5.75053pt too wide) in paragraph at lines 129--131
 []\OT1/cmr/bx/n/10.95 Test-Klassen: \OT1/cmr/m/n/10.95 Die Test-Klassen Na-me s
 ol-len wie folgt auf-ge-baut sein: '\OML/cmm/m/it/10.95 <\OT1/cmr/m/it/10.95 te
 -sted-Me-thod-Na-me\OML/cmm/m/it/10.95 >\OT1/cmr/m/it/10.95 Test
  []
 
-<FHO_Logo_Students.jpg, id=95, 569.0058pt x 476.0184pt>
+<FHO_Logo_Students.jpg, id=155, 569.0058pt x 476.0184pt>
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 119.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 132.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -788,13 +788,60 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
  <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/Java/Semester 4/20150516
 _hands_on_4/eclipse/doc/FHO_Logo_Students.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 120--122
+Underfull \hbox (badness 10000) in paragraph at lines 133--135
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--141
+
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 142.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 142.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 142.
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/5549C3B81D3241F340E840CFCBCACABFC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/FA9553DF91383CE70E28C7A91D48C72BC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/094E6F176CCF585C000A3D9AE093E31CC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/A1F9C9195530A39006B98A8862393561C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/495353A7E5BB87897342FAC07C5B5C49C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Overfull \hbox (8.90157pt too wide) in paragraph at lines 147--154
+\OT1/cmr/m/n/10.95 Es ist zu se-hen dass be-reits bei der drit-ten Ebe-ne sich 
+9 Ele-men-te in der zu un-ter-su-chen-den L[]osungsmenge
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--154
+
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/094E6F176CCF585C000A3D9AE093E31CC
+D694BA000DED3E2950A9E72182DA7D6.pygtex"
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
+)
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/5549C3B81D3241F340E840CFCBCACABFC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 122.
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 156.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -804,11 +851,72 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 125--128
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/5313B33A0F2A3E607C60ECC13034A778C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/550EC6A84067C996930CC25F7CE76B17C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/5549C3B81D3241F340E840CFCBCACABFC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 160.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 162--165
 
  []
 
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 171.
 
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 171.
+Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
+t line 175.
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/5CB0796EBD3F9BBAF73A7E5F7053B5D8C
+2BDF92263EAD782D57D3AD6C9C6DF04.pygtex"
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 2.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 44.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 178.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5]
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/DDAFE4810A214750064E21E281CA348EC
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
@@ -821,64 +929,18 @@ D694BA000DED3E2950A9E72182DA7D6.pygtex")
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/5C9BA688AC67673A3E7C813F1908CBEAC
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
-Underfull \hbox (badness 1112) in paragraph at lines 130--133
+Underfull \hbox (badness 1112) in paragraph at lines 181--184
 \OT1/cmr/m/n/10.95 an-de-re Da-ten-ty-pen au-er In-te-ger f[]ur die Ka-cheln z
 u ver-wen-den, den die ein-zi-ge Vor-aus-set-
  []
 
-Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
-t line 133.
 
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/641B1BF8F71AC39CA84FA7CEF0FF55D8D
 52EC643F3A44A98559E9A5F8D26174D.pygtex"
-LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 2.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 43.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[3]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
-
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 106.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[4]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
-
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 169.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[5])
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 136.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 52.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -888,6 +950,48 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [6]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 115.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[7]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 178.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[8])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 187.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[9]
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/BD638DF2B59CDB7A5360A53394301632C
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
@@ -917,12 +1021,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[7]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 88.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 88.
-
+[10]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
@@ -937,7 +1036,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[8]
+[11]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
@@ -952,7 +1051,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[9]
+[12]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
@@ -967,7 +1066,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[10]
+[13]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
@@ -982,7 +1081,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[11]
+[14]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
@@ -997,10 +1096,10 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[12])
+[15])
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 146.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 197.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1009,13 +1108,10 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[13]
+[16]
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/46D5FEDC95B991CF26F944414E3328490
-65297A15EFD9DE0ADA9CD345B817DDC.pygtex"
-LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 3.
-)
+65297A15EFD9DE0ADA9CD345B817DDC.pygtex")
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/147F33FDEFF11DB81500E09BF73549C2C
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
@@ -1031,91 +1127,17 @@ D694BA000DED3E2950A9E72182DA7D6.pygtex")
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/B43B919A6BBD931F95CD535E952B9E8DC
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/801CA2F882CE09BA2F781482B03199A5C
-D694BA000DED3E2950A9E72182DA7D6.pygtex")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/094E6F176CCF585C000A3D9AE093E31CC
-D694BA000DED3E2950A9E72182DA7D6.pygtex")
-Overfull \hbox (50.2969pt too wide) in paragraph at lines 173--178
-\OT1/cmr/m/n/10.95 Typ-de-fi-ni-ti-on der Ka-cheln im [] ent-spricht. Da-mit is
-t gew[]ahrleistet, dass z.B.: ei-ne []
- []
-
-
-Overfull \hbox (20.94453pt too wide) in paragraph at lines 173--178
-\OT1/cmr/m/n/10.95 In-stanz nur auf [] In-stan-zen an-ge-wen-det wer-den kann u
-nd nicht z.B.: auf []
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 173--178
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 173--178
+Underfull \hbox (badness 10000) in paragraph at lines 224--227
 
  []
 
 
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/094E6F176CCF585C000A3D9AE093E31CC
-D694BA000DED3E2950A9E72182DA7D6.pygtex")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/5313B33A0F2A3E607C60ECC13034A778C
-D694BA000DED3E2950A9E72182DA7D6.pygtex")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/550EC6A84067C996930CC25F7CE76B17C
-D694BA000DED3E2950A9E72182DA7D6.pygtex")
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 184.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[14]
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/7A91C81DC2715B10CEBE21BD4F2955A8A
+_hands_on_4\eclipse\doc\_minted-Documentation/A0F4D9D53467980CAE6E58890783603EA
 8411F2DDCB2DB6D5C5BC83C57174414.pygtex"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[15]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
-
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 122.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[16]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
-
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 184.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 20.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1130,7 +1152,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 246.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 82.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1145,7 +1167,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 307.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 143.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1160,7 +1182,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 368.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 206.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1175,7 +1197,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 428.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 266.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1184,10 +1206,13 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[21])
+[21]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 187.
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 328.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1197,15 +1222,12 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [22]
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/C77FF6C97EC5A82859B56CAB1B7E0EFEC
-D694BA000DED3E2950A9E72182DA7D6.pygtex")
-("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
-_hands_on_4\eclipse\doc\_minted-Documentation/AACABABF5FC65747F9FE5D67A5D56B94A
-18FE176B1FC0DAD2AB6AA47BB307481.pygtex")
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 195.
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 390.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1214,7 +1236,37 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[23]
+[23])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 230.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[24]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/C77FF6C97EC5A82859B56CAB1B7E0EFEC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/AACABABF5FC65747F9FE5D67A5D56B94A
+18FE176B1FC0DAD2AB6AA47BB307481.pygtex")
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 238.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[25]
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/FA9553DF91383CE70E28C7A91D48C72BC
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
@@ -1233,44 +1285,35 @@ D694BA000DED3E2950A9E72182DA7D6.pygtex")
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\_minted-Documentation/5549C3B81D3241F340E840CFCBCACABFC
 D694BA000DED3E2950A9E72182DA7D6.pygtex")
-Overfull \hbox (11.69905pt too wide) in paragraph at lines 198--201
+Underfull \hbox (badness 10000) in paragraph at lines 241--245
 \OT1/cmr/m/n/10.95 Folgend ist der Sour-ce des Mo-dels [] an-gef[]uhrt, wel-che
-s den Kno-ten f[]ur den A*-Algorithmus
+s den Kno-
  []
 
 
-Overfull \hbox (114.32298pt too wide) in paragraph at lines 198--201
+Underfull \hbox (badness 7486) in paragraph at lines 241--245
+\OT1/cmr/m/n/10.95 ten f[]ur den A*-Algorithmus dar-stellt. Hier-bei sei die Im
+-ple-men-tie-rung der Me-tho-den
+ []
+
+
+Underfull \hbox (badness 3229) in paragraph at lines 241--245
+[] \OT1/cmr/m/n/10.95 erw[]ahnt, die nicht nur das re-fe-ren-zier-te []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 241--245
 \OT1/cmr/m/n/10.95 Daher d[]urfen die-se Kno-ten nicht in Con-tai-nern ver-wen-
-det wer-den, die de-ren []
+det wer-den, die de-ren
  []
 
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 207.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[24]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0D6A17D24E837A15E55B69BF04D9CBF1B
+A5E79F73B1C3646B3CD498299E2150E.pygtex"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 213.
-(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
-
-
-Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
- Make it at least 51.68465pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[25]
-File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 216.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 50.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1280,9 +1323,12 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [26]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 224.
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 112.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1292,9 +1338,12 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [27]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 227.
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 174.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1304,9 +1353,12 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [28]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 229.
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 237.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1315,10 +1367,10 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[29]
+[29])
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 231.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 248.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1328,9 +1380,15 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [30]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/E686A9814D946DA49279F194D8B42825C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/4758BD9CF5CDA466F291CB6CCB0C8559F
+297B69F74DB7CB468E6FD4303EF46AC.pygtex"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 233.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 59.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1339,10 +1397,16 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[31]
+[31])
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/E686A9814D946DA49279F194D8B42825C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/F74A366128B594F58EEDFD42C1722091B
+AD9A609224E5DBC929DF156B8613500.pygtex"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 236.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 54.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1351,10 +1415,16 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[32]
+[32])
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/86ACCC83D5CB8A765DFEB6670A25B537C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/83EF0409A7704F5F03DC16306B4C9EDB3
+3042A67E454C9D0356261BEDB3C7DA7.pygtex")
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 239.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 271.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1364,9 +1434,15 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [33]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/25090A64C444D8CF671A881F6CDB9745C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/CF441315403A92855071E6D130AC36A86
+EFEDCD840CA4399B9787855363DB7DE.pygtex"
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 244.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 59.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1375,14 +1451,10 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[34]
-runsystem(del "Documentation.pyg")...executed.
-
- 
-AED: lastpage setting LastPage
+[34])
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 249.
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 280.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1392,38 +1464,866 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  This may cause the page layout to be inconsistent, however.
 
 [35]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 249.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 249.
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0ADA391EB8903D6837F69A11F97706A6C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/2DB7D4D9404D522814242F9F12B3EC6CA
+FBFCD10AA5D1093F766C7E12F61BDEE.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[36])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 288.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[37]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/45EF79EE4ECA6E4CE362D406656B88C6C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 1142) in paragraph at lines 291--293
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Kon-struk-to-ren der Klas-se
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/77ACEBBDA471DAC22C2B01EF498B99853
+B0F16A3C93DCABE1560E400FC11E798.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[38])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 296.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[39]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/FE1C98A1BF551D0C0FDB40915CD94472C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 299--301
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/394AB3D826551EFD7AFB7B2D057E7BDCC
+D2A284E81E75408F551FD5AAAA815DA.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[40])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 304.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[41]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/80090F2B4E6672C758919A83EC39FE99C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 307--309
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/7617F39F008CD69CFB06BF02DF270436C
+DFE153537BE626F80C2DAD32D99ECDB.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[42])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 312.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[43]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/6533CAB3E2BE1E0B0C83FE3F796CE1B9C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 315--317
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/83E82877AB95DF19446882F2D1187A5E3
+9BFF9B9B7E09FB632A058F1CD925555.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[44])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 320.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[45]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/A1542326785DDFD31E7881A0AE374DDAC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 323--325
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/6C27F83CF8F76BCCA052E28A5A66B335C
+D41E63B673EBEA0769135A20615CCED.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[46])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 328.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[47]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/1633619781EEBEF9965878B9C4EFA434C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/DF0A55D2EFCB54C6760F0B1AEF600CEE1
+9FF9F2E670C62FCCE61725CA13C5BC9.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 61.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[48])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 336.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[49]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/F415247FC66AA99CFB2D5937491BBEB8C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 339--341
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/1FD09E1422C7FD2773B54A2313FC1E2FA
+07EFB9FEA9E51A972F9ECC35439D638.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[50]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 123.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[51])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 344.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[52]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/832861AFA968812BA3BD6B73326A2926C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/311E35B3DC1238E9FE0A59EE49FEC7B30
+8B0A3E50CF797C05A5E718964AE0D4C.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[53])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 352.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[54]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0768C9D69FF38A00137289D39E970522C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/B5DF0EB15312142CC90B4EFF6112F67C0
+6BFF184D9D6F4E9C8554641745D2A75.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 61.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[55])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 360.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[56]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/49997AAB69AF0B17865F3A350209B181C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/E6A589E6469918EF2EA83385965EB3FF9
+9C1A1C18C72C22B6877A08A1CE46B60.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[57])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 368.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[58]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0327395B8158598F4A877594D5262A36C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0D6E5447A9E63CFC6EE1890843CACFE9F
+8675D1FB1F868C6EF1BE88CAB17CC0D.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[59])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 376.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[60]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/8DF6BECDB068A29C9BA98BB71A745EADC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 379--381
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/90232A79632B0C4F74012300ABF2F7FB6
+2B30D079CB11B6CD9CB3662FBE9CF21.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[61])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 384.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[62]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/FA9553DF91383CE70E28C7A91D48C72BC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 1142) in paragraph at lines 387--389
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Kon-struk-to-ren der Klas-se
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/9A83E903F458C694E8201248674E3A5D0
+2EE3E088CDE6438DEEF71F0C509DFBF.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[63])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 392.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[64]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/908B68665597F152225264F27F1DFC70C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 395--397
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/AF4564B21D0022AF9923132B28B8B203E
+9E589EB60767E7F440B90931F900273.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 59.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[65])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 400.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[66]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/C9DB27DFB3E14255C0704F363C7DF4E6C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 403--405
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/76755E5798A266ED6289C0D85980E7C78
+BEFA7E6D64A77B3004E23041B6261E9.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[67])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 408.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[68]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/E7F43A3770AE74F2D971DBB334982ACDC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 411--413
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/370F086952CB96226374AEAC2B8C6378E
+52CFE81205F90AFA20BCD00927AF412.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[69])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 416.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[70]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/51945CA7609B810C61AF4E1C5506E32FC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/FA9553DF91383CE70E28C7A91D48C72BC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/2541A8F9BDFB442D7ADF2B5BB33D2C39D
+64F3D9C0215F954BB8C620368B55FDB.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 60.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[71])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 424.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[72]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/6DA3E95D2F0E10633E8F7D8C25A720540
+31DD76797CB92CE6114CA15A0EC4D52.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 59.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[73])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 432.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[74]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/21162BB6FEF2FC459F1FFA5A4F391C99C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/F2C1242A6A7A879DD8E80F9BA4FFE576C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 435--438
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/ACDDA03085CAC532294D8DE6FC39D2219
+E6A1E800F0FDBD8A889C86E6BB71381.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 57.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[75]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 120.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[76]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 183.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[77])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 441.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[78]
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/21162BB6FEF2FC459F1FFA5A4F391C99C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0B0191332056DADD4EF3456BDAC5E729C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/0B0191332056DADD4EF3456BDAC5E729C
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/5C9BA688AC67673A3E7C813F1908CBEAC
+D694BA000DED3E2950A9E72182DA7D6.pygtex")
+Underfull \hbox (badness 10000) in paragraph at lines 444--447
+\OT1/cmr/m/n/10.95 Folgend ist die Im-ple-men-tie-rung der Test-klas-se f[]ur d
+ie Tests der Me-tho-de
+ []
+
+
+("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
+_hands_on_4\eclipse\doc\_minted-Documentation/F7299713E2D29541FBEB67B8252076FD3
+84F2C72E0BB74D74CC8E608E3005CC3.pygtex"
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 55.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[79]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 118.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[80]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 181.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[81]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 244.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[82])
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 450.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[83]
+runsystem(del "Documentation.pyg")...executed.
+
+ 
+AED: lastpage setting LastPage
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 456.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[84]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 456.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 456.
 
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\Java\Semester 4\20150516
 _hands_on_4\eclipse\doc\Documentation.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 249.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 249.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 456.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 456.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 3560911A8A049897BE592BB968DA8623;1594.
+(rerunfilecheck)             Checksum: 92E4E146E83EB607D0DDFEA365A78D93;2958.
  ) 
 Here is how much of TeX's memory you used:
- 10904 strings out of 493921
- 186754 string characters out of 3144873
- 313142 words of memory out of 3000000
- 13882 multiletter control sequences out of 15000+200000
- 8212 words of font info for 31 fonts, out of 3000000 for 9000
+ 11278 strings out of 493921
+ 220244 string characters out of 3144873
+ 319949 words of memory out of 3000000
+ 13979 multiletter control sequences out of 15000+200000
+ 9636 words of font info for 36 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 37i,16n,43p,940b,693s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmitt10.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on Documentation.pdf (35 pages, 871617 bytes).
+ 37i,16n,43p,1161b,695s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbsy10.pfb
+><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmitt10.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program File
+s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files 
+(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x8
+6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on Documentation.pdf (84 pages, 1078430 bytes).
 PDF statistics:
- 351 PDF objects out of 1000 (max. 8388607)
- 70 named destinations out of 1000 (max. 500000)
- 190 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 727 PDF objects out of 1000 (max. 8388607)
+ 167 named destinations out of 1000 (max. 500000)
+ 310 words of extra memory for PDF output out of 10000 (max. 10000000)
 

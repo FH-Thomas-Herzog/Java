@@ -1,0 +1,61 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This exception indicates that an given index for a specific board is invalid.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 26, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{InvalidBoardIndexException} \PYGdefault{k+kd}{extends} \PYGdefault{n}{RuntimeException} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long} \PYGdefault{n}{serialVersionUID} \PYGdefault{o}{=} \PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{l+m+mi}{6222371469322317929L}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{InvalidBoardIndexException}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param message}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{InvalidBoardIndexException}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param cause}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{InvalidBoardIndexException}\PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{cause}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param message}
+\PYGdefault{c+cm}{	 * @param cause}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{InvalidBoardIndexException}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{cause}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param message}
+\PYGdefault{c+cm}{	 * @param cause}
+\PYGdefault{c+cm}{	 * @param enableSuppression}
+\PYGdefault{c+cm}{	 * @param writableStackTrace}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{InvalidBoardIndexException}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{,} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{enableSuppression}\PYGdefault{o}{,} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{writableStackTrace}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{cause}\PYGdefault{o}{,} \PYGdefault{n}{enableSuppression}\PYGdefault{o}{,} \PYGdefault{n}{writableStackTrace}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

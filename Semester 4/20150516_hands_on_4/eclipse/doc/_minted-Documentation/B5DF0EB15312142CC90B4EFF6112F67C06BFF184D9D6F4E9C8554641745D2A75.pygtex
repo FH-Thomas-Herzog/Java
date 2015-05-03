@@ -1,0 +1,84 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe.test.puzzle.impl.boardImpl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertEquals}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{fail}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Test}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe.test.api.AbstractTest}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception.InvalidMoveException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.impl.BoardListImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model.Position}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This test class tests the method \PYGdefaultZob{}@link Board\PYGdefaultZsh{}moveUp()\PYGdefaultZcb{}.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 26, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{MoveUpTest} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractTest} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+	\PYGdefault{n+nd}{@Test}\PYGdefault{o}{(}\PYGdefault{n}{expected} \PYGdefault{o}{=} \PYGdefault{n}{InvalidMoveException}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{invalidBoard}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{alreadyOnTopAllColumns}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{oldIdx} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{size}\PYGdefault{o}{;} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+				\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{n}{oldIdx}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{));}
+				\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+				\PYGdefault{n}{oldIdx} \PYGdefault{o}{=} \PYGdefault{n}{i}\PYGdefault{o}{;}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+
+				\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+				\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+
+				\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}}
+				\PYGdefault{n}{fail}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Expected InvalidMoveException\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{InvalidMoveException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// Should throw exception}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{validAllColsFormBottom}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{lastRow} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{size} \PYGdefault{o}{*} \PYGdefault{o}{(}\PYGdefault{n}{size} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{));}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{n}{size}\PYGdefault{o}{;} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kt}{int} \PYGdefault{n}{idx} \PYGdefault{o}{=} \PYGdefault{n}{lastRow} \PYGdefault{o}{+} \PYGdefault{o}{(}\PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+			\PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+			\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{n}{idx}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+			\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{j} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;} \PYGdefault{n}{j} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{size}\PYGdefault{o}{;} \PYGdefault{n}{j}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Position} \PYGdefault{n}{emptyTilePosition} \PYGdefault{o}{=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{getEmptyTilePosition}\PYGdefault{o}{();}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{emptyTilePosition}\PYGdefault{o}{.}\PYGdefault{n+na}{rowIdx}\PYGdefault{o}{);}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{n}{emptyTilePosition}\PYGdefault{o}{.}\PYGdefault{n+na}{colIdx}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

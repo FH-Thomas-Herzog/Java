@@ -21,7 +21,7 @@ import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
  * @date Apr 30, 2015
  */
 @RunWith(JUnit4.class)
-public class CaclculateParityTest extends AbstractTest {
+public class CalculateParityTest extends AbstractTest {
 
 	// -- Then --
 	@Test(expected = InvalidBoardIndexException.class)

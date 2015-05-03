@@ -20,7 +20,7 @@ import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
  * @date Apr 26, 2015
  */
 @RunWith(JUnit4.class)
-public class CnstructorTest extends AbstractTest {
+public class ConstructorTest extends AbstractTest {
 
 	// -- Then --
 	@Test(expected = IllegalArgumentException.class)

@@ -38,7 +38,10 @@
 \newcommand{\srcDir}{../src/main/java}
 \newcommand{\srcTestDir}{../src/test/java}
 \newcommand{\mainPackageDir}{\srcDir/at/fh/ooe/swe4/puzzle}
-\newcommand{\mainTestPackageDir}{\srcTestDir/at/fh/ooe/swe/test/}
+\newcommand{\mainTestPackageDir}{\srcTestDir/at/fh/ooe/swe/test}
+\newcommand{\boardTestPackageDir}{\mainTestPackageDir/puzzle/impl/boardImpl}
+\newcommand{\searchNodeTestPackageDir}{\mainTestPackageDir/puzzle/model/searchNode}
+\newcommand{\sliderTestPackageDir}{\mainTestPackageDir/puzzle/impl/slidingPuzzle}
 \newcommand{\mainTestPackage}{at.fh.ooe.swe.test}
 \newcommand{\imagesDir}{images}
 % the default subsection headers
@@ -66,6 +69,16 @@
 	tabsize=2,
 	autogobble=true,
 	breakautoindent=false
+}
+\newmintedfile[xmlSourceFile]{xml}{
+	linenos=true, 
+	frame=single, 
+	breaklines=true, 
+	tabsize=2,
+	numbersep=5pt,
+	xleftmargin=10pt,
+	baselinestretch=1,
+	fontsize=\footnotesize
 }
 % =============================================
 % Page Style, Footers & Headers, Title
@@ -119,12 +132,50 @@ Bei den JUnit Tests soll sich an folgende Konvention gehalten werden: \\
 \end{enumerate}
 Für die JUnit Test soll JUnit4 verwendet werden wobei hierbei so viele Features wie möglich genutzt werden sollen. Da sicherlich bei den nächsten Übungen auch JUnit Test implementiert werden müssen, sollen alle Ressourcen, die bei anderen Tests wiederverwendet werden sollen in ein eigenes Projekt ausgelagert werden \emph{junit-test-suite}, sodass diese Ressourcen einfach in anderen Projekten verwendet werden können. Es ist darauf zu achten, dass es absolut keine Abhängigkeiten zu dem eigentlichen Projekt gibt und das die Implementierungen so aufgebaut sind, dass sie für jedes anderes Projekt ohne Modifikation wiederverwendet werden können. \\\\
 Da wir dazu gezwungen sind in dieser Dokumentation auch die Testresultate anzuführen und die Screenshots etwas zu wenig erscheinen, soll ein Logging implementiert werden, dass die Testresultate auf der Konsole ausgibt. Hierbei sollen \emph{TestWatcher} implementiert werden, die einerseits die Invocation einer Testklasse sowie einer Testmethode auf die Konsole loggen. Hierbei soll ein bekanntes Logging Framework namens Log4j verwendet werden.
-\newpage
 
+
+\subsection{A*-Algorithmus}
+Da der A*-Algorithmus bei dieser Problemstellung eine riesige Lösungsmenge produziert, muss dieser optimiert werden.\\
+Pro untersuchten Knoten können maximal 4 Nachfolgeknoten gefunden werden, was bedeutet dass im schlimmsten Fall pro untersuchter Ebene der Lösungsbaum um den Faktor 4 anwächst.\\\\
+Folgend ist ein Beispiel für den worst case angeführt wobei \emph{M} die zu untersuchende Lösungsmenge darstellt:
+\begin{enumerate}
+	\item $M=\{N1\}$
+	\item $M=\{N1, N2, N3, N4, N5\}$
+	\item $M=\{N1, N2, N3, N4, N5, N6, N7, N8, N9\}$
+	\item ...
+\end{enumerate}
+Es ist zu sehen dass bereits bei der dritten Ebene sich 9 Elemente in der zu untersuchenden Lösungsmenge befinden.\\
+Daher muss der Algorithmus optimiert werden, wobei die noch nicht untersuchten Knoten (offen) und die bereits untersuchten Knoten (geschlossen) untersucht werden müssen ob bereits Knoten untersucht wurden, die geringere Kosten aufweisen. Ist dem so dann sollen die Nachfolgeknoten von der Untersuchung ausgeschlossen werden, was die Lösungsmenge so klein wie möglich hält.\\
+Hierbei stellen aber die Implementierungen \inlineJavaSource{node.hashCode(); node.equals(Object other)} der Klasse \inlineJavaSource{SearchNode<T>} ein Problem dar, da aufgrund der verwendeten \inlineJavaSource{PriorityQueue<T>} diese Methoden die Kosten mit aufnehmen müssen.\\
+Ansonsten würden bei dem Versuch Knoten aus der Queue zu löschen alle Knoten gelöscht werden, die dasselbe Board halten aber unterschiedliche Kosten.\\
+Des Weiteren macht es dieser Umstand unmöglich einen Knoten mit einen bestimmten gesetzten Board zu erhalten, da ja auch die Kosten mit involviert sind.\\
+Eine Verwendung des Containers \inlineJavaSource{Set<T>, List<T>} scheidet ebenfalls aus da wir bei der untersuchung der offenen und geschlossenen Knoten Knoten erhalten müssen, die lediglich dasselbe \inlineJavaSource{Board<T>} halten ohne Rücksicht auf die Kosten. \\\\
+Daher wurden folgende Container gewählt:\
+\begin{enumerate}
+	\item \textbf{\inlineJavaSource{PriorityQueue<T>}:} Die Queue, die die Knoten mit den geringsten Kosten vorne anreiht und diese zuerst zurückliefert. Erfordert bei \inlineJavaSource{node.hashCode(); node.equals(Object other)} die Miteinbeziehung der Kosten.
+	\item \textbf{\inlineJavaSource{HashMap<Board<T>, SearchNode<T>>}: } Für die bereits untersuchten und offenen Knoten. Hierbei haben wir konstante Laufzeit beim Hinzufügen und Erhalten eines Knoten aus der Map, da hier über die Hash-Funktion \inlineJavaSource{board.hashCode()} die Knoten in der Map adressiert werden. Ebenfalls wird so das Problem mit \inlineJavaSource{node.hashCode(); node.equals(Object other)} umgangen. (Beinahe konstante Laufzeit aufgrund von Kollisionen) 
+\end{enumerate}
+Der Algorithmus soll versuchen die Nachfolgeknoten des aktuell untersuchten Knoten in den Container, offene wie auch geschlossenen Knoten, zu finden und zu entscheiden ob diese Knoten des Containers geringere Kosten besitzen. Wenn ja werden die aktuellen Nachfolgeknoten ignoriert und nicht weiter untersucht, da es schon einen besseren Weg zu diesem Board gibt.
+
+\newpage
 \subsection{\sourceSection}
 Folgend sind die Sources dieser Übung angeführt, sowie die Maven Konfiguration diese Projekts.\\
 Pro Source wird auch beschrieben warum die API oder Implementierung so gewählt wurde.\\\\
 Für weitere Informationen bezüglich der Implementierungen sei auf die Javadoc verwiesen.
+
+\subsubsection{pom.xml}
+Folgend ist die \emph{pom.xml} des Projekts angeführt.\\
+Es wird hierbei das \emph{maven-compiler-plugin} und \emph{maven-surefire-plugin} verwendet. Letzteres wird dazu verwendet um den Test Report zu erstellen.\\
+Diese Reports sind in folgenden Verzeichnissen enthalten:
+\begin{enumerate}
+	\item \textbf{\$\{basedir\}/target/site:} Maven Projekt Report zusammen mit den erstellten Surefire Report.
+	\item \textbf{\$\{basedir\}/target/surefire-reports:} Die Surefire Reporte für alle ausgeführten Tests.
+\end{enumerate} 
+\begin{code}
+	\caption{pom.xml}
+	\xmlSourceFile{../pom.xml}
+\end{code}
+\newpage
 
 \subsubsection{BoardListImpl.java}
 Folgend ist das Interface \emph{Board.java} angeführt, welches die Spezifikation für die Board Implementierung darstellt. Es wurde beschlossen ein eigenes Interface zu spezifizieren, da es auch möglich sein soll den Container für die Verwaltung der Kacheln auszutauschen (\inlineJavaSource{List<T>, T[], usw.})\\
@@ -172,14 +223,6 @@ Diese Klasse wurde nach dem Pattern \emph{Fluent Interface} implementiert, da es
 \end{javaSource} 
 Es wurde eine interne Klasse \inlineJavaSource{SolutionHandler} implementiert, welche das Handling der Lösung übernimmt. Auch diese Implementierung verwendet \emph{Fluent Interface}. \\
 Um durchgehend mit demselben Typ zu arbeiten wird auch hier die Typdefinition verlangt, die der Typdefinition der Kacheln im \inlineJavaSource{Board} entspricht. Damit ist gewährleistet, dass z.B.: eine \inlineJavaSource{SlidingPuzzle<Integer>} Instanz nur auf \inlineJavaSource{Board<Integer>} Instanzen angewendet werden kann und nicht z.B.: auf \inlineJavaSource{Board<Character>} Instanzen.\\\\
-Das macht es unmöglich einen Knoten mit einen bestimmten gesetzten Board zu erhalten, daher kann es auch keine Optimierung des Algorithmus geben, wobei bereits besuchte Knoten mit geringeren Kosten ausgenommen werden können.\\
-Des Weiteren ist schwer aus einem \inlineJavaSource{Set<T>} einen Knoten rauszubekommen. Man müsste über den gesamten Container iterieren und den Knoten suchen. Dieses Problem haben wir auch bei einer \inlineJavaSource{PriorityQueue<T>}.\\\\
-Daher wurden folgende Container gewählt:\
-\begin{enumerate}
-	\item \textbf{\inlineJavaSource{PriorityQueue<T>}:} DIe Queue, die die Knoten mit den geringsten Kosten vorne anreiht und diese zuerst zurückliefert.
-	\item \textbf{\inlineJavaSource{HashMap<Board<T>, SearchNode<T>>}: } Für die bereits untersuchten und offenen Knoten. Hierbei haben wir konstante Laufzeit beim Hinzufügen und Erhalten eines Knoten aus der Map, da hier über die Hash-Funktion \inlineJavaSource{board.hashCode()} die Knoten in der Map adressiert werden. (Beinahe konstante Laufzeit aufgrund von Kollisionen) 
-\end{enumerate}
-Der Algorithmus versucht die Nachfolgeknoten des aktuell untersuchten Knoten in den Container offene wie auch geschlossenen Knoten zu finden und zu entscheiden ob diese Knoten der Container geringere Kosten besitzen. Wenn ja werden die aktuellen Nachfolgeknoten ignoriert und nicht weiter untersucht, da es schon einen besseren Weg zu diesem Board Status gibt.
 \begin{code}
 	\caption{BoardListImpl.java}
 	\javaSourceFile{\mainPackageDir/impl/SlidingPuzzle.java}
@@ -198,52 +241,216 @@ Folgend ist der Source des Models \inlineJavaSource{Position} angeführt, welche
 Folgend ist der Source des Models \inlineJavaSource{SearchNode<T>} angeführt, welches den Knoten für den A*-Algorithmus darstellt. Hierbei sei die Implementierung der Methoden \inlineJavaSource{node.hashCode(); node.equals(other)} erwähnt, die nicht nur das referenzierte \inlineJavaSource{Board<T>} verwendet sondern auch die Gesamtkosten.\\
 Das Problem mit diesen Implementierungen ist, dass bei der Verwendung eines \inlineJavaSource{Set<T>} Containers, welcher die geschlossenen Knoten enthält, Duplikate enthalten würde. Also Knoten mit demselben \inlineJavaSource{Board} aber mit unterschiedlichen gesetzten Kosten.\\
 Daher dürfen diese Knoten nicht in Containern verwendet werden, die deren \inlineJavaSource{node.hashCode(); node.equals(Object other)} verwenden.
+\begin{code}
+	\caption{SearchNode.java}
+	\javaSourceFile{\mainPackageDir/model/SearchNode.java}
+\end{code}
+\newpage
+
+
+\subsubsection{InvalidBoardIndexException.java}
+Folgend ist die Implementierung der \inlineJavaSource{RuntimeException} angeführt, welche verwendet wird um anzuzeigen wenn ungültige Indizes auftreten.
+\begin{code}
+	\caption{InvalidCoardIndexException.java}
+	\javaSourceFile{\mainPackageDir/exception/InvalidBoardIndexException.java}
+\end{code}
+
+\subsubsection{InvalidMoveException.java}
+Folgend ist die Implementierung der \inlineJavaSource{RuntimeException} angeführt, welche verwendet wird um anzuzeigen wenn versucht wurde die leere Kachel auf eine ungültige Position zu verschieben.
+\begin{code}
+	\caption{InvalidMoveException.java}
+	\javaSourceFile{\mainPackageDir/exception/InvalidMoveException.java}
+\end{code}
+
+\subsubsection{NoSolutionExcption.java}
+Folgend ist die Implementierung der \inlineJavaSource{Exception} angeführt, welche verwendet wird um anzuzeigen wenn keine Lösung gefunden wurde. Diese Ausnahme muss explizit abgefangen werden.
+\begin{code}
+	\caption{NoSolutionExcption.java}
+	\javaSourceFile{\mainPackageDir/exception/NoSolutionExcption.java}
+\end{code}
+\newpage
+
+\subsubsection{AbstractTest.java}
+Folgend ist die Implementierung der abstrakten Testklasse angeführt, welche die gemeinsamen Ressourcen für die konkreten Testklassen kapselt.\\
+Hier sind \inlineJavaSource{TestWatcher} deklariert, die das Logging der Tests realisieren.
+\begin{code}
+	\caption{AbstractTest.java}
+	\javaSourceFile{\mainTestPackageDir/api/AbstractTest.java}
+\end{code}
+\newpage
+
+\subsubsection{CalculateParityTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.calculateParity()} angeführt.
+\begin{code}
+	\caption{CalculateParityTest.java}
+	\javaSourceFile{\boardTestPackageDir/CalculateParityTest.java}
+\end{code}
+\newpage
+
+\subsubsection{ConstructorTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Konstruktoren der Klasse \inlineJavaSource{BoardListImpl<t>} angeführt.
+\begin{code}
+	\caption{ConstructorTest.java}
+	\javaSourceFile{\boardTestPackageDir/ConstructorTest.java}
+\end{code}
+\newpage
+
+\subsubsection{EqualsTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.equals(Object other)} angeführt.
+\begin{code}
+	\caption{EqualsTest.java}
+	\javaSourceFile{\boardTestPackageDir/EqualsTest.java}
+\end{code}
+\newpage
+
+\subsubsection{GetEmptyTilePositionTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.getEmptyTilePosition()} angeführt.
+\begin{code}
+	\caption{GetEmptyTilePositionTest.java}
+	\javaSourceFile{\boardTestPackageDir/GetEmptyTilePositionTest.java}
+\end{code}
+\newpage
+
+\subsubsection{GetTilePositionTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.getTilePosition(T value)} angeführt.
+\begin{code}
+	\caption{GetTilePositionTest.java}
+	\javaSourceFile{\boardTestPackageDir/GetTilePositionTest.java}
+\end{code}
+\newpage
+
+\subsubsection{GetTileTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.getTile(int rowIdx, int colIdx)} angeführt.
+\begin{code}
+	\caption{GetTileTest.java}
+	\javaSourceFile{\boardTestPackageDir/GetTileTest.java}
+\end{code}
+\newpage
+
+\subsubsection{IsValidTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.isValid()} angeführt.
+\begin{code}
+	\caption{IsValidTest.java}
+	\javaSourceFile{\boardTestPackageDir/IsValidTest.java}
+\end{code}
+\newpage
+
+\subsubsection{MakeMovesTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.makeMoves(List<Move> moves)} angeführt.
+\begin{code}
+	\caption{MakeMovesTest.java}
+	\javaSourceFile{\boardTestPackageDir/MakeMovesTest.java}
+\end{code}
+\newpage
+
+\subsubsection{MoveDownTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.moveDown()} angeführt.
+\begin{code}
+	\caption{MoveDownTest.java}
+	\javaSourceFile{\boardTestPackageDir/MoveDownTest.java}
+\end{code}
+\newpage
+
+\subsubsection{MoveUpTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.moveUp()} angeführt.
+\begin{code}
+	\caption{MoveUpTest.java}
+	\javaSourceFile{\boardTestPackageDir/MoveUpTest.java}
+\end{code}
+\newpage
+
+\subsubsection{MoveLeftTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.moveLeft()} angeführt.
+\begin{code}
+	\caption{MoveLeftTest.java}
+	\javaSourceFile{\boardTestPackageDir/MoveLeftTest.java}
+\end{code}
+\newpage
+
+\subsubsection{MoveRightTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.moveRight()} angeführt.
+\begin{code}
+	\caption{MoveRightTest.java}
+	\javaSourceFile{\boardTestPackageDir/MoveRightTest.java}
+\end{code}
+\newpage
+
+\subsubsection{SetTileTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{board.setTile(int rowIdx, int colIdx, T value)} angeführt.
+\begin{code}
+	\caption{SetTileTest.java}
+	\javaSourceFile{\boardTestPackageDir/SetTileTest.java}
+\end{code}
+\newpage
+
+\subsubsection{ConstructorTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Konstruktoren der Klasse \inlineJavaSource{SearchNode<T>} angeführt.
+\begin{code}
+	\caption{ConstructorTest.java}
+	\javaSourceFile{\searchNodeTestPackageDir/ConstructorTest.java}
+\end{code}
+\newpage
+
+\subsubsection{ComparableTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{node.compare(SearchNode<T> other)} angeführt.
+\begin{code}
+	\caption{ComparableTest.java}
+	\javaSourceFile{\searchNodeTestPackageDir/ComparableTest.java}
+\end{code}
+\newpage
+
+\subsubsection{EqualsTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{node.equals(Object other)} angeführt.
+\begin{code}
+	\caption{EqualsTest.java}
+	\javaSourceFile{\searchNodeTestPackageDir/EqualsTest.java}
+\end{code}
+\newpage
+
+\subsubsection{EstimatedCostsToTargetTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{node.estimatedCostsToTarget} angeführt.
+\begin{code}
+	\caption{EstimatedCostsToTargetTest.java}
+	\javaSourceFile{\searchNodeTestPackageDir/EstimatedCostsToTargetTest.java}
+\end{code}
+\newpage
+
+\subsubsection{IteratorTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der \inlineJavaSource{Iterator<T>} Implementierung für die Klasse \inlineJavaSource{SearchNode<T>} angeführt.
+\begin{code}
+	\caption{IteratorTest.java}
+	\javaSourceFile{\searchNodeTestPackageDir/IteratorTest.java}
+\end{code}
+\newpage
+
+\subsubsection{FHProvidedTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests, welche von der FH zur Verfügung gestellt wurden angeführt. Um diese Tests unabhängig von den anderen Tests zu halten, wurden diese in dieser Testklasse gekapselt, obwohl diese die Namenskonvention bricht.
+\begin{code}
+	\caption{FHProvidedTest.java}
+	\javaSourceFile{\searchNodeTestPackageDir/FHProvidedTest.java}
+\end{code}
+\newpage
+
+\subsubsection{SolveIntegerTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{solver.solve(Board<T> gaol)} angeführt, welche von der FH zur Verfügung gestellt wurden.\\
+Diese Tests testen den A*-Algorithmus mit \inlineJavaSource{Integer} Kacheln. Sie wurden angepasst um mit der Implementierten API arbeiten zu können, sind aber semantisch gleich den zur Verfügung gestellten Tests.
+\begin{code}
+	\caption{SolveIntegerTest.java}
+	\javaSourceFile{\sliderTestPackageDir/SolveIntegerTest.java}
+\end{code}
+\newpage
+
+\subsubsection{SolveCharacterTest.java}
+Folgend ist die Implementierung der Testklasse für die Tests der Methode \inlineJavaSource{solver.solve(Board<T> gaol)} angeführt, welche von der FH zur Verfügung gestellt wurden.\\
+Diese Tests testen den A*-Algorithmus mit \inlineJavaSource{Character} Kacheln. Diese Tests sind eine Kopie der Integer Tests, nur mit dem \inlineJavaSource{Character} Datentyp für die Kacheln. Diese Tests beweisen des es keine Rolle spielt, welchen Datentyp man verwendet unter der Voraussetzung das diese das Interface \inlineJavaSource{Comparable<T>} korrekt implementieren.
+\begin{code}
+	\caption{SolveCharacterTest.java}
+	\javaSourceFile{\sliderTestPackageDir/SolveCharacterTest.java}
+\end{code}
+\newpage
+
+
+
 \subsection{\testSection}
-% =============================================
-% 2. Sorting algorithms
-% =============================================
-% Idea (common)
-% =============================================
-\newpage
-{\color{myred}
-	\section
-		{Sortieralgorithmen}
-}
-\subsection{\ideaSection \hspace{2mm}(Allgemein)}
-\newpage
-\subsubsection{Source Code\hspace{2mm}(Allgemein)}
 
-\newpage
-% =============================================
-% 2.1 Statistics
-% =============================================
-% Idea (stastistics)
-% =============================================
-\subsection{\ideaSection \hspace{2mm}(Statistics)}
-
-\newpage
-\subsubsection{Source Code}
-
-\newpage
-\subsection{HeapSorter}
-\newpage
-\subsubsection{Source Code}
-\newpage
-\subsubsection{\testSection}
-\newpage
-\subsection{QuickSorter}
-
-\newpage
-\subsubsection{Source Code}
-
-\newpage
-\subsubsection{\testSection}
-% =============================================
-% 2.2 Zeitausertung
-% =============================================
-\newpage
-{\color{myred}
-	\section
-		{Zeitauswertung}
-}
 \end{document}  

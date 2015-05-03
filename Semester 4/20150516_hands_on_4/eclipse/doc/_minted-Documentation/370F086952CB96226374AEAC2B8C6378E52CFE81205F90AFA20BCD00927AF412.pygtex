@@ -1,0 +1,120 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe.test.puzzle.model.searchNode}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertEquals}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.function.IntConsumer}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.stream.IntStream}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Test}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.RunWith}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.JUnit4}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe.test.api.AbstractTest}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.impl.BoardListImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model.Position}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model.SearchNode}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This test class tests the method \PYGdefaultZob{}@link SearchNode\PYGdefaultZsh{}estimatedCostsToTarget()\PYGdefaultZcb{}.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * This test class depends on proper functionality of the method}
+\PYGdefault{c+cm}{ * \PYGdefaultZob{}@link Board\PYGdefaultZsh{}getTilePosition(Comparable)\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 27, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@RunWith}\PYGdefault{o}{(}\PYGdefault{n}{JUnit4}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{EstimatedCostsToTargetTest} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractTest} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+	\PYGdefault{n+nd}{@Test}\PYGdefault{o}{(}\PYGdefault{n}{expected} \PYGdefault{o}{=} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{nullGoalBaord}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{estimatedCostsToTarget}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+	\PYGdefault{n+nd}{@Test}\PYGdefault{o}{(}\PYGdefault{n}{expected} \PYGdefault{o}{=} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{goalOfDifferentSize}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{goalSize} \PYGdefault{o}{=} \PYGdefault{n}{size} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goalContainer} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{goalSize}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{goalContainer}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{goalSize}\PYGdefault{o}{,} \PYGdefault{n}{goalContainer}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{estimatedCostsToTarget}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{validZeroDistance}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{cost} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{estimatedCostsToTarget}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{n}{cost}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{validShuffledGoal}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{IntStream}\PYGdefault{o}{.}\PYGdefault{n+na}{range}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{forEach}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{IntConsumer}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n+nd}{@Override}
+						\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{accept}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{iterationCount}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+							\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+							\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+							\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+							\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+							\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+							\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goalContainer} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{container}\PYGdefault{o}{);}
+							\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{shuffle}\PYGdefault{o}{(}\PYGdefault{n}{goalContainer}\PYGdefault{o}{);}
+							\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{(),} \PYGdefault{n}{goalContainer}\PYGdefault{o}{);}
+							\PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+							\PYGdefault{k+kt}{int} \PYGdefault{n}{costs} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+							\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+								\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{j} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;} \PYGdefault{n}{j} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{j}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+									\PYGdefault{k+kd}{final} \PYGdefault{n}{Integer} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{getTile}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{n}{j}\PYGdefault{o}{);}
+									\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+										\PYGdefault{k+kd}{final} \PYGdefault{n}{Position} \PYGdefault{n}{position} \PYGdefault{o}{=} \PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{getTilePosition}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+										\PYGdefault{c+c1}{// uses same algorithm as SearchNode via}
+										\PYGdefault{c+c1}{// static}
+										\PYGdefault{c+c1}{// final lambda member variable}
+										\PYGdefault{n}{costs} \PYGdefault{o}{+=} \PYGdefault{n}{SearchNode}\PYGdefault{o}{.}\PYGdefault{n+na}{CALC\PYGdefaultZus{}MANHATTAN\PYGdefaultZus{}DIST}\PYGdefault{o}{.}\PYGdefault{n+na}{apply}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Position}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{n}{j}\PYGdefault{o}{),} \PYGdefault{n}{position}\PYGdefault{o}{);}
+									\PYGdefault{o}{\PYGdefaultZcb{}}
+								\PYGdefault{o}{\PYGdefaultZcb{}}
+							\PYGdefault{o}{\PYGdefaultZcb{}}
+
+							\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+							\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{cost} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{estimatedCostsToTarget}\PYGdefault{o}{();}
+
+							\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+							\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{costs}\PYGdefault{o}{,} \PYGdefault{n}{cost}\PYGdefault{o}{);}
+						\PYGdefault{o}{\PYGdefaultZcb{}}
+					\PYGdefault{o}{\PYGdefaultZcb{});}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

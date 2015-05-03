@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{compare}\PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{other}\PYGdefault{o}{)}
+\end{Verbatim}

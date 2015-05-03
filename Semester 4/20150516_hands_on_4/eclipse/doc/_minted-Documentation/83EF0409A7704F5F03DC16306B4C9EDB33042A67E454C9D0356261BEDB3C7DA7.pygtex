@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception}\PYGdefault{o}{;}
+
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{NoSolutionExcption} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Exception} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long} \PYGdefault{n}{serialVersionUID} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{5795850985936976146L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NoSolutionExcption}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NoSolutionExcption}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NoSolutionExcption}\PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{cause}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NoSolutionExcption}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{cause}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NoSolutionExcption}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{,} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{enableSuppression}\PYGdefault{o}{,} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{writableStackTrace}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{n}{cause}\PYGdefault{o}{,} \PYGdefault{n}{enableSuppression}\PYGdefault{o}{,} \PYGdefault{n}{writableStackTrace}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

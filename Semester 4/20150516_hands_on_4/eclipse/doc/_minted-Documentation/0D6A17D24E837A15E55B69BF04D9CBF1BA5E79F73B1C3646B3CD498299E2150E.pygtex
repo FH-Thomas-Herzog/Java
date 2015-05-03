@@ -1,0 +1,262 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.NoSuchElementException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.function.BiFunction}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.function.Consumer}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board.Move}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class represents the search node for the solver algorithm.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 30, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the \PYGdefaultZob{}@link Comparable\PYGdefaultZlt{}T\PYGdefaultZgt{}\PYGdefaultZcb{} type which represents the board value}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{},} \PYGdefault{n}{Iterable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int} \PYGdefault{n}{costsFormStart}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int} \PYGdefault{n}{manhattenDistance}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int} \PYGdefault{n}{fullCosts}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{predecessor}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Move} \PYGdefault{n}{direction}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Labda expression for calculating}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{BiFunction}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Position}\PYGdefault{o}{,} \PYGdefault{n}{Position}\PYGdefault{o}{,} \PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{CALC\PYGdefaultZus{}MANHATTAN\PYGdefaultZus{}DIST} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{root}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZhy{}\PYGdefaultZgt{}} \PYGdefault{o}{(}\PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{abs}\PYGdefault{o}{((}\PYGdefault{n}{root}\PYGdefault{o}{.}\PYGdefault{n+na}{rowIdx} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{rowIdx}\PYGdefault{o}{))} \PYGdefault{o}{+} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{abs}\PYGdefault{o}{((}\PYGdefault{n}{root}\PYGdefault{o}{.}\PYGdefault{n+na}{colIdx} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{colIdx}\PYGdefault{o}{)));}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Constructs this instance and calculates the Manhattan distance between}
+\PYGdefault{c+cm}{	 * given board an goal and also the full costs.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param costsFormStart}
+\PYGdefault{c+cm}{	 *            the level the node is in}
+\PYGdefault{c+cm}{	 * @param predecessor}
+\PYGdefault{c+cm}{	 *            the predecessor can be null}
+\PYGdefault{c+cm}{	 * @param board}
+\PYGdefault{c+cm}{	 *            the board this node represents}
+\PYGdefault{c+cm}{	 * @param goal}
+\PYGdefault{c+cm}{	 *            the goal for calculating Manhattan distance}
+\PYGdefault{c+cm}{	 * @param direction}
+\PYGdefault{c+cm}{	 *            the direction performed to get to this state, can be null}
+\PYGdefault{c+cm}{	 * @throws IllegalArgumentException}
+\PYGdefault{c+cm}{	 *             if board or goal is null or they are not of the same size}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{SearchNode}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{costsFormStart}\PYGdefault{o}{,} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{predecessor}\PYGdefault{o}{,} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{n}{Move} \PYGdefault{n}{direction}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{board} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot configure this searchNode with a null board\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{goal} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot calculate manhattan distance on nul goal\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The given board and gola must be of the same size\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{costsFormStart} \PYGdefault{o}{=} \PYGdefault{n}{costsFormStart}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{predecessor} \PYGdefault{o}{=} \PYGdefault{n}{predecessor}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{board} \PYGdefault{o}{=} \PYGdefault{n}{board}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{direction} \PYGdefault{o}{=} \PYGdefault{n}{direction}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{manhattenDistance} \PYGdefault{o}{=} \PYGdefault{n}{calculateMahanttenDistance}\PYGdefault{o}{(}\PYGdefault{n}{goal}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{fullCosts} \PYGdefault{o}{=} \PYGdefault{n}{costsFormStart} \PYGdefault{o}{+} \PYGdefault{n}{manhattenDistance}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{estimatedCostsToTarget}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{manhattenDistance}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Calculates the Manhattan distance of all tiles on the given board to the}
+\PYGdefault{c+cm}{	 * goal board.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the Manhattan distance of this board state compared to the goal}
+\PYGdefault{c+cm}{	 *         state.}
+\PYGdefault{c+cm}{	 * @throws NoSuchElementException}
+\PYGdefault{c+cm}{	 *             if the goal does not contain a value from the initial board}
+\PYGdefault{c+cm}{	 * @see SearchNode\PYGdefaultZsh{}CALC\PYGdefaultZus{}MANHATTAN\PYGdefaultZus{}DIST}
+\PYGdefault{c+cm}{	 * @see Board\PYGdefaultZsh{}getTile(int, int)}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{calculateMahanttenDistance}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{costs} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{j} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;} \PYGdefault{n}{j} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{j}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{tile} \PYGdefault{o}{=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{getTile}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{n}{j}\PYGdefault{o}{);}
+				\PYGdefault{c+c1}{// ignore empty tile}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{tile} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k+kd}{final} \PYGdefault{n}{Position} \PYGdefault{n}{goalPosition} \PYGdefault{o}{=} \PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{getTilePosition}\PYGdefault{o}{(}\PYGdefault{n}{tile}\PYGdefault{o}{);}
+					\PYGdefault{n}{costs} \PYGdefault{o}{+=} \PYGdefault{n}{CALC\PYGdefaultZus{}MANHATTAN\PYGdefaultZus{}DIST}\PYGdefault{o}{.}\PYGdefault{n+na}{apply}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Position}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{n}{j}\PYGdefault{o}{),} \PYGdefault{n}{goalPosition}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{costs}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the estimated total costs.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the total cost of this node}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{estimatedTotalCosts}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{getCostsFormStart}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{n}{estimatedCostsToTarget}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Converts the node list started from this node to a list of \PYGdefaultZob{}@link Move\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 * which represent the moves to make to get this board state to the intended}
+\PYGdefault{c+cm}{	 * goal state.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the list of moves to make to get to the goal state}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{toMoves}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}();}
+		\PYGdefault{n}{iterator}\PYGdefault{o}{().}\PYGdefault{n+na}{forEachRemaining}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Consumer}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{accept}\PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{t}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// last node has no move set}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{t}\PYGdefault{o}{.}\PYGdefault{n+na}{getMove}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{t}\PYGdefault{o}{.}\PYGdefault{n+na}{getMove}\PYGdefault{o}{());}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{});}
+		\PYGdefault{c+c1}{// must be reversed because chain is in wrong order}
+		\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{reverse}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{);}
+		\PYGdefault{k}{return} \PYGdefault{n}{moves}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// Iterator methods}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This is the Iterator implementation for iterating over the connected}
+\PYGdefault{c+cm}{	 * search node list of the given search node.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Apr 26, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{SearchNodeIterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node}\PYGdefault{o}{;}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{SearchNodeIterator}\PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{hasNext}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{node} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{next}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSuchElementException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}No more search nodes are available\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{tmp} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{;}
+			\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{getPredecessor}\PYGdefault{o}{();}
+			\PYGdefault{k}{return} \PYGdefault{n}{tmp}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// Getter and Setter}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n+nf}{iterator}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{SearchNodeIterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{k}{this}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{};}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getPredecessor}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{predecessor}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{getCostsFormStart}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{costsFormStart}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setCostsFormStart}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{costsFormStart}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{costsFormStart} \PYGdefault{o}{=} \PYGdefault{n}{costsFormStart}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setPredecessor}\PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{predecessor}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{predecessor} \PYGdefault{o}{=} \PYGdefault{n}{predecessor}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getBoard}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{board}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Move} \PYGdefault{n+nf}{getMove}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{direction}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setMove}\PYGdefault{o}{(}\PYGdefault{n}{Move} \PYGdefault{n}{direction}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{direction} \PYGdefault{o}{=} \PYGdefault{n}{direction}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Compares the two instance by their set full costs}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{o}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{Integer}\PYGdefault{o}{.}\PYGdefault{n+na}{valueOf}\PYGdefault{o}{(}\PYGdefault{n}{fullCosts}\PYGdefault{o}{)}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{fullCosts}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{hashCode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{prime} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{31}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{prime} \PYGdefault{o}{*} \PYGdefault{n}{result} \PYGdefault{o}{+} \PYGdefault{o}{((}\PYGdefault{n}{board} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{l+m+mi}{0} \PYGdefault{o}{:} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{hashCode}\PYGdefault{o}{());}
+		\PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{prime} \PYGdefault{o}{*} \PYGdefault{n}{result} \PYGdefault{o}{+} \PYGdefault{n}{fullCosts}\PYGdefault{o}{;}
+		\PYGdefault{k}{return} \PYGdefault{n}{result}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{equals}\PYGdefault{o}{(}\PYGdefault{n}{Object} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{k}{this} \PYGdefault{o}{==} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{obj} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{getClass}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{n}{obj}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{other} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{obj}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{board} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{board} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{board}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{fullCosts} \PYGdefault{o}{!=} \PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{fullCosts}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{toString}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{StringBuilder} \PYGdefault{n}{sb} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{StringBuilder}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{o}{(}\PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{(),} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{)} \PYGdefault{o}{*} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{sb}\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}SearchNode content\PYGdefaultZdq{}}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{());}
+		\PYGdefault{n}{sb}\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}costsFromStart: \PYGdefaultZdq{}}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{costsFormStart}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}manhattanDistance: \PYGdefaultZdq{}}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{manhattenDistance}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}fullCosts: \PYGdefaultZdq{}}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{fullCosts}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{());}
+		\PYGdefault{k}{return} \PYGdefault{n}{sb}\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

@@ -1,0 +1,436 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashMap}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Map}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.PriorityQueue}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Queue}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Set}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.commons.lang.StringUtils}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Level}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board.Move}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception.InvalidMoveException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception.NoSolutionExcption}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model.SearchNode}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class is the solver for the game.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 26, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            The value type of the board tiles}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Queue}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{queue}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{open}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{closed}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{started} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This is the solution handler which handles the solution result}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 1, 2015}
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *            The value type of the board tiles}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{slider}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{start}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{n}{Logger} \PYGdefault{n}{log}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{n}{Level} \PYGdefault{n}{level}\PYGdefault{o}{;}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{started} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Constructor which gets the current \PYGdefaultZob{}@link SlidingPuzzle\PYGdefaultZcb{} instance and}
+\PYGdefault{c+cm}{		 * resulting \PYGdefaultZob{}@link SearchNode\PYGdefaultZcb{} instance, where no solution has been}
+\PYGdefault{c+cm}{		 * found if the node is null.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param node}
+\PYGdefault{c+cm}{		 *            the \PYGdefaultZob{}@link SearchNode\PYGdefaultZcb{} instance representing the result.}
+\PYGdefault{c+cm}{		 *            If null no result has been found.}
+\PYGdefault{c+cm}{		 * @param slider}
+\PYGdefault{c+cm}{		 *            the \PYGdefaultZob{}@link SlidingPuzzle\PYGdefaultZcb{} instance which gets returned on}
+\PYGdefault{c+cm}{		 *            method call \PYGdefaultZob{}@link SolutionHandler\PYGdefaultZsh{}end()\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{SolutionHandler}\PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node}\PYGdefault{o}{,} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{slider}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{slider} \PYGdefault{o}{=} \PYGdefault{n}{slider}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Starts the solution handling by creation the \PYGdefaultZob{}@link Move\PYGdefaultZcb{} list.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @return the current instance}
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the solution handler is already started}
+\PYGdefault{c+cm}{		 * @throws NoSolutionExcption}
+\PYGdefault{c+cm}{		 *             if the set node is null}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{start}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{started}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The solution handler needs to be end before started again\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{started} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{node} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSolutionExcption}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}No solution found\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{iterator}\PYGdefault{o}{();}
+			\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{start} \PYGdefault{o}{=} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{toMoves}\PYGdefault{o}{();}
+			\PYGdefault{c+c1}{// init with default logging}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{log} \PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{());}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{level} \PYGdefault{o}{=} \PYGdefault{n}{Level}\PYGdefault{o}{.}\PYGdefault{n+na}{INFO}\PYGdefault{o}{;}
+			\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Ability to provide a custom \PYGdefaultZob{}@link Logger\PYGdefaultZcb{} instance and \PYGdefaultZob{}@link Level\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param log}
+\PYGdefault{c+cm}{		 *            the \PYGdefaultZob{}@link Logger\PYGdefaultZcb{} instance used for logging}
+\PYGdefault{c+cm}{		 * @param level}
+\PYGdefault{c+cm}{		 *            the \PYGdefaultZob{}@link Level\PYGdefaultZcb{} instance defining the to use log level}
+\PYGdefault{c+cm}{		 * @return the current instance}
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the solution handler hasn\PYGdefaultZsq{}t been started yet}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{registerLogger}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Logger} \PYGdefault{n}{log}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{Level} \PYGdefault{n}{level}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{log} \PYGdefault{o}{=} \PYGdefault{n}{log}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{level} \PYGdefault{o}{=} \PYGdefault{n}{level}\PYGdefault{o}{;}
+			\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Prints the resulting moves via the \PYGdefaultZob{}@link Logger\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @return the current instance}
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the solution handler hasn\PYGdefaultZsq{}t been started yet}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{printMoves}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Resulting moves:\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{StringBuilder}\PYGdefault{o}{().}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZpc{}1\PYGdefaultZdl{}\PYGdefaultZhy{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{o}{((}\PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{/} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}s\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{o}{(}\PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{)))}
+													\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}: \PYGdefaultZdq{}}\PYGdefault{o}{)}
+													\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{)}
+																	\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{())}
+													\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{());}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Performs the moves on the initial board which has been found via the}
+\PYGdefault{c+cm}{		 * given node.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @return the current instance}
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the solution handler hasn\PYGdefaultZsq{}t been started yet}
+\PYGdefault{c+cm}{		 * @throws InvalidMoveException}
+\PYGdefault{c+cm}{		 *             if at least one of the resulting moves is invalid}
+\PYGdefault{c+cm}{		 * @see Board\PYGdefaultZsh{}makeMoves(Iterable)}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{performMoves}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{board} \PYGdefault{o}{=} \PYGdefault{n}{start}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{()}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{clone}\PYGdefault{o}{();}
+			\PYGdefault{n}{start}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{makeMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{);}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Initial state:\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// .append(board.toString())}
+			\PYGdefault{n}{String}\PYGdefault{o}{[]} \PYGdefault{n}{boardStrings} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{n}{boardStrings} \PYGdefault{o}{=} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{split}\PYGdefault{o}{(}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{(),} \PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{());}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{string} \PYGdefault{o}{:} \PYGdefault{n}{boardStrings}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{n}{string}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Initial state after movements:\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{boardStrings} \PYGdefault{o}{=} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{split}\PYGdefault{o}{(}\PYGdefault{n}{start}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{()}
+													\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{(),} \PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{());}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{string} \PYGdefault{o}{:} \PYGdefault{n}{boardStrings}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{n}{string}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Deprecated}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getMoves}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{toMoves}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Fills the given list with the resulting moves.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param moves}
+\PYGdefault{c+cm}{		 *            the list to fill resulting moves in}
+\PYGdefault{c+cm}{		 * @return the current instance}
+\PYGdefault{c+cm}{		 * @throws IllegalArgumentException}
+\PYGdefault{c+cm}{		 *             if the given list if null}
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the solution handler hasn\PYGdefaultZsq{}t been started yet}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{fillMoves}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{moves} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Given moves list must not be null\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{addAll}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{moves}\PYGdefault{o}{);}
+			\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Ends the solution handling by reseting all members but the given node}
+\PYGdefault{c+cm}{		 * or slider.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{		 * This instance can be restarted by calling method}
+\PYGdefault{c+cm}{		 * \PYGdefaultZob{}@link SolutionHandler\PYGdefaultZsh{}start\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @return the related \PYGdefaultZob{}@link SlidingPuzzle\PYGdefaultZcb{} instance}
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the solution handler hasn\PYGdefaultZsq{}t been started yet}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{end}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+			\PYGdefault{n}{started} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{level} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{log} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{moves} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{k}{return} \PYGdefault{n}{slider}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Checks if the \PYGdefaultZob{}@link SolutionHandler\PYGdefaultZcb{} instance has been started}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @throws IllegalStateException}
+\PYGdefault{c+cm}{		 *             if the instance hasn\PYGdefaultZsq{}t been started but it is tried to}
+\PYGdefault{c+cm}{		 *             perform an action on it.}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{checkForStarted}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{started}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The solution handler needs to be started before the solution can be handled\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Default constructor which does not initializes this instance.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * The \PYGdefaultZob{}@link Board\PYGdefaultZcb{} instance to work on needs to be set via}
+\PYGdefault{c+cm}{	 * \PYGdefaultZob{}@link SlidingPuzzleImpl\PYGdefaultZsh{}init(Board)\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @see SlidingPuzzleImpl\PYGdefaultZsh{}init(Board)}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{SlidingPuzzle}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Initializes the solver with the given board.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * Keep in mind if the board is null or invalid the}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param initial}
+\PYGdefault{c+cm}{	 *            the board to be resolved}
+\PYGdefault{c+cm}{	 * @return the current instance}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the slider has already been started}
+\PYGdefault{c+cm}{	 */}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{start}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{started}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The slider instance need to be end before restarted again.\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{initial} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{(!}\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{isValid}\PYGdefault{o}{()))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot init this instance with an null or invalid board.\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{started} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{board} \PYGdefault{o}{=} \PYGdefault{n}{initial}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{queue} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{PriorityQueue}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{open} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashMap}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{closed} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashMap}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Resets this instance by setting all container to null.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the solution handler hasn\PYGdefaultZsq{}t been started yet}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{end}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{started} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{board} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{goal} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{queue} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{closed} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Solves the set initial board and tries to calculate the moves to be made}
+\PYGdefault{c+cm}{	 * to transform the initial board to the goal board.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param goal}
+\PYGdefault{c+cm}{	 *            the goal board to resolve the initial board to}
+\PYGdefault{c+cm}{	 * @return the \PYGdefaultZob{}@link SolutionHandler\PYGdefaultZcb{} instance which is responsible for}
+\PYGdefault{c+cm}{	 *         handling the result}
+\PYGdefault{c+cm}{	 * @throws NoSolutionExcption}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}goal is null\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}goal is invalid\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}goal has different size\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}/ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{solve}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{checkForStarted}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// goal must represent valid board}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{goal} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{(!}\PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{isValid}\PYGdefault{o}{())} \PYGdefault{o}{||} \PYGdefault{o}{((}\PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{())))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSolutionExcption}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot solve the board if the goal board is either null, invalid or of differen size\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{goal} \PYGdefault{o}{=} \PYGdefault{n}{goal}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// validate parity of the two boards}
+		\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{isResolvable}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{k}{this}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+c1}{// we found the solution right away}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{goal}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{),} \PYGdefault{k}{this}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{current} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{board}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{n}{queue}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{current}\PYGdefault{o}{);}
+		\PYGdefault{n}{open}\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{(),} \PYGdefault{n}{current}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// search as long nodes are left and solution hasn\PYGdefaultZsq{}t been found}
+		\PYGdefault{k}{while} \PYGdefault{o}{(!}\PYGdefault{n}{queue}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// poll from queue}
+			\PYGdefault{n}{current} \PYGdefault{o}{=} \PYGdefault{n}{queue}\PYGdefault{o}{.}\PYGdefault{n+na}{poll}\PYGdefault{o}{();}
+			\PYGdefault{c+c1}{// remove from open as well}
+			\PYGdefault{n}{open}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{());}
+			\PYGdefault{c+c1}{// get successors of current node by performing moves on it}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{successors} \PYGdefault{o}{=} \PYGdefault{n}{performMoves}\PYGdefault{o}{(}\PYGdefault{n}{current}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// handle found successors}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{successor} \PYGdefault{o}{:} \PYGdefault{n}{successors}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+
+				\PYGdefault{c+c1}{// check if already on open}
+				\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{tmpNode} \PYGdefault{o}{=} \PYGdefault{n}{open}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{());}
+				\PYGdefault{c+c1}{// skip investigation if open node has lower costs}
+				\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{tmpNode} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{tmpNode}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k}{continue}\PYGdefault{o}{;}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+
+				\PYGdefault{c+c1}{// check if already on closed}
+				\PYGdefault{n}{tmpNode} \PYGdefault{o}{=} \PYGdefault{n}{closed}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{());}
+				\PYGdefault{c+c1}{// skip investigation if closed has lower costs}
+				\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{tmpNode} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{tmpNode}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k}{continue}\PYGdefault{o}{;}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+
+				\PYGdefault{c+c1}{// check if we found the solution}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{()}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{goal}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{SolutionHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{successor}\PYGdefault{o}{,} \PYGdefault{k}{this}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+
+				\PYGdefault{c+c1}{// add successors on open and queue}
+				\PYGdefault{n}{open}\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{(),} \PYGdefault{n}{successor}\PYGdefault{o}{);}
+				\PYGdefault{n}{queue}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{successor}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{c+c1}{// remember investigated node}
+			\PYGdefault{n}{closed}\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{(),} \PYGdefault{n}{current}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+c1}{// no solution found should never occur}
+		\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Solution should have been found but wasn\PYGdefaultZsq{}t. Maybe parity check failed\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// Private helper}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Tries to perform all possible moves on the current node board}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param parent}
+\PYGdefault{c+cm}{	 *            the parent which is the predecessor of the successor}
+\PYGdefault{c+cm}{	 * @return the list of found successors}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n+nf}{performMoves}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parent}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{succesors} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}(}\PYGdefault{n}{Move}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{().}\PYGdefault{n+na}{length}\PYGdefault{o}{);}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Move} \PYGdefault{n}{direction} \PYGdefault{o}{:} \PYGdefault{n}{Move}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// Get board to move empty tile on}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{tmp} \PYGdefault{o}{=} \PYGdefault{n}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{getBoard}\PYGdefault{o}{()}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{clone}\PYGdefault{o}{();}
+			\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// perform the moves}
+				\PYGdefault{k}{switch} \PYGdefault{o}{(}\PYGdefault{n}{direction}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{case} \PYGdefault{n}{UP}\PYGdefault{o}{:}
+					\PYGdefault{n}{tmp}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+					\PYGdefault{k}{break}\PYGdefault{o}{;}
+				\PYGdefault{k}{case} \PYGdefault{n}{DOWN}\PYGdefault{o}{:}
+					\PYGdefault{n}{tmp}\PYGdefault{o}{.}\PYGdefault{n+na}{moveDown}\PYGdefault{o}{();}
+					\PYGdefault{k}{break}\PYGdefault{o}{;}
+				\PYGdefault{k}{case} \PYGdefault{n}{LEFT}\PYGdefault{o}{:}
+					\PYGdefault{n}{tmp}\PYGdefault{o}{.}\PYGdefault{n+na}{moveLeft}\PYGdefault{o}{();}
+					\PYGdefault{k}{break}\PYGdefault{o}{;}
+				\PYGdefault{k}{case} \PYGdefault{n}{RIGHT}\PYGdefault{o}{:}
+					\PYGdefault{n}{tmp}\PYGdefault{o}{.}\PYGdefault{n+na}{moveRight}\PYGdefault{o}{();}
+					\PYGdefault{k}{break}\PYGdefault{o}{;}
+				\PYGdefault{k}{default}\PYGdefault{o}{:}
+					\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{UnsupportedOperationException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Direction with name \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{direction}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} cannot not handled\PYGdefaultZdq{}}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{c+c1}{// Add found successor in case of valid move}
+				\PYGdefault{n}{succesors}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{SearchNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{getCostsFormStart}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{parent}\PYGdefault{o}{,} \PYGdefault{n}{tmp}\PYGdefault{o}{,} \PYGdefault{n}{goal}\PYGdefault{o}{,} \PYGdefault{n}{direction}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{InvalidMoveException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// do nothing on invalid move}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{succesors}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Answers the question if the set board is possible to be resolved to the}
+\PYGdefault{c+cm}{	 * set goal board.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * It is if the parity is either even or odd on both boards.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return true if the set board is possible to be resolved to the set goal}
+\PYGdefault{c+cm}{	 *         board.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{isResolvable}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{sourceParity} \PYGdefault{o}{=} \PYGdefault{n}{board}\PYGdefault{o}{.}\PYGdefault{n+na}{calculateParity}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZpc{}} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{targetParity} \PYGdefault{o}{=} \PYGdefault{n}{goal}\PYGdefault{o}{.}\PYGdefault{n+na}{calculateParity}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZpc{}} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{;}
+		\PYGdefault{k}{return} \PYGdefault{o}{(((}\PYGdefault{n}{sourceParity} \PYGdefault{o}{!=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{targetParity} \PYGdefault{o}{!=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{))} \PYGdefault{o}{||} \PYGdefault{o}{((}\PYGdefault{n}{sourceParity} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{targetParity} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Checks if the \PYGdefaultZob{}@link SlidingPuzzle\PYGdefaultZcb{} instance has been started}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the instance hasn\PYGdefaultZsq{}t been started but it is tried to}
+\PYGdefault{c+cm}{	 *             perform an action on it.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{checkForStarted}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{started}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The slider needs to be started before the solution can be handled\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

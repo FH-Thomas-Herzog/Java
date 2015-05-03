@@ -20,7 +20,7 @@ import at.fh.ooe.swe4.puzzle.model.SearchNode;
  * @date May 1, 2015
  */
 @RunWith(JUnit4.class)
-public class ProvidedTests extends AbstractTest {
+public class FHProvidedTest extends AbstractTest {
 
 	private Board<Integer> goal;
 

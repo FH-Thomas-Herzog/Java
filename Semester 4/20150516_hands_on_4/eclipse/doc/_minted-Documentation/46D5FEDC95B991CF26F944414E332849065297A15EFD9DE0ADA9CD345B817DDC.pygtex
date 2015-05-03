@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{c+c1}{// Create new slide instance}
+\PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{slider} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+\PYGdefault{c+c1}{// start the slider with the initial board}
+\PYGdefault{n}{slider}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initialBoard}\PYGdefault{o}{)}
+	\PYGdefault{c+c1}{// Try to solve the board (returns SolutionHandler instance)}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goalBoard}\PYGdefault{o}{)}
+	\PYGdefault{c+c1}{// Starts the SolutionHandler instance}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+	\PYGdefault{c+c1}{// Regsiter custom logger with custom level}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{registerLogger}\PYGdefault{o}{(}\PYGdefault{n}{myLog}\PYGdefault{o}{,} \PYGdefault{n}{Level}\PYGdefault{o}{.}\PYGdefault{n+na}{DEBUG}\PYGdefault{o}{)}
+	\PYGdefault{c+c1}{// Fill resulting moves in given list}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{fillMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{)}
+	\PYGdefault{c+c1}{// prints the resulting moves via the logger}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+	\PYGdefault{c+c1}{// performs the moves on the inital board and logs inital/resulting board state}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+	\PYGdefault{c+c1}{// ends the SolutionHandler, returns related SlidingPuzzle instance}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+	\PYGdefault{c+c1}{// Ends the SlidingPuzzle instance (reset state)}
+	\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+\end{Verbatim}

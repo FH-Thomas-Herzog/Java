@@ -1,0 +1,55 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * Holds the position information of an tile on a board.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 26, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{Position} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{rowIdx}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{colIdx}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{Position}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{row}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{column}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{rowIdx} \PYGdefault{o}{=} \PYGdefault{n}{row}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{colIdx} \PYGdefault{o}{=} \PYGdefault{n}{column}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{hashCode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{prime} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{31}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{prime} \PYGdefault{o}{*} \PYGdefault{n}{result} \PYGdefault{o}{+} \PYGdefault{n}{colIdx}\PYGdefault{o}{;}
+		\PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{prime} \PYGdefault{o}{*} \PYGdefault{n}{result} \PYGdefault{o}{+} \PYGdefault{n}{rowIdx}\PYGdefault{o}{;}
+		\PYGdefault{k}{return} \PYGdefault{n}{result}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{equals}\PYGdefault{o}{(}\PYGdefault{n}{Object} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{k}{this} \PYGdefault{o}{==} \PYGdefault{n}{obj}\PYGdefault{o}{)}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{obj} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{getClass}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{n}{obj}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{())}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{n}{Position} \PYGdefault{n}{other} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{Position}\PYGdefault{o}{)} \PYGdefault{n}{obj}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{colIdx} \PYGdefault{o}{!=} \PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{colIdx}\PYGdefault{o}{)}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{rowIdx} \PYGdefault{o}{!=} \PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{rowIdx}\PYGdefault{o}{)}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{toString}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{StringBuilder}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}rowIdx: \PYGdefaultZdq{}}\PYGdefault{o}{).}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{rowIdx}\PYGdefault{o}{)}
+											\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{} | \PYGdefaultZdq{}}\PYGdefault{o}{)}
+											\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}colIdx: \PYGdefaultZdq{}}\PYGdefault{o}{)}
+											\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{colIdx}\PYGdefault{o}{)}
+											\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}
