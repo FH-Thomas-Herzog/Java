@@ -1,0 +1,207 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.NoSuchElementException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.function.IntConsumer}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.stream.IntStream}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception.InvalidMoveException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.model.Position}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * This is the interface specification for the puzzle board.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * The indices on a board start with 1 and not with 0.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * E.g.:\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * A board with the dimension 4X4 are build as follows.}
+\PYGdefault{c+cm}{ * \PYGdefaultZlt{}ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * \PYGdefaultZlt{}li\PYGdefaultZgt{}\PYGdefaultZlt{}b\PYGdefaultZgt{}upper left corner:\PYGdefaultZlt{}/b\PYGdefaultZgt{} (1,1)\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * \PYGdefaultZlt{}li\PYGdefaultZgt{}\PYGdefaultZlt{}b\PYGdefaultZgt{}lower right corner:\PYGdefaultZlt{}/b\PYGdefaultZgt{} (4,4)\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * \PYGdefaultZlt{}/ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 26, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the value type of the values on the board}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{},} \PYGdefault{n}{Cloneable} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Specifies the directions the empty tile can be moved.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Apr 26, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{Move} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{UP}\PYGdefault{o}{,} \PYGdefault{n}{DOWN}\PYGdefault{o}{,} \PYGdefault{n}{LEFT}\PYGdefault{o}{,} \PYGdefault{n}{RIGHT}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Returns the tile at the position (rowIdx, colIdx).}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param rowIdx}
+\PYGdefault{c+cm}{	 *            the row index}
+\PYGdefault{c+cm}{	 * @param colIdx}
+\PYGdefault{c+cm}{	 *            the column index.}
+\PYGdefault{c+cm}{	 * @return the found tile}
+\PYGdefault{c+cm}{	 * @throws InvalidBoardIndexException}
+\PYGdefault{c+cm}{	 *             if the indices are invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{getTile}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{rowIdx}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{colIdx}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Sets an tile on the given position (rowIdx, colIdx).}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param rowIdx}
+\PYGdefault{c+cm}{	 *            the row index}
+\PYGdefault{c+cm}{	 * @param colIdx}
+\PYGdefault{c+cm}{	 *            the column index}
+\PYGdefault{c+cm}{	 * @param value}
+\PYGdefault{c+cm}{	 *            the value to be set on the defined position}
+\PYGdefault{c+cm}{	 * @throws InvalidBoardIndexException}
+\PYGdefault{c+cm}{	 *             if the indices are invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setTile}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{rowIdx}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{colIdx}\PYGdefault{o}{,} \PYGdefault{n}{T} \PYGdefault{n}{value}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Sets an empty tile on the given position (rowIdx, colIdx).}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param rowIdx}
+\PYGdefault{c+cm}{	 *            the row index}
+\PYGdefault{c+cm}{	 * @param colIdx}
+\PYGdefault{c+cm}{	 *            the column index}
+\PYGdefault{c+cm}{	 * @throws InvalidBoardIndexException}
+\PYGdefault{c+cm}{	 *             if the indices are invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setEmptyTile}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{rowIdx}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{colIdx}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets position of the empty tile (rowIdx, colIdx).\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * If multiple empty tiles are present on this board then this method will}
+\PYGdefault{c+cm}{	 * return the first occurrence of an empty tile.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * If no empty tile is present the returned position instance will contain}
+\PYGdefault{c+cm}{	 * invalid indices.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the position model with the indices, it will have the indices set}
+\PYGdefault{c+cm}{	 *         to (\PYGdefaultZhy{}1, \PYGdefaultZhy{}1) if no empty tile could not be found}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Position} \PYGdefault{n+nf}{getEmptyTilePosition}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the Position of the tile with the given value.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param value}
+\PYGdefault{c+cm}{	 *            the value to be searched on this board.}
+\PYGdefault{c+cm}{	 * @return the found tile position}
+\PYGdefault{c+cm}{	 * @throws NoSuchElementException}
+\PYGdefault{c+cm}{	 *             if the value could not be found on the board}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Position} \PYGdefault{n+nf}{getTilePosition}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{value}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the size of the board N where the board will have the dimensions N x}
+\PYGdefault{c+cm}{	 * N}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the size of this board}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{size}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Answers the question if this board is a valid board.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * A board is invalid if one of the following conditions fit}
+\PYGdefault{c+cm}{	 * \PYGdefaultZlt{}ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * \PYGdefaultZlt{}li\PYGdefaultZgt{}no empty tile present\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * \PYGdefaultZlt{}li\PYGdefaultZgt{}tiles with duplicates values are present\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * \PYGdefaultZlt{}/ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return true if this board is valid, false otherwise}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{isValid}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Shuffles the board tiles by performing random moves on the board.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * It is ensured that the parity is kept (odd/even parity will be kept).}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{shuffle}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Moves the empty tile to the given position by switching the value on the}
+\PYGdefault{c+cm}{	 * given position with the empty tile position.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * This method does not ensure that the move is a valid one, which means it}
+\PYGdefault{c+cm}{	 * is not ensured that the tile is only moved one position in any direction.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param rowIdx}
+\PYGdefault{c+cm}{	 *            the row index}
+\PYGdefault{c+cm}{	 * @param colIdx}
+\PYGdefault{c+cm}{	 *            the column index}
+\PYGdefault{c+cm}{	 * @throws InvalidBoardIndexException}
+\PYGdefault{c+cm}{	 *             if either the indices or the board is invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{move}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{rowIdx}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{colIdx}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Moves the empty tile on step left.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws InvalidMoveException}
+\PYGdefault{c+cm}{	 *             if the empty tile is already placed on the outer left column}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{moveLeft}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Moves the empty tile on step left.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws InvalidMoveException}
+\PYGdefault{c+cm}{	 *             if the empty tile is already placed on the outer right column}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{moveRight}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Moves the empty tile on step right.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws InvalidMoveException}
+\PYGdefault{c+cm}{	 *             if the empty tile is already placed on the top row}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{moveUp}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Moves the empty tile on step down.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws InvalidMoveException}
+\PYGdefault{c+cm}{	 *             if the empty tile is already placed on the bottom row}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{moveDown}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Performs all of the moves of the empty tile defined by the given Iterable}
+\PYGdefault{c+cm}{	 * instance.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param moves}
+\PYGdefault{c+cm}{	 *            the Iterable instance holding the move positions for the empty}
+\PYGdefault{c+cm}{	 *            tile}
+\PYGdefault{c+cm}{	 * @throws InvalidMoveException}
+\PYGdefault{c+cm}{	 *             if the empty tile is tried to be moved out of the board}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{makeMoves}\PYGdefault{o}{(}\PYGdefault{n}{Iterable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Calculates the parity of this board.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * The parity is build as follows: \PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * \PYGdefaultZlt{}sum\PYGdefaultZus{}of\PYGdefaultZus{}ordered\PYGdefaultZus{}pairs\PYGdefaultZgt{} + \PYGdefaultZlt{}row\PYGdefaultZus{}idx\PYGdefaultZus{}empty\PYGdefaultZus{}tile\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the parity of this board}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if this board is invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{calculateParity}\PYGdefault{o}{();}
+
+	\PYGdefault{c+c1}{// Force overwrite of clone}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Performs an deep copy of the current instance.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the copied instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{clone}\PYGdefault{o}{();}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

@@ -1,9 +1,11 @@
 package at.fh.ooe.swe4.puzzle.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
@@ -31,7 +33,8 @@ public class SlidingPuzzle<T extends Comparable<T>> {
 	private Board<T> board;
 	private Board<T> goal;
 	private Queue<SearchNode<T>> queue;
-	private Set<SearchNode<T>> closed;
+	private Map<Board<T>, SearchNode<T>> open;
+	private Map<Board<T>, SearchNode<T>> closed;
 
 	private boolean started = Boolean.FALSE;
 
@@ -260,7 +263,8 @@ public class SlidingPuzzle<T extends Comparable<T>> {
 		this.started = Boolean.TRUE;
 		this.board = initial;
 		this.queue = new PriorityQueue<SearchNode<T>>();
-		this.closed = new HashSet<SearchNode<T>>();
+		this.open = new HashMap<Board<T>, SearchNode<T>>();
+		this.closed = new HashMap<Board<T>, SearchNode<T>>();
 		return this;
 	}
 
@@ -313,26 +317,47 @@ public class SlidingPuzzle<T extends Comparable<T>> {
 			return new SolutionHandler<T>(new SearchNode<>(0, null, board, goal, null), this);
 		}
 
-		queue.add(new SearchNode<>(0, null, board, goal, null));
+		SearchNode<T> current = new SearchNode<>(0, null, board, goal, null);
+		queue.add(current);
+		open.put(current.getBoard(), current);
 		// search as long nodes are left and solution hasn't been found
 		while (!queue.isEmpty()) {
-			final SearchNode<T> current = queue.poll();
+			// poll from queue
+			current = queue.poll();
+			// remove from open as well
+			open.remove(current.getBoard());
 			// get successors of current node by performing moves on it
 			final List<SearchNode<T>> successors = performMoves(current);
 			// handle found successors
 			for (SearchNode<T> successor : successors) {
-				// we found the solution
+
+				// check if already on open
+				SearchNode<T> tmpNode = open.get(successor.getBoard());
+				// skip investigation if open node has lower costs
+				if ((tmpNode != null) && (tmpNode.compareTo(successor) <= 0)) {
+					continue;
+				}
+
+				// check if already on closed
+				tmpNode = closed.get(successor.getBoard());
+				// skip investigation if closed has lower costs
+				if ((tmpNode != null) && (tmpNode.compareTo(successor) <= 0)) {
+					continue;
+				}
+
+				// check if we found the solution
 				if (successor.getBoard()
 								.equals(goal)) {
 					return new SolutionHandler<T>(successor, this);
 				}
-				// Add to queue if not present in closed
-				else if (!closed.contains(successor)) {
-					queue.add(successor);
-				}
+
+				// add successors on open and queue
+				open.put(successor.getBoard(), successor);
+				queue.add(successor);
 			}
+
 			// remember investigated node
-			closed.add(current);
+			closed.put(current.getBoard(), current);
 		}
 		// no solution found should never occur
 		throw new IllegalStateException("Solution should have been found but wasn't. Maybe parity check failed");

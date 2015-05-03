@@ -11,7 +11,7 @@ import org.junit.runners.JUnit4;
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 
 /**
  * This test class tests the method {@link Board#setTile(int, int, Number)} This
@@ -32,7 +32,7 @@ public class SetTileTest extends AbstractTest {
 		final int size = 10;
 		final int rowIdx = 0;
 		final int colIdx = 1;
-		final Board<Integer> board = new BoardImpl<>(size);
+		final Board<Integer> board = new BoardListImpl<>(size);
 
 		// When
 		board.setTile(rowIdx, colIdx, 1);
@@ -44,7 +44,7 @@ public class SetTileTest extends AbstractTest {
 		final int size = 10;
 		final int rowIdx = 1;
 		final int colIdx = 0;
-		final Board<Integer> board = new BoardImpl<>(size);
+		final Board<Integer> board = new BoardListImpl<>(size);
 
 		// When
 		board.setTile(rowIdx, colIdx, 1);
@@ -56,7 +56,7 @@ public class SetTileTest extends AbstractTest {
 		final int size = 10;
 		final int rowIdx = size + 1;
 		final int colIdx = 1;
-		final Board<Integer> board = new BoardImpl<>(size);
+		final Board<Integer> board = new BoardListImpl<>(size);
 
 		// When
 		board.setTile(rowIdx, colIdx, 1);
@@ -68,7 +68,7 @@ public class SetTileTest extends AbstractTest {
 		final int size = 10;
 		final int rowIdx = 1;
 		final int colIdx = size + 1;
-		final Board<Integer> board = new BoardImpl<>(size);
+		final Board<Integer> board = new BoardListImpl<>(size);
 
 		// When
 		board.setTile(rowIdx, colIdx, 1);
@@ -82,7 +82,7 @@ public class SetTileTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer(size);
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size);
+		final Board<Integer> board = new BoardListImpl<>(size);
 
 		for (int i = 1; i <= size; i++) {
 			for (int j = 1; j <= size; j++) {

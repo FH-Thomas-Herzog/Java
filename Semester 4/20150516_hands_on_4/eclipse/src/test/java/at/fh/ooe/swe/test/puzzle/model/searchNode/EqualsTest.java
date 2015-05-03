@@ -13,7 +13,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.SearchNode;
 
 @RunWith(JUnit4.class)
@@ -29,7 +29,7 @@ public class EqualsTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 		// -- When --
 		final boolean result = node.equals(null);
@@ -44,7 +44,7 @@ public class EqualsTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 
 		// -- When --
@@ -60,11 +60,11 @@ public class EqualsTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
 		final List<Integer> otherContainer = createContainer((int) Math.pow(size, 2));
 		otherContainer.set(size - 1, null);
-		final Board<Integer> other = new BoardImpl<>(size, otherContainer);
+		final Board<Integer> other = new BoardListImpl<>(size, otherContainer);
 
 		// -- When --
 		final boolean result = node.equals(new SearchNode<Integer>(0, null, other, other, null));
@@ -79,9 +79,9 @@ public class EqualsTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, board, null);
-		final Board<Integer> other = new BoardImpl<>(size, container);
+		final Board<Integer> other = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final boolean result = node.equals(new SearchNode<>(0, null, other, other, null));

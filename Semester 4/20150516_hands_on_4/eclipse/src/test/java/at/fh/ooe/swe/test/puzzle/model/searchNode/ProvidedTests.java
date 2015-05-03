@@ -9,7 +9,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.SearchNode;
 
 /**
@@ -26,7 +26,7 @@ public class ProvidedTests extends AbstractTest {
 
 	@Before
 	public void init() {
-		goal = new BoardImpl<>(3);
+		goal = new BoardListImpl<>(3);
 		goal.setTile(1, 1, 1);
 		goal.setTile(1, 2, 2);
 		goal.setTile(1, 3, 3);
@@ -41,7 +41,7 @@ public class ProvidedTests extends AbstractTest {
 	@Test
 	public void test1() {
 		// -- Given --
-		final Board<Integer> initial = new BoardImpl<>(3);
+		final Board<Integer> initial = new BoardListImpl<>(3);
 		initial.setTile(1, 1, 1);
 		initial.setTile(1, 2, 2);
 		initial.setTile(1, 3, 3);
@@ -63,7 +63,7 @@ public class ProvidedTests extends AbstractTest {
 	@Test
 	public void test2() {
 		// -- Given --
-		final Board<Integer> initial = new BoardImpl<>(3);
+		final Board<Integer> initial = new BoardListImpl<>(3);
 		initial.setTile(1, 1, 1);
 		initial.setTile(1, 2, 2);
 		initial.setTile(1, 3, 3);
@@ -85,7 +85,7 @@ public class ProvidedTests extends AbstractTest {
 	@Test
 	public void test3() {
 		// -- Given --
-		final Board<Integer> initial = new BoardImpl<>(3);
+		final Board<Integer> initial = new BoardListImpl<>(3);
 		initial.setTile(1, 1, 1);
 		initial.setTile(1, 2, null);
 		initial.setTile(1, 3, 3);

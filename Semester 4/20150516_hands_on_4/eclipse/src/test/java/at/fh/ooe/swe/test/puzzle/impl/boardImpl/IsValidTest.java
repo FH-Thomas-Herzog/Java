@@ -11,7 +11,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 
 /**
  * This test class tests the method {@link Board#isValid()}.
@@ -29,7 +29,7 @@ public class IsValidTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		container.set(1, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final boolean result = board.isValid();
@@ -46,7 +46,7 @@ public class IsValidTest extends AbstractTest {
 		container.set(0, null);
 		container.set(1, 1);
 		container.set(2, 1);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final boolean result = board.isValid();
@@ -60,7 +60,7 @@ public class IsValidTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final boolean result = board.isValid();
@@ -75,7 +75,7 @@ public class IsValidTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final boolean result = board.isValid();

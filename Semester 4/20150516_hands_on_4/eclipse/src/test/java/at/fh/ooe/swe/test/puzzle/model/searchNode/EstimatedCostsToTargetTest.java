@@ -14,7 +14,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.Position;
 import at.fh.ooe.swe4.puzzle.model.SearchNode;
 
@@ -36,7 +36,7 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, null, null);
 
 		// -- When --
@@ -50,11 +50,11 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final int goalSize = size + 1;
 		final List<Integer> goalContainer = createContainer((int) Math.pow(goalSize, 2));
 		goalContainer.set(0, null);
-		final Board<Integer> goal = new BoardImpl<>(goalSize, goalContainer);
+		final Board<Integer> goal = new BoardListImpl<>(goalSize, goalContainer);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
 
 		// -- When --
@@ -67,8 +67,8 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
-		final Board<Integer> goal = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
+		final Board<Integer> goal = new BoardListImpl<>(size, container);
 		final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
 
 		// -- When --
@@ -88,10 +88,10 @@ public class EstimatedCostsToTargetTest extends AbstractTest {
 							final int size = 10;
 							final List<Integer> container = createContainer((int) Math.pow(size, 2));
 							container.set(0, null);
-							final Board<Integer> board = new BoardImpl<>(size, container);
+							final Board<Integer> board = new BoardListImpl<>(size, container);
 							final List<Integer> goalContainer = new ArrayList<Integer>(container);
 							Collections.shuffle(goalContainer);
-							final Board<Integer> goal = new BoardImpl<>(board.size(), goalContainer);
+							final Board<Integer> goal = new BoardListImpl<>(board.size(), goalContainer);
 							final SearchNode<Integer> node = new SearchNode<>(0, null, board, goal, null);
 							int costs = 0;
 							for (int i = 1; i <= board.size(); i++) {

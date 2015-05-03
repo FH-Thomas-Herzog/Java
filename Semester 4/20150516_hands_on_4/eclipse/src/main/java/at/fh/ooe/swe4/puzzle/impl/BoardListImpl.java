@@ -28,7 +28,7 @@ import at.fh.ooe.swe4.puzzle.model.Position;
  * @param <T>
  *            the value type of the tile values
  */
-public class BoardImpl<T extends Comparable<T>> implements Board<T> {
+public class BoardListImpl<T extends Comparable<T>> implements Board<T> {
 
 	private final int size;
 	private final List<T> container;
@@ -41,7 +41,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 * @throws IllegalArgumentException
 	 *             if size <=0
 	 */
-	public BoardImpl(final int size) {
+	public BoardListImpl(final int size) {
 		super();
 		if (size <= 0) {
 			throw new IllegalArgumentException("Size must be greater than 0");
@@ -75,7 +75,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 *             <li>container.size() != (size*size)</li>
 	 *             </ul>
 	 */
-	public BoardImpl(final int size, final List<T> container) {
+	public BoardListImpl(final int size, final List<T> container) {
 		super();
 		if (size <= 0) {
 			throw new IllegalArgumentException("Size must be greater than 0");
@@ -250,7 +250,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 * @return the calculated index
 	 * @throws InvalidBoardIndexException
 	 *             if at least one of the indexes is invalid
-	 * @see BoardImpl#checkForValidIndex(int, int)
+	 * @see BoardListImpl#checkForValidIndex(int, int)
 	 */
 	private int calculateContainerIdx(final int rowIdx, final int colIdx) {
 		checkForValidIndex(rowIdx, colIdx);
@@ -270,8 +270,8 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 	 *            the direction to move to
 	 * @throws InvalidMoveException
 	 *             if the element cannot be moved to the intended direction
-	 * @see BoardImpl#calculateContainerIdx(int, int)
-	 * @see BoardImpl#getEmptyTilePosition()
+	 * @see BoardListImpl#calculateContainerIdx(int, int)
+	 * @see BoardListImpl#getEmptyTilePosition()
 	 */
 	private void move(final Move direction) {
 		if (direction == null) {
@@ -336,7 +336,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 
 	@Override
 	public Board<T> clone() {
-		return new BoardImpl<T>(size, container);
+		return new BoardListImpl<T>(size, container);
 	}
 
 	@Override
@@ -355,7 +355,7 @@ public class BoardImpl<T extends Comparable<T>> implements Board<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BoardImpl<T> other = (BoardImpl<T>) obj;
+		BoardListImpl<T> other = (BoardListImpl<T>) obj;
 		if (container == null) {
 			if (other.container != null)
 				return false;

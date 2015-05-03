@@ -10,7 +10,7 @@ import org.junit.Test;
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
@@ -27,7 +27,7 @@ public class MoveUpTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.moveUp();
@@ -44,7 +44,7 @@ public class MoveUpTest extends AbstractTest {
 				container.set(oldIdx, container.get(i));
 				container.set(i, null);
 				oldIdx = i;
-				final Board<Integer> board = new BoardImpl<>(size, container);
+				final Board<Integer> board = new BoardListImpl<>(size, container);
 
 				// -- When --
 				board.moveUp();
@@ -66,7 +66,7 @@ public class MoveUpTest extends AbstractTest {
 			int idx = lastRow + (i - 1);
 			List<Integer> container = createContainer((int) Math.pow(size, 2));
 			container.set(idx, null);
-			Board<Integer> board = new BoardImpl<>(size, container);
+			Board<Integer> board = new BoardListImpl<>(size, container);
 
 			// -- When --
 			for (int j = 1; j < size; j++) {

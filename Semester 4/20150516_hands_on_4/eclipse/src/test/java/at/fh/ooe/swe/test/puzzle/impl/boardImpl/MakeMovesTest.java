@@ -17,7 +17,7 @@ import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Move;
 import at.fh.ooe.swe4.puzzle.exception.InvalidMoveException;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
@@ -37,7 +37,7 @@ public class MakeMovesTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		Board<Integer> board = new BoardImpl<>(size, container);
+		Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.makeMoves((Iterable<Move>) null);
@@ -49,7 +49,7 @@ public class MakeMovesTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		Board<Integer> board = new BoardImpl<>(size, container);
+		Board<Integer> board = new BoardListImpl<>(size, container);
 		final List<Move> moves = new ArrayList<Move>(Move.values().length + 1);
 		for (Move direction : Move.values()) {
 			moves.add(direction);
@@ -66,7 +66,7 @@ public class MakeMovesTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		Board<Integer> board = new BoardImpl<>(size, container);
+		Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.makeMoves(Arrays.asList(new Move[] { Move.DOWN }));
@@ -79,7 +79,7 @@ public class MakeMovesTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final List<Move> moves = new ArrayList<Move>();
 		for (int i = 0; i < size; i++) {
 			moves.add(Move.RIGHT);
@@ -95,7 +95,7 @@ public class MakeMovesTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final List<Move> moves = new ArrayList<Move>();
 		boolean invert = Boolean.FALSE;
 		for (int i = 0; i <= size; i++) {

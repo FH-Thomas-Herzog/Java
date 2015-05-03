@@ -213,20 +213,26 @@ public class SearchNode<T extends Comparable<T>> implements Comparable<SearchNod
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		SearchNode<T> other = (SearchNode<T>) obj;
 		if (board == null) {
-			if (other.board != null)
+			if (other.board != null) {
 				return false;
-		} else if (!board.equals(other.board))
+			}
+		} else if (!board.equals(other.board)) {
 			return false;
-		if (fullCosts != other.fullCosts)
+		}
+		if (fullCosts != other.fullCosts) {
 			return false;
+		}
 		return true;
 	}
 

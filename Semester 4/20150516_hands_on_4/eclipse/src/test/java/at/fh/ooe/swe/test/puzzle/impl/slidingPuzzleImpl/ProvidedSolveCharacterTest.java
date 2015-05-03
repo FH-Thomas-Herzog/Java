@@ -16,7 +16,7 @@ import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.api.Board.Move;
 import at.fh.ooe.swe4.puzzle.exception.NoSolutionExcption;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.impl.SlidingPuzzle;
 
 /**
@@ -39,19 +39,19 @@ public class ProvidedSolveCharacterTest extends AbstractTest {
 		// 3 x 3 board
 		final List<Character> container3 = createContainerWithChars((int) Math.pow(3, 2));
 		container3.set(container3.size() - 1, null);
-		goal3 = new BoardImpl<>(3, container3);
+		goal3 = new BoardListImpl<>(3, container3);
 
 		// 4 x 4 board
 		final List<Character> container4 = createContainerWithChars((int) Math.pow(4, 2));
 		container4.set(container4.size() - 1, null);
-		goal4 = new BoardImpl<>(4, container4);
+		goal4 = new BoardListImpl<>(4, container4);
 	}
 
 	@Test
 	public void solveSimplePuzzleTest1() throws NoSolutionExcption {
 		// -- Given --
 		final int size = 3;
-		final Board<Character> initial = new BoardImpl<>(size);
+		final Board<Character> initial = new BoardListImpl<>(size);
 		initial.setTile(1, 1, 'a');
 		initial.setTile(1, 2, 'b');
 		initial.setTile(1, 3, 'c');
@@ -83,7 +83,7 @@ public class ProvidedSolveCharacterTest extends AbstractTest {
 	public void solveSimplePuzzleTest2() throws NoSolutionExcption {
 		// -- Given --
 		final int size = 3;
-		final Board<Character> initial = new BoardImpl<>(size);
+		final Board<Character> initial = new BoardListImpl<>(size);
 		initial.setTile(1, 1, 'a');
 		initial.setTile(1, 2, 'b');
 		initial.setTile(1, 3, 'c');
@@ -118,7 +118,7 @@ public class ProvidedSolveCharacterTest extends AbstractTest {
 		// 8 2 7
 		// 1 4 6
 		// 3 5 X
-		final Board<Character> initial = new BoardImpl<>(size);
+		final Board<Character> initial = new BoardListImpl<>(size);
 		initial.setTile(1, 1, 'h');
 		initial.setTile(1, 2, 'b');
 		initial.setTile(1, 3, 'g');
@@ -149,7 +149,7 @@ public class ProvidedSolveCharacterTest extends AbstractTest {
 		final int size = 3;
 		final List<Character> container = createContainerWithChars((int) Math.pow(size, 2));
 		container.set(container.size() - 1, null);
-		final Board<Character> initial = new BoardImpl<>(size, container);
+		final Board<Character> initial = new BoardListImpl<>(size, container);
 		final SlidingPuzzle<Character> solver = new SlidingPuzzle<>();
 		for (int k = 0; k < 50; k++) {
 			initial.shuffle();

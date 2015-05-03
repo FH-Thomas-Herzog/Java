@@ -14,7 +14,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.SearchNode;
 
 /**
@@ -32,7 +32,7 @@ public class ComparableTest extends AbstractTest {
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final List<SearchNode<Integer>> orderedNodes = new ArrayList<SearchNode<Integer>>();
 		IntStream.range(0, 10)
 					.forEachOrdered(new IntConsumer() {

@@ -11,7 +11,7 @@ import org.junit.runners.JUnit4;
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 
 /**
  * This class test the method {@link Board#getTile(int, int)}
@@ -30,7 +30,7 @@ public class GetTileTest extends AbstractTest {
 		final int rowIdx = 0;
 		final int colIdx = 1;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.getTile(rowIdx, colIdx);
@@ -43,7 +43,7 @@ public class GetTileTest extends AbstractTest {
 		final int rowIdx = 1;
 		final int colIdx = 0;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.getTile(rowIdx, colIdx);
@@ -56,7 +56,7 @@ public class GetTileTest extends AbstractTest {
 		final int rowIdx = size + 1;
 		final int colIdx = 1;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.getTile(rowIdx, colIdx);
@@ -69,7 +69,7 @@ public class GetTileTest extends AbstractTest {
 		final int rowIdx = 1;
 		final int colIdx = size + 1;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.getTile(rowIdx, colIdx);
@@ -83,7 +83,7 @@ public class GetTileTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		for (int i = 1; i <= size; i++) {
 			for (int j = 1; j <= size; j++) {

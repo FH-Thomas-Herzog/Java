@@ -13,7 +13,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 
 /**
  * This test class tests the method {@link Board#equals(Object)}.
@@ -28,7 +28,7 @@ public class EqualsTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final Board<Integer> other = null;
 
 		// -- When --
@@ -43,7 +43,7 @@ public class EqualsTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final String other = null;
 
 		// -- When --
@@ -58,10 +58,10 @@ public class EqualsTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final int otherSize = 5;
 		final List<Integer> otherContainer = createContainer((int) Math.pow(otherSize, 2));
-		final Board<Integer> otherBoard = new BoardImpl<>(otherSize, otherContainer);
+		final Board<Integer> otherBoard = new BoardListImpl<>(otherSize, otherContainer);
 
 		// -- When --
 		final boolean result = board.equals(otherBoard);
@@ -75,10 +75,10 @@ public class EqualsTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 		final List<Integer> otherContainer = createContainer((int) Math.pow(size, 2));
 		Collections.shuffle(otherContainer);
-		final Board<Integer> otherBoard = new BoardImpl<>(size, otherContainer);
+		final Board<Integer> otherBoard = new BoardListImpl<>(size, otherContainer);
 
 		// -- When --
 		final boolean result = board.equals(otherBoard);
@@ -92,8 +92,8 @@ public class EqualsTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
-		final Board<Integer> otherBoard = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
+		final Board<Integer> otherBoard = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final boolean result = board.equals(otherBoard);

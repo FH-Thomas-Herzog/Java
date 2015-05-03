@@ -12,7 +12,7 @@ import org.junit.runners.JUnit4;
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
 import at.fh.ooe.swe4.puzzle.exception.InvalidBoardIndexException;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 
 /**
  * This test class tests the method {@link Board#calculateParity()}.
@@ -29,7 +29,7 @@ public class CaclculateParityTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		board.calculateParity();
@@ -44,7 +44,7 @@ public class CaclculateParityTest extends AbstractTest {
 		container.add(2);
 		container.add(1);
 		container.add(3);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final int parity = board.calculateParity();
@@ -63,7 +63,7 @@ public class CaclculateParityTest extends AbstractTest {
 		container.add(3);
 		container.add(2);
 		container.add(1);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final int parity = board.calculateParity();

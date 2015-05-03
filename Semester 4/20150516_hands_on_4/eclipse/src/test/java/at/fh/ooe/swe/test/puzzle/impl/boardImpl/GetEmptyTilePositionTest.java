@@ -13,7 +13,7 @@ import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe.test.api.AbstractTest;
 import at.fh.ooe.swe4.puzzle.api.Board;
-import at.fh.ooe.swe4.puzzle.impl.BoardImpl;
+import at.fh.ooe.swe4.puzzle.impl.BoardListImpl;
 import at.fh.ooe.swe4.puzzle.model.Position;
 
 /**
@@ -32,7 +32,7 @@ public class GetEmptyTilePositionTest extends AbstractTest {
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
 		container.set(0, null);
 		container.set(1, null);
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final Position position = board.getEmptyTilePosition();
@@ -46,7 +46,7 @@ public class GetEmptyTilePositionTest extends AbstractTest {
 		// -- Given --
 		final int size = 10;
 		final List<Integer> container = createContainer((int) Math.pow(size, 2));
-		final Board<Integer> board = new BoardImpl<>(size, container);
+		final Board<Integer> board = new BoardListImpl<>(size, container);
 
 		// -- When --
 		final Position position = board.getEmptyTilePosition();
@@ -72,7 +72,7 @@ public class GetEmptyTilePositionTest extends AbstractTest {
 				container.set(oldIdx, container.get(idx));
 				container.set(idx, null);
 				oldIdx = idx;
-				final Board<Integer> board = new BoardImpl<>(size, container);
+				final Board<Integer> board = new BoardListImpl<>(size, container);
 
 				// -- When --
 				final Position position = board.getEmptyTilePosition();
