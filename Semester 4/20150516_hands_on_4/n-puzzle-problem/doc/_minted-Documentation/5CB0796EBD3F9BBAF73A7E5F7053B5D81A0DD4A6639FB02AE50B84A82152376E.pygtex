@@ -1,0 +1,66 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{project} \PYGdefault{n}{xmlns}\PYGdefault{o}{=}\PYGdefault{l+s}{\PYGdefaultZdq{}http://maven.apache.org/POM/4.0.0\PYGdefaultZdq{}} \PYGdefault{n}{xmlns}\PYGdefault{o}{:}\PYGdefault{n}{xsi}\PYGdefault{o}{=}\PYGdefault{l+s}{\PYGdefaultZdq{}http://www.w3.org/2001/XMLSchema\PYGdefaultZhy{}instance\PYGdefaultZdq{}}
+	\PYGdefault{n}{xsi}\PYGdefault{o}{:}\PYGdefault{n}{schemaLocation}\PYGdefault{o}{=}\PYGdefault{l+s}{\PYGdefaultZdq{}http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven\PYGdefaultZhy{}4.0.0.xsd\PYGdefaultZdq{}}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{modelVersion}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{4.0}\PYGdefault{o}{.}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{modelVersion}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{at}\PYGdefault{o}{.}\PYGdefault{n+na}{fh}\PYGdefault{o}{.}\PYGdefault{n+na}{ooe}\PYGdefault{o}{.}\PYGdefault{n+na}{swe4}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{puzzle}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{0.0}\PYGdefault{o}{.}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{SNAPSHOT}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{name}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{Puzzle}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{name}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{dependencies}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{junit}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{junit}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{4.12}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{commons}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{collections}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{commons}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{collections}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{3.2}\PYGdefault{o}{.}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{commons}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{lang}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{commons}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{lang}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{2.6}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{at}\PYGdefault{o}{.}\PYGdefault{n+na}{fh}\PYGdefault{o}{.}\PYGdefault{n+na}{ooe}\PYGdefault{o}{.}\PYGdefault{n+na}{swe4}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{junit4}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{test}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{suite}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{0.0}\PYGdefault{o}{.}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{SNAPSHOT}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{dependency}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{dependencies}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{build}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{plugins}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{maven}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{compiler}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{3.3}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{configuration}\PYGdefault{o}{\PYGdefaultZgt{}}
+					\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{source}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{1.8}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{source}\PYGdefault{o}{\PYGdefaultZgt{}}
+					\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{target}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{1.8}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{target}\PYGdefault{o}{\PYGdefaultZgt{}}
+					\PYGdefault{o}{\PYGdefaultZlt{}!\PYGdefaultZhy{}\PYGdefaultZhy{}} \PYGdefault{n}{Disable} \PYGdefault{n}{annotation} \PYGdefault{n}{processing} \PYGdefault{n}{via} \PYGdefault{n}{compiler} \PYGdefault{n}{plugin}\PYGdefault{o}{.} \PYGdefault{o}{\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZgt{}}
+					\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{compilerArgument}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZhy{}}\PYGdefault{n}{proc}\PYGdefault{o}{:}\PYGdefault{n}{none}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{compilerArgument}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{configuration}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{apache}\PYGdefault{o}{.}\PYGdefault{n+na}{maven}\PYGdefault{o}{.}\PYGdefault{n+na}{plugins}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{maven}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{surefire}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{report}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{2.9}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{configuration}\PYGdefault{o}{\PYGdefaultZgt{}}
+					\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{redirectTestOutputToFile}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{k+kc}{true}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{redirectTestOutputToFile}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{configuration}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{plugins}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{build}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{reporting}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{plugins}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{apache}\PYGdefault{o}{.}\PYGdefault{n+na}{maven}\PYGdefault{o}{.}\PYGdefault{n+na}{plugins}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{groupId}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{n}{maven}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{surefire}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{report}\PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{artifactId}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{l+m+mf}{2.9}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{version}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{configuration}\PYGdefault{o}{\PYGdefaultZgt{}}
+					\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{redirectTestOutputToFile}\PYGdefault{o}{\PYGdefaultZgt{}}\PYGdefault{k+kc}{true}\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{redirectTestOutputToFile}\PYGdefault{o}{\PYGdefaultZgt{}}
+				\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{configuration}\PYGdefault{o}{\PYGdefaultZgt{}}
+			\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{plugin}\PYGdefault{o}{\PYGdefaultZgt{}}
+		\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{plugins}\PYGdefault{o}{\PYGdefaultZgt{}}
+	\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{reporting}\PYGdefault{o}{\PYGdefaultZgt{}}
+\PYGdefault{o}{\PYGdefaultZlt{}/}\PYGdefault{n}{project}\PYGdefault{o}{\PYGdefaultZgt{}}
+\end{Verbatim}

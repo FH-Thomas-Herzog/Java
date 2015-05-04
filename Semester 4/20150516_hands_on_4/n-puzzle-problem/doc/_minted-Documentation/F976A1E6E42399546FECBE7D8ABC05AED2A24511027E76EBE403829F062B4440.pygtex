@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.junit.test.suite.watcher}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.commons.lang.StringUtils}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Level}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.Description}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.model.Statement}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.junit.test.suite.watcher.api.AbstractLoggerWatcher}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class is the test method invocation logger watcher.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Apr 26, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{LoggingTestInvocationWatcher} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractLoggerWatcher} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{LoggingTestInvocationWatcher}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Level} \PYGdefault{n}{level}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Statement} \PYGdefault{n+nf}{apply}\PYGdefault{o}{(}\PYGdefault{n}{Statement} \PYGdefault{n}{base}\PYGdefault{o}{,} \PYGdefault{n}{Description} \PYGdefault{n}{description}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{log} \PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{n}{description}\PYGdefault{o}{.}\PYGdefault{n+na}{getTestClass}\PYGdefault{o}{());}
+		\PYGdefault{k}{return} \PYGdefault{k+kd}{super}\PYGdefault{o}{.}\PYGdefault{n+na}{apply}\PYGdefault{o}{(}\PYGdefault{n}{base}\PYGdefault{o}{,} \PYGdefault{n}{description}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{starting}\PYGdefault{o}{(}\PYGdefault{n}{Description} \PYGdefault{n}{description}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{repeat}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{SEPARATOR\PYGdefaultZus{}REPEATIONS}\PYGdefault{o}{));}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{LOG\PYGdefaultZus{}FORMAT}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}started:\PYGdefaultZdq{}}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{n}{description}\PYGdefault{o}{.}\PYGdefault{n+na}{getMethodName}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{succeeded}\PYGdefault{o}{(}\PYGdefault{n}{Description} \PYGdefault{n}{description}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{LOG\PYGdefaultZus{}FORMAT}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}succeeded:\PYGdefaultZdq{}}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{n}{description}\PYGdefault{o}{.}\PYGdefault{n+na}{getMethodName}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{};}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{failed}\PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{,} \PYGdefault{n}{Description} \PYGdefault{n}{description}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{log}\PYGdefault{o}{(}\PYGdefault{n}{level}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{LOG\PYGdefaultZus{}FORMAT}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}failed:\PYGdefaultZdq{}}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{n}{description}\PYGdefault{o}{.}\PYGdefault{n+na}{getMethodName}\PYGdefault{o}{(),} \PYGdefault{n}{e}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{};}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

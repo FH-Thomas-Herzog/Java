@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{gaol}\PYGdefault{o}{)}
+\end{Verbatim}

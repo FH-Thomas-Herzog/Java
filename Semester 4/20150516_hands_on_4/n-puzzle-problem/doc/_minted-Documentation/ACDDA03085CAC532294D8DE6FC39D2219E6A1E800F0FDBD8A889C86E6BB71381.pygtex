@@ -1,0 +1,227 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe.test.puzzle.impl.slidingPuzzle}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertEquals}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Before}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Test}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.RunWith}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.JUnit4}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe.test.api.AbstractTest}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.api.Board.Move}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.exception.NoSolutionExcption}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.impl.BoardListImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.puzzle.impl.SlidingPuzzle}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This test class contains the provided tests for testing the method}
+\PYGdefault{c+cm}{ * \PYGdefaultZob{}@link SlidingPuzzle\PYGdefaultZsh{}solve(at.fh.ooe.swe4.puzzle.api.Board)\PYGdefaultZcb{}.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * Therefore that theses test resolving enough no further tests this method need}
+\PYGdefault{c+cm}{ * to implemented.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 1, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@RunWith}\PYGdefault{o}{(}\PYGdefault{n}{JUnit4}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{SolveIntegerTest} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractTest} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal3}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{goal4}\PYGdefault{o}{;}
+
+	\PYGdefault{n+nd}{@Before}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{init}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// 3 x 3 board}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container3} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{container3}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{n}{container3}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{n}{goal3} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{n}{container3}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// 4 x 4 board}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container4} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{4}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{container4}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{n}{container4}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{n}{goal4} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{4}\PYGdefault{o}{,} \PYGdefault{n}{container4}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{solveSimplePuzzleTest1}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{4}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{5}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{6}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{7}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{8}\PYGdefault{o}{);}
+		\PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{solver} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initial}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{fillMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{,} \PYGdefault{n}{initial}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{solveSimplePuzzleTest2}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{4}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{5}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{6}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{7}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{8}\PYGdefault{o}{);}
+		\PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{solver} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initial}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{fillMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{,} \PYGdefault{n}{initial}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{solveComplexPuzzleTest1}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{;}
+		\PYGdefault{c+c1}{// 8 2 7}
+		\PYGdefault{c+c1}{// 1 4 6}
+		\PYGdefault{c+c1}{// 3 5 X}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{8}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{7}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{4}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{6}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{5}\PYGdefault{o}{);}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{setTile}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{solver} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initial}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{,} \PYGdefault{n}{initial}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{solveRandomPuzzlesTest2}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{container} \PYGdefault{o}{=} \PYGdefault{n}{createContainer}\PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{n}{Math}\PYGdefault{o}{.}\PYGdefault{n+na}{pow}\PYGdefault{o}{(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+		\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{set}\PYGdefault{o}{(}\PYGdefault{n}{container}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZhy{}} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BoardListImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{size}\PYGdefault{o}{,} \PYGdefault{n}{container}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{solver} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}();}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{k} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{k} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{l+m+mi}{50}\PYGdefault{o}{;} \PYGdefault{n}{k}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{shuffle}\PYGdefault{o}{();}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+			\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initial}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{fillMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{goal3}\PYGdefault{o}{,} \PYGdefault{n}{initial}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{solveSimplePuzzleTest\PYGdefaultZus{}4x4}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial} \PYGdefault{o}{=} \PYGdefault{n}{goal4}\PYGdefault{o}{.}\PYGdefault{n+na}{clone}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{solver} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveLeft}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initial}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goal4}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{fillMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{goal4}\PYGdefault{o}{,} \PYGdefault{n}{initial}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{solveComplexPuzzleTest\PYGdefaultZus{}4x4}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{NoSolutionExcption} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Board}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{initial} \PYGdefault{o}{=} \PYGdefault{n}{goal4}\PYGdefault{o}{.}\PYGdefault{n+na}{clone}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{solver} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{SlidingPuzzle}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveLeft}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveLeft}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveLeft}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveUp}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveRight}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveDown}\PYGdefault{o}{();}
+		\PYGdefault{n}{initial}\PYGdefault{o}{.}\PYGdefault{n+na}{moveLeft}\PYGdefault{o}{();}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Move}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{moves} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{n}{solver}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{(}\PYGdefault{n}{initial}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{solve}\PYGdefault{o}{(}\PYGdefault{n}{goal4}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{fillMoves}\PYGdefault{o}{(}\PYGdefault{n}{moves}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{printMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{performMoves}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{9}\PYGdefault{o}{,} \PYGdefault{n}{moves}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{goal4}\PYGdefault{o}{,} \PYGdefault{n}{initial}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

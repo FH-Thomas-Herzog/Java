@@ -1,0 +1,66 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n+nt}{\PYGdefaultZlt{}project} \PYGdefault{n+na}{xmlns=}\PYGdefault{l+s}{\PYGdefaultZdq{}http://maven.apache.org/POM/4.0.0\PYGdefaultZdq{}} \PYGdefault{n+na}{xmlns:xsi=}\PYGdefault{l+s}{\PYGdefaultZdq{}http://www.w3.org/2001/XMLSchema\PYGdefaultZhy{}instance\PYGdefaultZdq{}}
+	\PYGdefault{n+na}{xsi:schemaLocation=}\PYGdefault{l+s}{\PYGdefaultZdq{}http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven\PYGdefaultZhy{}4.0.0.xsd\PYGdefaultZdq{}}\PYGdefault{n+nt}{\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}modelVersion\PYGdefaultZgt{}}4.0.0\PYGdefault{n+nt}{\PYGdefaultZlt{}/modelVersion\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}at.fh.ooe.swe4\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}n\PYGdefaultZhy{}puzzle\PYGdefaultZhy{}problem\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}0.0.1\PYGdefaultZhy{}SNAPSHOT\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}name\PYGdefaultZgt{}}Puzzle\PYGdefault{n+nt}{\PYGdefaultZlt{}/name\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}dependencies\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}dependency\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}junit\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}junit\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}4.12\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}/dependency\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}dependency\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}commons\PYGdefaultZhy{}collections\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}commons\PYGdefaultZhy{}collections\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}3.2.1\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}/dependency\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}dependency\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}commons\PYGdefaultZhy{}lang\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}commons\PYGdefaultZhy{}lang\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}2.6\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}/dependency\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}dependency\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}at.fh.ooe.swe4\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}junit4\PYGdefaultZhy{}test\PYGdefaultZhy{}suite\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}0.0.1\PYGdefaultZhy{}SNAPSHOT\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}/dependency\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}/dependencies\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}build\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}plugins\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}plugin\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}maven\PYGdefaultZhy{}compiler\PYGdefaultZhy{}plugin\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}3.3\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}configuration\PYGdefaultZgt{}}
+					\PYGdefault{n+nt}{\PYGdefaultZlt{}source\PYGdefaultZgt{}}1.8\PYGdefault{n+nt}{\PYGdefaultZlt{}/source\PYGdefaultZgt{}}
+					\PYGdefault{n+nt}{\PYGdefaultZlt{}target\PYGdefaultZgt{}}1.8\PYGdefault{n+nt}{\PYGdefaultZlt{}/target\PYGdefaultZgt{}}
+					\PYGdefault{c}{\PYGdefaultZlt{}!\PYGdefaultZhy{}\PYGdefaultZhy{} Disable annotation processing via compiler plugin. \PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZgt{}}
+					\PYGdefault{n+nt}{\PYGdefaultZlt{}compilerArgument\PYGdefaultZgt{}}\PYGdefaultZhy{}proc:none\PYGdefault{n+nt}{\PYGdefaultZlt{}/compilerArgument\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}/configuration\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}/plugin\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}plugin\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}org.apache.maven.plugins\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}maven\PYGdefaultZhy{}surefire\PYGdefaultZhy{}report\PYGdefaultZhy{}plugin\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}2.9\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}configuration\PYGdefaultZgt{}}
+					\PYGdefault{n+nt}{\PYGdefaultZlt{}redirectTestOutputToFile\PYGdefaultZgt{}}true\PYGdefault{n+nt}{\PYGdefaultZlt{}/redirectTestOutputToFile\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}/configuration\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}/plugin\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}/plugins\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}/build\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}reporting\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}plugins\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}plugin\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}groupId\PYGdefaultZgt{}}org.apache.maven.plugins\PYGdefault{n+nt}{\PYGdefaultZlt{}/groupId\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}artifactId\PYGdefaultZgt{}}maven\PYGdefaultZhy{}surefire\PYGdefaultZhy{}report\PYGdefaultZhy{}plugin\PYGdefault{n+nt}{\PYGdefaultZlt{}/artifactId\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}version\PYGdefaultZgt{}}2.9\PYGdefault{n+nt}{\PYGdefaultZlt{}/version\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}configuration\PYGdefaultZgt{}}
+					\PYGdefault{n+nt}{\PYGdefaultZlt{}redirectTestOutputToFile\PYGdefaultZgt{}}true\PYGdefault{n+nt}{\PYGdefaultZlt{}/redirectTestOutputToFile\PYGdefaultZgt{}}
+				\PYGdefault{n+nt}{\PYGdefaultZlt{}/configuration\PYGdefaultZgt{}}
+			\PYGdefault{n+nt}{\PYGdefaultZlt{}/plugin\PYGdefaultZgt{}}
+		\PYGdefault{n+nt}{\PYGdefaultZlt{}/plugins\PYGdefaultZgt{}}
+	\PYGdefault{n+nt}{\PYGdefaultZlt{}/reporting\PYGdefaultZgt{}}
+\PYGdefault{n+nt}{\PYGdefaultZlt{}/project\PYGdefaultZgt{}}
+\end{Verbatim}
