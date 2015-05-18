@@ -14,6 +14,10 @@ public class BinaryTreeNode<T> implements TreeNode {
 	public BinaryTreeNode<T> left;
 	public BinaryTreeNode<T> right;
 
+	public BinaryTreeNode(T element) {
+		this(element, null, null);
+	}
+
 	public BinaryTreeNode(T element, BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
 		super();
 		this.element = element;

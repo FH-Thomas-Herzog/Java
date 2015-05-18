@@ -22,7 +22,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	 * @date May 17, 2015
 	 * @param <T>
 	 */
-	private static class BinarySearchtreeIterator<T> implements Iterator<T> {
+	public static class BinarySearchtreeIterator<T> implements Iterator<T> {
 
 		private final Stack<BinaryTreeNode<T>> unvisitedNodes = new Stack<>();
 
