@@ -18,6 +18,8 @@ import at.fh.ooe.swe4.collections.model.BinaryTreeNode;
 public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<T>> implements SortedTreeSet<T> {
 
 	/**
+	 * This is the iterator for the {@link BinarySearchTreeSet} class.
+	 * 
 	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
 	 * @date May 17, 2015
 	 * @param <T>
@@ -27,8 +29,10 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 		private final Stack<BinaryTreeNode<T>> unvisitedNodes = new Stack<>();
 
 		/**
+		 * Initializes this iterator with the root node.
 		 * 
-		 * @param parent
+		 * @param node
+		 *            the root node of the backed tree
 		 */
 		public BinarySearchtreeIterator(final BinaryTreeNode<T> root) {
 			super();
@@ -60,6 +64,9 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 
 	}
 
+	/**
+	 * The level count of the backed tree
+	 */
 	private int levels = 0;
 
 	/**
@@ -67,7 +74,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	 * implemented by the managed elements
 	 */
 	public BinarySearchTreeSet() {
-		this(null);
+		super();
 	}
 
 	/**
@@ -83,8 +90,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	@Override
 	public boolean add(T el) {
 		boolean modified = Boolean.FALSE;
-		checkForValidElement(el);
-		int currentLevels = 1;
+		int currentLevels = 0;
 		// root already present
 		if (root != null) {
 			BinaryTreeNode<T> previous = null;
@@ -109,6 +115,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 			}
 			// add new child if previous found
 			if (previous != null) {
+				currentLevels++;
 				modified = Boolean.TRUE;
 				size++;
 				final BinaryTreeNode<T> newNode = new BinaryTreeNode<T>(el, null, null);

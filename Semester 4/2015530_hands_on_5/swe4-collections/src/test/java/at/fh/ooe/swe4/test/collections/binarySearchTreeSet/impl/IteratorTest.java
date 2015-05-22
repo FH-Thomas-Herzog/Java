@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.test.collections.impl;
+package at.fh.ooe.swe4.test.collections.binarySearchTreeSet.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,11 +15,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import at.fh.ooe.swe4.collections.api.AbstractSortedSet;
 import at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet.BinarySearchtreeIterator;
 import at.fh.ooe.swe4.collections.model.BinaryTreeNode;
+import at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest;
 
 @RunWith(JUnit4.class)
-public class BinarySearchtreeIteratorTest {
+public class IteratorTest extends AbstractConsoleLoggingTest {
 
 	// -- Then --
 	@Test(expected = NoSuchElementException.class)

@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.test.collections.impl;
+package at.fh.ooe.swe4.test.collections.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import at.fh.ooe.swe4.collections.api.SortedTreeSet;
@@ -28,27 +29,14 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
 	private SortedTreeSet<Integer> instance;
 
-	private final Class<? extends SortedTreeSet<Integer>> clazz;
-	private final Comparator<Integer> comparator;
+	@Parameter(0)
+	public Class<? extends SortedTreeSet<Integer>> clazz;
+	@Parameter(1)
+	public Comparator<Integer> comparator;
 
 	@Parameters
 	public static Collection<Object[]> prepareParameters() {
 		return Arrays.asList(new Object[][] { { BinarySearchTreeSet.class, null } });
-	}
-
-	/**
-	 * Constructor for parameter injection.
-	 * 
-	 * @param clazz
-	 *            The implementation class of the {@link SortedTreeSet}
-	 *            interface
-	 * @param comparator
-	 *            and comparator instance to be used by the instance
-	 */
-	public SortedTreeSetTest(final Class<SortedTreeSet<Integer>> clazz, final Comparator<Integer> comparator) {
-		super();
-		this.clazz = clazz;
-		this.comparator = comparator;
 	}
 
 	/**

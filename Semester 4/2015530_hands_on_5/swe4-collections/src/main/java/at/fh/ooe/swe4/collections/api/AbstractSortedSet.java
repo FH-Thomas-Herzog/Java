@@ -1,15 +1,19 @@
 package at.fh.ooe.swe4.collections.api;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 
 import at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator;
 
 /**
+ * The base class for the {@link SortedSet} implementing classes.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date May 17, 2015
  * @param <T>
+ *            the type of the managed node values
  */
 public abstract class AbstractSortedSet<T, M extends TreeNode> implements SortedSet<T> {
 
@@ -17,12 +21,28 @@ public abstract class AbstractSortedSet<T, M extends TreeNode> implements Sorted
 	protected M root = null;
 	protected int size = 0;
 
+	/**
+	 * Default constructor where the tree uses natural ordering and assumes that
+	 * Tree nodes are Comparable instances.
+	 */
 	public AbstractSortedSet() {
-		this(null);
+		super();
+		this.comparator = null;
 	}
 
+	/**
+	 * Sets an comparator which is used for sorting the tree managed elements.
+	 * The managed instance does not need to be comparable instances.
+	 * 
+	 * @param comparator
+	 *            the comparator to use for the sorting of this tree
+	 * @throws NullPointerException
+	 *             if the provided comparator is null
+	 */
 	public AbstractSortedSet(Comparator<T> comparator) {
 		super();
+		Objects.requireNonNull(comparator, "Cannot create tree with null comparator");
+
 		this.comparator = comparator;
 	}
 
@@ -33,7 +53,7 @@ public abstract class AbstractSortedSet<T, M extends TreeNode> implements Sorted
 
 	@Override
 	public boolean contains(T el) {
-		return (el != null) ? el.equals(get(el)) : Boolean.FALSE;
+		return (get(el) != null) ? Boolean.TRUE : Boolean.FALSE;
 	}
 
 	@Override
@@ -73,19 +93,23 @@ public abstract class AbstractSortedSet<T, M extends TreeNode> implements Sorted
 		return array;
 	}
 
-	protected void checkForValidElement(final T el) {
-		if ((el != null) && (comparator == null) && (!(el instanceof Comparable))) {
-			throw new IllegalStateException("If no Comparator<T> instance is provided then the managed Elements need to implement Comparable<T> interface");
-		}
-	}
-
+	/**
+	 * Compares the two given elements either with the set comparator or with
+	 * natural ordering .
+	 * 
+	 * @param o1
+	 *            the first instance
+	 * @param o2
+	 *            the second instance
+	 * @return -1 if o1 is lower than o2<br>
+	 *         0 if o1 and o2 are equal <br>
+	 *         1 if o1 is greater than o2
+	 */
 	protected int compareElements(final T o1, final T o2) {
-		checkForValidElement(o1);
-		checkForValidElement(o2);
 		if (comparator != null) {
 			return comparator.compare(o1, o2);
 		} else {
-			return new NullSafeComparableComparator<Comparable>().compare(((Comparable<T>) o1), ((Comparable<T>) o2));
+			return new NullSafeComparableComparator<Comparable<T>>().compare(((Comparable<T>) o1), ((Comparable<T>) o2));
 		}
 	}
 }
