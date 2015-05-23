@@ -1,6 +1,6 @@
 package at.fh.ooe.swe4.collections.model;
 
-import at.fh.ooe.swe4.collections.api.TreeNode;
+import at.fh.ooe.swe4.collections.api.Node;
 
 /**
  * 
@@ -8,7 +8,7 @@ import at.fh.ooe.swe4.collections.api.TreeNode;
  * @date May 17, 2015
  * @param <T>
  */
-public class BinaryTreeNode<T> implements TreeNode {
+public class BinaryTreeNode<T> implements Node<T> {
 
 	public T element;
 	public BinaryTreeNode<T> left;

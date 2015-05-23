@@ -15,7 +15,7 @@ import at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator;
  * @param <T>
  *            the type of the managed node values
  */
-public abstract class AbstractSortedSet<T, M extends TreeNode> implements SortedSet<T> {
+public abstract class AbstractSortedSet<T, M extends Node<T>> implements SortedSet<T> {
 
 	protected final Comparator<T> comparator;
 	protected M root = null;

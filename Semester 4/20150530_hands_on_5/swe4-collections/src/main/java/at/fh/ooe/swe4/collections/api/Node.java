@@ -6,5 +6,5 @@ package at.fh.ooe.swe4.collections.api;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date May 17, 2015
  */
-public interface TreeNode {
+public interface Node<T> {
 }
