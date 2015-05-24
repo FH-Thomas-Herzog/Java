@@ -20,7 +20,7 @@ import at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator;
  * @param <T>
  *            the comparable type managed by this node
  */
-public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<TreeNode<T>>, Iterable<TreeNode<T>> {
+public class NMKTreeTreeNode<T extends Comparable<T>> implements Node<T>, Comparable<NMKTreeTreeNode<T>>, Iterable<NMKTreeTreeNode<T>> {
 
 	/**
 	 * Enumeration for representing the split type.
@@ -33,8 +33,8 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 		TAIL;
 	}
 
-	private TreeNode<T> parent;
-	private final SortedSet<TreeNode<T>> children;
+	private NMKTreeTreeNode<T> parent;
+	private final SortedSet<NMKTreeTreeNode<T>> children;
 	private final SortedSet<T> keys;
 
 	private final Comparator<T> comparator;
@@ -44,8 +44,8 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	/**
 	 * Creates an empty node
 	 */
-	public TreeNode() {
-		this(null);
+	public NMKTreeTreeNode() {
+		this(null, new TreeSet<NMKTreeTreeNode<T>>(), new NullSafeComparableComparator<T>());
 	}
 
 	/**
@@ -54,8 +54,8 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * @param element
 	 *            the element to be set
 	 */
-	public TreeNode(final T element) {
-		this(element, null, null);
+	public NMKTreeTreeNode(final T element) {
+		this(element, new TreeSet<NMKTreeTreeNode<T>>(new NullSafeComparableComparator<NMKTreeTreeNode<T>>()), new NullSafeComparableComparator<T>());
 	}
 
 	/**
@@ -67,11 +67,8 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 *            the comparator used for sorting the managed keys and
 	 *            referenced children
 	 */
-	public TreeNode(final T element, final Comparator<T> comparator) {
-
-		this.comparator = comparator;
-		this.children = new TreeSet<>(new NullSafeComparableComparator<TreeNode<T>>());
-		this.keys = (comparator != null) ? new TreeSet<>(comparator) : new TreeSet<>();
+	public NMKTreeTreeNode(final T element, final Comparator<T> comparator) {
+		this(element, new TreeSet<NMKTreeTreeNode<T>>(new NullSafeComparableComparator<NMKTreeTreeNode<T>>()), comparator);
 	}
 
 	/**
@@ -86,16 +83,18 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * @throws NullPointerException
 	 *             if the children set is null
 	 */
-	public TreeNode(final T element, final SortedSet<TreeNode<T>> children, final Comparator<T> comparator) {
+	public NMKTreeTreeNode(final T element, final SortedSet<NMKTreeTreeNode<T>> children, final Comparator<T> comparator) {
 		super();
 		Objects.requireNonNull(children, "Children must be given");
 
 		this.comparator = comparator;
-		this.children = new TreeSet<>(new NullSafeComparableComparator<TreeNode<T>>());
+		this.children = new TreeSet<>(new NullSafeComparableComparator<NMKTreeTreeNode<T>>());
 		this.children.addAll(children);
-		this.keys = (comparator != null) ? new TreeSet<>(comparator) : new TreeSet<>();
+		this.keys = (comparator != null) ? new TreeSet<>(comparator) : new TreeSet<>(new NullSafeComparableComparator<T>());
 
-		this.keys.add(element);
+		if (element != null) {
+			addKey(element);
+		}
 	}
 
 	/**
@@ -104,7 +103,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * @param child
 	 *            the child to be added
 	 */
-	public void addChild(final TreeNode<T> child) {
+	public void addChild(final NMKTreeTreeNode<T> child) {
 		child.setParent(this);
 		children.add(child);
 		childrenSize++;
@@ -117,7 +116,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 *            the node to be removed
 	 * @return true if the node could be removed, false otherwise
 	 */
-	public boolean removeChild(final TreeNode<T> node) {
+	public boolean removeChild(final NMKTreeTreeNode<T> node) {
 		return children.remove(node);
 	}
 
@@ -215,7 +214,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * 
 	 * @return the highest child or null if there is no next higher.
 	 */
-	public TreeNode<T> highestChild() {
+	public NMKTreeTreeNode<T> highestChild() {
 		return (childrenSize == 0) ? null : children.last();
 	}
 
@@ -224,7 +223,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * 
 	 * @return the lowest child or null if there is no next higher.
 	 */
-	public TreeNode<T> lowestChild() {
+	public NMKTreeTreeNode<T> lowestChild() {
 		return (childrenSize == 0) ? null : children.first();
 	}
 
@@ -238,19 +237,19 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * @throws IndexOutOfBoundsException
 	 *             if the index is invalid
 	 */
-	public Map<Split, SortedSet<TreeNode<T>>> splitChildrenByIdx(final int _idx) {
+	public Map<Split, SortedSet<NMKTreeTreeNode<T>>> splitChildrenByIdx(final int _idx) {
 		if ((_idx < 0) || (_idx >= getChildrenSize())) {
 			throw new IndexOutOfBoundsException("Index is invalid");
 		}
 
 		int idx = 0;
-		Map<Split, SortedSet<TreeNode<T>>> split = new HashMap<>();
-		split.put(Split.HEAD, new TreeSet<TreeNode<T>>(new NullSafeComparableComparator<TreeNode<T>>()));
-		split.put(Split.TAIL, new TreeSet<TreeNode<T>>(new NullSafeComparableComparator<TreeNode<T>>()));
+		Map<Split, SortedSet<NMKTreeTreeNode<T>>> split = new HashMap<>();
+		split.put(Split.HEAD, new TreeSet<NMKTreeTreeNode<T>>(new NullSafeComparableComparator<NMKTreeTreeNode<T>>()));
+		split.put(Split.TAIL, new TreeSet<NMKTreeTreeNode<T>>(new NullSafeComparableComparator<NMKTreeTreeNode<T>>()));
 
-		final Iterator<TreeNode<T>> it = childrenIterator();
+		final Iterator<NMKTreeTreeNode<T>> it = childrenIterator();
 		while (it.hasNext()) {
-			final TreeNode<T> node = it.next();
+			final NMKTreeTreeNode<T> node = it.next();
 			if (idx <= _idx) {
 				split.get(1)
 						.add(node);
@@ -287,7 +286,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * 
 	 * @return the parent node
 	 */
-	public TreeNode<T> getParent() {
+	public NMKTreeTreeNode<T> getParent() {
 		return parent;
 	}
 
@@ -297,7 +296,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * @param parent
 	 *            the parent to be set on this node
 	 */
-	public void setParent(TreeNode<T> parent) {
+	public void setParent(NMKTreeTreeNode<T> parent) {
 		this.parent = parent;
 	}
 
@@ -307,7 +306,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * @return the iterator of the node's children
 	 */
 	@Override
-	public Iterator<TreeNode<T>> iterator() {
+	public Iterator<NMKTreeTreeNode<T>> iterator() {
 		return children.iterator();
 	}
 
@@ -325,7 +324,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * 
 	 * @return the children iterator
 	 */
-	public Iterator<TreeNode<T>> childrenIterator() {
+	public Iterator<NMKTreeTreeNode<T>> childrenIterator() {
 		return children.iterator();
 	}
 
@@ -333,27 +332,24 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 	 * TreeNodes are sorted by their first hold element.
 	 */
 	@Override
-	public int compareTo(TreeNode<T> o) {
+	public int compareTo(NMKTreeTreeNode<T> o) {
+		if ((lowestKey() == null) && (o.lowestKey() == null)) {
+			return 0;
+		}
+		if (lowestKey() == null) {
+			return -1;
+		}
+		if (o.lowestKey() == null) {
+			return 1;
+		}
+		if (!(lowestKey() instanceof Comparable)) {
+			throw new IllegalStateException("Managed Elements need to implement Comparable<T> interface if no Comparator<T> instance is provided");
+		}
 		// in case of provided comparator
 		if (comparator != null) {
 			return comparator.compare(this.lowestKey(), o.lowestKey());
 		}
-		// Needs Comparable interface implemented
-		else {
-			if ((lowestKey() == null) && (o.lowestKey() == null)) {
-				return 0;
-			}
-			if (lowestKey() == null) {
-				return -1;
-			}
-			if (o.lowestKey() == null) {
-				return 1;
-			}
-			if (!(lowestKey() instanceof Comparable)) {
-				throw new IllegalStateException("Managed Elements need to implement Comparable<T> interface if no Comparator<T> instance is provided");
-			}
-			return ((Comparable<T>) lowestKey()).compareTo(o.lowestKey());
-		}
+		return ((Comparable<T>) lowestKey()).compareTo(o.lowestKey());
 	}
 
 	@Override
@@ -375,7 +371,7 @@ public class TreeNode<T extends Comparable<T>> implements Node<T>, Comparable<Tr
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		TreeNode<T> other = (TreeNode<T>) obj;
+		NMKTreeTreeNode<T> other = (NMKTreeTreeNode<T>) obj;
 		if (keys == null) {
 			if (other.keys != null) {
 				return false;

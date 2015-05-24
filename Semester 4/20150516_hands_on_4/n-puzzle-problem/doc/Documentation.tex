@@ -149,7 +149,7 @@ Folgend ist ein Beispiel für den worst case angeführt wobei \emph{M} die zu un
 \begin{enumerate}
 	\item $M=\{N1\}$
 	\item $M=\{N1, N2, N3, N4, N5\}$
-	\item $M=\{N1, N2, N3, N4, N5, N6, N7, N8, N9\}
+	\item $M=\{N1, N2, N3, N4, N5, N6, N7, N8, N9\}$
 	\item ...
 \end{enumerate}
 Es ist zu sehen dass bereits bei der dritten Ebene sich 9 Elemente in der zu untersuchenden Lösungsmenge befinden. Daher muss der Algorithmus so optimiert werden, wobei die noch nicht untersuchten Knoten (offen Knoten) und die bereits untersuchten Knoten (geschlossene Knoten) geprüft werden müssen ob bereits Knoten untersucht wurden, die geringere Kosten aufweisen. Ist dem so, dann soll der Nachfolgeknoten mit den höheren Kosten von der Untersuchung ausgeschlossen werden, was die Lösungsmenge so klein wie möglich hält.\\
