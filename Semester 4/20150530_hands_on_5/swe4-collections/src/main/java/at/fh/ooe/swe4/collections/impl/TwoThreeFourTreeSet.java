@@ -2,8 +2,10 @@ package at.fh.ooe.swe4.collections.impl;
 
 import iterator.NMKTreeIterator;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.SortedSet;
@@ -20,9 +22,81 @@ import at.fh.ooe.swe4.collections.model.NMKTreeTreeNode.Split;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date May 16, 2015
  * @param <T>
- *            the {@link Comparable} type of the managed elements
+ *            the managed key type
  */
-public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSortedSet<T, NMKTreeTreeNode<T>> implements SortedTreeSet<T> {
+public class TwoThreeFourTreeSet<T> extends
+		AbstractSortedSet<T, NMKTreeTreeNode<T>> implements SortedTreeSet<T> {
+
+	/**
+	 * Enumeration which specifies which process shall be applied on the current
+	 * metatdata instance.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date May 25, 2015
+	 */
+	private static enum ProcessState {
+		NEXT_STEP, ADD_TO_CURRENT, ADD_TO_SPLIT, IS_CURRENT;
+	}
+
+	/**
+	 * This class is used for holding the balance result and allows to pass
+	 * through the actual height.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date May 25, 2015
+	 * @param <T>
+	 *            the managed key type
+	 */
+	private static class BalanceResult<T> {
+		private int height;
+		private NMKTreeTreeNode<T> node;
+
+		/**
+		 * Creates a result instance and sets current height
+		 * 
+		 * @param height
+		 *            the height where the node resides
+		 */
+		public BalanceResult(final int height) {
+			super();
+			this.height = height;
+		}
+
+		/**
+		 * Decrease height by one.
+		 */
+		public void dec() {
+			height--;
+		}
+
+		/**
+		 * Gets the resulting node
+		 * 
+		 * @return the resulting node
+		 */
+		public NMKTreeTreeNode<T> getNode() {
+			return node;
+		}
+
+		/**
+		 * Sets the current node. Should correspond tot he set height.
+		 * 
+		 * @param node
+		 *            the node to be set
+		 */
+		public void setNode(NMKTreeTreeNode<T> node) {
+			this.node = node;
+		}
+
+		/**
+		 * Gets the height of the current node
+		 * 
+		 * @return the height of the hold node
+		 */
+		public int getHeight() {
+			return height;
+		}
+	}
 
 	/**
 	 * This class is used for determining if the visited node is processable or
@@ -33,12 +107,11 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
 	 * @date May 23, 2015
 	 * @param <T>
-	 *            the {@link Comparable} type of the {@link NMKTreeTreeNode}
-	 *            managed keys
+	 *            the managed key tpye
 	 */
-	public static class TreeNodeMetadata<T extends Comparable<T>> {
+	public static class TreeNodeMetadata<T> {
 
-		public final boolean currentProcessable;
+		public final ProcessState process;
 		public final NMKTreeTreeNode<T> current;
 		public final NMKTreeTreeNode<T> toVisit;
 
@@ -51,7 +124,7 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 		 *             if the current node is null
 		 */
 		public TreeNodeMetadata(final NMKTreeTreeNode<T> current) {
-			this(current, null);
+			this(current, null, null);
 		}
 
 		/**
@@ -62,20 +135,32 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 		 *            the current visited node
 		 * @param toVisit
 		 *            the next to visit node
+		 * @param process
+		 *            TODO
 		 * @throws NullPointerException
 		 *             if the current node is null
 		 */
-		public TreeNodeMetadata(final NMKTreeTreeNode<T> current, final NMKTreeTreeNode<T> toVisit) {
+		public TreeNodeMetadata(final NMKTreeTreeNode<T> current,
+				final NMKTreeTreeNode<T> toVisit, ProcessState process) {
 			super();
-			Objects.requireNonNull(current, "At least current node must be given");
+			Objects.requireNonNull(current,
+					"At least current node must be given");
 
 			this.current = current;
 			this.toVisit = toVisit;
-			this.currentProcessable = (toVisit == null);
+			this.process = process;
 		}
 	}
 
 	private int height = 0;
+
+	public TwoThreeFourTreeSet() {
+		super();
+	}
+
+	public TwoThreeFourTreeSet(Comparator<T> comparator) {
+		super(comparator);
+	}
 
 	@Override
 	public Iterator<T> iterator() {
@@ -85,7 +170,7 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 	@Override
 	public boolean add(T e) {
 		boolean modified = Boolean.FALSE;
-		int currentHeight = 0;
+		Integer currentHeight = Integer.valueOf(1);
 		/*-- null not allowed --*/
 		if (e != null) {
 			/*-- no root present --*/
@@ -98,33 +183,38 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 			else {
 				NMKTreeTreeNode<T> node = root;
 				while (node != null) {
-					currentHeight++;
-					final int oldKeySize = node.getKeySize();
-					TreeNodeMetadata<T> metadata = calculateTreeNodeMetadata(root, e);
-					// insert in current node
-					if (metadata.currentProcessable) {
-						// current contains less than 3 keys
-						if (node.getKeySize() < 3) {
-							node.addKey(e);
-							// Only modified if no duplicate added
-							modified = (oldKeySize == node.getKeySize()) ? Boolean.FALSE : Boolean.TRUE;
-						}
-						// node has already 3 keys, so add new child
-						else {
-							final NMKTreeTreeNode<T> tmp = new NMKTreeTreeNode<T>(e, comparator());
-							node.addChild(tmp);
-							node = tmp;
-							modified = Boolean.TRUE;
-						}
+					TreeNodeMetadata<T> metadata = calculateTreeNodeMetadata(
+							node, e);
+					switch (metadata.process) {
+					// do nothing on duplicate
+					case IS_CURRENT:
+						node = null;
+						break;
+					// add to current node
+					case ADD_TO_CURRENT:
+						node.addKey(e);
+						modified = Boolean.TRUE;
+						node = null;
+						break;
+					// split node and walk to proper child
+					case ADD_TO_SPLIT:
+						// balance tree and revisit balanced tree
+						final BalanceResult<T> result = new BalanceResult<T>(
+								currentHeight);
+						balanceTree(node, result);
+						// get new current node
+						node = result.getNode();
+						// set the height of the new current node
+						currentHeight = result.getHeight();
+						break;
+					// go to next node
+					case NEXT_STEP:
+						node = metadata.toVisit;
+						currentHeight++;
+						break;
+					default:
 						break;
 					}
-					// go to next child
-					node = metadata.toVisit;
-				}
-
-				/*-- balance if modified --*/
-				if (modified) {
-					balanceTree(node);
 				}
 			}
 		}
@@ -132,23 +222,44 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 		// Set new height if higher than actual set one
 		height = (height < currentHeight) ? currentHeight : height;
 
+		if (modified) {
+			size++;
+		}
+
 		return modified;
 	}
 
 	@Override
 	public T get(T el) {
 		NMKTreeTreeNode<T> node = root;
-		T result = null;
-		while ((node != null) && (result == null)) {
-			final TreeNodeMetadata<T> metadata = calculateTreeNodeMetadata(node, el);
-			if (metadata.currentProcessable) {
-				result = metadata.current.getKey(el);
-			} else {
+		if (node == null) {
+			return null;
+		}
+		while (node != null) {
+			final TreeNodeMetadata<T> metadata = calculateTreeNodeMetadata(
+					node, el);
+			switch (metadata.process) {
+			// found on this node
+			case IS_CURRENT:
+				return metadata.current.getKey(el);
+				// need to visit next node
+			case NEXT_STEP:
 				node = metadata.toVisit;
+				break;
+			// could be placed here therefore no further node to visit
+			case ADD_TO_CURRENT:
+				return null;
+				// would cause new node therefore node further node to visit
+			case ADD_TO_SPLIT:
+				return null;
+			default:
+				break;
 			}
 		}
 
-		return result;
+		// Should never get here
+		throw new IllegalStateException(
+				"Should never get to end of get method ");
 	}
 
 	@Override
@@ -195,139 +306,147 @@ public class TwoThreeFourTreeSet<T extends Comparable<T>> extends AbstractSorted
 	 *            the key which gets included in the calculation
 	 * @return
 	 */
-	private TreeNodeMetadata<T> calculateTreeNodeMetadata(final NMKTreeTreeNode<T> _node, final T _key) {
-		final int resLowestKey = compareElements(_key, _node.lowestKey());
-		final int resHighestKey = compareElements(_key, _node.highestKey());
+	private TreeNodeMetadata<T> calculateTreeNodeMetadata(
+			final NMKTreeTreeNode<T> _node, final T _key) {
+		TreeNodeMetadata<T> model = null;
 
-		/* -- This node has no children -- */
+		/*-- 1. one of last nodes --*/
 		if (_node.getChildrenSize() == 0) {
-			return new TreeNodeMetadata<T>(_node);
-		}
-
-		/* -- Children are present -- */
-		final int resNextHighestKey = compareElements(_key, _node.lowestChild()
-																	.lowestKey());
-
-		// Key lower than lowest held key
-		if (resLowestKey < 0) {
-			return new TreeNodeMetadata<T>(_node.lowestChild());
-		}
-		// Key higher than highest held key
-		if (resHighestKey > 0) {
-			return new TreeNodeMetadata<T>(_node.highestChild());
-		}
-		// Key is insertable if next higher is lower than actual
-		if ((resHighestKey <= 0) && (resNextHighestKey < 0)) {
-			return new TreeNodeMetadata<T>(_node);
-		}
-		// Search for child to visit
-		final Iterator<NMKTreeTreeNode<T>> it = _node.childrenIterator();
-		NMKTreeTreeNode<T> prev = null;
-		NMKTreeTreeNode<T> node = null;
-		while (it.hasNext()) {
-			node = it.next();
-			final int resChildLowest = compareElements(node.lowestKey(), _key);
-			final int resChildHighest = compareElements(node.highestKey(), _key);
-			if ((resChildLowest >= 0) && (resChildHighest <= 0)) {
-				return new TreeNodeMetadata<T>(_node, prev);
+			final ProcessState process;
+			// node holds key
+			if (_node.getKey(_key) != null) {
+				process = ProcessState.IS_CURRENT;
 			}
-			prev = node;
+			// node is full
+			else if (_node.getKeySize() == 3) {
+				process = ProcessState.ADD_TO_SPLIT;
+			}
+			// able to add to current node
+			else {
+				process = ProcessState.ADD_TO_CURRENT;
+			}
+			model = new TreeNodeMetadata<T>(_node, null, process);
+		}
+		/* 2. find node to visit */
+		else {
+			final Iterator<NMKTreeTreeNode<T>> childrenIt = _node
+					.childrenIterator();
+			final Iterator<T> keyIt = _node.keyIterator();
+			// visit all children along with keys
+			while ((childrenIt.hasNext()) && (model == null)) {
+				final NMKTreeTreeNode<T> node = childrenIt.next();
+				// as long as keys are left we can go left depending current key
+				if (keyIt.hasNext()) {
+					final T key = keyIt.next();
+					final int compResult = compareElements(_key, key);
+					// we found a duplicate
+					if (compResult == 0) {
+						model = new TreeNodeMetadata<T>(_node, null,
+								ProcessState.IS_CURRENT);
+					}
+					// is lower than current key, therefore visit child
+					else if (compResult < 0) {
+						model = new TreeNodeMetadata<T>(_node, node,
+								ProcessState.NEXT_STEP);
+					}
+				}
+				// here we have the highest node reached means go right
+				else {
+					model = new TreeNodeMetadata<T>(node, node,
+							ProcessState.NEXT_STEP);
+				}
+			}
 		}
 
-		throw new IllegalStateException("Should found an result until here");
+		Objects.requireNonNull(model, "Model should be set here");
+
+		return model;
 	}
 
 	/**
-	 * Performs the balancing of the tree if the current node needs to be split.
-	 * 
-	 * @param _node
-	 *            the node to check if splitable
-	 */
-	private void balanceTree(final NMKTreeTreeNode<T> _node) {
-		NMKTreeTreeNode<T> node = _node;
-
-		/*-- Too much keys present but no children --*/
-		if (node.getKeySize() == 3) {
-			// handle modified node
-			balanceTree(handleKeysSplit(node));
-		}
-		/*-- Too much children present. Split node --*/
-		if (node.getChildrenSize() == 4) {
-			// handle modified node
-			balanceTree(handleChildrenSplit(node));
-		}
-	}
-
-	/**
-	 * Handles the keys split.
+	 * Re-balances the tree if the current node has a keySize = 3.<br>
+	 * It recalls itself recursively in case the parent has been modified and
+	 * will perform a split as long as the current node overflows boundaries.
 	 * 
 	 * @param node
 	 *            the node to be split
-	 * @return the modified node
+	 * @param currentLevels
+	 *            TODO
 	 * @throws NullPointerException
 	 *             if the node is null
 	 * @throws IllegalStateException
-	 *             if the node has not exactly 3 keys set
+	 *             if the node has not exactly 0 or 4 children set
 	 */
-	private NMKTreeTreeNode<T> handleKeysSplit(final NMKTreeTreeNode<T> node) {
+	private void balanceTree(final NMKTreeTreeNode<T> node,
+			final BalanceResult<T> result) {
 		Objects.requireNonNull(node, "The node to split must not be null");
-		if (node.getKeySize() != 4) {
-			throw new IllegalStateException("Node must have exactly 3 keys");
+		Objects.requireNonNull(result, "result instance must be given");
+
+		// skip when less keys or null
+		if (node.getKeySize() != 3) {
+			result.setNode(node);
+			return;
 		}
 
-		NMKTreeTreeNode<T> leftNode, rightNode;
+		// valid nodes have zero or four children
+		if ((node.getChildrenSize() != 0) && (node.getChildrenSize() != 4)) {
+			throw new IllegalStateException(
+					" with 3 keys 4 nodes must be present. size: "
+							+ node.getChildrenSize());
+		}
 
-		// 1. keys for new nodes
+		NMKTreeTreeNode<T> parent, leftNode, rightNode;
+
+		// 1. keys for split
 		final T leftKey = node.lowestKey();
+		final T middleKey = node.middleKey();
 		final T rightKey = node.highestKey();
-		// 2. create new nodes
+		// 2. involved nodes
+		parent = node.getParent();
 		leftNode = new NMKTreeTreeNode<T>(leftKey, comparator());
 		rightNode = new NMKTreeTreeNode<T>(rightKey, comparator());
-		// 3. remove keys from node
-		node.removeKey(leftKey);
-		node.removeKey(rightKey);
-		// 4. add new children
-		node.addChild(leftNode);
-		node.addChild(rightNode);
-
-		return node;
-	}
-
-	/**
-	 * Performs an children split.
-	 * 
-	 * @param node
-	 *            the node to split its children
-	 * @return the modified parent
-	 * @throws NullPointerException
-	 *             if the given node is null
-	 * @throws IllegalStateException
-	 *             if the node has not exactly 4 children set
-	 */
-	private NMKTreeTreeNode<T> handleChildrenSplit(final NMKTreeTreeNode<T> node) {
-		Objects.requireNonNull(node, "The node to split must not be null");
-		if (node.getChildrenSize() != 4) {
-			throw new IllegalStateException("Node must have exactly 4 children");
+		// 3. split children if 4 children present
+		if (node.getChildrenSize() == 4) {
+			// split the children
+			Map<Split, SortedSet<NMKTreeTreeNode<T>>> splitChildren = node
+					.splitChildren();
+			// iterate over head an tail subset
+			for (Entry<Split, SortedSet<NMKTreeTreeNode<T>>> entry : splitChildren
+					.entrySet()) {
+				// Add each node to proper new node
+				for (NMKTreeTreeNode<T> child : entry.getValue()) {
+					switch (entry.getKey()) {
+					case HEAD:
+						leftNode.addChild(child);
+						break;
+					case TAIL:
+						rightNode.addChild(child);
+					default:
+						break;
+					}
+				}
+			}
+			node.clearChildren();
 		}
-
-		NMKTreeTreeNode<T> leftNode, rightNode, parent;
-
-		parent = node.getParent();
-		assert (node.getKeySize() == 3);
-
-		// 1. Set middle key on parent
-		parent.addKey(node.getKeyByIdx(1));
-		// 2. split node children
-		final Map<Split, SortedSet<NMKTreeTreeNode<T>>> splitChildren = node.splitChildrenByIdx(1);
-		// 3. create new nodes
-		leftNode = new NMKTreeTreeNode<T>(node.lowestKey(), splitChildren.get(Split.HEAD), comparator());
-		rightNode = new NMKTreeTreeNode<T>(node.highestKey(), splitChildren.get(Split.TAIL), comparator());
-		// 4. remove split node
-		parent.removeChild(node);
-		// 5. add new nodes
-		parent.addChild(leftNode);
-		parent.addChild(rightNode);
-
-		return parent;
+		// 4.1 add to parent if present
+		if (parent != null) {
+			parent.addKey(middleKey);
+			parent.removeChild(node);
+			parent.addChild(leftNode);
+			parent.addChild(rightNode);
+			// re-balance because overflow could occur
+			result.dec();
+			balanceTree(parent, result);
+			return;
+		}
+		// 3.2 else modify current node
+		else {
+			node.removeKey(leftKey);
+			node.removeKey(rightKey);
+			node.addChild(leftNode);
+			node.addChild(rightNode);
+			result.setNode(node);
+			return;
+		}
 	}
 }

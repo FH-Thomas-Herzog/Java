@@ -16,7 +16,7 @@ import at.fh.ooe.swe4.collections.model.NMKTreeTreeNode;
  * @param <T>
  *            the {@link Comparable} type managed by the backed tree
  */
-public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
+public class NMKTreeIterator<T> implements Iterator<T> {
 
 	private IterateModel<T> currentModel = null;
 	private final Stack<IterateModel<T>> unvisitedNodes = new Stack<>();
@@ -30,7 +30,7 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 	 *            the {@link Comparable} type of the managed keys by the given
 	 *            root node
 	 */
-	private static class IterateModel<T extends Comparable<T>> {
+	private static class IterateModel<T> {
 		public final IterateModel<T> parent;
 		public final Iterator<NMKTreeTreeNode<T>> childrenIt;
 		public final Iterator<T> keyIt;
@@ -46,7 +46,8 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 		 * @param keyIt
 		 *            the native node key iterator
 		 */
-		public IterateModel(final IterateModel<T> parent, Iterator<NMKTreeTreeNode<T>> children, Iterator<T> keyIt) {
+		public IterateModel(final IterateModel<T> parent,
+				Iterator<NMKTreeTreeNode<T>> children, Iterator<T> keyIt) {
 			super();
 			Objects.requireNonNull(children, "Children iterator must be given");
 			Objects.requireNonNull(keyIt, "Key iterator must be given");
@@ -66,12 +67,16 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 	public NMKTreeIterator(final NMKTreeTreeNode<T> root) {
 		super();
 		pushUntilLowest(root, null);
-		currentModel = unvisitedNodes.pop();
+		if (hasNext()) {
+			currentModel = unvisitedNodes.pop();
+		}
 	}
 
 	@Override
 	public boolean hasNext() {
-		return (!unvisitedNodes.isEmpty()) || (currentModel != null && (currentModel.keyIt.hasNext() || (currentModel.childrenIt.hasNext()))); // (currentModel.siblingIt.hasNext());
+		return (!unvisitedNodes.isEmpty())
+				|| (currentModel != null && (currentModel.keyIt.hasNext() || (currentModel.childrenIt
+						.hasNext()))); // (currentModel.siblingIt.hasNext());
 	}
 
 	@Override
@@ -79,7 +84,8 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 		T value = null;
 		/*-- no more nodes available --*/
 		if (!hasNext()) {
-			throw new NoSuchElementException("No further elements are available");
+			throw new NoSuchElementException(
+					"No further elements are available");
 		}
 		/*-- current model has no more children --*/
 		if (!currentModel.childrenIt.hasNext()) {
@@ -109,7 +115,8 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 				value = currentModel.keyIt.next();
 				// if there are children search for their lowest node
 				if (currentModel.childrenIt.hasNext()) {
-					pushUntilLowest(currentModel.childrenIt.next(), currentModel);
+					pushUntilLowest(currentModel.childrenIt.next(),
+							currentModel);
 					currentModel = unvisitedNodes.pop();
 				}
 			}
@@ -139,7 +146,8 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 	 * @param root
 	 *            the node to walk all way left to the lowest node
 	 */
-	private void pushUntilLowest(final NMKTreeTreeNode<T> root, final IterateModel<T> parent) {
+	private void pushUntilLowest(final NMKTreeTreeNode<T> root,
+			final IterateModel<T> parent) {
 		NMKTreeTreeNode<T> node = root;
 		IterateModel<T> prev, model;
 		prev = model = null;
@@ -148,8 +156,7 @@ public class NMKTreeIterator<T extends Comparable<T>> implements Iterator<T> {
 			final Iterator<NMKTreeTreeNode<T>> childrenIt;
 			// if there is a parent get its children
 			if (node.getParent() != null) {
-				childrenIt = node.getParent()
-									.childrenIterator();
+				childrenIt = node.getParent().childrenIterator();
 				// = current no need to revisit
 				childrenIt.next();
 				// set provided parent. For first visited node

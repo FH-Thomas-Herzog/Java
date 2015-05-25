@@ -15,7 +15,8 @@ import at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator;
  * @param <T>
  *            the type of the managed node values
  */
-public abstract class AbstractSortedSet<T, M extends Node<T>> implements SortedSet<T> {
+public abstract class AbstractSortedSet<T, M extends Node<T>> implements
+		SortedSet<T> {
 
 	protected final Comparator<T> comparator;
 	protected M root = null;
@@ -26,8 +27,7 @@ public abstract class AbstractSortedSet<T, M extends Node<T>> implements SortedS
 	 * Tree nodes are Comparable instances.
 	 */
 	public AbstractSortedSet() {
-		super();
-		this.comparator = null;
+		this(null);
 	}
 
 	/**
@@ -36,12 +36,9 @@ public abstract class AbstractSortedSet<T, M extends Node<T>> implements SortedS
 	 * 
 	 * @param comparator
 	 *            the comparator to use for the sorting of this tree
-	 * @throws NullPointerException
-	 *             if the provided comparator is null
 	 */
 	public AbstractSortedSet(Comparator<T> comparator) {
 		super();
-		Objects.requireNonNull(comparator, "Cannot create tree with null comparator");
 
 		this.comparator = comparator;
 	}
@@ -109,7 +106,8 @@ public abstract class AbstractSortedSet<T, M extends Node<T>> implements SortedS
 		if (comparator != null) {
 			return comparator.compare(o1, o2);
 		} else {
-			return new NullSafeComparableComparator<Comparable<T>>().compare(((Comparable<T>) o1), ((Comparable<T>) o2));
+			return new NullSafeComparableComparator<Comparable<T>>().compare(
+					((Comparable<T>) o1), ((Comparable<T>) o2));
 		}
 	}
 }
