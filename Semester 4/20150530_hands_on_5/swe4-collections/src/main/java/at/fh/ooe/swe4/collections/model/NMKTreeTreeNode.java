@@ -341,24 +341,28 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 */
 	@Override
 	public int compareTo(NMKTreeTreeNode<T> o) {
-		if ((lowestKey() == null) && (o.lowestKey() == null)) {
-			return 0;
-		}
-		if (lowestKey() == null) {
-			return -1;
-		}
-		if (o.lowestKey() == null) {
-			return 1;
-		}
-		if (!(lowestKey() instanceof Comparable)) {
-			throw new IllegalStateException(
-					"Managed Elements need to implement Comparable<T> interface if no Comparator<T> instance is provided");
-		}
 		// in case of provided comparator
 		if (comparator != null) {
 			return comparator.compare(this.lowestKey(), o.lowestKey());
 		}
-		return ((Comparable<T>) lowestKey()).compareTo(o.lowestKey());
+		// Otherwise null safe comparator implementation
+		else {
+			if ((lowestKey() == null) && (o.lowestKey() == null)) {
+				return 0;
+			}
+			if (lowestKey() == null) {
+				return -1;
+			}
+			if (o.lowestKey() == null) {
+				return 1;
+			}
+			if (!(lowestKey() instanceof Comparable)) {
+				throw new IllegalStateException(
+						"Managed Elements need to implement Comparable<T> interface if no Comparator<T> instance is provided");
+			}
+
+			return ((Comparable<T>) lowestKey()).compareTo(o.lowestKey());
+		}
 	}
 
 	@Override

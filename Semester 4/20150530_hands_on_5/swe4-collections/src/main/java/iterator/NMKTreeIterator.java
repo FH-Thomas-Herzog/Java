@@ -1,10 +1,10 @@
 package iterator;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Stack;
-import java.util.TreeSet;
 
 import at.fh.ooe.swe4.collections.model.NMKTreeTreeNode;
 
@@ -27,34 +27,37 @@ public class NMKTreeIterator<T> implements Iterator<T> {
 	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
 	 * @date May 24, 2015
 	 * @param <T>
-	 *            the {@link Comparable} type of the managed keys by the given
-	 *            root node
+	 *            the type of the managed nodes
 	 */
 	private static class IterateModel<T> {
+
+		public final NMKTreeTreeNode<T> current;
 		public final IterateModel<T> parent;
-		public final Iterator<NMKTreeTreeNode<T>> childrenIt;
+		public final Stack<NMKTreeTreeNode<T>> children = new Stack<>();
 		public final Iterator<T> keyIt;
 
 		/**
-		 * Creates this model.<br>
-		 * The iterators should be unique iterators and not referenced ones.
+		 * Creates a iterate model instance
 		 * 
 		 * @param parent
-		 *            the wrapped parent
-		 * @param children
-		 *            the native node children iterator
-		 * @param keyIt
-		 *            the native node key iterator
+		 *            the parent of this model
+		 * @param current
+		 *            the current node which is backed by this model
 		 */
 		public IterateModel(final IterateModel<T> parent,
-				Iterator<NMKTreeTreeNode<T>> children, Iterator<T> keyIt) {
+				final NMKTreeTreeNode<T> current) {
 			super();
-			Objects.requireNonNull(children, "Children iterator must be given");
-			Objects.requireNonNull(keyIt, "Key iterator must be given");
+			Objects.requireNonNull(current, "Current node must be given");
 
 			this.parent = parent;
-			this.childrenIt = children;
-			this.keyIt = keyIt;
+			this.current = current;
+			this.keyIt = current.keyIterator();
+			// set all children on stack in proper order
+			final Iterator<NMKTreeTreeNode<T>> it = current.childrenIterator();
+			while (it.hasNext()) {
+				children.add(it.next());
+			}
+			Collections.reverse(children);
 		}
 	}
 
@@ -75,8 +78,8 @@ public class NMKTreeIterator<T> implements Iterator<T> {
 	@Override
 	public boolean hasNext() {
 		return (!unvisitedNodes.isEmpty())
-				|| (currentModel != null && (currentModel.keyIt.hasNext() || (currentModel.childrenIt
-						.hasNext()))); // (currentModel.siblingIt.hasNext());
+				|| (currentModel != null && (currentModel.keyIt.hasNext() || (!currentModel.children
+						.isEmpty())));
 	}
 
 	@Override
@@ -88,47 +91,54 @@ public class NMKTreeIterator<T> implements Iterator<T> {
 					"No further elements are available");
 		}
 		/*-- current model has no more children --*/
-		if (!currentModel.childrenIt.hasNext()) {
-			// 1. keys still left
+		if (currentModel.children.isEmpty()) {
+			// keys still left
 			if (currentModel.keyIt.hasNext()) {
 				value = currentModel.keyIt.next();
 			}
-			// 2. notify parent if this is child
-			// notify parent that current node was visited
-			// there was a check for null parent, could be included in case of
-			// error
+			// no children and no keys means next node ins tack
 			else {
-				// marker for new parent node to visit
-				boolean newParent = Boolean.FALSE;
-				if (currentModel.parent.childrenIt.hasNext()) {
-					currentModel.parent.childrenIt.next();
-				} else {
-					newParent = Boolean.TRUE;
-				}
+				// Remove this node from parent, because was completely visited
+				// before
+				currentModel.parent.children.remove(currentModel.current);
+
 				// get next node
 				currentModel = unvisitedNodes.pop();
-				// if new parent we know that a child has been visited before
-				if (newParent) {
-					currentModel.childrenIt.next();
-				}
-				// get current value from new parent
+
+				// get current value from new node
 				value = currentModel.keyIt.next();
-				// if there are children search for their lowest node
-				if (currentModel.childrenIt.hasNext()) {
-					pushUntilLowest(currentModel.childrenIt.next(),
-							currentModel);
+
+				// if there are children
+				if (!currentModel.children.isEmpty()) {
+					// need to revisit if keys still left
+					if (currentModel.keyIt.hasNext()) {
+						unvisitedNodes.push(currentModel);
+					}
+					// inform parent that this node does not need to be visited
+					// again if no further keys are available
+					else if (currentModel.parent != null) {
+						currentModel.parent.children
+								.remove(currentModel.current);
+					}
+
+					// go to lowest node
+					pushUntilLowest(currentModel.children.pop(), currentModel);
+
+					// get lowest node from stack
 					currentModel = unvisitedNodes.pop();
 				}
 			}
 		}
-		/*-- should now be new parent node --*/
+		/*-- get on further children --*/
 		else {
 			// we need to revisit this node if it has children set
-			if (currentModel.childrenIt.hasNext()) {
+			if (!currentModel.children.isEmpty()) {
 				unvisitedNodes.push(currentModel);
+			} else if (currentModel.parent != null) {
+				currentModel.parent.children.remove(currentModel.current);
 			}
 			// get lowest node of next child to visit
-			pushUntilLowest(currentModel.childrenIt.next(), currentModel);
+			pushUntilLowest(currentModel.children.pop(), currentModel);
 			// get lowest node
 			currentModel = unvisitedNodes.pop();
 		}
@@ -152,21 +162,14 @@ public class NMKTreeIterator<T> implements Iterator<T> {
 		IterateModel<T> prev, model;
 		prev = model = null;
 		while (node != null) {
-			final Iterator<T> keyIt = node.keyIterator();
-			final Iterator<NMKTreeTreeNode<T>> childrenIt;
 			// if there is a parent get its children
 			if (node.getParent() != null) {
-				childrenIt = node.getParent().childrenIterator();
-				// = current no need to revisit
-				childrenIt.next();
 				// set provided parent. For first visited node
 				prev = (prev == null) ? parent : prev;
 			}
-			// set empty iterator if no parent
-			else {
-				childrenIt = new TreeSet<NMKTreeTreeNode<T>>().iterator();
-			}
-			model = new IterateModel<T>(prev, node.childrenIterator(), keyIt);
+			// create current model
+			model = new IterateModel<T>(prev, node);
+			// remember parent model of next visited node
 			prev = model;
 			unvisitedNodes.push(model);
 			// walk left
