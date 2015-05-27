@@ -1,32 +1,35 @@
 package at.fh.ooe.swe4.test.collections.twoThreeFourTreeSet.impl.parametrized;
 
-import iterator.NMKTreeIterator;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import at.fh.ooe.swe4.collections.iterator.NMKTreeIterator;
 import at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest;
 import at.fh.ooe.swe4.test.collections.twoThreeFourTreeSet.api.TwoThreeFourTreeSetDataProducer;
 import at.fh.ooe.swe4.test.collections.twoThreeFourTreeSet.api.TwoThreeFourTreeSetDataProducer.TestCase;
 import at.fh.ooe.swe4.test.collections.twoThreeFourTreeSet.api.TwoThreeFourTreeSetDataProducer.TestData;
 
+/**
+ * This is parameterized test which runs the test cases provided via
+ * {@link TwoThreeFourTreeSetDataProducer}.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date May 27, 2015
+ */
 @RunWith(Parameterized.class)
 public class IteratorValidTest extends AbstractConsoleLoggingTest {
 
 	@Parameter
 	public TestData testData;
-
-	private static final Logger LOG = Logger.getLogger(IteratorValidTest.class);
 
 	@Parameters
 	public static final List<Object[]> getTestParameters() {
@@ -48,8 +51,7 @@ public class IteratorValidTest extends AbstractConsoleLoggingTest {
 		// -- When --
 		for (int i = 0; i < testData.orderedValues.size(); i++) {
 			// -- Then --
-			LOG.info(it.next());
-			// assertEquals(testData.orderedValues.get(i), it.next());
+			assertEquals(testData.orderedValues.get(i), it.next());
 		}
 	}
 }

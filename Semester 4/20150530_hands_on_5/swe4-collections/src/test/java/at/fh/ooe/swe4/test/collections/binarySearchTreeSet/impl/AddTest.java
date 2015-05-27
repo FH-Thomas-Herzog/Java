@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.test.collections.twoThreeFourTreeSet.impl;
+package at.fh.ooe.swe4.test.collections.binarySearchTreeSet.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,11 +8,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import at.fh.ooe.swe4.collections.api.SortedTreeSet;
-import at.fh.ooe.swe4.collections.impl.TwoThreeFourTreeSet;
+import at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet;
 import at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest;
 
 /**
- * This test class tests the {@link TwoThreeFourTreeSet#add(Object)} method.
+ * This test class tests the {@link BinarySearchTreeSet#add(Object)} method.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date May 27, 2015
@@ -20,7 +20,7 @@ import at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest;
 @RunWith(JUnit4.class)
 public class AddTest extends AbstractConsoleLoggingTest {
 
-	private final SortedTreeSet<Integer> set = new TwoThreeFourTreeSet<Integer>();
+	private final SortedTreeSet<Integer> set = new BinarySearchTreeSet<Integer>();
 
 	@Test
 	public void addNull() {
@@ -32,9 +32,9 @@ public class AddTest extends AbstractConsoleLoggingTest {
 	}
 
 	@Test
-	public void addSplitOnThreeKeys() {
+	public void testLevel4() {
 		// -- Given --
-		final int height = 2;
+		final int height = 4;
 
 		// -- When --
 		set.add(1);
@@ -47,9 +47,9 @@ public class AddTest extends AbstractConsoleLoggingTest {
 	}
 
 	@Test
-	public void addTwoLevels() {
+	public void testLevel5() {
 		// -- Given --
-		final int height = 2;
+		final int height = 5;
 
 		// -- When --
 		// 1. First level
@@ -69,9 +69,9 @@ public class AddTest extends AbstractConsoleLoggingTest {
 	}
 
 	@Test
-	public void addThreeLevels() {
+	public void testLevel6() {
 		// -- Given --
-		final int height = 3;
+		final int height = 6;
 
 		// -- When --
 		// 1. first level

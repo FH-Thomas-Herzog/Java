@@ -3,10 +3,12 @@ package at.fh.ooe.swe4.collections.model;
 import at.fh.ooe.swe4.collections.api.Node;
 
 /**
+ * The tree node for a binary tree implementation with two descendants.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date May 17, 2015
  * @param <T>
+ *            the managed key tpye
  */
 public class BinaryTreeNode<T> implements Node<T> {
 
@@ -14,11 +16,20 @@ public class BinaryTreeNode<T> implements Node<T> {
 	public BinaryTreeNode<T> left;
 	public BinaryTreeNode<T> right;
 
+	/**
+	 * @param element
+	 */
 	public BinaryTreeNode(T element) {
 		this(element, null, null);
 	}
 
-	public BinaryTreeNode(T element, BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
+	/**
+	 * @param element
+	 * @param left
+	 * @param right
+	 */
+	public BinaryTreeNode(T element, BinaryTreeNode<T> left,
+			BinaryTreeNode<T> right) {
 		super();
 		this.element = element;
 		this.left = left;

@@ -1,9 +1,7 @@
 package at.fh.ooe.swe4.collections.api;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Objects;
 
 import at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator;
 
@@ -53,6 +51,11 @@ public abstract class AbstractSortedSet<T, M extends Node<T>> implements
 		return (get(el) != null) ? Boolean.TRUE : Boolean.FALSE;
 	}
 
+	/**
+	 * ATTENTION:<br>
+	 * Uses {@link Iterator} for searching for the node. This can heavily
+	 * decrease performance.
+	 */
 	@Override
 	public T get(T el) {
 		// null or empty tree
@@ -92,7 +95,8 @@ public abstract class AbstractSortedSet<T, M extends Node<T>> implements
 
 	/**
 	 * Compares the two given elements either with the set comparator or with
-	 * natural ordering .
+	 * natural ordering.<br>
+	 * Assumes that the managed keys are of type {@link Comparable}
 	 * 
 	 * @param o1
 	 *            the first instance
@@ -101,6 +105,9 @@ public abstract class AbstractSortedSet<T, M extends Node<T>> implements
 	 * @return -1 if o1 is lower than o2<br>
 	 *         0 if o1 and o2 are equal <br>
 	 *         1 if o1 is greater than o2
+	 * @throws ClassCastException
+	 *             if the comparator is null and the managed keys are not of
+	 *             type {@link Comparable}
 	 */
 	protected int compareElements(final T o1, final T o2) {
 		if (comparator != null) {

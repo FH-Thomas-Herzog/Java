@@ -4,20 +4,47 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import at.fh.ooe.swe4.collections.impl.TwoThreeFourTreeSet;
 import at.fh.ooe.swe4.collections.model.NMKTreeTreeNode;
 
+/**
+ * This class provides the test data for the {@link TwoThreeFourTreeSet} tests,
+ * where dedicated trees are build via the {@link NMKTreeTreeNode} model.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date May 27, 2015
+ */
 public class TwoThreeFourTreeSetDataProducer {
 
+	/**
+	 * USed for the paramter build for the parameterized test.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date May 27, 2015
+	 */
 	public static enum TestCase {
 		TREE_1, TREE_2;
 	}
 
+	/**
+	 * Model class for holding the test case specific test data.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date May 27, 2015
+	 */
 	public static class TestData {
+
 		public final List<Integer> orderedValues;
 		public final List<Integer> insertOrderedValues;
 		public final int levels;
 		public final NMKTreeTreeNode<Integer> root;
 
+		/**
+		 * @param orderedValues
+		 * @param insertOrderedValues
+		 * @param root
+		 * @param levels
+		 */
 		public TestData(final List<Integer> orderedValues,
 				final List<Integer> insertOrderedValues,
 				final NMKTreeTreeNode<Integer> root, final int levels) {
@@ -29,15 +56,22 @@ public class TwoThreeFourTreeSetDataProducer {
 		}
 	}
 
-	public static TestData createTestData(final TestCase type) {
+	/**
+	 * Creates the test data for the given test case
+	 * 
+	 * @param testCase
+	 *            the test case to produce test data for
+	 * @return the model instance holding the test case test data
+	 */
+	public static TestData createTestData(final TestCase testCase) {
 		final int size = 10;
 		List<Integer> orderedValues = new ArrayList<Integer>(size);
-		switch (type) {
+		switch (testCase) {
 		case TREE_1:
 			// -- Test should be able to walk this tree
 			// ----------------- 6 ----------------------------
 			// -------- 3 ---------------- 8 ------------------
-			// / \ / | \
+			// -------/ -- \ -------- / -- | ---- \ -----------
 			// -- 1-2 ---- 4-5 --- 7 ---- 9-10 --- 12-13 ------
 			// ------------------------------------------------
 			final NMKTreeTreeNode<Integer> l1 = new NMKTreeTreeNode<Integer>();

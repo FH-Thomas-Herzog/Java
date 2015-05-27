@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.test.collections.common;
+package at.fh.ooe.swe4.test.collections.common.parametrized;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,8 +22,15 @@ import org.junit.runners.Parameterized.Parameters;
 
 import at.fh.ooe.swe4.collections.api.SortedTreeSet;
 import at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet;
+import at.fh.ooe.swe4.collections.impl.TwoThreeFourTreeSet;
 import at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest;
 
+/**
+ * This test class tests the Sorted
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date May 27, 2015
+ */
 @RunWith(Parameterized.class)
 public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
@@ -36,7 +43,20 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
 	@Parameters
 	public static Collection<Object[]> prepareParameters() {
-		return Arrays.asList(new Object[][] { { BinarySearchTreeSet.class, null } });
+		return Arrays.asList(new Object[][] {
+				{ BinarySearchTreeSet.class, null },
+				{ TwoThreeFourTreeSet.class, null },
+				{ BinarySearchTreeSet.class, new Comparator<Integer>() {
+					@Override
+					public int compare(Integer o1, Integer o2) {
+						return o1.compareTo(o2);
+					}
+				} }, { TwoThreeFourTreeSet.class, new Comparator<Integer>() {
+					@Override
+					public int compare(Integer o1, Integer o2) {
+						return o1.compareTo(o2);
+					}
+				} } });
 	}
 
 	/**
@@ -48,8 +68,8 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 			if (comparator == null) {
 				instance = clazz.newInstance();
 			} else {
-				instance = clazz.getConstructor(Comparator.class)
-								.newInstance(comparator);
+				instance = clazz.getConstructor(Comparator.class).newInstance(
+						comparator);
 			}
 		} catch (Throwable e) {
 			throw new IllegalStateException("Could not prepare test");
@@ -68,7 +88,8 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
 		// -- Then --
 		assertEquals(1, instance.size());
-		assertTrue(Arrays.equals(new Integer[] { 1 }, instance.toArray(new Integer[instance.size()])));
+		assertTrue(Arrays.equals(new Integer[] { 1 },
+				instance.toArray(new Integer[instance.size()])));
 	}
 
 	@Test
@@ -80,8 +101,9 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 		instance.add(value);
 
 		// -- Then --
-		assertEquals(1, instance.size());
-		assertTrue(Arrays.equals(new Integer[] { null }, instance.toArray(new Integer[instance.size()])));
+		assertEquals(0, instance.size());
+		assertTrue(Arrays.equals(new Integer[] {},
+				instance.toArray(new Integer[instance.size()])));
 	}
 
 	@Test
@@ -98,7 +120,8 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
 		// -- Then --
 		assertEquals(expectedSize, instance.size());
-		assertTrue(Arrays.equals(expectedElements, instance.toArray(new Integer[instance.size()])));
+		assertTrue(Arrays.equals(expectedElements,
+				instance.toArray(new Integer[instance.size()])));
 	}
 
 	@Test
@@ -117,7 +140,9 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
 		// -- Then --
 		assertEquals(expectedSize, instance.size());
-		assertTrue(Arrays.equals(expectedElements.toArray(new Integer[expectedSize]), instance.toArray(new Integer[instance.size()])));
+		assertTrue(Arrays.equals(
+				expectedElements.toArray(new Integer[expectedSize]),
+				instance.toArray(new Integer[instance.size()])));
 	}
 
 	@Test
@@ -140,6 +165,8 @@ public class SortedTreeSetTest extends AbstractConsoleLoggingTest {
 
 		// -- Then --
 		assertEquals(expectedSize, instance.size());
-		assertTrue(Arrays.equals(expectedElements.toArray(new Integer[expectedSize]), instance.toArray(new Integer[instance.size()])));
+		assertTrue(Arrays.equals(
+				expectedElements.toArray(new Integer[expectedSize]),
+				instance.toArray(new Integer[instance.size()])));
 	}
 }

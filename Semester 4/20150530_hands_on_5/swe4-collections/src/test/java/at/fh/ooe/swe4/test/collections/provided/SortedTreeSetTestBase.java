@@ -102,7 +102,7 @@ public abstract class SortedTreeSetTestBase extends AbstractConsoleLoggingTest {
 		SortedSet<Integer> set = createSet();
 
 		for (int i = 1; i <= NELEMS; i++) {
-			set.add(rand.nextInt(100000));
+			set.add(rand.nextInt());
 			assertTrue(isSorted(set));
 			// assertEquals(i, set.size());
 		}

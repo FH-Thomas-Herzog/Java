@@ -2,7 +2,18 @@ package at.fh.ooe.swe4.collections.comparator;
 
 import java.util.Comparator;
 
-public class NullSafeComparableComparator<T extends Comparable> implements Comparator<T> {
+/**
+ * This is a null safe ascending {@link Comparator} implementation for
+ * {@link Comparable} types
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date May 27, 2015
+ * @param <T>
+ *            the {@link Comparable} type of the to compare objects
+ */
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public class NullSafeComparableComparator<T extends Comparable> implements
+		Comparator<T> {
 
 	@Override
 	public int compare(T o1, T o2) {

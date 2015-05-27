@@ -11,5 +11,4 @@ public class BSTSetTest extends SortedTreeSetTestBase {
 	protected <T> SortedTreeSet<T> createSet(Comparator<T> comparator) {
 		return new BinarySearchTreeSet<T>(comparator);
 	}
-
 }

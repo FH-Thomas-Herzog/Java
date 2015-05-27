@@ -1,4 +1,4 @@
-package iterator;
+package at.fh.ooe.swe4.collections.iterator;
 
 import java.util.Collections;
 import java.util.Iterator;

@@ -1,7 +1,5 @@
 package at.fh.ooe.swe4.collections.impl;
 
-import iterator.NMKTreeIterator;
-
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,6 +10,7 @@ import java.util.SortedSet;
 
 import at.fh.ooe.swe4.collections.api.AbstractSortedSet;
 import at.fh.ooe.swe4.collections.api.SortedTreeSet;
+import at.fh.ooe.swe4.collections.iterator.NMKTreeIterator;
 import at.fh.ooe.swe4.collections.model.NMKTreeTreeNode;
 import at.fh.ooe.swe4.collections.model.NMKTreeTreeNode.Split;
 

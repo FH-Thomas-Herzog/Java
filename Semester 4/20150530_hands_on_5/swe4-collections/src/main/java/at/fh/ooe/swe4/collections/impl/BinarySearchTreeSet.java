@@ -15,7 +15,8 @@ import at.fh.ooe.swe4.collections.model.BinaryTreeNode;
  * @date May 17, 2015
  * @param <T>
  */
-public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<T>> implements SortedTreeSet<T> {
+public class BinarySearchTreeSet<T> extends
+		AbstractSortedSet<T, BinaryTreeNode<T>> implements SortedTreeSet<T> {
 
 	/**
 	 * This is the iterator for the {@link BinarySearchTreeSet} class.
@@ -24,7 +25,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	 * @date May 17, 2015
 	 * @param <T>
 	 */
-	public static class BinarySearchtreeIterator<T> implements Iterator<T> {
+	public static class BinarySearchTreeIterator<T> implements Iterator<T> {
 
 		private final Stack<BinaryTreeNode<T>> unvisitedNodes = new Stack<>();
 
@@ -34,7 +35,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 		 * @param node
 		 *            the root node of the backed tree
 		 */
-		public BinarySearchtreeIterator(final BinaryTreeNode<T> root) {
+		public BinarySearchTreeIterator(final BinaryTreeNode<T> root) {
 			super();
 			BinaryTreeNode<T> node = root;
 			while (node != null) {
@@ -51,7 +52,8 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 		@Override
 		public T next() {
 			if (!hasNext()) {
-				throw new NoSuchElementException("No further elemets are available");
+				throw new NoSuchElementException(
+						"No further elemets are available");
 			}
 			final BinaryTreeNode<T> current = unvisitedNodes.pop();
 			BinaryTreeNode<T> node = current.right;
@@ -88,54 +90,75 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	}
 
 	@Override
+	public T get(T el) {
+		BinaryTreeNode<T> node = root;
+		while (node != null) {
+			int res = compareElements(node.element, el);
+			if (res == 0) {
+				return node.element;
+			}
+			if (res > 0) {
+				node = node.left;
+			} else {
+				node = node.right;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public boolean add(T el) {
 		boolean modified = Boolean.FALSE;
 		int currentLevels = 0;
-		// root already present
-		if (root != null) {
-			BinaryTreeNode<T> previous = null;
-			BinaryTreeNode<T> node = root;
-			while (node != null) {
-				int compareResult = compareElements(el, node.element);
-				// No duplicates allowed
-				if (compareResult == 0) {
-					previous = null;
-					break;
+		/*-- Null not allowed --*/
+		if (el != null) {
+			// root already present
+			if (root != null) {
+				BinaryTreeNode<T> previous = null;
+				BinaryTreeNode<T> node = root;
+				while (node != null) {
+					int compareResult = compareElements(el, node.element);
+					// No duplicates allowed
+					if (compareResult == 0) {
+						previous = null;
+						break;
+					}
+					previous = node;
+					currentLevels++;
+					// go to left
+					if (compareResult < 0) {
+						node = node.left;
+					}
+					// go to right
+					else {
+						node = node.right;
+					}
 				}
-				previous = node;
-				currentLevels++;
-				// go to left
-				if (compareResult < 0) {
-					node = node.left;
-				}
-				// go to right
-				else {
-					node = node.right;
+				// add new child if previous found
+				if (previous != null) {
+					currentLevels++;
+					modified = Boolean.TRUE;
+					size++;
+					final BinaryTreeNode<T> newNode = new BinaryTreeNode<T>(el,
+							null, null);
+					if (compareElements(el, previous.element) < 0) {
+						previous.left = newNode;
+					} else {
+						previous.right = newNode;
+					}
 				}
 			}
-			// add new child if previous found
-			if (previous != null) {
-				currentLevels++;
+			// add root element
+			else {
+				root = new BinaryTreeNode<T>(el, null, null);
 				modified = Boolean.TRUE;
+				currentLevels = 1;
 				size++;
-				final BinaryTreeNode<T> newNode = new BinaryTreeNode<T>(el, null, null);
-				if (compareElements(el, previous.element) < 0) {
-					previous.left = newNode;
-				} else {
-					previous.right = newNode;
-				}
 			}
-		}
-		// add root element
-		else {
-			root = new BinaryTreeNode<T>(el, null, null);
-			modified = Boolean.TRUE;
-			currentLevels = 1;
-			size++;
-		}
-		// set if new level reached
-		if (levels < currentLevels) {
-			levels = currentLevels;
+			// set if new level reached
+			if (levels < currentLevels) {
+				levels = currentLevels;
+			}
 		}
 		return modified;
 	}
@@ -143,7 +166,8 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	@Override
 	public T first() {
 		if (root == null) {
-			throw new NoSuchElementException("Tree is empty therefore no first element available");
+			throw new NoSuchElementException(
+					"Tree is empty therefore no first element available");
 		}
 		BinaryTreeNode<T> node = root;
 		while (node.left != null) {
@@ -155,7 +179,8 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 	@Override
 	public T last() {
 		if (root == null) {
-			throw new NoSuchElementException("Tree is empty therefore no last element available");
+			throw new NoSuchElementException(
+					"Tree is empty therefore no last element available");
 		}
 		BinaryTreeNode<T> node = root;
 		while (node.right != null) {
@@ -166,7 +191,7 @@ public class BinarySearchTreeSet<T> extends AbstractSortedSet<T, BinaryTreeNode<
 
 	@Override
 	public Iterator<T> iterator() {
-		return new BinarySearchtreeIterator<T>(root);
+		return new BinarySearchTreeIterator<T>(root);
 	}
 
 	@Override
