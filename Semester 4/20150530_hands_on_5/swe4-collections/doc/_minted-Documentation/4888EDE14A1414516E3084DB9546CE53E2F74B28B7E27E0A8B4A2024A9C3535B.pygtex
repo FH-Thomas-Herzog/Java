@@ -1,0 +1,399 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.model}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashMap}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Map}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.SortedSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.TreeSet}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api.Node}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is the node used for a tree which is allowed to hold multiple keys and}
+\PYGdefault{c+cm}{ * children references.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 22, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the comparable type managed by this node}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Node}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{},}
+		\PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{},} \PYGdefault{n}{Iterable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Enumeration for representing the split type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 23, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{Split} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{HEAD}\PYGdefault{o}{,} \PYGdefault{n}{TAIL}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parent}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{children}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{keys}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates an empty node}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NMKTreeNode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}(),} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates an node with one element set}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param element}
+\PYGdefault{c+cm}{	 *            the element to be set}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NMKTreeNode}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{element}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{(}\PYGdefault{n}{element}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}(}
+				\PYGdefault{k}{new} \PYGdefault{n}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}()),} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates an node with an custom \PYGdefaultZob{}@link Comparator\PYGdefaultZcb{} instance}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param element}
+\PYGdefault{c+cm}{	 *            the element managed by this node}
+\PYGdefault{c+cm}{	 * @param comparator}
+\PYGdefault{c+cm}{	 *            the comparator used for sorting the managed keys and}
+\PYGdefault{c+cm}{	 *            referenced children}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NMKTreeNode}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{element}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{(}\PYGdefault{n}{element}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}(}
+				\PYGdefault{k}{new} \PYGdefault{n}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}()),}
+				\PYGdefault{n}{comparator}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates an fully customized node}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param key}
+\PYGdefault{c+cm}{	 *            the key for this node}
+\PYGdefault{c+cm}{	 * @param children}
+\PYGdefault{c+cm}{	 *            the children to be set on this node}
+\PYGdefault{c+cm}{	 * @param comparator}
+\PYGdefault{c+cm}{	 *            the comparator used for key sorting}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the children set is null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NMKTreeNode}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{element}\PYGdefault{o}{,}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{children}\PYGdefault{o}{,}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{children}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Children must be given\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{comparator} \PYGdefault{o}{=} \PYGdefault{n}{comparator}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{children} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}
+				\PYGdefault{k}{new} \PYGdefault{n}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}());}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{addAll}\PYGdefault{o}{(}\PYGdefault{n}{children}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{keys} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{comparator}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{element} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{addKey}\PYGdefault{o}{(}\PYGdefault{n}{element}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Adds a child to this node}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param child}
+\PYGdefault{c+cm}{	 *            the child to be added}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addChild}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{child}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{child}\PYGdefault{o}{.}\PYGdefault{n+na}{setParent}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{);}
+		\PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{child}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Removes the given child from the referenced children}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param node}
+\PYGdefault{c+cm}{	 *            the node to be removed}
+\PYGdefault{c+cm}{	 * @return true if the node could be removed, false otherwise}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{removeChild}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Removes all references to all children.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{clearChildren}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{clear}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Adds a key to this node}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param key}
+\PYGdefault{c+cm}{	 *            the key to be added}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addKey}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{key}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{key}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Removes an key from this node}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param key}
+\PYGdefault{c+cm}{	 *            the key to removed from this node}
+\PYGdefault{c+cm}{	 * @return true if the node has been removed, false otherwise}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{removeKey}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{key}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{key}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the lowest key hold by this tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the lowest key or null if no key is set.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{lowestKey}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{getKeySize}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{k+kc}{null} \PYGdefault{o}{:} \PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{first}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the highest key hold by this tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the highest key or null if no key is set.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{highestKey}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{getKeySize}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{k+kc}{null} \PYGdefault{o}{:} \PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{last}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the middle key and only if there are all possible keys set.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the middle key if all possible keys are set, null otherwise}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{middleKey}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{getKeySize}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{keyIterator}\PYGdefault{o}{();}
+			\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+			\PYGdefault{k}{return} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets and key at the given index.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZus{}idx}
+\PYGdefault{c+cm}{	 *            the index where the value resides}
+\PYGdefault{c+cm}{	 * @return the found value}
+\PYGdefault{c+cm}{	 * @throws IndexOutOfBoundsException}
+\PYGdefault{c+cm}{	 *             if the index is invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{getKeyByIdx}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{\PYGdefaultZus{}idx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{idx} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{\PYGdefaultZus{}idx} \PYGdefault{o}{\PYGdefaultZgt{}=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{\PYGdefaultZus{}idx} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{getKeySize}\PYGdefault{o}{()))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{value} \PYGdefault{o}{:} \PYGdefault{n}{keys}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{idx} \PYGdefault{o}{==} \PYGdefault{n}{\PYGdefaultZus{}idx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k}{return} \PYGdefault{n}{value}\PYGdefault{o}{;}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{n}{idx}\PYGdefault{o}{++;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IndexOutOfBoundsException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Key with idx=\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{idx}
+				\PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{} does not exist\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the key hold by this node.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZus{}key}
+\PYGdefault{c+cm}{	 *            the key to search in the key set}
+\PYGdefault{c+cm}{	 * @return the found key from the collection, null if given key is null or}
+\PYGdefault{c+cm}{	 *         node does not hold the given key.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{getKey}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{\PYGdefaultZus{}key}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{\PYGdefaultZus{}key} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{\PYGdefaultZus{}key}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{keyIterator}\PYGdefault{o}{();}
+		\PYGdefault{n}{T} \PYGdefault{n}{key} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{((}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(!}\PYGdefault{n}{\PYGdefaultZus{}key}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{key}\PYGdefault{o}{)))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{key} \PYGdefault{o}{=} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{\PYGdefaultZus{}key}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{key}\PYGdefault{o}{))} \PYGdefault{o}{?} \PYGdefault{n}{key} \PYGdefault{o}{:} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the highest child referenced by this tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the highest child or null if there is no next higher.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{highestChild}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{getChildrenSize}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{k+kc}{null} \PYGdefault{o}{:} \PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{last}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the lowest child referenced by this tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the lowest child or null if there is no next higher.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{lowestChild}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{getChildrenSize}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{k+kc}{null} \PYGdefault{o}{:} \PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{first}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Splits the hold children set into two sets where the set gets split in}
+\PYGdefault{c+cm}{	 * half (integer division).}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the map containing the head and tail set of the hold children set}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Split}\PYGdefault{o}{,} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n+nf}{splitChildren}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{counter} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Split}\PYGdefault{o}{,} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{split} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashMap}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{n}{split}\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Split}\PYGdefault{o}{.}\PYGdefault{n+na}{HEAD}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}(}
+				\PYGdefault{k}{new} \PYGdefault{n}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}()));}
+		\PYGdefault{n}{split}\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Split}\PYGdefault{o}{.}\PYGdefault{n+na}{TAIL}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}(}
+				\PYGdefault{k}{new} \PYGdefault{n}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}()));}
+
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{child} \PYGdefault{o}{:} \PYGdefault{n}{children}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{counter} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{o}{((}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{o}{(}\PYGdefault{n}{getChildrenSize}\PYGdefault{o}{()} \PYGdefault{o}{/} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{)))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{split}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Split}\PYGdefault{o}{.}\PYGdefault{n+na}{HEAD}\PYGdefault{o}{).}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{child}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{split}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Split}\PYGdefault{o}{.}\PYGdefault{n+na}{TAIL}\PYGdefault{o}{).}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{child}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{counter}\PYGdefault{o}{++;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{split}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The current size of the hold keys}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the hole key size}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{getKeySize}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the current referenced children size}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the hold children size}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{getChildrenSize}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the referenced parent node}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the parent node}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getParent}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{parent}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Sets the parent which references this node}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param parent}
+\PYGdefault{c+cm}{	 *            the parent to be set on this node}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setParent}\PYGdefault{o}{(}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parent}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{parent} \PYGdefault{o}{=} \PYGdefault{n}{parent}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the iterator for the children referenced by this node.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the iterator of the node\PYGdefaultZsq{}s children}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n+nf}{iterator}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{iterator}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the iterator for the hold keys.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the iterator for the old keys.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{keyIterator}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{iterator}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the iterator for the hold children}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the children iterator}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n+nf}{childrenIterator}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{iterator}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * TreeNodes are sorted by their first hold element.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{o}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// in case of provided comparator}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{comparator} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{comparator}\PYGdefault{o}{.}\PYGdefault{n+na}{compare}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{lowestKey}\PYGdefault{o}{(),} \PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{lowestKey}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+c1}{// Otherwise null safe comparator implementation}
+		\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{lowestKey}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{lowestKey}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{lowestKey}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{lowestKey}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!(}\PYGdefault{n}{lowestKey}\PYGdefault{o}{()} \PYGdefault{k}{instanceof} \PYGdefault{n}{Comparable}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}
+						\PYGdefault{l+s}{\PYGdefaultZdq{}Managed Elements need to implement Comparable\PYGdefaultZlt{}T\PYGdefaultZgt{} interface if no Comparator\PYGdefaultZlt{}T\PYGdefaultZgt{} instance is provided\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{k}{return} \PYGdefault{o}{((}\PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{lowestKey}\PYGdefault{o}{()).}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{lowestKey}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{hashCode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{prime} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{31}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{prime} \PYGdefault{o}{*} \PYGdefault{n}{result} \PYGdefault{o}{+} \PYGdefault{o}{((}\PYGdefault{n}{keys} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{l+m+mi}{0} \PYGdefault{o}{:} \PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{hashCode}\PYGdefault{o}{());}
+		\PYGdefault{k}{return} \PYGdefault{n}{result}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{equals}\PYGdefault{o}{(}\PYGdefault{n}{Object} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{k}{this} \PYGdefault{o}{==} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{obj} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{getClass}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{n}{obj}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{other} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{obj}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{keys} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{keys} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{keys}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{keys}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

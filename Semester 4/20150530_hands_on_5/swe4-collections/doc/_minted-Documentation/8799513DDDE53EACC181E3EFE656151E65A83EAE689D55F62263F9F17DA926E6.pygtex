@@ -1,0 +1,204 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.NoSuchElementException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Stack}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api.AbstractSortedSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api.SortedTreeSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.model.BinaryTreeNode}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 17, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{BinarySearchTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{extends}
+		\PYGdefault{n}{AbstractSortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{,} \PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{SortedTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This is the iterator for the \PYGdefaultZob{}@link BinarySearchTreeSet\PYGdefaultZcb{} class.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 17, 2015}
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{BinarySearchTreeIterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Stack}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{unvisitedNodes} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Stack}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Initializes this iterator with the root node.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param node}
+\PYGdefault{c+cm}{		 *            the root node of the backed tree}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{BinarySearchTreeIterator}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{root}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{root}\PYGdefault{o}{;}
+			\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{push}\PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{);}
+				\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{left}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{hasNext}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{!}\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{next}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSuchElementException}\PYGdefault{o}{(}
+						\PYGdefault{l+s}{\PYGdefaultZdq{}No further elemets are available\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{current} \PYGdefault{o}{=} \PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{();}
+			\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{right}\PYGdefault{o}{;}
+			\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{push}\PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{);}
+				\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{left}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The level count of the backed tree}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int} \PYGdefault{n}{levels} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Initialized with natural ordering which requires Comparable\PYGdefaultZlt{}T\PYGdefaultZgt{} interface}
+\PYGdefault{c+cm}{	 * implemented by the managed elements}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{BinarySearchTreeSet}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Initializes this Instance with a custom Comparator\PYGdefaultZlt{}T\PYGdefaultZgt{} instance}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param comparator}
+\PYGdefault{c+cm}{	 *            the Comparator\PYGdefaultZlt{}T\PYGdefaultZgt{} instance to be used}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{BinarySearchTreeSet}\PYGdefault{o}{(}\PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{comparator}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{get}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{root}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kt}{int} \PYGdefault{n}{res} \PYGdefault{o}{=} \PYGdefault{n}{compareElements}\PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{,} \PYGdefault{n}{el}\PYGdefault{o}{);}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{res} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{res} \PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{left}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{right}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{add}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kt}{boolean} \PYGdefault{n}{modified} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{currentLevels} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{c+cm}{/*\PYGdefaultZhy{}\PYGdefaultZhy{} Null not allowed \PYGdefaultZhy{}\PYGdefaultZhy{}*/}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{el} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// root already present}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{root} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{previous} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+				\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{root}\PYGdefault{o}{;}
+				\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k+kt}{int} \PYGdefault{n}{compareResult} \PYGdefault{o}{=} \PYGdefault{n}{compareElements}\PYGdefault{o}{(}\PYGdefault{n}{el}\PYGdefault{o}{,} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{);}
+					\PYGdefault{c+c1}{// No duplicates allowed}
+					\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{compareResult} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{previous} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+						\PYGdefault{k}{break}\PYGdefault{o}{;}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+					\PYGdefault{n}{previous} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{;}
+					\PYGdefault{n}{currentLevels}\PYGdefault{o}{++;}
+					\PYGdefault{c+c1}{// go to left}
+					\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{compareResult} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{left}\PYGdefault{o}{;}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+					\PYGdefault{c+c1}{// go to right}
+					\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{right}\PYGdefault{o}{;}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{c+c1}{// add new child if previous found}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{previous} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{currentLevels}\PYGdefault{o}{++;}
+					\PYGdefault{n}{modified} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{;}
+					\PYGdefault{n}{size}\PYGdefault{o}{++;}
+					\PYGdefault{k+kd}{final} \PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{newNode} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{el}\PYGdefault{o}{,}
+							\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+					\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{compareElements}\PYGdefault{o}{(}\PYGdefault{n}{el}\PYGdefault{o}{,} \PYGdefault{n}{previous}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{previous}\PYGdefault{o}{.}\PYGdefault{n+na}{left} \PYGdefault{o}{=} \PYGdefault{n}{newNode}\PYGdefault{o}{;}
+					\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{previous}\PYGdefault{o}{.}\PYGdefault{n+na}{right} \PYGdefault{o}{=} \PYGdefault{n}{newNode}\PYGdefault{o}{;}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// add root element}
+			\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{root} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{el}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+				\PYGdefault{n}{modified} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{;}
+				\PYGdefault{n}{currentLevels} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+				\PYGdefault{n}{size}\PYGdefault{o}{++;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// set if new level reached}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{levels} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{currentLevels}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{levels} \PYGdefault{o}{=} \PYGdefault{n}{currentLevels}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{modified}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{first}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{root} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSuchElementException}\PYGdefault{o}{(}
+					\PYGdefault{l+s}{\PYGdefaultZdq{}Tree is empty therefore no first element available\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{root}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{left} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{left}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{last}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{root} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSuchElementException}\PYGdefault{o}{(}
+					\PYGdefault{l+s}{\PYGdefaultZdq{}Tree is empty therefore no last element available\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{BinaryTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{root}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{right} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{right}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{element}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{iterator}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{BinarySearchTreeIterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{root}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{height}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{levels}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

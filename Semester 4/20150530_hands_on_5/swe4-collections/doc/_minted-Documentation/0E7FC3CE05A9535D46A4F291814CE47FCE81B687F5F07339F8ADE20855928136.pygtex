@@ -1,0 +1,174 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.test.collections.common.parametrized}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertEquals}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertTrue}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Arrays}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Random}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Set}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Before}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Test}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.RunWith}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.Parameterized}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.Parameterized.Parameter}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.Parameterized.Parameters}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api.SortedTreeSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.impl.TwoThreeFourTreeSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This test class tests the Sorted}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 27, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@RunWith}\PYGdefault{o}{(}\PYGdefault{n}{Parameterized}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{SortedTreeSetTest} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractConsoleLoggingTest} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{SortedTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{instance}\PYGdefault{o}{;}
+
+	\PYGdefault{n+nd}{@Parameter}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{SortedTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{clazz}\PYGdefault{o}{;}
+	\PYGdefault{n+nd}{@Parameter}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{;}
+
+	\PYGdefault{n+nd}{@Parameters}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{n}{Collection}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Object}\PYGdefault{o}{[]\PYGdefaultZgt{}} \PYGdefault{n+nf}{prepareParameters}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{asList}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Object}\PYGdefault{o}{[][]} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{o}{\PYGdefaultZob{}} \PYGdefault{n}{BinarySearchTreeSet}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{k+kc}{null} \PYGdefault{o}{\PYGdefaultZcb{},}
+				\PYGdefault{o}{\PYGdefaultZob{}} \PYGdefault{n}{TwoThreeFourTreeSet}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{k+kc}{null} \PYGdefault{o}{\PYGdefaultZcb{},}
+				\PYGdefault{o}{\PYGdefaultZob{}} \PYGdefault{n}{BinarySearchTreeSet}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}()} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n+nd}{@Override}
+					\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compare}\PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{n}{Integer} \PYGdefault{n}{o2}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{k}{return} \PYGdefault{n}{o1}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o2}\PYGdefault{o}{);}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{o}{\PYGdefaultZcb{},} \PYGdefault{o}{\PYGdefaultZob{}} \PYGdefault{n}{TwoThreeFourTreeSet}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}()} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n+nd}{@Override}
+					\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compare}\PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{n}{Integer} \PYGdefault{n}{o2}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{k}{return} \PYGdefault{n}{o1}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o2}\PYGdefault{o}{);}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{o}{\PYGdefaultZcb{});}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Initializes an instance for the injected class.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n+nd}{@Before}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{before}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{comparator} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{instance} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{newInstance}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{instance} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getConstructor}\PYGdefault{o}{(}\PYGdefault{n}{Comparator}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{).}\PYGdefault{n+na}{newInstance}\PYGdefault{o}{(}
+						\PYGdefault{n}{comparator}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not prepare test\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addDuplicates}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Integer} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertTrue}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[]} \PYGdefault{o}{\PYGdefaultZob{}} \PYGdefault{l+m+mi}{1} \PYGdefault{o}{\PYGdefaultZcb{},}
+				\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()])));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addNull}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Integer} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertTrue}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[]} \PYGdefault{o}{\PYGdefaultZob{}\PYGdefaultZcb{},}
+				\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()])));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addAscendingSorted}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{expectedSize} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Integer}\PYGdefault{o}{[]} \PYGdefault{n}{expectedElements} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{expectedSize}\PYGdefault{o}{];}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{expectedSize}\PYGdefault{o}{;} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{expectedElements}\PYGdefault{o}{[}\PYGdefault{n}{i}\PYGdefault{o}{]} \PYGdefault{o}{=} \PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{expectedElements}\PYGdefault{o}{[}\PYGdefault{n}{i}\PYGdefault{o}{]);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{expectedSize}\PYGdefault{o}{,} \PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertTrue}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{expectedElements}\PYGdefault{o}{,}
+				\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()])));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addDescendingSorted}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{expectedSize} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{expectedElements} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{expectedSize}\PYGdefault{o}{);}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{n}{expectedSize}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i}\PYGdefault{o}{\PYGdefaultZhy{}\PYGdefaultZhy{})} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+			\PYGdefault{n}{expectedElements}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{sort}\PYGdefault{o}{(}\PYGdefault{n}{expectedElements}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{expectedSize}\PYGdefault{o}{,} \PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertTrue}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}
+				\PYGdefault{n}{expectedElements}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{expectedSize}\PYGdefault{o}{]),}
+				\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()])));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addRandomly}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{expectedSize} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Random} \PYGdefault{n}{rand} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Random}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Set}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{tmpSet} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{tmpSet}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{rand}\PYGdefault{o}{.}\PYGdefault{n+na}{nextInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1000}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+			\PYGdefault{n}{tmpSet}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{expectedElements} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{tmpSet}\PYGdefault{o}{);}
+		\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{sort}\PYGdefault{o}{(}\PYGdefault{n}{expectedElements}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{value} \PYGdefault{o}{:} \PYGdefault{n}{tmpSet}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{expectedSize}\PYGdefault{o}{,} \PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertTrue}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}
+				\PYGdefault{n}{expectedElements}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{expectedSize}\PYGdefault{o}{]),}
+				\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{toArray}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Integer}\PYGdefault{o}{[}\PYGdefault{n}{instance}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()])));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

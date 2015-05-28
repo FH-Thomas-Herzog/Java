@@ -1,0 +1,98 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.test.collections.binarySearchTreeSet.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertEquals}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertFalse}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Test}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.RunWith}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.JUnit4}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api.SortedTreeSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This test class tests the \PYGdefaultZob{}@link BinarySearchTreeSet\PYGdefaultZsh{}add(Object)\PYGdefaultZcb{} method.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 27, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@RunWith}\PYGdefault{o}{(}\PYGdefault{n}{JUnit4}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{AddTest} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractConsoleLoggingTest} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{SortedTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{set} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BinarySearchTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}();}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{addNull}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Integer} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When | Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertFalse}\PYGdefault{o}{(}\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{testLevel4}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{height} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{4}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{4}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{height}\PYGdefault{o}{,} \PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{height}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{testLevel5}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{height} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{5}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{c+c1}{// 1. First level}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{5}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{15}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// 2 levels after split of root}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// 3. Add elements to 2 level}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{11}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{12}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{height}\PYGdefault{o}{,} \PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{height}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{testLevel6}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{height} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{6}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{c+c1}{// 1. first level}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{5}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{15}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// 2. 2 level after split}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// 3. New keys for child \PYGdefaultZsq{}5\PYGdefaultZsq{}}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// 4. new keys for child \PYGdefaultZsq{}15\PYGdefaultZsq{}}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{11}\PYGdefault{o}{);}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{12}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// 5. 3 level after split}
+		\PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{13}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{height}\PYGdefault{o}{,} \PYGdefault{n}{set}\PYGdefault{o}{.}\PYGdefault{n+na}{height}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

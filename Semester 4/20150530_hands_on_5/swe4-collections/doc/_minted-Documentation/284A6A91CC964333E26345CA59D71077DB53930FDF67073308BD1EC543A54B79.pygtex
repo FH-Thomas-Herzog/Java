@@ -1,0 +1,181 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.iterator}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.NoSuchElementException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Stack}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.model.NMKTreeNode}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The iterator for the n\PYGdefaultZhy{}m\PYGdefaultZhy{}k Tree.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 22, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the \PYGdefaultZob{}@link Comparable\PYGdefaultZcb{} type managed by the backed tree}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{NMKTreeIterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{currentModel} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Stack}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{unvisitedNodes} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Stack}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The helper model for iterating over an n\PYGdefaultZhy{}m\PYGdefaultZhy{}k tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 24, 2015}
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *            the type of the managed nodes}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{current}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parent}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Stack}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{children} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Stack}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{keyIt}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Creates a iterate model instance}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param parent}
+\PYGdefault{c+cm}{		 *            the parent of this model}
+\PYGdefault{c+cm}{		 * @param current}
+\PYGdefault{c+cm}{		 *            the current node which is backed by this model}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{IterateModel}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parent}\PYGdefault{o}{,}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{current}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{current}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Current node must be given\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{parent} \PYGdefault{o}{=} \PYGdefault{n}{parent}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{current} \PYGdefault{o}{=} \PYGdefault{n}{current}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIt} \PYGdefault{o}{=} \PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIterator}\PYGdefault{o}{();}
+			\PYGdefault{c+c1}{// set all children on stack in proper order}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{current}\PYGdefault{o}{.}\PYGdefault{n+na}{childrenIterator}\PYGdefault{o}{();}
+			\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{());}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{reverse}\PYGdefault{o}{(}\PYGdefault{n}{children}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates an iterator instance and moves to first to visit node.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param root}
+\PYGdefault{c+cm}{	 *            the root of the tree}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{NMKTreeIterator}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{root}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+		\PYGdefault{n}{pushUntilLowest}\PYGdefault{o}{(}\PYGdefault{n}{root}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{currentModel} \PYGdefault{o}{=} \PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{hasNext}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(!}\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())}
+				\PYGdefault{o}{||} \PYGdefault{o}{(}\PYGdefault{n}{currentModel} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIt}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{()} \PYGdefault{o}{||} \PYGdefault{o}{(!}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{children}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())));}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{next}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{T} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{c+cm}{/*\PYGdefaultZhy{}\PYGdefaultZhy{} no more nodes available \PYGdefaultZhy{}\PYGdefaultZhy{}*/}
+		\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{NoSuchElementException}\PYGdefault{o}{(}
+					\PYGdefault{l+s}{\PYGdefaultZdq{}No further elements are available\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+cm}{/*\PYGdefaultZhy{}\PYGdefaultZhy{} current model has no more children \PYGdefaultZhy{}\PYGdefaultZhy{}*/}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// keys still left}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIt}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIt}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// no children and no keys means next node ins tack}
+			\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// Remove this node from parent, because was completely visited}
+				\PYGdefault{c+c1}{// before}
+				\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{current}\PYGdefault{o}{);}
+
+				\PYGdefault{c+c1}{// get next node}
+				\PYGdefault{n}{currentModel} \PYGdefault{o}{=} \PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{();}
+
+				\PYGdefault{c+c1}{// get current value from new node}
+				\PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIt}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+
+				\PYGdefault{c+c1}{// if there are children}
+				\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{c+c1}{// need to revisit if keys still left}
+					\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{keyIt}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{push}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{);}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+					\PYGdefault{c+c1}{// inform parent that this node does not need to be visited}
+					\PYGdefault{c+c1}{// again if no further keys are available}
+					\PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{parent} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{children}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{current}\PYGdefault{o}{);}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+
+					\PYGdefault{c+c1}{// go to lowest node}
+					\PYGdefault{n}{pushUntilLowest}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{(),} \PYGdefault{n}{currentModel}\PYGdefault{o}{);}
+
+					\PYGdefault{c+c1}{// get lowest node from stack}
+					\PYGdefault{n}{currentModel} \PYGdefault{o}{=} \PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{();}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+cm}{/*\PYGdefaultZhy{}\PYGdefaultZhy{} get on further children \PYGdefaultZhy{}\PYGdefaultZhy{}*/}
+		\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// we need to revisit this node if it has children set}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{push}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{parent} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{current}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// get lowest node of next child to visit}
+			\PYGdefault{n}{pushUntilLowest}\PYGdefault{o}{(}\PYGdefault{n}{currentModel}\PYGdefault{o}{.}\PYGdefault{n+na}{children}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{(),} \PYGdefault{n}{currentModel}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// get lowest node}
+			\PYGdefault{n}{currentModel} \PYGdefault{o}{=} \PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{pop}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+c1}{// next key to provide}
+		\PYGdefault{k}{return} \PYGdefault{n}{value}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Private section}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Pushes the nodes to the unvisited \PYGdefaultZob{}@link Stack\PYGdefaultZcb{} including the next}
+\PYGdefault{c+cm}{	 * neighbor of the lowest element if present.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param root}
+\PYGdefault{c+cm}{	 *            the node to walk all way left to the lowest node}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{pushUntilLowest}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{root}\PYGdefault{o}{,}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parent}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{NMKTreeNode}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{root}\PYGdefault{o}{;}
+		\PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{prev}\PYGdefault{o}{,} \PYGdefault{n}{model}\PYGdefault{o}{;}
+		\PYGdefault{n}{prev} \PYGdefault{o}{=} \PYGdefault{n}{model} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{node} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// if there is a parent get its children}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{getParent}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{c+c1}{// set provided parent. For first visited node}
+				\PYGdefault{n}{prev} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{prev} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{n}{parent} \PYGdefault{o}{:} \PYGdefault{n}{prev}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// create current model}
+			\PYGdefault{n}{model} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{IterateModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{n}{prev}\PYGdefault{o}{,} \PYGdefault{n}{node}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// remember parent model of next visited node}
+			\PYGdefault{n}{prev} \PYGdefault{o}{=} \PYGdefault{n}{model}\PYGdefault{o}{;}
+			\PYGdefault{n}{unvisitedNodes}\PYGdefault{o}{.}\PYGdefault{n+na}{push}\PYGdefault{o}{(}\PYGdefault{n}{model}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// walk left}
+			\PYGdefault{n}{node} \PYGdefault{o}{=} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{lowestChild}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}
