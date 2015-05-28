@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This interface specifies a sorted tree set.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 17, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the generic type of the managed elements}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{SortedTreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{extends} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Returns the maximum height the backed sorted tree has. The height is}
+\PYGdefault{c+cm}{	 * equal to the number of levels}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the height of the \PYGdefaultZob{}@link SortedTreeSet\PYGdefaultZcb{} implementation backed}
+\PYGdefault{c+cm}{	 *         tree}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{height}\PYGdefault{o}{();}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

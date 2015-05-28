@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.comparator}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is a null safe ascending \PYGdefaultZob{}@link Comparator\PYGdefaultZcb{} implementation for}
+\PYGdefault{c+cm}{ * \PYGdefaultZob{}@link Comparable\PYGdefaultZcb{} types}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 27, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the \PYGdefaultZob{}@link Comparable\PYGdefaultZcb{} type of the to compare objects}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@SuppressWarnings}\PYGdefault{o}{(\PYGdefaultZob{}} \PYGdefault{l+s}{\PYGdefaultZdq{}unchecked\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}rawtypes\PYGdefaultZdq{}} \PYGdefault{o}{\PYGdefaultZcb{})}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements}
+		\PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compare}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{n}{T} \PYGdefault{n}{o2}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// both are null}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{o1} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{o2} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{o1} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{o2} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{o1}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o2}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

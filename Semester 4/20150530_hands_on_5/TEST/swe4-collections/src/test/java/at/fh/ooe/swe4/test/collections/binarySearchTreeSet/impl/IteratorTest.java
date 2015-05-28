@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.test.collections.twoThreeFourTreeSet.impl;
+package at.fh.ooe.swe4.test.collections.binarySearchTreeSet.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,14 +9,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import at.fh.ooe.swe4.collections.impl.TwoThreeFourTreeSet;
-import at.fh.ooe.swe4.collections.iterator.NMKTreeIterator;
-import at.fh.ooe.swe4.collections.model.NMKTreeNode;
+import at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet;
+import at.fh.ooe.swe4.collections.impl.BinarySearchTreeSet.BinarySearchTreeIterator;
+import at.fh.ooe.swe4.collections.model.BinaryTreeNode;
 import at.fh.ooe.swe4.junit.test.suite.watcher.AbstractConsoleLoggingTest;
 
 /**
- * This class tests the {@link NMKTreeIterator} used by the
- * {@link TwoThreeFourTreeSet} implementation.
+ * This class tests the {@link BinarySearchTreeIterator} used by the
+ * {@link BinarySearchTreeSet} implementation.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date May 27, 2015
@@ -28,7 +28,7 @@ public class IteratorTest extends AbstractConsoleLoggingTest {
 	@Test(expected = NoSuchElementException.class)
 	public void noNodes() {
 		// -- Given --
-		final Iterator<Integer> it = new NMKTreeIterator<Integer>(null);
+		final Iterator<Integer> it = new BinarySearchTreeIterator<Integer>(null);
 
 		// -- When --
 		it.next();
@@ -39,9 +39,9 @@ public class IteratorTest extends AbstractConsoleLoggingTest {
 	public void noMoreNodes() {
 		// -- Given --
 		final Integer expected = 1;
-		final NMKTreeNode<Integer> node = new NMKTreeNode<Integer>(
+		final BinaryTreeNode<Integer> node = new BinaryTreeNode<Integer>(
 				expected);
-		final Iterator<Integer> it = new NMKTreeIterator<Integer>(node);
+		final Iterator<Integer> it = new BinarySearchTreeIterator<Integer>(node);
 
 		// -- When --
 		int i = 0;

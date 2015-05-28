@@ -20,8 +20,8 @@ import at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator;
  * @param <T>
  *            the comparable type managed by this node
  */
-public class NMKTreeTreeNode<T> implements Node<T>,
-		Comparable<NMKTreeTreeNode<T>>, Iterable<NMKTreeTreeNode<T>> {
+public class NMKTreeNode<T> implements Node<T>,
+		Comparable<NMKTreeNode<T>>, Iterable<NMKTreeNode<T>> {
 
 	/**
 	 * Enumeration for representing the split type.
@@ -33,8 +33,8 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 		HEAD, TAIL;
 	}
 
-	private NMKTreeTreeNode<T> parent;
-	private final SortedSet<NMKTreeTreeNode<T>> children;
+	private NMKTreeNode<T> parent;
+	private final SortedSet<NMKTreeNode<T>> children;
 	private final SortedSet<T> keys;
 
 	private final Comparator<T> comparator;
@@ -42,8 +42,8 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	/**
 	 * Creates an empty node
 	 */
-	public NMKTreeTreeNode() {
-		this(null, new TreeSet<NMKTreeTreeNode<T>>(), null);
+	public NMKTreeNode() {
+		this(null, new TreeSet<NMKTreeNode<T>>(), null);
 	}
 
 	/**
@@ -52,9 +52,9 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * @param element
 	 *            the element to be set
 	 */
-	public NMKTreeTreeNode(final T element) {
-		this(element, new TreeSet<NMKTreeTreeNode<T>>(
-				new NullSafeComparableComparator<NMKTreeTreeNode<T>>()), null);
+	public NMKTreeNode(final T element) {
+		this(element, new TreeSet<NMKTreeNode<T>>(
+				new NullSafeComparableComparator<NMKTreeNode<T>>()), null);
 	}
 
 	/**
@@ -66,9 +66,9 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 *            the comparator used for sorting the managed keys and
 	 *            referenced children
 	 */
-	public NMKTreeTreeNode(final T element, final Comparator<T> comparator) {
-		this(element, new TreeSet<NMKTreeTreeNode<T>>(
-				new NullSafeComparableComparator<NMKTreeTreeNode<T>>()),
+	public NMKTreeNode(final T element, final Comparator<T> comparator) {
+		this(element, new TreeSet<NMKTreeNode<T>>(
+				new NullSafeComparableComparator<NMKTreeNode<T>>()),
 				comparator);
 	}
 
@@ -84,15 +84,15 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * @throws NullPointerException
 	 *             if the children set is null
 	 */
-	public NMKTreeTreeNode(final T element,
-			final SortedSet<NMKTreeTreeNode<T>> children,
+	public NMKTreeNode(final T element,
+			final SortedSet<NMKTreeNode<T>> children,
 			final Comparator<T> comparator) {
 		super();
 		Objects.requireNonNull(children, "Children must be given");
 
 		this.comparator = comparator;
 		this.children = new TreeSet<>(
-				new NullSafeComparableComparator<NMKTreeTreeNode<T>>());
+				new NullSafeComparableComparator<NMKTreeNode<T>>());
 		this.children.addAll(children);
 		this.keys = new TreeSet<>(comparator);
 
@@ -107,7 +107,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * @param child
 	 *            the child to be added
 	 */
-	public void addChild(final NMKTreeTreeNode<T> child) {
+	public void addChild(final NMKTreeNode<T> child) {
 		child.setParent(this);
 		children.add(child);
 	}
@@ -119,7 +119,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 *            the node to be removed
 	 * @return true if the node could be removed, false otherwise
 	 */
-	public boolean removeChild(final NMKTreeTreeNode<T> node) {
+	public boolean removeChild(final NMKTreeNode<T> node) {
 		return children.remove(node);
 	}
 
@@ -232,7 +232,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * 
 	 * @return the highest child or null if there is no next higher.
 	 */
-	public NMKTreeTreeNode<T> highestChild() {
+	public NMKTreeNode<T> highestChild() {
 		return (getChildrenSize() == 0) ? null : children.last();
 	}
 
@@ -241,7 +241,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * 
 	 * @return the lowest child or null if there is no next higher.
 	 */
-	public NMKTreeTreeNode<T> lowestChild() {
+	public NMKTreeNode<T> lowestChild() {
 		return (getChildrenSize() == 0) ? null : children.first();
 	}
 
@@ -251,15 +251,15 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * 
 	 * @return the map containing the head and tail set of the hold children set
 	 */
-	public Map<Split, SortedSet<NMKTreeTreeNode<T>>> splitChildren() {
+	public Map<Split, SortedSet<NMKTreeNode<T>>> splitChildren() {
 		int counter = 1;
-		final Map<Split, SortedSet<NMKTreeTreeNode<T>>> split = new HashMap<>();
-		split.put(Split.HEAD, new TreeSet<NMKTreeTreeNode<T>>(
-				new NullSafeComparableComparator<NMKTreeTreeNode<T>>()));
-		split.put(Split.TAIL, new TreeSet<NMKTreeTreeNode<T>>(
-				new NullSafeComparableComparator<NMKTreeTreeNode<T>>()));
+		final Map<Split, SortedSet<NMKTreeNode<T>>> split = new HashMap<>();
+		split.put(Split.HEAD, new TreeSet<NMKTreeNode<T>>(
+				new NullSafeComparableComparator<NMKTreeNode<T>>()));
+		split.put(Split.TAIL, new TreeSet<NMKTreeNode<T>>(
+				new NullSafeComparableComparator<NMKTreeNode<T>>()));
 
-		for (NMKTreeTreeNode<T> child : children) {
+		for (NMKTreeNode<T> child : children) {
 			if (counter <= ((int) (getChildrenSize() / 2))) {
 				split.get(Split.HEAD).add(child);
 			} else {
@@ -294,7 +294,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * 
 	 * @return the parent node
 	 */
-	public NMKTreeTreeNode<T> getParent() {
+	public NMKTreeNode<T> getParent() {
 		return parent;
 	}
 
@@ -304,7 +304,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * @param parent
 	 *            the parent to be set on this node
 	 */
-	public void setParent(NMKTreeTreeNode<T> parent) {
+	public void setParent(NMKTreeNode<T> parent) {
 		this.parent = parent;
 	}
 
@@ -314,7 +314,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * @return the iterator of the node's children
 	 */
 	@Override
-	public Iterator<NMKTreeTreeNode<T>> iterator() {
+	public Iterator<NMKTreeNode<T>> iterator() {
 		return children.iterator();
 	}
 
@@ -332,7 +332,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * 
 	 * @return the children iterator
 	 */
-	public Iterator<NMKTreeTreeNode<T>> childrenIterator() {
+	public Iterator<NMKTreeNode<T>> childrenIterator() {
 		return children.iterator();
 	}
 
@@ -340,7 +340,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 	 * TreeNodes are sorted by their first hold element.
 	 */
 	@Override
-	public int compareTo(NMKTreeTreeNode<T> o) {
+	public int compareTo(NMKTreeNode<T> o) {
 		// in case of provided comparator
 		if (comparator != null) {
 			return comparator.compare(this.lowestKey(), o.lowestKey());
@@ -384,7 +384,7 @@ public class NMKTreeTreeNode<T> implements Node<T>,
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		NMKTreeTreeNode<T> other = (NMKTreeTreeNode<T>) obj;
+		NMKTreeNode<T> other = (NMKTreeNode<T>) obj;
 		if (keys == null) {
 			if (other.keys != null) {
 				return false;

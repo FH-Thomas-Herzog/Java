@@ -1,0 +1,90 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.NoSuchElementException}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This interface is the specification for a sorted set.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 17, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the generic type of the managed elements in this sorted set}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Iterable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Adds the element to the tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param el}
+\PYGdefault{c+cm}{	 *            the element to be added.}
+\PYGdefault{c+cm}{	 * @return true if the elements was successfully added to the tree, false}
+\PYGdefault{c+cm}{	 *         otherwise}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{add}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the element from the tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param el}
+\PYGdefault{c+cm}{	 *            the element to be get form the tree}
+\PYGdefault{c+cm}{	 * @return the found element null otherwise.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{get}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Answers the question of the given element is managed by this tree.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param el}
+\PYGdefault{c+cm}{	 *            the element to be searched in the tree}
+\PYGdefault{c+cm}{	 * @return true if the element is managed by this tree, false otherwise}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{contains}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The current size of the tree. The size is equal to the managed elements}
+\PYGdefault{c+cm}{	 * in this tree}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the tree size}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{size}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The first element in this tree which will be the element with the lowest}
+\PYGdefault{c+cm}{	 * value.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the first element in this tree}
+\PYGdefault{c+cm}{	 * @throws NoSuchElementException}
+\PYGdefault{c+cm}{	 *             if the tree is empty.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{first}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The last element in this tree which will be the element with the highest}
+\PYGdefault{c+cm}{	 * value.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the last element in this tree}
+\PYGdefault{c+cm}{	 * @throws NoSuchElementException}
+\PYGdefault{c+cm}{	 *             if the tree is empty.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{last}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the backed \PYGdefaultZob{}@link Comparator\PYGdefaultZcb{} instance of null if natural oder is}
+\PYGdefault{c+cm}{	 * used for the tree}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the backed \PYGdefaultZob{}@link Comparator\PYGdefaultZcb{} instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{comparator}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Returns the elements managed by this tree represented by an array.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param array}
+\PYGdefault{c+cm}{	 *            the array to be filled}
+\PYGdefault{c+cm}{	 * @return the filled array}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T}\PYGdefault{o}{[]} \PYGdefault{n+nf}{toArray}\PYGdefault{o}{(}\PYGdefault{n}{T}\PYGdefault{o}{[]} \PYGdefault{n}{array}\PYGdefault{o}{);}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

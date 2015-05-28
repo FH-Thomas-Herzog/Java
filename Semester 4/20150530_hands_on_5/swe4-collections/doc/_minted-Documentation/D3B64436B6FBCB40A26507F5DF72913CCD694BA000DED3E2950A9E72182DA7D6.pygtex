@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n}{AbstractSortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{,} \PYGdefault{n}{M} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Model}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{alle} \PYGdefault{n}{Node} \PYGdefault{n}{Typen} \PYGdefault{n}{aufnehmen} \PYGdefault{n}{kann}\PYGdefault{o}{.} \PYGdefault{n}{Dies} \PYGdefault{n}{ist} \PYGdefault{n}{möglich}\PYGdefault{o}{,} \PYGdefault{n}{da} \PYGdefault{n}{es} \PYGdefault{n}{keine} \PYGdefault{n}{Methoden} \PYGdefault{n}{der} \PYGdefault{n}{Nodes} \PYGdefault{n}{benötigt}\PYGdefault{o}{.}
+\end{Verbatim}

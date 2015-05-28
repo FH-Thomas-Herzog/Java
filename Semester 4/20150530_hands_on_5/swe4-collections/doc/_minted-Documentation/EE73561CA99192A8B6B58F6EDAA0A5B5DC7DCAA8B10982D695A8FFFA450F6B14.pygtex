@@ -1,0 +1,39 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.constants}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class holds the enumerations needed by the implementations.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 27, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{EnumerationConstants} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Not meant to be instantiated}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{EnumerationConstants}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Defines the boundary for a split set}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 27, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{Boundary} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{LOWER}\PYGdefault{o}{,} \PYGdefault{n}{UPPER}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Defines the direction to go.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 27, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{Direction} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{LEFT}\PYGdefault{o}{,} \PYGdefault{n}{RIGHT}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

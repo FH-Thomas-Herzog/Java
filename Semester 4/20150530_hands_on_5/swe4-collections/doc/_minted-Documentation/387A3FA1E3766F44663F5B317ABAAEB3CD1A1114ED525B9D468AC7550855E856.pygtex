@@ -1,0 +1,122 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.collections.comparator.NullSafeComparableComparator}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The base class for the \PYGdefaultZob{}@link SortedSet\PYGdefaultZcb{} implementing classes.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date May 17, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the type of the managed node values}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{abstract} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{AbstractSortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{,} \PYGdefault{n}{M} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Node}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements}
+		\PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kd}{final} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{protected} \PYGdefault{n}{M} \PYGdefault{n}{root} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{int} \PYGdefault{n}{size} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Default constructor where the tree uses natural ordering and assumes that}
+\PYGdefault{c+cm}{	 * Tree nodes are Comparable instances.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{AbstractSortedSet}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Sets an comparator which is used for sorting the tree managed elements.}
+\PYGdefault{c+cm}{	 * The managed instance does not need to be comparable instances.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param comparator}
+\PYGdefault{c+cm}{	 *            the comparator to use for the sorting of this tree}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{AbstractSortedSet}\PYGdefault{o}{(}\PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{comparator}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{comparator} \PYGdefault{o}{=} \PYGdefault{n}{comparator}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{size}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{size}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{contains}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{get}\PYGdefault{o}{(}\PYGdefault{n}{el}\PYGdefault{o}{)} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE} \PYGdefault{o}{:} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * ATTENTION:\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * Uses \PYGdefaultZob{}@link Iterator\PYGdefaultZcb{} for searching for the node. This can heavily}
+\PYGdefault{c+cm}{	 * decrease performance.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T} \PYGdefault{n+nf}{get}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{el}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// null or empty tree}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{el} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{(}\PYGdefault{n}{root} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+c1}{// Iterate over tree}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{iterator}\PYGdefault{o}{();}
+		\PYGdefault{n}{T} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{((}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{itValue} \PYGdefault{o}{=} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{el}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{itValue}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{itValue}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{value}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{comparator}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{comparator}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{T}\PYGdefault{o}{[]} \PYGdefault{n+nf}{toArray}\PYGdefault{o}{(}\PYGdefault{n}{T}\PYGdefault{o}{[]} \PYGdefault{n}{array}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{array} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{(}\PYGdefault{n}{array}\PYGdefault{o}{.}\PYGdefault{n+na}{length} \PYGdefault{o}{==} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{array}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{iterator}\PYGdefault{o}{();}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{idx} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{((}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{idx} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{array}\PYGdefault{o}{.}\PYGdefault{n+na}{length}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{array}\PYGdefault{o}{[}\PYGdefault{n}{idx}\PYGdefault{o}{]} \PYGdefault{o}{=} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+			\PYGdefault{n}{idx}\PYGdefault{o}{++;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{array}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Compares the two given elements either with the set comparator or with}
+\PYGdefault{c+cm}{	 * natural ordering.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * Assumes that the managed keys are of type \PYGdefaultZob{}@link Comparable\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param o1}
+\PYGdefault{c+cm}{	 *            the first instance}
+\PYGdefault{c+cm}{	 * @param o2}
+\PYGdefault{c+cm}{	 *            the second instance}
+\PYGdefault{c+cm}{	 * @return \PYGdefaultZhy{}1 if o1 is lower than o2\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *         0 if o1 and o2 are equal \PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *         1 if o1 is greater than o2}
+\PYGdefault{c+cm}{	 * @throws ClassCastException}
+\PYGdefault{c+cm}{	 *             if the comparator is null and the managed keys are not of}
+\PYGdefault{c+cm}{	 *             type \PYGdefaultZob{}@link Comparable\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compareElements}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{T} \PYGdefault{n}{o2}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{comparator} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{comparator}\PYGdefault{o}{.}\PYGdefault{n+na}{compare}\PYGdefault{o}{(}\PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{n}{o2}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{NullSafeComparableComparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}().}\PYGdefault{n+na}{compare}\PYGdefault{o}{(}
+					\PYGdefault{o}{((}\PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{o1}\PYGdefault{o}{),} \PYGdefault{o}{((}\PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{o2}\PYGdefault{o}{));}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}
