@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.builder.exception;
+package at.fh.ooe.swe4.fx.campina.component.builder.exception;
 
 public class DuplicateKeyException extends RuntimeException {
 
