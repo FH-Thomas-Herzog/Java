@@ -1,37 +1,25 @@
 package at.fh.ooe.swe4.fx.campina.view.tab;
 
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import at.fh.ooe.swe4.fx.campina.view.api.FormComponentSpec;
 
 public class UserTab {
-
-	public static interface Node {
-
-		public String getId();
-	}
-
-	public static interface FormField extends Node {
-
-		public String getLabel();
-
-		public Object getDefaultValue();
-
-		public FormFieldType getFormFieldType();
-	}
 
 	public static enum FormFieldType {
 		INPUT_TEXT;
 
-		public <T extends Node> T create() {
+		public Node create() {
 			switch (this) {
 			case INPUT_TEXT:
-				return (T) new TextField();
+				return new TextField();
 			default:
 				throw new IllegalArgumentException("FormFieldType: '" + this.name() + "' is not managed here");
 			}
 		}
 	}
 
-	private static enum UserForm implements FormField {
+	private static enum UserForm implements FormComponentSpec {
 		NAME("user-name", "Name", null, Boolean.TRUE, FormFieldType.INPUT_TEXT);
 
 		public final String			id;

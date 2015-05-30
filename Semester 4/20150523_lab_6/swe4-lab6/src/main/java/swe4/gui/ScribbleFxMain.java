@@ -28,11 +28,11 @@ import javafx.stage.Stage;
 
 public class ScribbleFxMain extends Application {
 
-	private Button leftButton, rightButton, upButton, downButton;
-	private ColorPicker colorPicker;
-	private ScribbleCanvas canvas;
-	private ListView<String> messageList;
-	private ObservableList<String> messages = FXCollections.observableArrayList();
+	private Button					leftButton, rightButton, upButton, downButton;
+	private ColorPicker				colorPicker;
+	private ScribbleCanvas			canvas;
+	private ListView<String>		messageList;
+	private ObservableList<String>	messages	= FXCollections.observableArrayList();
 
 	private class ButtonEventHandler implements EventHandler<ActionEvent> {
 		@Override
@@ -61,9 +61,8 @@ public class ScribbleFxMain extends Application {
 			HBox topPane = new HBox(controlPane, messageList);
 			topPane.setId("top-pane");
 
-			VBox rootPane = new VBox(createMenuBar(primaryStage), topPane/*
-																		 * ,canvas
-																		 */);
+			canvas = createCanvas();
+			VBox rootPane = new VBox(createMenuBar(primaryStage), topPane, canvas);
 			rootPane.setId("root-pane");
 			rootPane.setOnKeyPressed(new KeyEventHandler());
 
@@ -112,7 +111,19 @@ public class ScribbleFxMain extends Application {
 	}
 
 	public void handleButtonEvent(ActionEvent event) {
-
+		if (event.getTarget() instanceof Button) {
+			final Button button = ((Button) event.getTarget());
+			appendMessage("Button: " + button.getId() + " pressed");
+			if (button == upButton) {
+				canvas.addLineSegment(Direction.UP);
+			} else if (button == downButton) {
+				canvas.addLineSegment(Direction.DOWN);
+			} else if (button == leftButton) {
+				canvas.addLineSegment(Direction.LEFT);
+			} else if (button == rightButton) {
+				canvas.addLineSegment(Direction.RIGHT);
+			}
+		}
 	}
 
 	private ScribbleCanvas createCanvas() {

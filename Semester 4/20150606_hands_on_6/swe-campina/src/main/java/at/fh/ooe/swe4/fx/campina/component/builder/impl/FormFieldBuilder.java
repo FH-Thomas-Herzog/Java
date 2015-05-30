@@ -4,34 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import at.fh.ooe.swe4.fx.campina.view.tab.UserTab.FormField;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import at.fh.ooe.swe4.fx.campina.view.FormComponentModel;
+import at.fh.ooe.swe4.fx.campina.view.api.FormComponentSpec;
 
 public class FormFieldBuilder {
 
-	private List<FormField>	formSpec;
-
-	public static class FormFieldModel {
-
-		public final Label		label;
-		public final Node		field;
-		public final TextField	errorMessage;
-
-		public FormFieldModel(Label label, Node field, TextField errorMessage) {
-			super();
-			this.label = label;
-			this.field = field;
-			this.errorMessage = errorMessage;
-		}
-	}
+	private List<FormComponentSpec>	formSpec;
 
 	public FormFieldBuilder() {
 		super();
 	}
 
-	public FormFieldBuilder init(List<FormField> formSpec) {
+	public FormFieldBuilder init(List<FormComponentSpec> formSpec) {
 		Objects.requireNonNull(formSpec, "Need an list of FormFields provided");
 
 		this.formSpec = formSpec;
@@ -45,10 +32,10 @@ public class FormFieldBuilder {
 		return this;
 	}
 
-	public List<FormFieldModel> toNodeList() {
-		final List<FormFieldModel> fields = new ArrayList<>();
+	public List<FormComponentModel> toNodeList() {
+		final List<FormComponentModel> fields = new ArrayList<>();
 
-		for (FormField field : formSpec) {
+		for (FormComponentSpec field : formSpec) {
 			final Label label;
 			final Node node;
 			final TextField fieldMessage;
@@ -72,7 +59,7 @@ public class FormFieldBuilder {
 
 			// TODO: Register form field events
 
-			fields.add(new FormFieldModel(label, node, fieldMessage));
+			fields.add(new FormComponentModel(label, node, fieldMessage));
 
 		}
 
