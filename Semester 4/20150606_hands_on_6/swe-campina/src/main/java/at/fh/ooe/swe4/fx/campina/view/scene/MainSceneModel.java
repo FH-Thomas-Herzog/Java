@@ -18,14 +18,15 @@ import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBuilder;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuItemBuilder;
 import at.fh.ooe.swe4.fx.campina.view.api.SceneFactory;
 import at.fh.ooe.swe4.fx.campina.view.event.api.EventHandlerFactory;
+import at.fh.ooe.swe4.fx.campina.view.tab.UserTab;
 
 public class MainSceneModel extends Application implements SceneFactory {
 
 	private static final long	serialVersionUID	= -7630460091326559133L;
 
-	private final Pane			rootPane			= new VBox();
-	private final Pane			menuBarBox			= new VBox();
-	private final TabPane		tabPane				= new TabPane();
+	public final Pane			rootPane			= new VBox();
+	public final Pane			menuBarBox			= new VBox();
+	public final TabPane		tabPane				= new TabPane();
 
 	/**
 	 * Enumeration which specifies the menus placed in the menu bar.
@@ -118,13 +119,13 @@ public class MainSceneModel extends Application implements SceneFactory {
 
 	@Override
 	public Scene createScene() {
+		final Scene scene = new Scene(rootPane);
 		prepareMenuBox(menuBarBox);
-		prepareTabs(tabPane);
+		prepareTabs(tabPane, scene);
 		rootPane.getChildren()
 				.add(menuBarBox);
 		rootPane.getChildren()
 				.add(tabPane);
-		final Scene scene = new Scene(rootPane);
 		return scene;
 	}
 
@@ -163,22 +164,19 @@ public class MainSceneModel extends Application implements SceneFactory {
 		mbb.end();
 	}
 
-	public void prepareTabs(final TabPane contentBox) {
+	public void prepareTabs(final TabPane contentBox, Scene scene) {
 		Objects.requireNonNull(contentBox, "Cannot prepare null content box");
-		final Tab tab = new Tab("tab 1");
-		tab.setClosable(false);
-		final Pane tabContentPane = new VBox();
 
 		tabPane.getTabs()
-				.add(tab);
+				.add(new UserTab(scene).create());
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		final MainSceneModel def = new MainSceneModel();
 		primaryStage.setScene(def.createScene());
-		primaryStage.setMinWidth(400);
-		primaryStage.setMinHeight(400);
+		primaryStage.setMinWidth(800);
+		primaryStage.setMinHeight(800);
 		primaryStage.setTitle("Campina");
 		primaryStage.show();
 	}
