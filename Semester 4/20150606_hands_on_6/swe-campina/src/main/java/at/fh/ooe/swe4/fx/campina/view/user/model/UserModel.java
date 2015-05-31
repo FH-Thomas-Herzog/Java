@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.view.tab.model;
+package at.fh.ooe.swe4.fx.campina.view.user.model;
 
 import java.util.Calendar;
 

@@ -18,7 +18,7 @@ import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBuilder;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuItemBuilder;
 import at.fh.ooe.swe4.fx.campina.view.api.SceneFactory;
 import at.fh.ooe.swe4.fx.campina.view.event.api.EventHandlerFactory;
-import at.fh.ooe.swe4.fx.campina.view.tab.UserTab;
+import at.fh.ooe.swe4.fx.campina.view.user.part.UserTab;
 
 public class MainSceneModel extends Application implements SceneFactory {
 

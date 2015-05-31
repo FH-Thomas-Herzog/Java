@@ -1,17 +1,30 @@
-package at.fh.ooe.swe4.fx.campina.view.tab;
+package at.fh.ooe.swe4.fx.campina.view.user.part;
 
-import java.util.Calendar;
+import java.util.Arrays;
+import java.util.Objects;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.FormHandler;
+import at.fh.ooe.swe4.fx.campina.jpa.User;
 import at.fh.ooe.swe4.fx.campina.view.api.ScenePart;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
-import at.fh.ooe.swe4.fx.campina.view.tab.control.UserFormControl;
-import at.fh.ooe.swe4.fx.campina.view.tab.model.UserModel;
+import at.fh.ooe.swe4.fx.campina.view.user.control.UserFormControl;
+import at.fh.ooe.swe4.fx.campina.view.user.model.UserModel;
 
 public class UserTab implements ScenePart<Tab> {
 
@@ -41,17 +54,17 @@ public class UserTab implements ScenePart<Tab> {
 
 		// form
 		final FormContext<UserModel> fCtx = new FormContext<UserModel>("user-form", formBuidler, new UserModel(), scene);
-		final GridPane formGRid = formBuidler.generateFormGrid(fCtx);
+		final GridPane formGrid = formBuidler.generateFormGrid(fCtx);
 
 		// left part of tab
 		final GridPane leftTabContent = new GridPane();
 		leftTabContent.setId(toId("form"));
-		leftTabContent.add(formGRid, 0, 0);
-		leftTabContent.add(createFormButtonGroup(fCtx), 0, 1);
+		leftTabContent.add(formGrid, 0, 0);
+		leftTabContent.add(createUserFormButtonGroup(fCtx), 0, 1);
 
 		final GridPane rightTabContent = new GridPane();
 		rightTabContent.setId(toId("control"));
-		rightTabContent.add(new Text("Add controls here"), 0, 0);
+		rightTabContent.add(createUserControls(fCtx), 0, 0);
 
 		pane.add(leftTabContent, 0, 0);
 		pane.add(rightTabContent, 1, 0);
@@ -62,6 +75,9 @@ public class UserTab implements ScenePart<Tab> {
 		return tab;
 	}
 
+	// ########################################################
+	// Private Section
+	// ########################################################
 	/**
 	 * Creates the button group for the user tab held form.
 	 * 
@@ -70,7 +86,7 @@ public class UserTab implements ScenePart<Tab> {
 	 * 
 	 * @return a {@link GridPane} instance holding the button
 	 */
-	private GridPane createFormButtonGroup(FormContext<UserModel> ctx) {
+	private GridPane createUserFormButtonGroup(FormContext<UserModel> ctx) {
 		final GridPane gridPane = new GridPane();
 		gridPane.setId(toId("button-grid-pane"));
 
@@ -103,6 +119,46 @@ public class UserTab implements ScenePart<Tab> {
 		gridPane.add(saveButton, 1, 0);
 		gridPane.add(deleteButton, 2, 0);
 		gridPane.add(blockButton, 3, 0);
+
+		return gridPane;
+	}
+
+	private GridPane createUserControls(final FormContext<UserModel> ctx) {
+		Objects.requireNonNull(ctx);
+
+		final GridPane gridPane = new GridPane();
+		gridPane.setId(toId("user-control-grid-pane"));
+
+		final ObservableList<User> users = FXCollections.observableArrayList(Arrays.asList(null,
+																							new User("Thomas", "Herzog"),
+																							new User("Hugo", "Maier"),
+																							new User("Herbert", "Rutzinger")));
+
+		final ChoiceBox<User> userList = new ChoiceBox<User>(users);
+		userList.setUserData(ctx);
+		userList.getSelectionModel()
+				.selectedItemProperty()
+				.addListener(userFormControl::handleUserSelection);
+		userList.setConverter(new StringConverter<User>() {
+
+			@Override
+			public String toString(User object) {
+				if (object != null) {
+					return new StringBuilder(object.getLastName()).append(", ")
+																	.append(object.getFirstName())
+																	.toString();
+				}
+				return "Neuer Benutzer";
+			}
+
+			@Override
+			public User fromString(String string) {
+				throw new UnsupportedOperationException("Not supported conversion from string to object");
+			}
+		});
+		userList.getSelectionModel()
+				.select(0);
+		gridPane.add(userList, 0, 0);
 
 		return gridPane;
 	}
