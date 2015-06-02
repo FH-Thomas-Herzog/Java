@@ -1,20 +1,28 @@
 package at.fh.ooe.swe4.fx.campina.view.user.control;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import at.fh.ooe.swe4.fx.campina.jpa.User;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
 import at.fh.ooe.swe4.fx.campina.view.user.model.UserModel;
+import at.fh.ooe.swe4.fx.campina.view.user.part.UserTab;
 
 public class UserFormControl {
 
+	public static Set<User>	userCache	= new HashSet<>(100);
+
 	public UserFormControl() {
+		userCache.add(new User(1, "Thomas", "Herzog", "t.herzog@bla.bla"));
+		userCache.add(new User(2, "Hugo", "Fichtner", "h.fichtner@bla.bla"));
+		userCache.add(new User(3, "Christian", "Beikov", "c.beickov@bla.bla"));
+		userCache.add(new User(4, "Rainer", "Rudolf", "r.rudolf@bla.bla"));
+		userCache.add(new User(5, "Bernd", "Maier", "b.maier@bla.bla"));
 	}
 
 	// #############################################################
@@ -30,6 +38,9 @@ public class UserFormControl {
 		final FormContext<UserModel> ctx = getCtx((Node) event.getSource());
 		ctx.formHandler.resetForm(ctx.scene);
 		ctx.model = new UserModel();
+		ctx.model.reset();
+		((ChoiceBox<UserModel>) ctx.getNode(UserTab.USER_SELECTION_KEY)).getSelectionModel()
+																		.select(new UserModel());
 	}
 
 	/**
@@ -40,9 +51,22 @@ public class UserFormControl {
 	 */
 	public void handleSaveAction(final ActionEvent event) {
 		final FormContext<UserModel> ctx = getCtx((Node) event.getSource());
-		ctx.formHandler.fillModel(ctx.scene, ctx.model);
+		ctx.formHandler.validateForm(ctx.scene);
+		if (ctx.valid) {
+			ctx.formHandler.fillModel(ctx.scene, ctx.model);
 
-		// TODO: Save/Update user on database
+			// TODO: Persist entity here
+			final User user = ctx.model.getEntity();
+			if (!userCache.contains(user)) {
+				user.setId(userCache.size() + 1);
+			}
+			ctx.model.prepare(user);
+			UserFormControl.userCache.add(user);
+		}
+		event.consume();
+		handleUserLoad(ctx.getObserable(UserTab.USER_SELECTION_KEY));
+		((ChoiceBox<UserModel>) ctx.getNode(UserTab.USER_SELECTION_KEY)).getSelectionModel()
+																		.select(ctx.model);
 	}
 
 	/**
@@ -56,9 +80,23 @@ public class UserFormControl {
 		ctx.formHandler.resetForm(ctx.scene);
 
 		// TODO: Delete user from database
+		final ChoiceBox<UserModel> userSelection = ((ChoiceBox<UserModel>) ctx.getNode(UserTab.USER_SELECTION_KEY));
+		final UserModel model = userSelection.getSelectionModel()
+												.getSelectedItem();
+
+		// TODO: Delete entity from db here
+		if (model.getId() != null) {
+			userCache.remove(model.getEntity());
+			handleUserLoad(ctx.getObserable(UserTab.USER_SELECTION_KEY));
+		}
 
 		// reset model
 		ctx.model = new UserModel();
+		ctx.formHandler.resetForm(ctx.scene);
+
+		userSelection.getSelectionModel()
+						.select(ctx.model);
+
 	}
 
 	/**
@@ -76,24 +114,30 @@ public class UserFormControl {
 	// #############################################################
 	// Selection controls
 	// #############################################################
-	public void handleUserSelection(ObservableValue<? extends User> observable, User oldValue, User newValue) {
-		System.out.println("hello selected");
-	}
-
-	public void handleUserSelection(final MouseEvent event) {
-		final ChoiceBox<User> userList = ((ChoiceBox<User>) event.getSource());
-		final FormContext<UserModel> ctx = getCtx(userList);
-		final User user = userList.getSelectionModel()
-									.getSelectedItem();
-
+	public void handleUserSelection(final FormContext<UserModel> ctx, final UserModel user) {
 		// Selection present
 		if (user != null) {
-			// TODO: Update user mode with user values
+			ctx.model = new UserModel(user.getEntity());
+			ctx.formHandler.resetForm(ctx.scene);
+			ctx.formHandler.fillForm(ctx.scene, ctx.model);
 		}
 		// No selection present
 		else {
 			ctx.formHandler.resetForm(ctx.scene);
 			ctx.model = new UserModel();
+		}
+	}
+
+	// #############################################################
+	// Load controls
+	// #############################################################
+	public void handleUserLoad(final ObservableList<UserModel> userList) {
+		Objects.requireNonNull(userList);
+
+		userList.clear();
+		userList.add(new UserModel());
+		for (User user : userCache) {
+			userList.add(new UserModel(user));
 		}
 	}
 

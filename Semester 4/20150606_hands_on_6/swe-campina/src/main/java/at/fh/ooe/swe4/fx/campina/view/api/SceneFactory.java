@@ -18,4 +18,6 @@ public interface SceneFactory extends Serializable {
 	 * @return the newly created scene
 	 */
 	public Scene createScene();
+	
+	public void initScene();
 }

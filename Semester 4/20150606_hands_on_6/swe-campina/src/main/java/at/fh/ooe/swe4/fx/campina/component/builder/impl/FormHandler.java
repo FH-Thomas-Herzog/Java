@@ -16,6 +16,8 @@ import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.RequiredValidator;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.Validator;
 
 /**
  * This class is a for field handler which handles the form fields related to
@@ -54,6 +56,25 @@ public class FormHandler<T extends AbstractModel> {
 			;
 			this.field = field;
 		}
+
+		public String toMessageId() {
+			Objects.requireNonNull(id);
+
+			return "message-" + id;
+		}
+
+		public String toLabelId() {
+			Objects.requireNonNull(id);
+
+			return "label-" + id;
+		}
+
+		public String toNodeId() {
+			Objects.requireNonNull(id);
+
+			return "node-" + id;
+		}
+
 	}
 
 	private Class<T>	modelClass;
@@ -122,6 +143,8 @@ public class FormHandler<T extends AbstractModel> {
 		labelColConst.setPrefWidth(150);
 		final ColumnConstraints valueColConst = new ColumnConstraints(2);
 		valueColConst.setPrefWidth(250);
+		final ColumnConstraints messageColConst = new ColumnConstraints(2);
+		valueColConst.setPrefWidth(250);
 
 		// the grid which holds the form
 		final GridPane gridPane = new GridPane();
@@ -132,6 +155,8 @@ public class FormHandler<T extends AbstractModel> {
 				.add(labelColConst);
 		gridPane.getColumnConstraints()
 				.add(valueColConst);
+		gridPane.getColumnConstraints()
+				.add(messageColConst);
 
 		// the form fields defined in the model
 		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass);
@@ -142,12 +167,12 @@ public class FormHandler<T extends AbstractModel> {
 
 			// form field label
 			final Text labelText = new Text(model.field.label());
-			labelText.setId("label-" + model.id);
+			labelText.setId(model.toLabelId());
 			labelText.setUserData(ctx);
 
 			// form field message
 			final Text messageText = new Text("");
-			messageText.setId("message-" + model.id);
+			messageText.setId(model.toMessageId());
 			messageText.setVisible(Boolean.FALSE);
 			messageText.setUserData(ctx);
 
@@ -155,16 +180,15 @@ public class FormHandler<T extends AbstractModel> {
 			final Node node = model.field.type()
 											.create();
 
-			node.setId(model.id);
+			node.setId(model.toNodeId());
 			node.setUserData(ctx);
 
 			// TODO: register form field events
 
 			// set form fields on grid
-			gridPane.add(new Text(), 0, i);
-			gridPane.add(messageText, 1, i);
-			gridPane.add(labelText, 0, (i + 1));
-			gridPane.add(node, 1, (i + 1));
+			gridPane.add(labelText, 0, i);
+			gridPane.add(node, 1, i);
+			gridPane.add(messageText, 2, i);
 		}
 
 		return gridPane;
@@ -193,7 +217,7 @@ public class FormHandler<T extends AbstractModel> {
 
 		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass);
 		for (FormFieldResolvedModel fieldModel : models) {
-			final Node node = scene.lookup("#" + fieldModel.id);
+			final Node node = scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
@@ -232,7 +256,7 @@ public class FormHandler<T extends AbstractModel> {
 
 		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass);
 		for (FormFieldResolvedModel fieldModel : models) {
-			final Node node = scene.lookup("#" + fieldModel.id);
+			final Node node = scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
@@ -267,11 +291,35 @@ public class FormHandler<T extends AbstractModel> {
 
 		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass);
 		for (FormFieldResolvedModel fieldModel : models) {
-			final Node node = scene.lookup("#" + fieldModel.id);
+			final Node node = scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
 			FormFieldType.resetFormValue(node);
+			final Text messageNode = (Text) scene.lookup("#" + fieldModel.toMessageId());
+			messageNode.setVisible(Boolean.FALSE);
+		}
+		return this;
+	}
+
+	public FormHandler<T> validateForm(final Scene scene) {
+		checkIfStarted();
+		Objects.requireNonNull(scene, "Need to scene to validate form");
+
+		final Validator<Node> requiredValidator = new RequiredValidator<Node>();
+		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass);
+		for (FormFieldResolvedModel fieldModel : models) {
+			final Node node = scene.lookup("#" + fieldModel.toNodeId());
+			if (node == null) {
+				throw new IllegalStateException("Scene does not contain form field with id");
+			}
+			if (fieldModel.field.required()) {
+				if (!requiredValidator.valid(node)) {
+					final Text messageNode = (Text) scene.lookup("#" + fieldModel.toMessageId());
+					messageNode.setVisible(Boolean.TRUE);
+					messageNode.setText(fieldModel.field.requiredMessage());
+				}
+			}
 		}
 		return this;
 	}

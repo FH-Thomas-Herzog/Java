@@ -28,6 +28,8 @@ public class MainSceneModel extends Application implements SceneFactory {
 	public final Pane			menuBarBox			= new VBox();
 	public final TabPane		tabPane				= new TabPane();
 
+	private UserTab				userTab;
+
 	/**
 	 * Enumeration which specifies the menus placed in the menu bar.
 	 * 
@@ -112,6 +114,7 @@ public class MainSceneModel extends Application implements SceneFactory {
 	 * The main components ids are set here.
 	 */
 	public MainSceneModel() {
+
 		rootPane.setId("root-pane");
 		menuBarBox.setId("menu-bar-box");
 		tabPane.setId("tab-pane");
@@ -120,13 +123,20 @@ public class MainSceneModel extends Application implements SceneFactory {
 	@Override
 	public Scene createScene() {
 		final Scene scene = new Scene(rootPane);
+		this.userTab = new UserTab(scene);
 		prepareMenuBox(menuBarBox);
 		prepareTabs(tabPane, scene);
+
 		rootPane.getChildren()
 				.add(menuBarBox);
 		rootPane.getChildren()
 				.add(tabPane);
+
 		return scene;
+	}
+
+	public void initScene() {
+		this.userTab.init();
 	}
 
 	/**
@@ -168,16 +178,19 @@ public class MainSceneModel extends Application implements SceneFactory {
 		Objects.requireNonNull(contentBox, "Cannot prepare null content box");
 
 		tabPane.getTabs()
-				.add(new UserTab(scene).create());
+				.add(userTab.create());
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		final MainSceneModel def = new MainSceneModel();
-		primaryStage.setScene(def.createScene());
+		final Scene scene = def.createScene();
+		def.initScene();
+		primaryStage.setScene(scene);
 		primaryStage.setMinWidth(800);
 		primaryStage.setMinHeight(800);
 		primaryStage.setTitle("Campina");
+
 		primaryStage.show();
 	}
 

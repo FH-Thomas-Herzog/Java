@@ -4,11 +4,19 @@ import java.io.Serializable;
 
 public abstract class AbstractEntity<I extends Serializable> implements Serializable {
 
-	private I	id;
+	private static final long	serialVersionUID	= 1095329951571671581L;
+
+	private I					id;
 
 	public AbstractEntity() {
-		// TODO Auto-generated constructor stub
 	}
+
+	public AbstractEntity(I id) {
+		super();
+		this.id = id;
+	}
+
+	public abstract I getId();
 
 	public I _getId() {
 		return id;

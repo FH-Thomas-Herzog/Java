@@ -1,24 +1,47 @@
 package at.fh.ooe.swe4.fx.campina.view.user.model;
 
-import java.util.Calendar;
+import java.util.Objects;
 
+import at.fh.ooe.swe4.fx.campina.jpa.User;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
 
-public class UserModel extends AbstractModel {
-
-	private String		firstName;
-	private String		lastName;
-	private String		username;
-	private String		email;
-	private Calendar	birthdate;
+public class UserModel extends AbstractModel<Integer, User> {
 
 	public UserModel() {
+		this(new User());
 	}
 
-	public UserModel(String id) {
-		super(id);
+	public UserModel(User user) {
+		super(user);
+	}
+
+	@Override
+	public void prepare(User user) {
+		Objects.requireNonNull(user);
+
+		setId(user.getId());
+		setEntity(user);
+	}
+
+	@Override
+	public void reset() {
+		prepare(new User());
+	}
+
+	public String getSelectionName() {
+		if (getId() == null) {
+			return "Neuer Benutzer";
+		} else {
+			return new StringBuilder().append(getLastName())
+										.append(", ")
+										.append(getFirstName())
+										.append(" (")
+										.append(getEmail())
+										.append(")")
+										.toString();
+		}
 	}
 
 	@FormField(
@@ -29,11 +52,12 @@ public class UserModel extends AbstractModel {
 			requiredMessage = "Bitte Vornamen angeben",
 			type = FormFieldType.INPUT_TEXT)
 	public String getFirstName() {
-		return firstName;
+		return getEntity().getFirstName();
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		getEntity().setFirstName(firstName);
+		;
 	}
 
 	@FormField(
@@ -44,55 +68,55 @@ public class UserModel extends AbstractModel {
 			requiredMessage = "Bitte Nachnamen angeben",
 			type = FormFieldType.INPUT_TEXT)
 	public String getLastName() {
-		return lastName;
+		return getEntity().getLastName();
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	@FormField(
-			id = "user-username",
-			label = "Benutzernamen",
-			required = true,
-			ordinal = 5,
-			requiredMessage = "Bitte Benutzernamen angeben",
-			type = FormFieldType.INPUT_TEXT)
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	@FormField(
-			id = "user-birthdate",
-			label = "Geburtsdatum",
-			required = true,
-			ordinal = 3,
-			requiredMessage = "Bitte Geburtsnamen angeben",
-			type = FormFieldType.DATE_PICKER)
-	public Calendar getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(Calendar birthdate) {
-		this.birthdate = birthdate;
+		getEntity().setLastName(lastName);
+		;
 	}
 
 	@FormField(
 			id = "user-email",
-			label = "Email",
-			required = true,
-			ordinal = 4,
-			requiredMessage = "Bitte Email angeben",
+			label = "E-Mail",
+			ordinal = 3,
 			type = FormFieldType.INPUT_TEXT)
 	public String getEmail() {
-		return email;
+		return getEntity().getEmail();
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		getEntity().setEmail(email);
 	}
+
+	@FormField(
+			id = "user-username",
+			label = "Benutzername",
+			required = true,
+			ordinal = 4,
+			requiredMessage = "Bitte Benutzernamen angeben",
+			type = FormFieldType.INPUT_TEXT)
+	public String getUsername() {
+		return getEntity().getUsername();
+	}
+
+	public void setUsername(String username) {
+		getEntity().setUsername(username);
+	}
+
+	@FormField(
+			id = "user-password",
+			label = "Password",
+			required = true,
+			ordinal = 5,
+			requiredMessage = "Bitte Password angeben",
+			type = FormFieldType.INPUT_TEXT)
+	public String getPassword() {
+		return getEntity().getPassword();
+	}
+
+	public void setPassword(String password) {
+		getEntity().setPassword(password);
+	}
+
 }

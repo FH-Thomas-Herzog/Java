@@ -5,4 +5,6 @@ import javafx.scene.Node;
 public interface ScenePart<N> extends IdHolder<String> {
 
 	public N create();
+	
+	public void init();
 }
