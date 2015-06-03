@@ -18,7 +18,7 @@ public abstract class AbstractEntity<I extends Serializable> implements Serializ
 
 	public abstract I getId();
 
-	public I _getId() {
+	protected I _getId() {
 		return id;
 	}
 

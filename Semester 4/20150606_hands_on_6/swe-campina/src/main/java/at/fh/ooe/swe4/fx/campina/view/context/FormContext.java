@@ -47,6 +47,15 @@ public class FormContext<T extends AbstractModel> {
 		this.scene = scene;
 	}
 
+	/**
+	 * Puts an {@link ObservableList} to this context. An existing list would be
+	 * overwritten if bakced map has already such key set.
+	 * 
+	 * @param key
+	 *            the key of the list
+	 * @param list
+	 *            the list
+	 */
 	public void putObserable(final String key, final ObservableList<T> list) {
 		Objects.requireNonNull(key);
 		Objects.requireNonNull(list);
@@ -54,12 +63,28 @@ public class FormContext<T extends AbstractModel> {
 		observableModelMap.put(key, list);
 	}
 
+	/**
+	 * Gets the backed {@link ObservableList} instance if managed by this
+	 * context.
+	 * 
+	 * @param key
+	 *            the key to get mapped list
+	 * @return the found list, null otherwise
+	 */
 	public ObservableList<T> getObserable(final String key) {
 		Objects.requireNonNull(key);
 
 		return observableModelMap.get(key);
 	}
 
+	/**
+	 * Puts a node to the backed list.
+	 * 
+	 * @param key
+	 *            the key to map the node to
+	 * @param node
+	 *            the node to be managed by this context.
+	 */
 	public void putNode(final String key, final Node node) {
 		Objects.requireNonNull(key);
 		Objects.requireNonNull(node);
@@ -67,6 +92,13 @@ public class FormContext<T extends AbstractModel> {
 		nodeMap.put(key, node);
 	}
 
+	/**
+	 * Gets a managed node of this context.
+	 * 
+	 * @param key
+	 *            the key to get its mapped node
+	 * @return the found node, null otherwise
+	 */
 	public Node getNode(final String key) {
 		Objects.requireNonNull(key);
 

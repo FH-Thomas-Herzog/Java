@@ -9,6 +9,7 @@ public class User extends AbstractEntity<Integer> {
 	private String				email;
 	private String				username;
 	private String				password;
+	private Boolean				blockedFlag			= Boolean.FALSE;
 
 	public User() {
 	}
@@ -64,4 +65,11 @@ public class User extends AbstractEntity<Integer> {
 		this.password = password;
 	}
 
+	public Boolean getBlockedFlag() {
+		return blockedFlag;
+	}
+
+	public void setBlockedFlag(Boolean blockedFlag) {
+		this.blockedFlag = blockedFlag;
+	}
 }

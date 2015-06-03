@@ -18,6 +18,7 @@ import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBuilder;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuItemBuilder;
 import at.fh.ooe.swe4.fx.campina.view.api.SceneFactory;
 import at.fh.ooe.swe4.fx.campina.view.event.api.EventHandlerFactory;
+import at.fh.ooe.swe4.fx.campina.view.login.part.LoginTab;
 import at.fh.ooe.swe4.fx.campina.view.user.part.UserTab;
 
 public class MainSceneModel extends Application implements SceneFactory {
@@ -29,6 +30,7 @@ public class MainSceneModel extends Application implements SceneFactory {
 	public final TabPane		tabPane				= new TabPane();
 
 	private UserTab				userTab;
+	private LoginTab			loginTab;
 
 	/**
 	 * Enumeration which specifies the menus placed in the menu bar.
@@ -114,7 +116,6 @@ public class MainSceneModel extends Application implements SceneFactory {
 	 * The main components ids are set here.
 	 */
 	public MainSceneModel() {
-
 		rootPane.setId("root-pane");
 		menuBarBox.setId("menu-bar-box");
 		tabPane.setId("tab-pane");
@@ -124,6 +125,7 @@ public class MainSceneModel extends Application implements SceneFactory {
 	public Scene createScene() {
 		final Scene scene = new Scene(rootPane);
 		this.userTab = new UserTab(scene);
+		this.loginTab = new LoginTab(scene);
 		prepareMenuBox(menuBarBox);
 		prepareTabs(tabPane, scene);
 
@@ -137,6 +139,7 @@ public class MainSceneModel extends Application implements SceneFactory {
 
 	public void initScene() {
 		this.userTab.init();
+		this.loginTab.init();
 	}
 
 	/**
@@ -177,8 +180,14 @@ public class MainSceneModel extends Application implements SceneFactory {
 	public void prepareTabs(final TabPane contentBox, Scene scene) {
 		Objects.requireNonNull(contentBox, "Cannot prepare null content box");
 
+		final Tab login = loginTab.create();
+		final Tab user = userTab.create();
+		user.setDisable(Boolean.TRUE);
+
 		tabPane.getTabs()
-				.add(userTab.create());
+				.add(login);
+		tabPane.getTabs()
+				.add(user);
 	}
 
 	@Override
@@ -187,8 +196,8 @@ public class MainSceneModel extends Application implements SceneFactory {
 		final Scene scene = def.createScene();
 		def.initScene();
 		primaryStage.setScene(scene);
-		primaryStage.setMinWidth(800);
-		primaryStage.setMinHeight(800);
+		primaryStage.setMinWidth(700);
+		primaryStage.setMinHeight(300);
 		primaryStage.setTitle("Campina");
 
 		primaryStage.show();

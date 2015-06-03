@@ -21,7 +21,7 @@ public abstract class AbstractModel<I extends Serializable, T extends AbstractEn
 
 	public abstract void reset();
 
-	public abstract void prepare(User user);
+	public abstract void prepare(T user);
 
 	public I getId() {
 		return id;
