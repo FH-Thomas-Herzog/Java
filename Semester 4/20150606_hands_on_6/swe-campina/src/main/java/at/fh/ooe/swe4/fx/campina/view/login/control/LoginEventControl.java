@@ -24,10 +24,11 @@ public class LoginEventControl {
 	public void handleLogin(final ActionEvent event) {
 		final FormContext<LoginModel> ctx = (FormContext<LoginModel>) ((Node) event.getSource()).getUserData();
 		populateFormMessage(null, ctx);
-		// ctx.formHandler.fillModel(ctx.scene, ctx.model);
 		ctx.formHandler.validateForm(ctx);
 
 		if (ctx.valid) {
+			ctx.formHandler.fillModel(ctx);
+
 			// TODO: Search for username and password on db
 			loggedUser = EntityCache.isValidLogin(ctx.model);
 			// increase counter

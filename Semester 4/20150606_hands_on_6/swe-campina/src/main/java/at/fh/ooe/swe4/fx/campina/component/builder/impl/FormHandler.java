@@ -182,11 +182,10 @@ public class FormHandler<T extends AbstractModel> {
 			// form field
 			final Node node = model.field.type()
 											.create();
-
 			node.setId(model.toNodeId());
 			node.setUserData(ctx);
-			System.out.println("create: " + model.toNodeId());
-			System.out.println("create: " + node.getId());
+			System.out.println(node.getId());
+			System.out.println(messageText.getId());
 
 			// TODO: register form field events
 
@@ -308,20 +307,29 @@ public class FormHandler<T extends AbstractModel> {
 		checkIfStarted();
 		Objects.requireNonNull(ctx, "Need form context to validate form");
 
+		// expected valid
+		ctx.valid = Boolean.TRUE;
+		// required validator
 		final Validator<Node> requiredValidator = new RequiredValidator<Node>();
+		// the form field models
 		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass, ctx);
 		for (FormFieldResolvedModel fieldModel : models) {
 			final Node node = ctx.scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
+			// need required validation
 			if (fieldModel.field.required()) {
-				System.out.println("validate: " + fieldModel.toNodeId());
+				final Text messageNode = (Text) ctx.scene.lookup("#" + fieldModel.toMessageId());
+				// is invalid
 				if (!requiredValidator.valid(node)) {
 					ctx.valid = Boolean.FALSE;
-					final Text messageNode = (Text) ctx.scene.lookup("#" + fieldModel.toMessageId());
 					messageNode.setVisible(Boolean.TRUE);
 					messageNode.setText(fieldModel.field.requiredMessage());
+				}
+				// reset if valid
+				else {
+					messageNode.setText("");
 				}
 			}
 		}
