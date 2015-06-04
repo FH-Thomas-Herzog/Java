@@ -211,8 +211,10 @@ public class FormHandler<T extends AbstractModel> {
 
 		// the grid which holds the form
 		final GridPane gridPane = new GridPane();
-		gridPane.setId(ctx.id + "-grid-pane");
-		gridPane.setHgap(2);
+		gridPane.setId(ctx.id + "-form");
+		System.out.println(gridPane.getId());
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
 		gridPane.setUserData(ctx);
 		gridPane.getColumnConstraints()
 				.add(labelColConst);
@@ -266,12 +268,6 @@ public class FormHandler<T extends AbstractModel> {
 					box.setConverter(converter);
 				}
 			}
-
-			// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			// Dev logging here
-			// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			System.out.println(node.getId());
-			System.out.println(messageText.getId());
 
 			// TODO: register form field events
 
@@ -482,7 +478,6 @@ public class FormHandler<T extends AbstractModel> {
 			final SelectFormField select = method.getAnnotation(SelectFormField.class);
 			FormFieldResolvedModel fieldModel;
 			final String methodName = method.getName();
-			System.out.println(methodName);
 
 			if (select != null) {
 				int index = -1;

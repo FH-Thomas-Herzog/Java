@@ -65,6 +65,7 @@ public class LoginTab implements ScenePart<Tab> {
 		flow.setId(FORM_MESSAGE);
 		flow.getChildren()
 			.add(new Text(String.format(LoginModel.LOGIN_GREETING_MESSAGE_PATTERN, LoginModel.MAX_COUNTER)));
+		flow.setStyle("-fx-font-size: 20pt");
 		fCtx.putNode(FORM_MESSAGE, flow);
 
 		// Form

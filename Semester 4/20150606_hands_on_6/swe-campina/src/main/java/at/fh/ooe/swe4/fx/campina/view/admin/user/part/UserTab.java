@@ -66,7 +66,7 @@ public class UserTab implements ScenePart<Tab> {
 		this.formBuidler = new FormHandler<UserModel>();
 		this.formBuidler.init();
 		this.userFormControl = new UserFormControl();
-		this.fCtx = new FormContext<UserModel>("user-form", formBuidler, model, scene);
+		this.fCtx = new FormContext<UserModel>("tab-user", formBuidler, model, scene);
 	}
 
 	// ###########################################################################
@@ -88,7 +88,7 @@ public class UserTab implements ScenePart<Tab> {
 	@Override
 	public Tab create() {
 		final GridPane pane = new GridPane();
-		pane.setId("user-tab-content");
+		pane.setId(getId() + "-content");
 
 		// form
 		final GridPane formGrid = formBuidler.generateFormGrid(fCtx);
@@ -101,6 +101,8 @@ public class UserTab implements ScenePart<Tab> {
 		mainGrid.add(formGrid, 0, 2);
 		mainGrid.add(createUserFormButtonGroup(fCtx), 0, 3);
 		mainGrid.setPrefHeight(500);
+		mainGrid.setHgap(10);
+		mainGrid.setVgap(10);
 		pane.add(mainGrid, 0, 0);
 
 		final Tab tab = new Tab(getId());
@@ -122,7 +124,8 @@ public class UserTab implements ScenePart<Tab> {
 	 */
 	private TextFlow createFormMessageBox(final FormContext<UserModel> ctx) {
 		final TextFlow flow = new TextFlow();
-		flow.setId(FORM_MESSAGE);
+		flow.setId(getId() + "-user-form-message");
+		flow.setStyle("-fx-font-size: 20pt");
 		ctx.putNode(FORM_MESSAGE, flow);
 		return flow;
 	}
@@ -137,7 +140,9 @@ public class UserTab implements ScenePart<Tab> {
 	 */
 	private GridPane createUserFormButtonGroup(FormContext<UserModel> ctx) {
 		final GridPane gridPane = new GridPane();
-		gridPane.setId("user-button-grid-pane");
+		gridPane.setId(getId() + "-button-grid");
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
 
 		// TODO: Register events here
 		final Button newButton = new Button();

@@ -175,6 +175,7 @@ public class MenuTab implements ScenePart<Tab> {
 			}
 
 			ctx.model = newValue;
+			ctx.model.prepare(newValue.getEntity());
 			if (ctx.model.getId() != null) {
 				ctx.formHandler.fillForm(ctx);
 			} else {
@@ -207,8 +208,8 @@ public class MenuTab implements ScenePart<Tab> {
 				return;
 			}
 
-			ctx.formHandler.resetForm(ctx);
 			ctx.model = newValue;
+			ctx.model.prepare(newValue.getEntity());
 			if (ctx.model.getId() == null) {
 				control.handleMenuLoad(ctx);
 				ctx.formHandler.fillForm(ctx);
@@ -259,8 +260,10 @@ public class MenuTab implements ScenePart<Tab> {
 		// Form message text
 		final TextFlow menuEntryFlow = new TextFlow();
 		menuEntryFlow.setId(MENU_ENTRY_FORM_MESSAGE);
+		menuEntryFlow.setStyle("-fx-font-size: 20pt");
 		final TextFlow menuFlow = new TextFlow();
 		menuEntryFlow.setId(MENU_ENTRY_FORM_MESSAGE);
+		menuEntryFlow.setStyle("-fx-font-size: 20pt");
 
 		// menu form grid
 		final GridPane menuGrid = new GridPane();

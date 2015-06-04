@@ -22,6 +22,13 @@ import at.fh.ooe.swe4.fx.campina.view.admin.user.part.UserTab;
 import at.fh.ooe.swe4.fx.campina.view.api.SceneFactory;
 import at.fh.ooe.swe4.fx.campina.view.event.api.EventHandlerFactory;
 
+/**
+ * css of roman for javafx
+ * https://github.com/romanlum/StudyCode/tree/master/SWO4/uebungMoodle6
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 4, 2015
+ */
 public class MainSceneModel extends Application implements SceneFactory {
 
 	private static final long	serialVersionUID	= -7630460091326559133L;
@@ -203,6 +210,9 @@ public class MainSceneModel extends Application implements SceneFactory {
 	public void start(Stage primaryStage) throws Exception {
 		final MainSceneModel def = new MainSceneModel();
 		final Scene scene = def.createScene();
+		scene.getStylesheets()
+				.add(getClass().getResource("css/main.css")
+								.toExternalForm());
 		def.initScene();
 		primaryStage.setScene(scene);
 		primaryStage.setMinWidth(700);
