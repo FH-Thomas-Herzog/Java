@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {

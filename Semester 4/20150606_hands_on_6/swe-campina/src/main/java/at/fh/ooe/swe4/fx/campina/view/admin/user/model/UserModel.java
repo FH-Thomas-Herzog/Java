@@ -1,18 +1,11 @@
 package at.fh.ooe.swe4.fx.campina.view.admin.user.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.jpa.User;
-import at.fh.ooe.swe4.fx.campina.jpa.conctants.Day;
-import at.fh.ooe.swe4.fx.campina.view.admin.menu.model.MenuModel.DayConverter;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
-import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
-import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 
 public class UserModel extends AbstractModel<Integer, User> {
 

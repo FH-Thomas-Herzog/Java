@@ -1,8 +1,6 @@
 package at.fh.ooe.swe4.fx.campina.view.admin.menu.model;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javafx.collections.FXCollections;
@@ -12,8 +10,8 @@ import at.fh.ooe.swe4.fx.campina.jpa.Menu;
 import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
-import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 
 public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
 

@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
@@ -22,9 +20,10 @@ import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
-import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.RequiredValidator;
 import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.Validator;
 
@@ -242,8 +241,7 @@ public class FormHandler<T extends AbstractModel> {
 			messageText.setUserData(ctx);
 
 			// form field
-			final Node node = model.field.type()
-											.create();
+			final Node node = FormUtils.create(model.field.type());
 			node.setId(model.toNodeId());
 			node.setUserData(ctx);
 			// Handing for select type
@@ -309,7 +307,7 @@ public class FormHandler<T extends AbstractModel> {
 				final Method method;
 				method = ctx.model.getClass()
 									.getMethod(fieldModel.methodSetterName, fieldModel.field.type().valueClass);
-				method.invoke(ctx.model, FormFieldType.getFormFieldValue(fieldModel.field.type(), node));
+				method.invoke(ctx.model, FormUtils.getFormFieldValue(fieldModel.field.type(), node));
 			} catch (Throwable e) {
 				throw new IllegalStateException("Could not set model value", e);
 			}
@@ -346,7 +344,7 @@ public class FormHandler<T extends AbstractModel> {
 				final Object value = ctx.model.getClass()
 												.getMethod(fieldModel.methodGetterName)
 												.invoke(ctx.model);
-				FormFieldType.setFormValue(fieldModel.field.type(), node, value);
+				FormUtils.setFormValue(fieldModel.field.type(), node, value);
 			} catch (Throwable e) {
 				throw new IllegalStateException("Could not set model value", e);
 			}
@@ -378,7 +376,7 @@ public class FormHandler<T extends AbstractModel> {
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
-			FormFieldType.resetFormValue(fieldModel.field.type(), node);
+			FormUtils.resetFormValue(fieldModel.field.type(), node);
 			final Text messageNode = (Text) ctx.scene.lookup("#" + fieldModel.toMessageId());
 			messageNode.setVisible(Boolean.FALSE);
 		}
@@ -404,7 +402,7 @@ public class FormHandler<T extends AbstractModel> {
 			// need type validation
 			if (FormFieldType.DECIMAL.equals(fieldModel.field.type())) {
 				try {
-					FormFieldType.getFormFieldValue(FormFieldType.DECIMAL, node);
+					FormUtils.getFormFieldValue(FormFieldType.DECIMAL, node);
 					messageNode.setVisible(Boolean.FALSE);
 					messageNode.setText("");
 				} catch (NumberFormatException e) {

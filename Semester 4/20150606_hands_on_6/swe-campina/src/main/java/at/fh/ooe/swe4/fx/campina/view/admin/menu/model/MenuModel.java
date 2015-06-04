@@ -13,8 +13,8 @@ import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
 import at.fh.ooe.swe4.fx.campina.jpa.conctants.Day;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
-import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 
 public class MenuModel extends AbstractModel<Integer, Menu> {
 

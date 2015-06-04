@@ -4,8 +4,8 @@ import java.util.Objects;
 
 import at.fh.ooe.swe4.fx.campina.jpa.LoginEvent;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
-import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
+import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 
 public class LoginModel extends AbstractModel<Integer, LoginEvent> {
 
