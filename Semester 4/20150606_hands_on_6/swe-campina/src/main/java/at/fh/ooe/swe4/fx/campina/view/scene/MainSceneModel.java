@@ -193,8 +193,11 @@ public class MainSceneModel extends Application implements SceneFactory {
 		Objects.requireNonNull(contentBox, "Cannot prepare null content box");
 
 		final Tab login = loginTab.create();
+		login.setStyle("-fx-padding: 10 10 10 10;");
 		final Tab user = userTab.create();
+		user.setStyle("-fx-padding: 10 10 10 10;");
 		final Tab menu = menuTab.create();
+		menu.setStyle("-fx-padding: 10 10 10 10;");
 		// user.setDisable(Boolean.TRUE);
 		// menu.setDisable(Boolean.TRUE);
 		//

@@ -10,13 +10,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.FormHandler;
@@ -67,6 +67,10 @@ public class MenuTab implements ScenePart<Tab> {
 	public static final String					EDIT_OPTION_ID				= "tab-menu-edit-option";
 	public static final String					MENU_SELECTION_KEY			= "tab-menu-menu-selection-data";
 	public static final String					MENU_ENTRY_SELECTION_KEY	= "tab-menu-menu-entry-selection-data";
+	public static final String					MENU_SAVE_BUTTON_ID			= "tab-menu-menu-form-save-button";
+	public static final String					MENU_DELETE_BUTTON_ID		= "tab-menu-menu-form-delete-button";
+	public static final String					MENU_ENTRY_SAVE_BUTTON_ID	= "tab-menu-menu-entry-form-save-button";
+	public static final String					MENU_ENTRY_DELETE_BUTTON_ID	= "tab-menu-menu-entry-form-delete-button";
 
 	public static enum EditMode {
 		MENU("Menus"),
@@ -136,6 +140,8 @@ public class MenuTab implements ScenePart<Tab> {
 				menuControl.handleMenuLoad(menuCtx);
 				((ChoiceBox<MenuModel>) menuCtx.getNode(MENU_SELECTION_KEY)).getSelectionModel()
 																			.select(menuCtx.model);
+				menuCtx.getNode(MENU_DELETE_BUTTON_ID)
+						.setVisible(Boolean.FALSE);
 				menuCtx.formHandler.fillForm(menuCtx);
 				break;
 			case MENU_ENTRY:
@@ -145,6 +151,8 @@ public class MenuTab implements ScenePart<Tab> {
 				menuEntryControl.handleMenuEntryLoad(menuEntryCtx);
 				((ChoiceBox<MenuEntryModel>) menuEntryCtx.getNode(MENU_ENTRY_SELECTION_KEY)).getSelectionModel()
 																							.select(menuEntryCtx.model);
+				menuEntryCtx.getNode(MENU_ENTRY_DELETE_BUTTON_ID)
+							.setVisible(Boolean.FALSE);
 				menuEntryControl.handleMenuLoad(menuEntryCtx);
 				menuEntryCtx.formHandler.fillForm(menuEntryCtx);
 				break;
@@ -177,14 +185,13 @@ public class MenuTab implements ScenePart<Tab> {
 			ctx.model = newValue;
 			ctx.model.prepare(newValue.getEntity());
 			if (ctx.model.getId() != null) {
-				ctx.formHandler.fillForm(ctx);
+				ctx.getNode(MENU_DELETE_BUTTON_ID)
+					.setVisible(Boolean.TRUE);
 			} else {
-				ctx.model = newValue;
-
-				// Could Reload menu here
-
-				ctx.formHandler.fillForm(ctx);
+				ctx.getNode(MENU_DELETE_BUTTON_ID)
+					.setVisible(Boolean.FALSE);
 			}
+			ctx.formHandler.fillForm(ctx);
 		}
 	}
 
@@ -210,17 +217,15 @@ public class MenuTab implements ScenePart<Tab> {
 
 			ctx.model = newValue;
 			ctx.model.prepare(newValue.getEntity());
+			control.handleMenuLoad(ctx);
 			if (ctx.model.getId() == null) {
-				control.handleMenuLoad(ctx);
-				ctx.formHandler.fillForm(ctx);
+				ctx.getNode(MENU_ENTRY_DELETE_BUTTON_ID)
+					.setVisible(Boolean.FALSE);
 			} else {
-				ctx.model = newValue;
-				control.handleMenuLoad(ctx);
-
-				// Could Reload menu here
-
-				ctx.formHandler.fillForm(ctx);
+				ctx.getNode(MENU_ENTRY_DELETE_BUTTON_ID)
+					.setVisible(Boolean.TRUE);
 			}
+			ctx.formHandler.fillForm(ctx);
 		}
 	}
 
@@ -250,6 +255,8 @@ public class MenuTab implements ScenePart<Tab> {
 		final List<RadioButton> buttons = createEditModeToggle(group);
 		final GridPane editOptionsGrid = new GridPane();
 		editOptionsGrid.setId(getId() + "-edit-options-grid");
+		editOptionsGrid.setHgap(10);
+		editOptionsGrid.setVgap(10);
 		for (int i = 0; i < buttons.size(); i++) {
 			editOptionsGrid.add(buttons.get(i), i, 0);
 		}
@@ -261,9 +268,12 @@ public class MenuTab implements ScenePart<Tab> {
 		final TextFlow menuEntryFlow = new TextFlow();
 		menuEntryFlow.setId(MENU_ENTRY_FORM_MESSAGE);
 		menuEntryFlow.setStyle("-fx-font-size: 20pt");
+		menuEntryCtx.putNode(MENU_ENTRY_FORM_MESSAGE, menuEntryFlow);
+
 		final TextFlow menuFlow = new TextFlow();
 		menuEntryFlow.setId(MENU_ENTRY_FORM_MESSAGE);
 		menuEntryFlow.setStyle("-fx-font-size: 20pt");
+		menuCtx.putNode(MENU_FORM_MESSAGE, menuFlow);
 
 		// menu form grid
 		final GridPane menuGrid = new GridPane();
@@ -271,22 +281,28 @@ public class MenuTab implements ScenePart<Tab> {
 		menuGrid.add(menuFlow, 0, 0);
 		menuGrid.add(createMenuChoiceBox(menuCtx), 0, 1);
 		menuGrid.add(menuCtx.formHandler.generateFormGrid(menuCtx), 0, 2);
-		menuGrid.add(new Text("Menu Buttons here"), 0, 3);
+		menuGrid.add(createMenuButtonGroup(menuCtx), 0, 3);
 		menuGrid.setUserData(menuCtx);
+		menuGrid.setHgap(10);
+		menuGrid.setVgap(10);
 
 		final GridPane menuEntryGrid = new GridPane();
 		menuEntryGrid.setId(getId() + "-menu-entry-grid");
 		menuEntryGrid.add(menuEntryFlow, 0, 0);
 		menuEntryGrid.add(createMenuEntryChoiceBox(menuEntryCtx), 0, 1);
 		menuEntryGrid.add(menuEntryCtx.formHandler.generateFormGrid(menuEntryCtx), 0, 2);
-		menuEntryGrid.add(new Text("Menu Entry Buttons here"), 0, 3);
+		menuEntryGrid.add(createMenuEntryButtonGroup(menuEntryCtx), 0, 3);
 		menuEntryGrid.setUserData(menuEntryCtx);
+		menuEntryGrid.setHgap(10);
+		menuEntryGrid.setVgap(10);
 
 		// content grid
 		final GridPane gridPane = new GridPane();
 		gridPane.setId(getId() + "-content");
 		gridPane.add(editOptionsGrid, 0, 0);
 		gridPane.add(menuGrid, 0, 1);
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
 
 		// TODO: Set change listener on edit mode choice;
 		group.selectedToggleProperty()
@@ -358,12 +374,76 @@ public class MenuTab implements ScenePart<Tab> {
 		return menuEntryChoice;
 	}
 
+	private GridPane createMenuButtonGroup(final FormContext<MenuModel> ctx) {
+		Objects.requireNonNull(ctx);
+
+		final GridPane gridPane = new GridPane();
+		gridPane.setId(getId() + "-button-grid");
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
+
+		// TODO: Register events here
+		final Button saveButton = new Button();
+		saveButton.setText("Speichern");
+		saveButton.setId(MENU_SAVE_BUTTON_ID);
+		saveButton.setUserData(ctx);
+		saveButton.setOnAction(menuFormControl::saveMenu);
+
+		final Button deleteButton = new Button();
+		deleteButton.setId(MENU_DELETE_BUTTON_ID);
+		deleteButton.setText("Löschen");
+		deleteButton.setUserData(ctx);
+		deleteButton.setOnAction(menuFormControl::deleteMenu);
+
+		gridPane.add(saveButton, 0, 0);
+		gridPane.add(deleteButton, 1, 0);
+
+		// register in context
+		ctx.putNode(MENU_SAVE_BUTTON_ID, saveButton);
+		ctx.putNode(MENU_DELETE_BUTTON_ID, deleteButton);
+
+		return gridPane;
+	}
+
+	private GridPane createMenuEntryButtonGroup(final FormContext<MenuEntryModel> ctx) {
+		Objects.requireNonNull(ctx);
+
+		final GridPane gridPane = new GridPane();
+		gridPane.setId(getId() + "-button-grid");
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
+
+		// TODO: Register events here
+		final Button saveButton = new Button();
+		saveButton.setText("Speichern");
+		saveButton.setId(MENU_ENTRY_SAVE_BUTTON_ID);
+		saveButton.setUserData(ctx);
+		saveButton.setOnAction(menuEntryFormControl::saveMenuEntry);
+
+		final Button deleteButton = new Button();
+		deleteButton.setId(MENU_ENTRY_DELETE_BUTTON_ID);
+		deleteButton.setText("Löschen");
+		deleteButton.setUserData(ctx);
+		deleteButton.setOnAction(menuEntryFormControl::deleteMenuEntry);
+
+		gridPane.add(saveButton, 0, 0);
+		gridPane.add(deleteButton, 1, 0);
+
+		// register in context
+		ctx.putNode(MENU_ENTRY_SAVE_BUTTON_ID, saveButton);
+		ctx.putNode(MENU_ENTRY_DELETE_BUTTON_ID, deleteButton);
+
+		return gridPane;
+	}
+
 	@Override
 	public void init() {
-		menuCtx.formHandler.fillForm(menuCtx);
 		menuFormControl.handleMenuLoad(menuCtx);
+		menuCtx.formHandler.fillForm(menuCtx);
 		((ChoiceBox<MenuModel>) menuCtx.getNode(MENU_SELECTION_KEY)).getSelectionModel()
 																	.select(menuCtx.model);
+		menuCtx.getNode(MENU_DELETE_BUTTON_ID)
+				.setVisible(Boolean.FALSE);
 	}
 
 }

@@ -3,6 +3,7 @@ package at.fh.ooe.swe4.fx.campina.view.admin.menu.control;
 import java.util.Objects;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import at.fh.ooe.swe4.fx.campina.jpa.EntityCache;
 import at.fh.ooe.swe4.fx.campina.jpa.Menu;
 import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
@@ -15,6 +16,14 @@ public class MenuEntryFormControl {
 
 	public MenuEntryFormControl() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public void saveMenuEntry(final ActionEvent event) {
+
+	}
+
+	public void deleteMenuEntry(final ActionEvent event) {
+
 	}
 
 	public void handleMenuEntryLoad(final FormContext<MenuEntryModel> ctx) {

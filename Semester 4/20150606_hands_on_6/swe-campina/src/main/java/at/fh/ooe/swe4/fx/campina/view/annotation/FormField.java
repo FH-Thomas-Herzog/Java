@@ -25,5 +25,7 @@ public @interface FormField {
 
 	int ordinal() default 1;
 
+	Class<?> valueClass() default Object.class;
+
 	EventHandlerFactories eventHandlerFactories() default @EventHandlerFactories();
 }

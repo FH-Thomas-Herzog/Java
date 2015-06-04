@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import at.fh.ooe.swe4.fx.campina.view.api.IdHolder;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -46,7 +47,7 @@ public class FormUtils {
 			final Object value = getFormFieldValue(type, node);
 			if (value == null) {
 				return Boolean.FALSE;
-			}
+			} 
 			if (value instanceof String) {
 				return !((String) value).trim()
 										.isEmpty();

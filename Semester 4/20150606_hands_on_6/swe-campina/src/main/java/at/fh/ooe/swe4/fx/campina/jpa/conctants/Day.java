@@ -3,7 +3,6 @@ package at.fh.ooe.swe4.fx.campina.jpa.conctants;
 import java.util.Objects;
 
 public enum Day {
-	UNSET(""),
 	MONDAY("Montag"),
 	THUESDAY("Dienstag"),
 	WEDNESDAY("Mittwoch"),

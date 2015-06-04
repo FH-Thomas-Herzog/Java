@@ -305,8 +305,12 @@ public class FormHandler<T extends AbstractModel> {
 			}
 			try {
 				final Method method;
+				Class<?> valueClass = fieldModel.field.valueClass();
+				if (valueClass.equals(Object.class)) {
+					valueClass = fieldModel.field.type().valueClass;
+				}
 				method = ctx.model.getClass()
-									.getMethod(fieldModel.methodSetterName, fieldModel.field.type().valueClass);
+									.getMethod(fieldModel.methodSetterName, valueClass);
 				method.invoke(ctx.model, FormUtils.getFormFieldValue(fieldModel.field.type(), node));
 			} catch (Throwable e) {
 				throw new IllegalStateException("Could not set model value", e);
@@ -341,6 +345,10 @@ public class FormHandler<T extends AbstractModel> {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
 			try {
+				if (FormFieldType.SELECT.equals(fieldModel.field.type())) {
+					final ChoiceBox<Object> box = (ChoiceBox<Object>) node;
+					box.setItems(fieldModel.getData(fieldModel.id));
+				}
 				final Object value = ctx.model.getClass()
 												.getMethod(fieldModel.methodGetterName)
 												.invoke(ctx.model);

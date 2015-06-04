@@ -18,7 +18,12 @@ import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
 
 public class MenuModel extends AbstractModel<Integer, Menu> {
 
-	private final ObservableList<Day>	days	= FXCollections.observableArrayList(Arrays.asList(Day.values()));
+	private static final ObservableList<Day>	days	= FXCollections.observableArrayList();
+
+	static {
+		days.add((Day) null);
+		days.addAll(Arrays.asList(Day.values()));
+	}
 
 	public static class DayConverter extends StringConverter<Day> {
 
@@ -30,7 +35,7 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 
 		@Override
 		public String toString(Day object) {
-			return (object == null || (Day.UNSET.equals(object))) ? PLEASE_CHOOSE : object.label;
+			return (object == null) ? PLEASE_CHOOSE : object.label;
 		}
 
 		@Override
@@ -55,6 +60,14 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 
 	}
 
+	public MenuModel() {
+		super();
+	}
+
+	public MenuModel(Menu entity) {
+		super(entity);
+	}
+
 	@Override
 	public void reset() {
 		prepare(new Menu());
@@ -63,6 +76,7 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 	@Override
 	public void prepare(Menu entity) {
 		super.prepare(entity);
+		entity.setDay(days.get(days.indexOf(entity.getDay())));
 	}
 
 	@FormField(id = "menu-label",
@@ -84,9 +98,14 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 			ordinal = 6,
 			required = true,
 			requiredMessage = "Bitte Tag wählen",
-			type = FormFieldType.SELECT)
+			type = FormFieldType.SELECT,
+			valueClass = Day.class)
 	public Day getDay() {
-		return Day.UNSET;
+		return getEntity().getDay();
+	}
+
+	public void setDay(Day day) {
+		getEntity().setDay(day);
 	}
 
 	public void setLabel(Day day) {
