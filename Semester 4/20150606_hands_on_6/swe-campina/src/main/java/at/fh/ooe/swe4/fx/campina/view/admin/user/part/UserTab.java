@@ -79,7 +79,7 @@ public class UserTab implements ScenePart<Tab> {
 
 	@Override
 	public void init() {
-		userFormControl.handleUserLoad(fCtx.getObserable(USER_SELECTION_KEY));
+		userFormControl.handleUserLoad(fCtx);
 		((ChoiceBox<UserModel>) fCtx.getNode(USER_SELECTION_KEY)).getSelectionModel()
 																	.select(0);
 		fCtx.formHandler.fillForm(fCtx);

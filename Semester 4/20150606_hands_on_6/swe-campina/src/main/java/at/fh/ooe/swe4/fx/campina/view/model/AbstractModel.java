@@ -14,11 +14,11 @@ public abstract class AbstractModel<I extends Serializable, T extends AbstractEn
 
 	public AbstractModel() {
 		super();
+		reset();
 	}
 
 	public AbstractModel(final T entity) {
-		this.entity = entity;
-		this.id = (entity != null) ? entity.getId() : null;
+		prepare(entity);
 	}
 
 	public abstract void reset();
@@ -62,7 +62,7 @@ public abstract class AbstractModel<I extends Serializable, T extends AbstractEn
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractModel other = (AbstractModel) obj;
+		AbstractModel<I, T> other = (AbstractModel<I, T>) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

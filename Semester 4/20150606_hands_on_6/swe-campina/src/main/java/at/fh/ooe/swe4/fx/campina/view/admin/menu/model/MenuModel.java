@@ -2,9 +2,14 @@ package at.fh.ooe.swe4.fx.campina.view.admin.menu.model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.SortedSet;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.jpa.Menu;
+import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
 import at.fh.ooe.swe4.fx.campina.jpa.conctants.Day;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
@@ -13,7 +18,7 @@ import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
 
 public class MenuModel extends AbstractModel<Integer, Menu> {
 
-	private final List<Day>	days	= Arrays.asList(Day.values());
+	private final ObservableList<Day>	days	= FXCollections.observableArrayList(Arrays.asList(Day.values()));
 
 	public static class DayConverter extends StringConverter<Day> {
 
@@ -35,9 +40,29 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 
 	}
 
+	public static class MenuModelConverter extends StringConverter<MenuModel> {
+
+		@Override
+		public String toString(MenuModel object) {
+			Objects.requireNonNull(object);
+			return (object.getId() == null) ? "Neues Menu" : object.getLabel();
+		}
+
+		@Override
+		public MenuModel fromString(String string) {
+			throw new UnsupportedOperationException("Form text not supported by this converter");
+		}
+
+	}
+
 	@Override
 	public void reset() {
 		prepare(new Menu());
+	}
+
+	@Override
+	public void prepare(Menu entity) {
+		super.prepare(entity);
 	}
 
 	@FormField(id = "menu-label",
@@ -73,4 +98,9 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 	public List<Day> getDays() {
 		return days;
 	}
+
+	public SortedSet<MenuEntry> getMenuEntries() {
+		return getEntity().getEntries();
+	}
+
 }

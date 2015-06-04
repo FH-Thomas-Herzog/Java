@@ -11,7 +11,20 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 	private BigDecimal			price;
 	private Menu				menu;
 
+	public MenuEntry(Integer id, Integer ordinal, String label, BigDecimal price, Menu menu) {
+		this(id);
+		this.ordinal = ordinal;
+		this.label = label;
+		this.price = price;
+		this.menu = menu;
+	}
+
 	public MenuEntry() {
+		super();
+	}
+
+	public MenuEntry(Integer id) {
+		super(id);
 	}
 
 	@Override

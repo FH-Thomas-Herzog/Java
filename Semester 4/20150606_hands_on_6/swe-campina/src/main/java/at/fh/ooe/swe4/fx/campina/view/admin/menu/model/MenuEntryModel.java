@@ -3,7 +3,10 @@ package at.fh.ooe.swe4.fx.campina.view.admin.menu.model;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.jpa.Menu;
 import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
@@ -14,7 +17,7 @@ import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
 
 public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
 
-	public List<Menu>	menus;
+	public ObservableList<Menu>	menus;
 
 	public static class MenuConverter extends StringConverter<Menu> {
 
@@ -30,12 +33,27 @@ public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
 
 	}
 
+	public static class MenuEntryModelConverter extends StringConverter<MenuEntryModel> {
+
+		@Override
+		public String toString(MenuEntryModel object) {
+			Objects.requireNonNull(object);
+			return (object.getId() == null) ? "Neuer Menu Eintrag" : object.getLabel();
+		}
+
+		@Override
+		public MenuEntryModel fromString(String string) {
+			throw new UnsupportedOperationException("Form text not supported by this converter");
+		}
+
+	}
+
 	@Override
 	public void reset() {
 		final MenuEntry entry = new MenuEntry();
 		entry.setPrice(BigDecimal.ZERO);
 		entry.setMenu(new Menu());
-		menus = new ArrayList<>();
+		menus = FXCollections.observableArrayList();
 		menus.add(new Menu());
 		prepare(entry);
 
@@ -85,12 +103,7 @@ public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
 
 	@SelectFormField(target = "menu",
 			converter = MenuConverter.class)
-	public List<Menu> getMenus() {
+	public ObservableList<Menu> getMenus() {
 		return menus;
 	}
-
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-
 }

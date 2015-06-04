@@ -88,7 +88,7 @@ public class UserFormControl {
 			// save model in backed list for testing
 			EntityCache.userCache.add(user);
 			// reload data from db (now backing list)
-			handleUserLoad(ctx.getObserable(UserTab.USER_SELECTION_KEY));
+			handleUserLoad(ctx);
 			// set this model selected
 			((ChoiceBox<UserModel>) ctx.getNode(UserTab.USER_SELECTION_KEY)).getSelectionModel()
 																			.select(ctx.model);
@@ -123,7 +123,7 @@ public class UserFormControl {
 		// existing user gets deleted
 		if (model.getId() != null) {
 			EntityCache.userCache.remove(model.getEntity());
-			handleUserLoad(ctx.getObserable(UserTab.USER_SELECTION_KEY));
+			handleUserLoad(ctx);
 		}
 
 		// reset model
@@ -200,9 +200,10 @@ public class UserFormControl {
 	 * @param userList
 	 *            the {@link ObservableList} to add users to
 	 */
-	public void handleUserLoad(final ObservableList<UserModel> userList) {
-		Objects.requireNonNull(userList);
+	public void handleUserLoad(final FormContext<UserModel> ctx) {
+		Objects.requireNonNull(ctx);
 
+		final ObservableList<UserModel> userList = (ObservableList<UserModel>) ctx.getObserable(UserTab.USER_SELECTION_KEY);
 		userList.clear();
 		userList.add(new UserModel());
 		for (User user : EntityCache.userCache) {

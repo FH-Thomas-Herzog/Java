@@ -247,7 +247,7 @@ public class FormHandler<T extends AbstractModel> {
 			// Handing for select type
 			if (model.field.type()
 							.equals(FormFieldType.SELECT)) {
-				final Iterable<Object> iterable = model.getData(model.id);
+				final ObservableList<Object> list = model.getData(model.id);
 				final SelectFormField select = model.getData(SelectFormField.class);
 				StringConverter<Object> converter = null;
 				if (!select.converter()
@@ -259,11 +259,6 @@ public class FormHandler<T extends AbstractModel> {
 						throw new IllegalStateException("Could not isntantiate select string converter '" + select.converter()
 																													.getName() + "'", e);
 					}
-				}
-				final ObservableList<Object> list = FXCollections.observableArrayList();
-				final Iterator<Object> it = iterable.iterator();
-				while (it.hasNext()) {
-					list.add(it.next());
 				}
 				final ChoiceBox<Object> box = (ChoiceBox<Object>) node;
 				box.setItems(list);
@@ -502,8 +497,8 @@ public class FormHandler<T extends AbstractModel> {
 				}
 				fieldModel = models.get(index);
 				try {
-					final Iterable<Object> iterable = (Iterable<Object>) method.invoke(model);
-					fieldModel.putData(fieldModel.id, iterable);
+					final ObservableList<Object> dataList = (ObservableList<Object>) method.invoke(model);
+					fieldModel.putData(fieldModel.id, dataList);
 					fieldModel.putData(select.annotationType(), select);
 				} catch (Throwable e) {
 					throw new IllegalStateException("Cannot retrieve select data (? extends Iterable<?>)", e);

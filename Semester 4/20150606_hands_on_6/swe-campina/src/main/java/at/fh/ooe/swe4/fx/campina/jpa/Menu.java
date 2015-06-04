@@ -9,9 +9,23 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 
 	private static final long		serialVersionUID	= 7569033478037865818L;
 
-	private Day					day;
+	private Day						day;
 	private String					label;
 	private SortedSet<MenuEntry>	entires				= new TreeSet<>();
+
+	public Menu(Integer id, Day day, String label) {
+		super(id);
+		this.day = day;
+		this.label = label;
+	}
+
+	public Menu() {
+		super();
+	}
+
+	public Menu(Integer id) {
+		super(id);
+	}
 
 	@Override
 	public Integer getId() {
@@ -34,7 +48,7 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 		this.label = label;
 	}
 
-	public SortedSet<MenuEntry> getEntires() {
+	public SortedSet<MenuEntry> getEntries() {
 		return entires;
 	}
 

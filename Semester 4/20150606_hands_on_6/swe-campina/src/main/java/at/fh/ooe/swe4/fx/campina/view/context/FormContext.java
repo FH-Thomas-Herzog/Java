@@ -26,7 +26,7 @@ public class FormContext<T extends AbstractModel> {
 	public T								model;
 	public final Scene						scene;
 	public boolean							valid				= Boolean.TRUE;
-	public Map<String, ObservableList<T>>	observableModelMap	= new ConcurrentHashMap<>();
+	public Map<String, ObservableList<?>>	observableModelMap	= new ConcurrentHashMap<>();
 	public Map<String, Node>				nodeMap				= new ConcurrentHashMap<>();
 
 	/**
@@ -56,7 +56,7 @@ public class FormContext<T extends AbstractModel> {
 	 * @param list
 	 *            the list
 	 */
-	public void putObserable(final String key, final ObservableList<T> list) {
+	public<T> void putObserable(final String key, final ObservableList<?> list) {
 		Objects.requireNonNull(key);
 		Objects.requireNonNull(list);
 
@@ -71,7 +71,7 @@ public class FormContext<T extends AbstractModel> {
 	 *            the key to get mapped list
 	 * @return the found list, null otherwise
 	 */
-	public ObservableList<T> getObserable(final String key) {
+	public ObservableList<?> getObserable(final String key) {
 		Objects.requireNonNull(key);
 
 		return observableModelMap.get(key);
