@@ -1,17 +1,27 @@
 package at.fh.ooe.swe4.fx.campina.component.builder.impl;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
+import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
 import at.fh.ooe.swe4.fx.campina.view.constants.FormFieldType;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
 import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
@@ -37,11 +47,23 @@ public class FormHandler<T extends AbstractModel> {
 	 */
 	private static class FormFieldResolvedModel {
 
-		public final String		id;
-		public final String		globalPrefix;
-		public final String		methodGetterName;
-		public final String		methodSetterName;
-		public final FormField	field;
+		public final String					id;
+		public final String					globalPrefix;
+		public final String					methodGetterName;
+		public final String					methodSetterName;
+		public final FormField				field;
+		private final Map<Object, Object>	additionalData	= new HashMap<>();
+
+		public FormFieldResolvedModel(String globalPrefix, String methodName) {
+			super();
+			this.globalPrefix = globalPrefix;
+			this.methodGetterName = methodName;
+			this.methodSetterName = methodName.replace("get", "set");
+			this.id = "field-" + methodName.substring(3, methodName.length())
+											.toLowerCase();
+
+			this.field = null;
+		}
 
 		/**
 		 * @param globalPrefix
@@ -55,6 +77,9 @@ public class FormHandler<T extends AbstractModel> {
 			Objects.requireNonNull(methodName);
 			Objects.requireNonNull(field);
 
+			if (!methodName.startsWith("get")) {
+				throw new IllegalArgumentException("Method must be a valid java bean getter");
+			}
 			this.globalPrefix = globalPrefix;
 			this.methodGetterName = methodName;
 			this.methodSetterName = methodName.replace("get", "set");
@@ -78,9 +103,47 @@ public class FormHandler<T extends AbstractModel> {
 			return globalPrefix + "-node-" + id;
 		}
 
+		public <T> void putData(final Object
+				key, T instance) {
+			Objects.requireNonNull(key);
+			Objects.requireNonNull(instance);
+
+			additionalData.put(key, instance);
+		}
+
+		public <T> T getData(final Object key) {
+			Objects.requireNonNull(key);
+
+			return (T) additionalData.get(key);
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((id == null) ? 0 : id.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			FormFieldResolvedModel other = (FormFieldResolvedModel) obj;
+			if (id == null) {
+				if (other.id != null)
+					return false;
+			} else if (!id.equals(other.id))
+				return false;
+			return true;
+		}
 	}
 
-	private Class<T>	modelClass;
+	private boolean	started	= Boolean.FALSE;
 
 	/**
 	 * Empty default constructor
@@ -92,22 +155,19 @@ public class FormHandler<T extends AbstractModel> {
 	/**
 	 * Initializes this builder.
 	 * 
-	 * @param modelClass
-	 *            the backed model class this builder is for
 	 * @return the current instance
 	 * @throws NullPointerException
 	 *             if the given model class is null
 	 * @throws IllegalStateException
 	 *             if the builder is already started
 	 */
-	public FormHandler<T> init(Class<T> modelClass) {
-		Objects.requireNonNull(modelClass, "Model class with @FormField annotations must be provided");
-
-		if (this.modelClass != null) {
-			throw new IllegalStateException("Builder is already started");
+	public FormHandler<T> init() {
+		if (started) {
+			throw new IllegalStateException("Handler needs to be end before restarted");
 		}
 
-		this.modelClass = modelClass;
+		started = Boolean.TRUE;
+
 		return this;
 	}
 
@@ -121,7 +181,7 @@ public class FormHandler<T extends AbstractModel> {
 	public FormHandler<T> end() {
 		checkIfStarted();
 
-		this.modelClass = null;
+		this.started = Boolean.FALSE;
 		return this;
 	}
 
@@ -162,7 +222,7 @@ public class FormHandler<T extends AbstractModel> {
 				.add(messageColConst);
 
 		// the form fields defined in the model
-		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass, ctx);
+		final List<FormFieldResolvedModel> models = createResolvedModels(ctx);
 
 		// generate form fields
 		for (int i = 0; i < models.size(); i++) {
@@ -184,6 +244,37 @@ public class FormHandler<T extends AbstractModel> {
 											.create();
 			node.setId(model.toNodeId());
 			node.setUserData(ctx);
+			// Handing for select type
+			if (model.field.type()
+							.equals(FormFieldType.SELECT)) {
+				final Iterable<Object> iterable = model.getData(model.id);
+				final SelectFormField select = model.getData(SelectFormField.class);
+				StringConverter<Object> converter = null;
+				if (!select.converter()
+							.equals(StringConverter.class)) {
+					try {
+						converter = select.converter()
+											.newInstance();
+					} catch (Throwable e) {
+						throw new IllegalStateException("Could not isntantiate select string converter '" + select.converter()
+																													.getName() + "'", e);
+					}
+				}
+				final ObservableList<Object> list = FXCollections.observableArrayList();
+				final Iterator<Object> it = iterable.iterator();
+				while (it.hasNext()) {
+					list.add(it.next());
+				}
+				final ChoiceBox<Object> box = (ChoiceBox<Object>) node;
+				box.setItems(list);
+				if (converter != null) {
+					box.setConverter(converter);
+				}
+			}
+
+			// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			// Dev logging here
+			// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			System.out.println(node.getId());
 			System.out.println(messageText.getId());
 
@@ -217,7 +308,7 @@ public class FormHandler<T extends AbstractModel> {
 		checkIfStarted();
 		Objects.requireNonNull(ctx, "Need form context to search for form fields");
 
-		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass, ctx);
+		final List<FormFieldResolvedModel> models = createResolvedModels(ctx);
 		for (FormFieldResolvedModel fieldModel : models) {
 			final Node node = ctx.scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
@@ -227,7 +318,7 @@ public class FormHandler<T extends AbstractModel> {
 				final Method method;
 				method = ctx.model.getClass()
 									.getMethod(fieldModel.methodSetterName, fieldModel.field.type().valueClass);
-				method.invoke(ctx.model, FormFieldType.getFormFieldValue(node));
+				method.invoke(ctx.model, FormFieldType.getFormFieldValue(fieldModel.field.type(), node));
 			} catch (Throwable e) {
 				throw new IllegalStateException("Could not set model value", e);
 			}
@@ -254,7 +345,7 @@ public class FormHandler<T extends AbstractModel> {
 		checkIfStarted();
 		Objects.requireNonNull(ctx, "Need context to search for form fields");
 
-		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass, ctx);
+		final List<FormFieldResolvedModel> models = createResolvedModels(ctx);
 		for (FormFieldResolvedModel fieldModel : models) {
 			final Node node = ctx.scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
@@ -264,7 +355,7 @@ public class FormHandler<T extends AbstractModel> {
 				final Object value = ctx.model.getClass()
 												.getMethod(fieldModel.methodGetterName)
 												.invoke(ctx.model);
-				FormFieldType.setFormValue(node, value);
+				FormFieldType.setFormValue(fieldModel.field.type(), node, value);
 			} catch (Throwable e) {
 				throw new IllegalStateException("Could not set model value", e);
 			}
@@ -290,13 +381,13 @@ public class FormHandler<T extends AbstractModel> {
 		checkIfStarted();
 		Objects.requireNonNull(ctx.scene, "Need to scene to search for form fields");
 
-		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass, ctx);
+		final List<FormFieldResolvedModel> models = createResolvedModels(ctx);
 		for (FormFieldResolvedModel fieldModel : models) {
 			final Node node = ctx.scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
-			FormFieldType.resetFormValue(node);
+			FormFieldType.resetFormValue(fieldModel.field.type(), node);
 			final Text messageNode = (Text) ctx.scene.lookup("#" + fieldModel.toMessageId());
 			messageNode.setVisible(Boolean.FALSE);
 		}
@@ -312,17 +403,30 @@ public class FormHandler<T extends AbstractModel> {
 		// required validator
 		final Validator<Node> requiredValidator = new RequiredValidator<Node>();
 		// the form field models
-		final List<FormFieldResolvedModel> models = createResolvedModels(modelClass, ctx);
+		final List<FormFieldResolvedModel> models = createResolvedModels(ctx);
 		for (FormFieldResolvedModel fieldModel : models) {
 			final Node node = ctx.scene.lookup("#" + fieldModel.toNodeId());
 			if (node == null) {
 				throw new IllegalStateException("Scene does not contain form field with id");
 			}
+			final Text messageNode = (Text) ctx.scene.lookup("#" + fieldModel.toMessageId());
+			// need type validation
+			if (FormFieldType.DECIMAL.equals(fieldModel.field.type())) {
+				try {
+					FormFieldType.getFormFieldValue(FormFieldType.DECIMAL, node);
+					messageNode.setVisible(Boolean.FALSE);
+					messageNode.setText("");
+				} catch (NumberFormatException e) {
+					ctx.valid = Boolean.FALSE;
+					messageNode.setVisible(Boolean.TRUE);
+					messageNode.setText("Keine gültige Nummer");
+					continue;
+				}
+			}
 			// need required validation
 			if (fieldModel.field.required()) {
-				final Text messageNode = (Text) ctx.scene.lookup("#" + fieldModel.toMessageId());
 				// is invalid
-				if (!requiredValidator.valid(node)) {
+				if (!requiredValidator.valid(fieldModel.field.type(), node)) {
 					ctx.valid = Boolean.FALSE;
 					messageNode.setVisible(Boolean.TRUE);
 					messageNode.setText(fieldModel.field.requiredMessage());
@@ -337,7 +441,7 @@ public class FormHandler<T extends AbstractModel> {
 	}
 
 	private void checkIfStarted() {
-		if (modelClass == null) {
+		if (!started) {
 			throw new IllegalStateException("Builder not started");
 		}
 	}
@@ -354,22 +458,56 @@ public class FormHandler<T extends AbstractModel> {
 	 * @throws NullPointerException
 	 *             if the model class is null
 	 */
-	private List<FormFieldResolvedModel> createResolvedModels(final Class<T> clazz, FormContext<T> ctx) {
-		Objects.requireNonNull(clazz, "Class must not be null");
+	private List<FormFieldResolvedModel> createResolvedModels(FormContext<T> ctx) {
+		Objects.requireNonNull(ctx, "Contextmust not be null");
 
+		final T model = ctx.model;
 		final List<FormFieldResolvedModel> models = new ArrayList<>();
-		final Method[] methods = clazz.getMethods();
+		final Method[] methods = model.getClass()
+										.getDeclaredMethods();
 
-		// iterate over all methods an resolve annotated ones
+		// form field annotations
 		for (Method method : methods) {
 			final FormField field = method.getAnnotation(FormField.class);
+			FormFieldResolvedModel fieldModel;
+			final String methodName = method.getName();
 			if (field != null) {
-				final String methodName = method.getName();
 				if (!methodName.startsWith("get")) {
 					throw new IllegalStateException("FormField annotated method must be a valid getter method '" + methodName
 							+ "'");
 				}
-				models.add(new FormFieldResolvedModel(ctx.id, methodName, field));
+				fieldModel = new FormFieldResolvedModel(ctx.id, methodName, field);
+				models.add(fieldModel);
+			}
+		}
+
+		// additional annotations
+		for (Method method : methods) {
+
+			final SelectFormField select = method.getAnnotation(SelectFormField.class);
+			FormFieldResolvedModel fieldModel;
+			final String methodName = method.getName();
+			System.out.println(methodName);
+
+			if (select != null) {
+				int index = -1;
+				final String target = select.target();
+				final String targetGetter = new StringBuilder("get").append(target.substring(0, 1)
+																					.toUpperCase())
+																	.append(target.substring(1, target.length()))
+																	.toString();
+				if ((index = models.indexOf(new FormFieldResolvedModel(ctx.id, targetGetter))) == -1) {
+					throw new IllegalStateException("SelectFormField target '" + targetGetter + "' field model '" + model.getClass()
+																															.getName() + "' not found");
+				}
+				fieldModel = models.get(index);
+				try {
+					final Iterable<Object> iterable = (Iterable<Object>) method.invoke(model);
+					fieldModel.putData(fieldModel.id, iterable);
+					fieldModel.putData(select.annotationType(), select);
+				} catch (Throwable e) {
+					throw new IllegalStateException("Cannot retrieve select data (? extends Iterable<?>)", e);
+				}
 			}
 		}
 
@@ -382,5 +520,19 @@ public class FormHandler<T extends AbstractModel> {
 			}
 		});
 		return models;
+	}
+
+	private <T extends Annotation> T hasAnnotation(final AnnotatedElement element, Class<T> clazz) {
+		Objects.requireNonNull(element);
+
+		final Annotation[] annotations = element.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation.annotationType()
+							.equals(clazz)) {
+				return (T) annotation;
+			}
+		}
+
+		return null;
 	}
 }

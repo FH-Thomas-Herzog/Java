@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.view.user.control;
+package at.fh.ooe.swe4.fx.campina.view.admin.user.control;
 
 import java.util.Objects;
 
@@ -14,9 +14,9 @@ import org.apache.commons.lang.StringUtils;
 
 import at.fh.ooe.swe4.fx.campina.jpa.EntityCache;
 import at.fh.ooe.swe4.fx.campina.jpa.User;
+import at.fh.ooe.swe4.fx.campina.view.admin.user.model.UserModel;
+import at.fh.ooe.swe4.fx.campina.view.admin.user.part.UserTab;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
-import at.fh.ooe.swe4.fx.campina.view.user.model.UserModel;
-import at.fh.ooe.swe4.fx.campina.view.user.part.UserTab;
 
 /**
  * The control bean for the user tab form.

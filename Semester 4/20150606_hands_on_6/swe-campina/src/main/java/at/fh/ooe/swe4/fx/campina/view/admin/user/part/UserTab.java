@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.view.user.part;
+package at.fh.ooe.swe4.fx.campina.view.admin.user.part;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,10 +15,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.FormHandler;
+import at.fh.ooe.swe4.fx.campina.view.admin.user.control.UserFormControl;
+import at.fh.ooe.swe4.fx.campina.view.admin.user.model.UserModel;
 import at.fh.ooe.swe4.fx.campina.view.api.ScenePart;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
-import at.fh.ooe.swe4.fx.campina.view.user.control.UserFormControl;
-import at.fh.ooe.swe4.fx.campina.view.user.model.UserModel;
 
 /**
  * This class builds the user tab.
@@ -64,7 +64,7 @@ public class UserTab implements ScenePart<Tab> {
 		final UserModel model = new UserModel();
 		model.reset();
 		this.formBuidler = new FormHandler<UserModel>();
-		this.formBuidler.init(USER_MODEL);
+		this.formBuidler.init();
 		this.userFormControl = new UserFormControl();
 		this.fCtx = new FormContext<UserModel>("user-form", formBuidler, model, scene);
 	}
@@ -82,6 +82,7 @@ public class UserTab implements ScenePart<Tab> {
 		userFormControl.handleUserLoad(fCtx.getObserable(USER_SELECTION_KEY));
 		((ChoiceBox<UserModel>) fCtx.getNode(USER_SELECTION_KEY)).getSelectionModel()
 																	.select(0);
+		fCtx.formHandler.fillForm(fCtx);
 	}
 
 	@Override

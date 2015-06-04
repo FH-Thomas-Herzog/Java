@@ -5,18 +5,21 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import at.fh.ooe.swe4.fx.campina.view.login.model.LoginModel;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel;
 
 public class EntityCache {
 
 	public static Set<User>	userCache	= new HashSet<>(100);
 
-	private EntityCache() {
+	static {
 		userCache.add(new User(1, "Thomas", "Herzog", "t.herzog@bla.bla"));
 		userCache.add(new User(2, "Hugo", "Fichtner", "h.fichtner@bla.bla"));
 		userCache.add(new User(3, "Christian", "Beikov", "c.beickov@bla.bla"));
 		userCache.add(new User(4, "Rainer", "Rudolf", "r.rudolf@bla.bla"));
 		userCache.add(new User(5, "Bernd", "Maier", "b.maier@bla.bla"));
+	}
+
+	private EntityCache() {
 	}
 
 	public static final User isValidLogin(final LoginModel model) {

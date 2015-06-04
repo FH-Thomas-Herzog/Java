@@ -1,8 +1,10 @@
 package at.fh.ooe.swe4.fx.campina.view.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import at.fh.ooe.swe4.fx.campina.jpa.AbstractEntity;
+import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
 import at.fh.ooe.swe4.fx.campina.jpa.User;
 
 public abstract class AbstractModel<I extends Serializable, T extends AbstractEntity<I>> {
@@ -21,7 +23,12 @@ public abstract class AbstractModel<I extends Serializable, T extends AbstractEn
 
 	public abstract void reset();
 
-	public abstract void prepare(T user);
+	public void prepare(T entity) {
+		Objects.requireNonNull(entity);
+
+		setEntity(entity);
+		setId(entity.getId());
+	}
 
 	public I getId() {
 		return id;

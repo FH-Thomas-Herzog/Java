@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.view.login.part;
+package at.fh.ooe.swe4.fx.campina.view.admin.login.part;
 
 import java.util.Objects;
 
@@ -10,10 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.FormHandler;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.control.LoginEventControl;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel;
 import at.fh.ooe.swe4.fx.campina.view.api.ScenePart;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
-import at.fh.ooe.swe4.fx.campina.view.login.control.LoginEventControl;
-import at.fh.ooe.swe4.fx.campina.view.login.model.LoginModel;
 
 public class LoginTab implements ScenePart<Tab> {
 
@@ -45,7 +45,7 @@ public class LoginTab implements ScenePart<Tab> {
 
 		final LoginModel model = new LoginModel();
 		model.reset();
-		this.formHandler = new FormHandler<LoginModel>().init(LoginModel.class);
+		this.formHandler = new FormHandler<LoginModel>().init();
 		this.loginFormControl = new LoginEventControl();
 		this.fCtx = new FormContext<LoginModel>(LOGIN_FORM_ID, formHandler, model, scene);
 	}

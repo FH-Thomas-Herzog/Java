@@ -16,10 +16,11 @@ import javafx.stage.Stage;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBarBuilder;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBuilder;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuItemBuilder;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.part.LoginTab;
+import at.fh.ooe.swe4.fx.campina.view.admin.menu.tab.MenuTab;
+import at.fh.ooe.swe4.fx.campina.view.admin.user.part.UserTab;
 import at.fh.ooe.swe4.fx.campina.view.api.SceneFactory;
 import at.fh.ooe.swe4.fx.campina.view.event.api.EventHandlerFactory;
-import at.fh.ooe.swe4.fx.campina.view.login.part.LoginTab;
-import at.fh.ooe.swe4.fx.campina.view.user.part.UserTab;
 
 public class MainSceneModel extends Application implements SceneFactory {
 
@@ -31,6 +32,7 @@ public class MainSceneModel extends Application implements SceneFactory {
 
 	private UserTab				userTab;
 	private LoginTab			loginTab;
+	private MenuTab				menuTab;
 
 	/**
 	 * Enumeration which specifies the menus placed in the menu bar.
@@ -126,6 +128,8 @@ public class MainSceneModel extends Application implements SceneFactory {
 		final Scene scene = new Scene(rootPane);
 		this.userTab = new UserTab(scene);
 		this.loginTab = new LoginTab(scene);
+		this.menuTab = new MenuTab(scene);
+
 		prepareMenuBox(menuBarBox);
 		prepareTabs(tabPane, scene);
 
@@ -138,8 +142,9 @@ public class MainSceneModel extends Application implements SceneFactory {
 	}
 
 	public void initScene() {
+		// this.loginTab.init();
 		this.userTab.init();
-		this.loginTab.init();
+		this.menuTab.init();
 	}
 
 	/**
@@ -182,12 +187,16 @@ public class MainSceneModel extends Application implements SceneFactory {
 
 		final Tab login = loginTab.create();
 		final Tab user = userTab.create();
-		user.setDisable(Boolean.TRUE);
-
-		tabPane.getTabs()
-				.add(login);
+		final Tab menu = menuTab.create();
+		// user.setDisable(Boolean.TRUE);
+		// menu.setDisable(Boolean.TRUE);
+		//
+		// tabPane.getTabs()
+		// .add(login);
 		tabPane.getTabs()
 				.add(user);
+		tabPane.getTabs()
+				.add(menu);
 	}
 
 	@Override

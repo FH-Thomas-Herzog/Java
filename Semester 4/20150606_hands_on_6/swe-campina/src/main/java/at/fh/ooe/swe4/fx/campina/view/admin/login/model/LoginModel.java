@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.view.login.model;
+package at.fh.ooe.swe4.fx.campina.view.admin.login.model;
 
 import java.util.Objects;
 

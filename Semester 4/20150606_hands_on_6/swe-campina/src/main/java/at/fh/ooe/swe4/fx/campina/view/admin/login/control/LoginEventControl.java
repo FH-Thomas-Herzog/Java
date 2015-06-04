@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.fx.campina.view.login.control;
+package at.fh.ooe.swe4.fx.campina.view.admin.login.control;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -10,9 +10,9 @@ import org.apache.commons.lang.StringUtils;
 
 import at.fh.ooe.swe4.fx.campina.jpa.EntityCache;
 import at.fh.ooe.swe4.fx.campina.jpa.User;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.part.LoginTab;
 import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
-import at.fh.ooe.swe4.fx.campina.view.login.model.LoginModel;
-import at.fh.ooe.swe4.fx.campina.view.login.part.LoginTab;
 
 public class LoginEventControl {
 

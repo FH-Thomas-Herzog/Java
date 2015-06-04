@@ -1,5 +1,8 @@
 package at.fh.ooe.swe4.fx.campina.view.constants;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -8,12 +11,16 @@ import java.util.Date;
 import java.util.Objects;
 
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.util.converter.BigDecimalStringConverter;
 
 public enum FormFieldType {
 	INPUT_TEXT(String.class, TextField.class),
-	DATE_PICKER(Calendar.class, DatePicker.class);
+	DATE_PICKER(Calendar.class, DatePicker.class),
+	DECIMAL(BigDecimal.class, TextField.class),
+	SELECT(Object.class, ChoiceBox.class);
 
 	public final Class<?>				valueClass;
 	public final Class<? extends Node>	nodeClass;
@@ -29,6 +36,10 @@ public enum FormFieldType {
 			return new TextField();
 		case DATE_PICKER:
 			return new DatePicker();
+		case DECIMAL:
+			return new TextField();
+		case SELECT:
+			return new ChoiceBox<>();
 		default:
 			throw new IllegalArgumentException("FormFieldType: '" + this.name() + "' is not managed here");
 		}
@@ -37,21 +48,24 @@ public enum FormFieldType {
 	/**
 	 * Gets the node value.
 	 * 
+	 * @param type
+	 *            TODO
 	 * @param node
 	 *            the node to get value from
+	 * 
 	 * @return the node's value
 	 * @throws NullPointerException
 	 *             if the given node is null
 	 * @throws IllegalArgumentException
 	 *             if the node is of an unmanaged type
 	 */
-	public static Object getFormFieldValue(final Node node) {
+	public static Object getFormFieldValue(FormFieldType type, final Node node) {
 		Objects.requireNonNull(node, "Need node to get its value");
 
-		if (node instanceof TextField) {
+		switch (type) {
+		case INPUT_TEXT:
 			return ((TextField) node).getText();
-		}
-		if (node instanceof DatePicker) {
+		case DATE_PICKER:
 			final DatePicker picker = (DatePicker) node;
 			final Calendar cal;
 			LocalDate localDate = picker.getValue();
@@ -63,6 +77,19 @@ public enum FormFieldType {
 				cal = null;
 			}
 			return cal;
+		case DECIMAL:
+			final String value = ((TextField) node).getText();
+			if ((value != null) && (!value.trim()
+											.isEmpty())) {
+				return new BigDecimal(value);
+			}
+			return (BigDecimal) null;
+		case SELECT:
+			final ChoiceBox<?> box = (ChoiceBox<?>) node;
+			return box.getSelectionModel()
+						.getSelectedItem();
+		default:
+			break;
 		}
 		throw new IllegalArgumentException("Nod of type '" + node.getClass()
 																	.getName() + "' unknown");
@@ -75,8 +102,8 @@ public enum FormFieldType {
 	 *            the node to be reset
 	 * @see FormFieldType#setFormValue(Node, Object)
 	 */
-	public static void resetFormValue(final Node node) {
-		setFormValue(node, null);
+	public static void resetFormValue(final FormFieldType type, final Node node) {
+		setFormValue(type, node, null);
 	}
 
 	/**
@@ -91,14 +118,16 @@ public enum FormFieldType {
 	 * @throws IllegalArgumentException
 	 *             if the node is of an unmanaged type
 	 */
-	public static void setFormValue(final Node node, final Object value) {
+	public static void setFormValue(final FormFieldType type, final Node node, final Object value) {
 		Objects.requireNonNull(node, "Need node to get its value");
 
-		if (node instanceof TextField) {
+		switch (type) {
+
+		case INPUT_TEXT:
 			((TextField) node).setText((String) value);
 			return;
-		}
-		if (node instanceof DatePicker) {
+
+		case DATE_PICKER:
 			final LocalDate localDate;
 			if (value != null) {
 				Date date = new Date();
@@ -110,6 +139,26 @@ public enum FormFieldType {
 			}
 			((DatePicker) node).setValue(localDate);
 			return;
+		case DECIMAL:
+			String formatted = null;
+			if (value != null) {
+				final NumberFormat nf = NumberFormat.getCurrencyInstance();
+				nf.setMaximumFractionDigits(2);
+				nf.setMinimumFractionDigits(1);
+				nf.setRoundingMode(RoundingMode.UNNECESSARY);
+				nf.setMinimumIntegerDigits(1);
+				nf.setMaximumFractionDigits(3);
+				formatted = nf.format(((BigDecimal) value).doubleValue());
+				formatted = new BigDecimalStringConverter().toString((BigDecimal) value);
+			}
+			((TextField) node).setText(formatted);
+			return;
+		case SELECT:
+			final ChoiceBox<Object> box = (ChoiceBox<Object>) node;
+			box.getSelectionModel()
+				.select(value);
+			return;
+		default:
 		}
 		throw new IllegalArgumentException("Nod of type '" + node.getClass()
 																	.getName() + "' unknown");
