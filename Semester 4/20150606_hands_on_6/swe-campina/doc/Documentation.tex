@@ -122,25 +122,27 @@
 
 \subsection{\ideaSection}
 Folgend ist die Dokumentation für die Aufgabenstellung Campina as a Service angeführt. \\
+Dieser Prototyp soll alle enthaltenen View Teile in Tab anzeigen, was aber in Zukunft geändert werden könnte. Da es sich nicht zeitlich ausgehen wird, soll auf das css und Design im Allgemeinen verzichtet werden.\\
 Bei dieser Aufgabenstellung soll in Bezug auf die Softwarearchitektur wie folgt vorgegangen werden.\\\\
 \begin{enumerate}
-	\item Das Datenmodell soll über POJOs abgebildet werden, die nicht direkt verwendet werden.
+	\item Das Datenmodell soll über POJOs abgebildet werden, die in den Views nicht direkt verwendet werden sollten es sei den, dass ein Model Overhead wäre.
 	\item Der Zugriff auf die Datenkomponenten einer Entität innerhalb der Views soll über eigene Models abgebildet werden.
-	\item Die einzelnen View Teile sollen über eigenen Klassen abgebildet werden, die die View aufbauen un die View Logic beinhalten.
-	\item Eigenen Kontroller Implementierungen reagieren auf die ActionEvents der Buttons, die Operationen auf den Entitäten anwenden.
+	\item Die einzelnen View Teile sollen über eigene Klassen abgebildet werden, die die Views aufbauen un die View Logik (Buisiness Logic) beinhalten.
+	\item Eigene Kontroller Implementierungen reagieren auf die Action Events der Buttons, die Operationen auf den Entitäten anwenden. 
 	\item In der nächsten Stufe sollen die Datenzugriffe über DAOs abgebildet werden, die in den Kontroller Implementierungen verwendet werden.
+	\item Die Referenzen auf Nodes sollen, wenn möglich, in einem Kontext zusammengefasst werden, so wie alle Ressourcen, die über Instanz Grenzen hinaus verwenden werden.
 \end{enumerate}
 Folgende Abbildung zeigt den prinzipiellen Aufbau aller Formulare.\\
 Da die Entitäten nur wenige Skalare Datenkomponenten enthalten, abgesehen von den 1-n, ... Beziehungen, soll hier eine einfache Form angewendet werden.\\
-Diese Views können in Zukunft auch noch abgeändert und die List Daten anders dargestellt werden. 
+Diese Views können in Zukunft auch noch abgeändert und die List Daten anders dargestellt werden. (Siehe Order Tabelle) 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{\imagesDir/mock_form.PNG}
 	\caption
 	{Formularaufbau}
 \end{figure}
-Um den folgenden Aufwand der Formulare zu verringern und die Konsistenz der Fromulare zu erhalten, soll eine Komponente entworfen werden, die in der Lage ist deklarativeKlassen oder Methoden Annotationen bzw. deren enthaltenen Informationen zu verarbeiten und ein Formular zu generieren.\\\\
-Um zu Vermeiden das wahrlos Referenzen durch die Klassen gezogen werden, soll eine Kontext implementiert werden, der in der Lage ist die Nötigen Informationen und Referenzen zu verwalten, damit sie in den Implementierungen verwendet werden können.\\\\
+Um den folgenden Aufwand der Formulare zu verringern und die Konsistenz der Formulare zu gewährleisten, soll eine Komponente entworfen werden, die in der Lage ist deklarative Klassen oder Methoden Annotationen bzw. deren enthaltenen Informationen zu verarbeiten und ein Formular zu generieren sowie es zu verwalten.\\\\
+Um zu Vermeiden das Referenzen durch die Klassen gezogen werden, soll eine Kontext implementiert werden, der in der Lage ist die Nötigen Informationen und Referenzen zu verwalten, damit sie in den Implementierungen verwendet werden können.\\\\
 Die Implementierungen werden in Javadoc und in der folgenden Dokumentation beschrieben.
 
 \newpage
@@ -148,14 +150,14 @@ Die Implementierungen werden in Javadoc und in der folgenden Dokumentation besch
 Folgend ist der Source der View API Implementierungen der Übung angeführt.\\
 
 \subsubsection{AbstractViewModel.java}
-Folgende abstrakte Klasse stellt die root Klasse für alle View Models dar, die eine Entität verwalten.
+Folgende abstrakte Klasse stellt die Basisklasse für alle View Models dar, die eine Entität verwalten.
 \begin{code}
 	\caption{AbstractViewModel.java}
 	\javaSourceFile{\viewApiDir/AbstractViewModel.java}
 \end{code}
 
 \subsubsection{IdHolder.java}
-Folgendes Interface markiert eine Klasse oder ein anderes Interface als IdHolder.
+Folgendes Interface markiert eine Klasse oder ein anderes Interface als eine Instanz, die eine Id zur Verfügung stellt.
 \begin{code}
 	\caption{IdHolder.java}
 	\javaSourceFile{\viewApiDir/IdHolder.java}
@@ -171,7 +173,7 @@ Folgendes Interface spezifiziert einen View Handler, der einen Teilbaum einer Sc
 \newpage
 
 \subsubsection{EventHandlerFactory.java}
-Folgendes Interface spezifiziert eine Event Hadnler Factory die Events registriert und die registrierten Events in Form einer Map liefert.
+Folgendes Interface spezifiziert eine Event Handler Factory die Events registriert und die registrierten Events in Form einer \inlineJava{Map<EventType, List<Event>>} liefert.
 \begin{code}
 	\caption{EventHandlerFactory.java}
 	\javaSourceFile{\viewApiDir/EventHandlerFactory.java}
@@ -181,11 +183,11 @@ Folgendes Interface spezifiziert eine Event Hadnler Factory die Events registrie
 
 \newpage
 \subsection{\sourceSection (Implementation View Annotation)}
-Folgend ist der Source der Annotation der Übung angeführt.\\
+Folgend ist der Source der Annotationen der Übung angeführt.\\
 
 \subsubsection{FormField.java}
-Folgende Annotation markiert eine Methode als ein Form Field.\\
-Diese Annotation wird dazu verwendet und die Form zu erstellen und zu verwalten.
+Folgende Annotation markiert eine Methode als ein Formularfeld.\\
+Diese Annotation wird dazu verwendet um die Form zu erstellen und zu verwalten.
 \begin{code}
 	\caption{FormField.java}
 	\javaSourceFile{\viewAnnotationDir/FormField.java}
@@ -193,7 +195,7 @@ Diese Annotation wird dazu verwendet und die Form zu erstellen und zu verwalten.
 \newpage
 
 \subsubsection{SelectFormField.java}
-Folgende Annotation markiert eine Methode als einen Data Provider für ein Formularfeld vom Type Select.
+Folgende Annotation markiert eine Methode als einen Data Provider für ein Formularfeld vom Typ Select.
 \begin{code}
 	\caption{SelectFormField.java}
 	\javaSourceFile{\viewAnnotationDir/SelectFormField.java}
@@ -201,7 +203,7 @@ Folgende Annotation markiert eine Methode als einen Data Provider für ein Formu
 \newpage
 
 \subsubsection{EventHandlerFactories.java}
-Folgende Annotation kann in der Formfield Annotation verwendet werden um EventHandlerFactories für diese Formularfeld zu definieren.
+Folgende Annotation kann in der Annotation \inlineJava{@FormField(...)} verwendet werden um Factories für EventHandler für dieses Formularfeld zu definieren.
 \begin{code}
 	\caption{EventHandlerFactories.java}
 	\javaSourceFile{\viewAnnotationDir/EventHandlerFactories.java}
@@ -211,17 +213,18 @@ Folgende Annotation kann in der Formfield Annotation verwendet werden um EventHa
 \newpage
 \subsection{\sourceSection (Implementation View Component Buidler)}
 Folgend ist der Source der Komponenten Builder von JavaFX Komponenten der Übung angeführt.\\
-Dieser Ansatz ist in Zukunft in Frage zu stellen, ob sich lohnt das erstellen der Komponenten auszulagern.\\
+Dieser Ansatz ist in Zukunft in Frage zu stellen, da man sich fragen muss ob das Erstellen der Komponenten so ausgelagert Sinn macht.\\
 
 \subsubsection{AbstractFxComponentBuilder.java}
-Folgende abstrakte Klasse stellt den root aller Builder Implementierungen dar und zwing die abgeleiteten Klassen für einen konkreten Typ der Builder zu sein.
+Folgende abstrakte Klasse stellt die Basisklasse aller Builder Implementierungen dar und zwing die abgeleiteten Klassen für einen konkreten Typ der Builder zu sein.
 \begin{code}
 	\caption{AbstractFxComponentBuilder.java}
 	\javaSourceFile{\viewBuilderDir/api/AbstractFxComponentBuilder.java}
 \end{code}
 
 \subsubsection{DuplicateKeyException.java}
-Folgende Klasse stellt die Exceptiond ar um anzuzeigen ob sich doppelte Ids in der Scene befinden. Wird aber nur im Buidler verwendet, da es mir schwer viel alle Ids in allen Handlern zu überprüfen um sicherzustellen dass keine Duplikate bezüglich den Ids auftreten.
+Folgende Klasse stellt die Exception dar um anzuzeigen ob sich doppelte Ids in der Scene befinden.\\
+Wird aber nur in den Buidler Implementierungen verwendet, da es mir schwer fiel alle Ids in allen Handlern zu überprüfen um sicherzustellen dass keine Duplikate bezüglich den Ids auftreten.
 \begin{code}
 	\caption{DuplicateKeyException.java}
 	\javaSourceFile{\viewBuilderDir/exception/DuplicateKeyException.java}
@@ -229,7 +232,7 @@ Folgende Klasse stellt die Exceptiond ar um anzuzeigen ob sich doppelte Ids in d
 
 \newpage
 \subsubsection{MenuBarBuilder.java}
-Folgende Klasse stellt den Builder für MenuBar dar.
+Folgende Klasse stellt den Builder für \inlineJava{MenuBar} dar.
 \begin{code}
 	\caption{MenuBarBuidler.java}
 	\javaSourceFile{\viewBuilderDir/impl/MenuBarBuilder.java}
@@ -238,7 +241,7 @@ Folgende Klasse stellt den Builder für MenuBar dar.
 
 \newpage
 \subsubsection{MenuBuilder.java}
-Folgende Klasse stellt den Builder für Menu dar.
+Folgende Klasse stellt den Builder für \inlineJava{Menu} dar.
 \begin{code}
 	\caption{MenuBuidler.java}
 	\javaSourceFile{\viewBuilderDir/impl/MenuBuilder.java}
@@ -246,7 +249,7 @@ Folgende Klasse stellt den Builder für Menu dar.
 \newpage
 
 \subsubsection{MenuItemBuilder.java}
-Folgende Klasse stellt den Builder für MenuItem dar.
+Folgende Klasse stellt den Builder für \inlineJava{MenuItem} dar.
 \begin{code}
 	\caption{MenuItemBuidler.java}
 	\javaSourceFile{\viewBuilderDir/impl/MenuItemBuilder.java}
@@ -280,7 +283,7 @@ Folgend ist der Source der Daten Modelle angeführt.\\
 Dieses Model kann dann in weiterer Folge zu JPA Entitäten umgewandelt werden.
 
 \subsubsection{AbstractEntity.java}
-Folgende abstrakte Klasse stellt die root Entität für alle Entitäten dar und implementiert bereits \inlineJava{_getId(); setId();}, wobei \inlineJava{_getId()} dafür getdacht ist um die private Datenkomponente id zu erhalten sondern um die Subklassen dazu zu zwingen, dass sie \inlineJava{getId()} überschreiben und ein \inlineJava{@Id} Mapping definieren. (JPA relevant)
+Folgende abstrakte Klasse stellt die Basis Entität für alle Entitäten dar und implementiert bereits \inlineJava{_getId(); setId();}, wobei \inlineJava{_getId()} dafür gedacht ist um die private Datenkomponente id zu erhalten sondern um die Subklassen dazu zu zwingen, dass sie \inlineJava{getId()} überschreiben und ein \inlineJava{@Id} Mapping definieren. (JPA relevant \inlineJava{@Id, @EmbeddedId})
 
 \begin{code}
 	\caption{AbstractEntity.java}
@@ -289,8 +292,8 @@ Folgende abstrakte Klasse stellt die root Entität für alle Entitäten dar und 
 \newpage
 
 \subsubsection{Day.java}
-Folgende Enumeration spezifiziert die zuer Verfügung stehenden Tage und auch einen Label, der in einen Produktivsystem über Keys in Form von String, Enumeration abgebildet werden sollte um Internationalisierung zu realisieren.\\
-Dieser Datentyp kann in JPA mit Hibernate nativ gemapped werden ansonsten müsste man die Enumeration in einen String \inlineJava{enum.name()} serialisieren und wieder zu einer Emuneration de-serialisieren,w as sich aber als nicht schwierig herausstellen sollte.
+Folgende Enumeration spezifiziert die zur Verfügung stehenden Tage und auch einen Label, der in einen Produktivsystem über Keys in Form von String, Enumeration abgebildet werden sollte um Internationalisierung zu realisieren.\\
+Dieser Datentyp kann in JPA mit Hibernate nativ gemapped werden ansonsten müsste man die Enumeration in einen String \inlineJava{enum.name()} serialisieren und wieder zu einer Enumeration de-serialisieren, was sich aber als nicht schwierig herausstellen sollte.
 \begin{code}
 	\caption{Day.java}
 	\javaSourceFile{\jpaDir/constants/Day.java}
@@ -323,7 +326,7 @@ Ein Menu (Fischtag) kann mehrere Gerichte haben (Forelle, Zander, ...)
 \newpage
 
 \subsubsection{Order.java}
-Folgende Klasse stellt den Order Eintrag auf der Datenbank dar.\\
+Folgende Klasse stellt die Bestellung auf der Datenbank dar.\\
 Ein Menu (Fischtag) kann mehrere Gerichte haben (Forelle, Zander, ...)
 \begin{code}
 	\caption{Order.java}
@@ -341,7 +344,7 @@ Ermöglicht die Nachverfolgbarkeit der Logins der Benutzer.
 \newpage
 
 \subsubsection{EntityCache.java}
-Folgende Klasse dient zu Simulation einer Datenbank damit Daten innerhalb der Laufzeit persistent gehalten werden.
+Folgende Klasse dient zu Simulation einer Datenbank damit Daten innerhalb der Laufzeit persistent gehalten werden können.
 
 \begin{code}
 	\caption{EntityCache.java}
@@ -362,7 +365,7 @@ Folgend ist das Login Model angeführt welches für das Login Formular verwendet
 \newpage
 
 \subsubsection{LoginEventControl.java}
-Folgend ist die Klasse angeführt, welche die Actions behandelt, wie Speichern, Löschen, usw.
+Folgend ist die Klasse angeführt, welche die Aktionen behandelt, wie Speichern, Löschen, usw.
 \begin{code}
 	\caption{LoginEventControl.java}
 	\javaSourceFile{\viewLoginDir/control/LoginEventControl.java}
@@ -370,7 +373,7 @@ Folgend ist die Klasse angeführt, welche die Actions behandelt, wie Speichern, 
 \newpage
 
 \subsubsection{LoginTabViewHandler.java}
-Folgend ist der ViewHanddler der LoginTab angeführt. Sie stellt einen View Teil der Scene dar und implementiert \inlineJava{ViewHandler<T>} Interface.
+Folgend ist der View Handler der LoginTab angeführt. Sie stellt einen View Teil der Scene dar und implementiert \inlineJava{ViewHandler<T>} Interface.
 \begin{code}
 	\caption{LoginTabViewHandler.java}
 	\javaSourceFile{\viewLoginDir/part/LoginTabViewHandler.java}
@@ -391,7 +394,7 @@ Folgend ist das User Model angeführt welches für das User Formular verwendet w
 \newpage
 
 \subsubsection{UserEventControl.java}
-Folgend ist die Klasse angeführt, welche die Actions behandelt, wie Speichern, Löschen, usw.
+Folgend ist die Klasse angeführt, welche die Aktionen behandelt, wie Speichern, Löschen, usw.
 \begin{code}
 	\caption{UserEventControl.java}
 	\javaSourceFile{\viewUserDir/control/UserEventControl.java}
@@ -466,7 +469,7 @@ Folgende Klasse representiert das View Model für Order Entitäten.
 \newpage
 
 \subsubsection{OrderEventHandler.java}
-Folgend ist die Klasse angeführt, welche die Actions behandelt, wie Speichern, Löschen, usw.
+Folgend ist die Klasse angeführt, welche die Aktionen behandelt, wie Speichern, Löschen, usw.
 
 \begin{code}
 	\caption{OrderEventHandler.java}
@@ -479,7 +482,7 @@ Folgend ist die Klasse angeführt, welche die Actions behandelt, wie Speichern, 
 Folgend ist der Source der Main Scene angeführt.
 
 \subsubsection{MainSceneViewHandler.java}
-Diese Klasse baut sich die Scene auf initialisiert sie. In Zukunft könnte sie auch das wechseln zwischen View Teilen verwalten (Tab Visibility, usw.).\\
+Diese Klasse baut sich die Scene auf und initialisiert sie. In Zukunft könnte diese Klasse auch das Wechseln zwischen View Teilen verwalten (Tab Visibility, usw.).\\
 Dies könnte über Menu-Einträge erfolgen, die hier erstellt und verwaltet werden.
 
 \begin{code}
@@ -489,7 +492,7 @@ Dies könnte über Menu-Einträge erfolgen, die hier erstellt und verwaltet werd
 \newpage
 
 \subsubsection{MainSceneEventHandlerFactory.java}
-Folgend ist der Source der EVentHandlerFactory für die Main Scene angeführt, diedie Events für die Window Menus erstellt.
+Folgend ist der Source der EVentHandlerFactory für die Main Scene angeführt, die die Events für die Window Menus erstellt.
 \begin{code}
 	\caption{MainSceneEventHandlerFactory.java}
 	\javaSourceFile{\viewDir/scene/MainSceneEventHandlerFactory.java}
