@@ -3,8 +3,15 @@ package at.fh.ooe.swe4.fx.campina.jpa;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import at.fh.ooe.swe4.fx.campina.jpa.conctants.Day;
+import at.fh.ooe.swe4.fx.campina.jpa.api.AbstractEntity;
+import at.fh.ooe.swe4.fx.campina.jpa.constants.Day;
 
+/**
+ * The menu.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
 public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 
 	private static final long		serialVersionUID	= 7569033478037865818L;
@@ -13,18 +20,30 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 	private String					label;
 	private SortedSet<MenuEntry>	entires				= new TreeSet<>();
 
-	public Menu(Integer id, Day day, String label) {
-		super(id);
-		this.day = day;
-		this.label = label;
-	}
-
+	/**
+	 * 
+	 */
 	public Menu() {
 		super();
 	}
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public Menu(Integer id) {
 		super(id);
+	}
+
+	/**
+	 * @param id
+	 * @param day
+	 * @param label
+	 */
+	public Menu(Integer id, Day day, String label) {
+		super(id);
+		this.day = day;
+		this.label = label;
 	}
 
 	@Override

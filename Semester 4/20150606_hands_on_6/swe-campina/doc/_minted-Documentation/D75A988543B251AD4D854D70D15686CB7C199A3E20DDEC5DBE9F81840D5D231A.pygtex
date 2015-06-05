@@ -1,0 +1,254 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.user.control}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.collections.ObservableList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.event.ActionEvent}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.Node}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.Button}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.ChoiceBox}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.text.Text}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.text.TextFlow}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.commons.lang.StringUtils}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.EntityCache}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.User}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.user.model.UserModel}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.user.part.UserTabviewHandler}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.api.FormContext}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The control bean for the user tab.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 3, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{UserEventControl} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates test data since we have no back\PYGdefaultZhy{}end yet}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UserEventControl}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Button controls}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Handles the new action of the form.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param event}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link ActionEvent\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{handleNewAction}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{ActionEvent} \PYGdefault{n}{event}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{o}{((}\PYGdefault{n}{Node}\PYGdefault{o}{)} \PYGdefault{n}{event}\PYGdefault{o}{.}\PYGdefault{n+na}{getSource}\PYGdefault{o}{()).}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// clear former set message}
+		\PYGdefault{n}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// reset form}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{resetForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// create new user model with new user entity}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// sets a new user entity and inits model}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{reset}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// set this model as selected (\PYGdefaultZsq{}Please choose\PYGdefaultZsq{})}
+		\PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{USER\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{)).}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+																		\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{());}
+
+		\PYGdefault{c+c1}{// hide buttons}
+		\PYGdefault{n}{setButtonVisibility}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Handles the save action of the form.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param event}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link ActionEvent\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{handleSaveAction}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{ActionEvent} \PYGdefault{n}{event}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{o}{((}\PYGdefault{n}{Node}\PYGdefault{o}{)} \PYGdefault{n}{event}\PYGdefault{o}{.}\PYGdefault{n+na}{getSource}\PYGdefault{o}{()).}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// clear former set messages}
+		\PYGdefault{n}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// validate form}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{validateForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// is valid}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{valid}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// fill model with form data}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillModel}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+			\PYGdefault{c+c1}{// TODO: Persist entity here}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{();}
+
+			\PYGdefault{c+c1}{// if not already managed increase id by size + 1}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{EntityCache}\PYGdefault{o}{.}\PYGdefault{n+na}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{contains}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{EntityCache}\PYGdefault{o}{.}\PYGdefault{n+na}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// init model with new saved user}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{prepare}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// save model in backed list for testing}
+			\PYGdefault{n}{EntityCache}\PYGdefault{o}{.}\PYGdefault{n+na}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// reload data from db (now backing list)}
+			\PYGdefault{n}{handleUserLoad}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// set this model selected}
+			\PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{USER\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{)).}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+																			\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// enable buttons}
+			\PYGdefault{n}{setButtonVisibility}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Formular ungültig !!! Bitte Eingaben prüfen\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{event}\PYGdefault{o}{.}\PYGdefault{n+na}{consume}\PYGdefault{o}{();}
+
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Handles the delete action of the form.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param event}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link ActionEvent\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{handleDeleteAction}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{ActionEvent} \PYGdefault{n}{event}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{o}{((}\PYGdefault{n}{Node}\PYGdefault{o}{)} \PYGdefault{n}{event}\PYGdefault{o}{.}\PYGdefault{n+na}{getSource}\PYGdefault{o}{()).}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// clear former set message}
+		\PYGdefault{n}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// reset the form}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{resetForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{userSelection} \PYGdefault{o}{=} \PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{USER\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{));}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{UserModel} \PYGdefault{n}{model} \PYGdefault{o}{=} \PYGdefault{n}{userSelection}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+												\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectedItem}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// TODO: Delete entity from db here}
+
+		\PYGdefault{c+c1}{// existing user gets deleted}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{EntityCache}\PYGdefault{o}{.}\PYGdefault{n+na}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{());}
+			\PYGdefault{n}{handleUserLoad}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+c1}{// reset model}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// set new user as selected}
+		\PYGdefault{n}{userSelection}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// disable buttons}
+		\PYGdefault{n}{setButtonVisibility}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Handles the block action of the form.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param event}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link ActionEvent\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{handleBlockAction}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{ActionEvent} \PYGdefault{n}{event}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{o}{((}\PYGdefault{n}{Node}\PYGdefault{o}{)} \PYGdefault{n}{event}\PYGdefault{o}{.}\PYGdefault{n+na}{getSource}\PYGdefault{o}{()).}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{();}
+		\PYGdefault{c+c1}{// clear old set message}
+		\PYGdefault{n}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// selected user model}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{userSelection} \PYGdefault{o}{=} \PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{USER\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{));}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{UserModel} \PYGdefault{n}{model} \PYGdefault{o}{=} \PYGdefault{n}{userSelection}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+												\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectedItem}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Button} \PYGdefault{n}{blockButton} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{Button}\PYGdefault{o}{)} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{BLOCK\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// invert user blocked state}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setBlockedFlag}\PYGdefault{o}{(!}\PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{()}
+									\PYGdefault{o}{.}\PYGdefault{n+na}{getBlockedFlag}\PYGdefault{o}{());}
+
+		\PYGdefault{c+c1}{// TODO: Update blocked flag on db}
+
+		\PYGdefault{c+c1}{// got blocked}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{getBlockedFlag}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{blockButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Freigeben\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+c1}{// got freed}
+		\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{blockButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Blockieren\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Selection controls}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{handleUserSelection}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{UserModel} \PYGdefault{n}{user}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// clear former set message}
+		\PYGdefault{n}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{k+kc}{null}\PYGdefault{o}{,} \PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// Selection present}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{());}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{resetForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{n}{setButtonVisibility}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{c+c1}{// No selection present}
+		\PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{resetForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{();}
+			\PYGdefault{n}{setButtonVisibility}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Load controls}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Handles the load of the user for the selection}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param userList}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link ObservableList\PYGdefaultZcb{} to add users to}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{handleUserLoad}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ObservableList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{userList} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{ObservableList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getObserable}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{USER\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{);}
+		\PYGdefault{n}{userList}\PYGdefault{o}{.}\PYGdefault{n+na}{clear}\PYGdefault{o}{();}
+		\PYGdefault{n}{userList}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{());}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{:} \PYGdefault{n}{EntityCache}\PYGdefault{o}{.}\PYGdefault{n+na}{userCache}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{userList}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{UserModel}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{));}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Sets the button visibility of these buttons which required persistent}
+\PYGdefault{c+cm}{	 * user.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param ctx}
+\PYGdefault{c+cm}{	 *            the form context}
+\PYGdefault{c+cm}{	 * @param visible}
+\PYGdefault{c+cm}{	 *            the new visible flag}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setButtonVisibility}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{boolean} \PYGdefault{n}{visible}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{visible}\PYGdefault{o}{);}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{BLOCK\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{visible}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Populates a message to the message box. \PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * If message is null the actual set message will be cleared}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param message}
+\PYGdefault{c+cm}{	 *            the message to populate}
+\PYGdefault{c+cm}{	 * @param ctx}
+\PYGdefault{c+cm}{	 *            the form context}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{populateFormMessage}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{message}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{UserModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{TextFlow} \PYGdefault{n}{flow} \PYGdefault{o}{=} \PYGdefault{o}{((}\PYGdefault{n}{TextFlow}\PYGdefault{o}{)} \PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{FORM\PYGdefaultZus{}MESSAGE}\PYGdefault{o}{));}
+		\PYGdefault{n}{flow}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{clear}\PYGdefault{o}{();}
+		\PYGdefault{n}{flow}\PYGdefault{o}{.}\PYGdefault{n+na}{setPrefHeight}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{flow}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{Text}\PYGdefault{o}{(}\PYGdefault{n}{message}\PYGdefault{o}{));}
+			\PYGdefault{n}{flow}\PYGdefault{o}{.}\PYGdefault{n+na}{setPrefHeight}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{30}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

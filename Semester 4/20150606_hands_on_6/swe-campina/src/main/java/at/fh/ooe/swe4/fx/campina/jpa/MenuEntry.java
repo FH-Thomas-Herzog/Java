@@ -2,6 +2,14 @@ package at.fh.ooe.swe4.fx.campina.jpa;
 
 import java.math.BigDecimal;
 
+import at.fh.ooe.swe4.fx.campina.jpa.api.AbstractEntity;
+
+/**
+ * The menu entry
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
 public class MenuEntry extends AbstractEntity<Integer> implements Comparable<MenuEntry> {
 
 	private static final long	serialVersionUID	= -1771596592654083392L;
@@ -11,20 +19,33 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 	private BigDecimal			price;
 	private Menu				menu;
 
+	/**
+	 * 
+	 */
+	public MenuEntry() {
+		super();
+	}
+
+	/**
+	 * @param id
+	 */
+	public MenuEntry(Integer id) {
+		super(id);
+	}
+
+	/**
+	 * @param id
+	 * @param ordinal
+	 * @param label
+	 * @param price
+	 * @param menu
+	 */
 	public MenuEntry(Integer id, Integer ordinal, String label, BigDecimal price, Menu menu) {
 		this(id);
 		this.ordinal = ordinal;
 		this.label = label;
 		this.price = price;
 		this.menu = menu;
-	}
-
-	public MenuEntry() {
-		super();
-	}
-
-	public MenuEntry(Integer id) {
-		super(id);
 	}
 
 	@Override

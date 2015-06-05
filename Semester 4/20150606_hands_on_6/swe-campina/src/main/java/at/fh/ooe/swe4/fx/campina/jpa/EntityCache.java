@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import at.fh.ooe.swe4.fx.campina.jpa.conctants.Day;
+import at.fh.ooe.swe4.fx.campina.jpa.constants.Day;
 import at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel;
 
 public class EntityCache {

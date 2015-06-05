@@ -1,0 +1,542 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.part}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Arrays}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.beans.value.ChangeListener}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.beans.value.ObservableValue}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.collections.FXCollections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.collections.ObservableList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.Scene}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.Button}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.ChoiceBox}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.RadioButton}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.Tab}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.Toggle}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.ToggleGroup}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.layout.GridPane}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.text.TextFlow}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.util.StringConverter}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.Menu}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.control.MenuEntryEventControl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.control.MenuEventControl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.model.MenuEntryModel}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.model.MenuEntryModel.MenuEntryModelConverter}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.model.MenuModel}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.model.MenuModel.MenuModelConverter}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.api.FormContext}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.api.ViewHandler}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.form.FormHandler}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The view handler for the menu and menu entry view.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{MenuTabViewHandler} \PYGdefault{k+kd}{implements} \PYGdefault{n}{ViewHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Tab}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The form handler for the menu entry form}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{FormHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{menuEntryFormHandler}\PYGdefault{o}{;}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The menu entry controller}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuEntryEventControl}			\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{;}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The form context for the menu entry form}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}}			\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The form handler for the menu form}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{FormHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}}		\PYGdefault{n}{menuFormHandler}\PYGdefault{o}{;}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The menu controller}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuEventControl}				\PYGdefault{n}{menuControl}\PYGdefault{o}{;}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The form context for the menu entry form}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}}				\PYGdefault{n}{menuCtx}\PYGdefault{o}{;}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Ids of nodes and form backed model class}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}FORM\PYGdefaultZus{}MESSAGE}		\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}entry\PYGdefaultZhy{}form\PYGdefaultZhy{}message\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}FORM\PYGdefaultZus{}MESSAGE}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}form\PYGdefaultZhy{}message\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{EDIT\PYGdefaultZus{}OPTION\PYGdefaultZus{}ID}				\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}edit\PYGdefaultZhy{}option\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}menu\PYGdefaultZhy{}selection\PYGdefaultZhy{}data\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}menu\PYGdefaultZhy{}entry\PYGdefaultZhy{}selection\PYGdefaultZhy{}data\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}SAVE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}menu\PYGdefaultZhy{}form\PYGdefaultZhy{}save\PYGdefaultZhy{}button\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}		\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}menu\PYGdefaultZhy{}form\PYGdefaultZhy{}delete\PYGdefaultZhy{}button\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SAVE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}menu\PYGdefaultZhy{}entry\PYGdefaultZhy{}form\PYGdefaultZhy{}save\PYGdefaultZhy{}button\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}					\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZhy{}menu\PYGdefaultZhy{}entry\PYGdefaultZhy{}form\PYGdefaultZhy{}delete\PYGdefaultZhy{}button\PYGdefaultZdq{}}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Enumeration which specifies the edit type. Provides an label too.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{EditMode} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{MENU}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Menus\PYGdefaultZdq{}}\PYGdefault{o}{),}
+		\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Menu Einträge\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}	\PYGdefault{n}{label}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param label}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{EditMode}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{label} \PYGdefault{o}{=} \PYGdefault{n}{label}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The converter for the \PYGdefaultZob{}@link EditMode\PYGdefaultZcb{} type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{EditModeConverter} \PYGdefault{k+kd}{extends} \PYGdefault{n}{StringConverter}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{EditMode}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{toString}\PYGdefault{o}{(}\PYGdefault{n}{EditMode} \PYGdefault{n}{object}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{object}\PYGdefault{o}{.}\PYGdefault{n+na}{label}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{EditMode} \PYGdefault{n+nf}{fromString}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{string}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{UnsupportedOperationException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}From string not supportedby this converter\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The change listener for the \PYGdefaultZob{}@link Toggle\PYGdefaultZcb{} type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{ChangeModeListener} \PYGdefault{k+kd}{implements} \PYGdefault{n}{ChangeListener}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Toggle}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane}				\PYGdefault{n}{parent}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane}				\PYGdefault{n}{menuGroup}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane}				\PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuEventControl}		\PYGdefault{n}{menuControl}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuEntryEventControl}	\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param parent}
+\PYGdefault{c+cm}{		 * @param menuGroup}
+\PYGdefault{c+cm}{		 * @param menuEntryGroup}
+\PYGdefault{c+cm}{		 * @param menuControl}
+\PYGdefault{c+cm}{		 * @param menuEntryControl}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{ChangeModeListener}\PYGdefault{o}{(}\PYGdefault{n}{GridPane} \PYGdefault{n}{parent}\PYGdefault{o}{,} \PYGdefault{n}{GridPane} \PYGdefault{n}{menuGroup}\PYGdefault{o}{,} \PYGdefault{n}{GridPane} \PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{,} \PYGdefault{n}{MenuEventControl} \PYGdefault{n}{menuControl}\PYGdefault{o}{,}
+				\PYGdefault{n}{MenuEntryEventControl} \PYGdefault{n}{menuEntryControl}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{parent}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{menuGroup}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{menuControl}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{parent} \PYGdefault{o}{=} \PYGdefault{n}{parent}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuGroup} \PYGdefault{o}{=} \PYGdefault{n}{menuGroup}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuEntryGroup} \PYGdefault{o}{=} \PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuControl} \PYGdefault{o}{=} \PYGdefault{n}{menuControl}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuEntryControl} \PYGdefault{o}{=} \PYGdefault{n}{menuEntryControl}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{changed}\PYGdefault{o}{(}\PYGdefault{n}{ObservableValue}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Toggle}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{observable}\PYGdefault{o}{,} \PYGdefault{n}{Toggle} \PYGdefault{n}{oldValue}\PYGdefault{o}{,} \PYGdefault{n}{Toggle} \PYGdefault{n}{newValue}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{newValue} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{((}\PYGdefault{n}{oldValue} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{oldValue}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{newValue}\PYGdefault{o}{))))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{n}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{);}
+			\PYGdefault{n}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{(}\PYGdefault{n}{menuGroup}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{switch} \PYGdefault{o}{((}\PYGdefault{n}{EditMode}\PYGdefault{o}{)} \PYGdefault{n}{newValue}\PYGdefault{o}{.}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{case} \PYGdefault{n}{MENU}\PYGdefault{o}{:}
+				\PYGdefault{n}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuGroup}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{menuCtx} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{menuGroup}\PYGdefault{o}{.}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{();}
+				\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{reset}\PYGdefault{o}{();}
+				\PYGdefault{n}{menuControl}\PYGdefault{o}{.}\PYGdefault{n+na}{handleMenuLoad}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{);}
+				\PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{)).}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+																			\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{);}
+				\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+				\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillForm}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{);}
+				\PYGdefault{k}{break}\PYGdefault{o}{;}
+			\PYGdefault{k}{case} \PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY}\PYGdefault{o}{:}
+				\PYGdefault{n}{parent}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{menuEntryCtx} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{menuEntryGroup}\PYGdefault{o}{.}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{();}
+				\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{reset}\PYGdefault{o}{();}
+				\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{.}\PYGdefault{n+na}{handleMenuEntryLoad}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{);}
+				\PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{)).}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+																							\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{);}
+				\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+				\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{.}\PYGdefault{n+na}{handleMenuLoad}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{);}
+				\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillForm}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{);}
+				\PYGdefault{k}{break}\PYGdefault{o}{;}
+			\PYGdefault{k}{default}\PYGdefault{o}{:}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}EditMode\PYGdefaultZsh{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{o}{((}\PYGdefault{n}{EditMode}\PYGdefault{o}{)} \PYGdefault{n}{newValue}\PYGdefault{o}{.}\PYGdefault{n+na}{getUserData}\PYGdefault{o}{()).}\PYGdefault{n+na}{name}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} node suppported\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The change listener for the \PYGdefaultZob{}@link MenuModel\PYGdefaultZcb{} type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{MenuChangeListener} \PYGdefault{k+kd}{implements} \PYGdefault{n}{ChangeListener}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{ctx}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuEventControl}			\PYGdefault{n}{control}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param ctx}
+\PYGdefault{c+cm}{		 * @param control}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{MenuChangeListener}\PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{MenuEventControl} \PYGdefault{n}{control}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{control}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{ctx} \PYGdefault{o}{=} \PYGdefault{n}{ctx}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{control} \PYGdefault{o}{=} \PYGdefault{n}{control}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{changed}\PYGdefault{o}{(}\PYGdefault{n}{ObservableValue}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{observable}\PYGdefault{o}{,} \PYGdefault{n}{MenuModel} \PYGdefault{n}{oldValue}\PYGdefault{o}{,} \PYGdefault{n}{MenuModel} \PYGdefault{n}{newValue}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{newValue} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{((}\PYGdefault{n}{oldValue} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{oldValue}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{newValue}\PYGdefault{o}{))))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model} \PYGdefault{o}{=} \PYGdefault{n}{newValue}\PYGdefault{o}{;}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{prepare}\PYGdefault{o}{(}\PYGdefault{n}{newValue}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{());}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * The change listener for the \PYGdefaultZob{}@link MenuEntryModel\PYGdefaultZcb{} type}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{MenuEntryChangeListener} \PYGdefault{k+kd}{implements} \PYGdefault{n}{ChangeListener}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{ctx}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuEntryEventControl}			\PYGdefault{n}{control}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param ctx}
+\PYGdefault{c+cm}{		 * @param control}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{MenuEntryChangeListener}\PYGdefault{o}{(}\PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{MenuEntryEventControl} \PYGdefault{n}{control}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{control}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{ctx} \PYGdefault{o}{=} \PYGdefault{n}{ctx}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{control} \PYGdefault{o}{=} \PYGdefault{n}{control}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{changed}\PYGdefault{o}{(}\PYGdefault{n}{ObservableValue}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{observable}\PYGdefault{o}{,} \PYGdefault{n}{MenuEntryModel} \PYGdefault{n}{oldValue}\PYGdefault{o}{,} \PYGdefault{n}{MenuEntryModel} \PYGdefault{n}{newValue}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{newValue} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{((}\PYGdefault{n}{oldValue} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{oldValue}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{newValue}\PYGdefault{o}{))))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model} \PYGdefault{o}{=} \PYGdefault{n}{newValue}\PYGdefault{o}{;}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{prepare}\PYGdefault{o}{(}\PYGdefault{n}{newValue}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntity}\PYGdefault{o}{());}
+			\PYGdefault{n}{control}\PYGdefault{o}{.}\PYGdefault{n+na}{handleMenuLoad}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillForm}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param scene}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{MenuTabViewHandler}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Scene} \PYGdefault{n}{scene}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{scene}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuEntryControl} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuEntryEventControl}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuEntryFormHandler} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{FormHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuEntryFormHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{init}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuEntryCtx} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}entry\PYGdefaultZhy{}form\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{menuEntryFormHandler}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{(),} \PYGdefault{n}{scene}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuControl} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuEventControl}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuFormHandler} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{FormHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuFormHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{init}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuCtx} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}form\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{menuFormHandler}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{MenuModel}\PYGdefault{o}{(),} \PYGdefault{n}{scene}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getId}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Tab} \PYGdefault{n+nf}{createNode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// edit mode toggle}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ToggleGroup} \PYGdefault{n}{group} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ToggleGroup}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{RadioButton}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{buttons} \PYGdefault{o}{=} \PYGdefault{n}{createEditModeToggle}\PYGdefault{o}{(}\PYGdefault{n}{group}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane} \PYGdefault{n}{editOptionsGrid} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{GridPane}\PYGdefault{o}{();}
+		\PYGdefault{n}{editOptionsGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}edit\PYGdefaultZhy{}options\PYGdefaultZhy{}grid\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{editOptionsGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setHgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{editOptionsGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setVgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{buttons}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{editOptionsGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{buttons}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{),} \PYGdefault{n}{i}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{group}\PYGdefault{o}{.}\PYGdefault{n+na}{getToggles}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{setSelected}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// Form message text}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{TextFlow} \PYGdefault{n}{menuEntryFlow} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TextFlow}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuEntryFlow}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}FORM\PYGdefaultZus{}MESSAGE}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryFlow}\PYGdefault{o}{.}\PYGdefault{n+na}{setStyle}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}fx\PYGdefaultZhy{}font\PYGdefaultZhy{}size: 20pt\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}FORM\PYGdefaultZus{}MESSAGE}\PYGdefault{o}{,} \PYGdefault{n}{menuEntryFlow}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{TextFlow} \PYGdefault{n}{menuFlow} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TextFlow}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuEntryFlow}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}FORM\PYGdefaultZus{}MESSAGE}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryFlow}\PYGdefault{o}{.}\PYGdefault{n+na}{setStyle}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}fx\PYGdefaultZhy{}font\PYGdefaultZhy{}size: 20pt\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}FORM\PYGdefaultZus{}MESSAGE}\PYGdefault{o}{,} \PYGdefault{n}{menuFlow}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// menu form grid}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane} \PYGdefault{n}{menuGrid} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{GridPane}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}menu\PYGdefaultZhy{}grid\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuFlow}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{createMenuChoiceBox}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{generateFormGrid}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{createMenuButtonGroup}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setHgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setVgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane} \PYGdefault{n}{menuEntryGrid} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{GridPane}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}menu\PYGdefaultZhy{}entry\PYGdefaultZhy{}grid\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryFlow}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{createMenuEntryChoiceBox}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{generateFormGrid}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{createMenuEntryButtonGroup}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryCtx}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setHgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{.}\PYGdefault{n+na}{setVgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// content grid}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane} \PYGdefault{n}{gridPane} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{GridPane}\PYGdefault{o}{();}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}content\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{editOptionsGrid}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuGrid}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setHgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setVgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// TODO: Set change listener on edit mode choice;}
+		\PYGdefault{n}{group}\PYGdefault{o}{.}\PYGdefault{n+na}{selectedToggleProperty}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{addListener}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{ChangeModeListener}\PYGdefault{o}{(}\PYGdefault{n}{gridPane}\PYGdefault{o}{,} \PYGdefault{n}{menuGrid}\PYGdefault{o}{,} \PYGdefault{n}{menuEntryGrid}\PYGdefault{o}{,} \PYGdefault{n}{menuControl}\PYGdefault{o}{,} \PYGdefault{n}{menuEntryControl}\PYGdefault{o}{));}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Tab} \PYGdefault{n}{menuTab} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Tab}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuTab}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}menu\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuTab}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Menus\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuTab}\PYGdefault{o}{.}\PYGdefault{n+na}{setClosable}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{menuTab}\PYGdefault{o}{.}\PYGdefault{n+na}{setContent}\PYGdefault{o}{(}\PYGdefault{n}{gridPane}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{menuTab}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates the edit toogle for the edit mode.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param group}
+\PYGdefault{c+cm}{	 *            the toogle group which holds the toggles.}
+\PYGdefault{c+cm}{	 * @return the list of toggles}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{RadioButton}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{createEditModeToggle}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{ToggleGroup} \PYGdefault{n}{group}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{group}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{RadioButton}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{buttons} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{EditMode} \PYGdefault{n}{editMode} \PYGdefault{o}{:} \PYGdefault{n}{EditMode}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{RadioButton} \PYGdefault{n}{button} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{RadioButton}\PYGdefault{o}{();}
+			\PYGdefault{n}{button}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}edit\PYGdefaultZhy{}mode\PYGdefaultZhy{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{editMode}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()}
+															\PYGdefault{o}{.}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{());}
+			\PYGdefault{n}{button}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{n}{editMode}\PYGdefault{o}{.}\PYGdefault{n+na}{label}\PYGdefault{o}{);}
+			\PYGdefault{n}{button}\PYGdefault{o}{.}\PYGdefault{n+na}{setToggleGroup}\PYGdefault{o}{(}\PYGdefault{n}{group}\PYGdefault{o}{);}
+			\PYGdefault{n}{button}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{editMode}\PYGdefault{o}{);}
+			\PYGdefault{n}{buttons}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{button}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{buttons}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates a menu choice box.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param ctx}
+\PYGdefault{c+cm}{	 *            the form context}
+\PYGdefault{c+cm}{	 * @return the choice box}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{createMenuChoiceBox}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ObservableList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{menus} \PYGdefault{o}{=} \PYGdefault{n}{FXCollections}\PYGdefault{o}{.}\PYGdefault{n+na}{observableArrayList}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{asList}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuModel}\PYGdefault{o}{()));}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{menuChoice} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{menus}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{selectedItemProperty}\PYGdefault{o}{()}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{addListener}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuChangeListener}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{menuControl}\PYGdefault{o}{));}
+		\PYGdefault{n}{menuChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{setConverter}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuModelConverter}\PYGdefault{o}{());}
+		\PYGdefault{n}{menuChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{setPrefWidth}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{400}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putObserable}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{,} \PYGdefault{n}{menus}\PYGdefault{o}{);}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{,} \PYGdefault{n}{menuChoice}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{menuChoice}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates a menu entry choice box}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param ctxthe}
+\PYGdefault{c+cm}{	 *            form context}
+\PYGdefault{c+cm}{	 * @return the choice box}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{createMenuEntryChoiceBox}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ObservableList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{entries} \PYGdefault{o}{=} \PYGdefault{n}{FXCollections}\PYGdefault{o}{.}\PYGdefault{n+na}{observableArrayList}\PYGdefault{o}{(}\PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{asList}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{()));}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{menuEntryChoice} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{entries}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntryChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{selectedItemProperty}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{addListener}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuEntryChangeListener}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{,} \PYGdefault{n}{menuEntryControl}\PYGdefault{o}{));}
+		\PYGdefault{n}{menuEntryChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{setConverter}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuEntryModelConverter}\PYGdefault{o}{());}
+		\PYGdefault{n}{menuEntryChoice}\PYGdefault{o}{.}\PYGdefault{n+na}{setPrefWidth}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{400}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putObserable}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{,} \PYGdefault{n}{entries}\PYGdefault{o}{);}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{,} \PYGdefault{n}{menuEntryChoice}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{menuEntryChoice}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates the menu button group}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param ctx}
+\PYGdefault{c+cm}{	 *            the form context}
+\PYGdefault{c+cm}{	 * @return the creates button group}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{GridPane} \PYGdefault{n+nf}{createMenuButtonGroup}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane} \PYGdefault{n}{gridPane} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{GridPane}\PYGdefault{o}{();}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}button\PYGdefaultZhy{}grid\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setHgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setVgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// TODO: Register events here}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Button} \PYGdefault{n}{saveButton} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Button}\PYGdefault{o}{();}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Speichern\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}SAVE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setOnAction}\PYGdefault{o}{(}\PYGdefault{n}{menuControl}\PYGdefault{o}{::}\PYGdefault{n}{saveMenu}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Button} \PYGdefault{n}{deleteButton} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Button}\PYGdefault{o}{();}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Löschen\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setOnAction}\PYGdefault{o}{(}\PYGdefault{n}{menuControl}\PYGdefault{o}{::}\PYGdefault{n}{deleteMenu}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{saveButton}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{deleteButton}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// register in context}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}SAVE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{,} \PYGdefault{n}{saveButton}\PYGdefault{o}{);}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{,} \PYGdefault{n}{deleteButton}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{gridPane}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates the menu entry button group}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param ctx}
+\PYGdefault{c+cm}{	 *            the from context}
+\PYGdefault{c+cm}{	 * @return the created button group}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{GridPane} \PYGdefault{n+nf}{createMenuEntryButtonGroup}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormContext}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntryModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{ctx}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{GridPane} \PYGdefault{n}{gridPane} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{GridPane}\PYGdefault{o}{();}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}button\PYGdefaultZhy{}grid\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setHgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setVgap}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{10}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// TODO: Register events here}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Button} \PYGdefault{n}{saveButton} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Button}\PYGdefault{o}{();}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Speichern\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SAVE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{n}{saveButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setOnAction}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{::}\PYGdefault{n}{saveMenuEntry}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Button} \PYGdefault{n}{deleteButton} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Button}\PYGdefault{o}{();}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Löschen\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setUserData}\PYGdefault{o}{(}\PYGdefault{n}{ctx}\PYGdefault{o}{);}
+		\PYGdefault{n}{deleteButton}\PYGdefault{o}{.}\PYGdefault{n+na}{setOnAction}\PYGdefault{o}{(}\PYGdefault{n}{menuEntryControl}\PYGdefault{o}{::}\PYGdefault{n}{deleteMenuEntry}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{saveButton}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+		\PYGdefault{n}{gridPane}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{deleteButton}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// register in context}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}SAVE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{,} \PYGdefault{n}{saveButton}\PYGdefault{o}{);}
+		\PYGdefault{n}{ctx}\PYGdefault{o}{.}\PYGdefault{n+na}{putNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}ENTRY\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{,} \PYGdefault{n}{deleteButton}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{gridPane}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{initHandler}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{menuControl}\PYGdefault{o}{.}\PYGdefault{n+na}{handleMenuLoad}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{formHandler}\PYGdefault{o}{.}\PYGdefault{n+na}{fillForm}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{);}
+		\PYGdefault{o}{((}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuModel}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}SELECTION\PYGdefaultZus{}KEY}\PYGdefault{o}{)).}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+																	\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{model}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuCtx}\PYGdefault{o}{.}\PYGdefault{n+na}{getNode}\PYGdefault{o}{(}\PYGdefault{n}{MENU\PYGdefaultZus{}DELETE\PYGdefaultZus{}BUTTON\PYGdefaultZus{}ID}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{setVisible}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

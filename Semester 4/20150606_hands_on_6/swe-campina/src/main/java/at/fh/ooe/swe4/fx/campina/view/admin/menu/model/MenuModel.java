@@ -10,13 +10,19 @@ import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
 import at.fh.ooe.swe4.fx.campina.jpa.Menu;
 import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
-import at.fh.ooe.swe4.fx.campina.jpa.conctants.Day;
+import at.fh.ooe.swe4.fx.campina.jpa.constants.Day;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
-import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
-import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
+import at.fh.ooe.swe4.fx.campina.view.api.AbstractViewModel;
+import at.fh.ooe.swe4.fx.campina.view.form.FormUtils.FormFieldType;
 
-public class MenuModel extends AbstractModel<Integer, Menu> {
+/**
+ * The view model which backs the {@link Menu} entity.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
+public class MenuModel extends AbstractViewModel<Integer, Menu> {
 
 	private static final ObservableList<Day>	days	= FXCollections.observableArrayList();
 
@@ -25,6 +31,12 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 		days.addAll(Arrays.asList(Day.values()));
 	}
 
+	/**
+	 * The converter for the {@link Day} type.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date Jun 5, 2015
+	 */
 	public static class DayConverter extends StringConverter<Day> {
 
 		private static final String	PLEASE_CHOOSE	= "Bitte wählen";
@@ -45,6 +57,12 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 
 	}
 
+	/**
+	 * The converter fro the {@link MenuModel} type.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date Jun 5, 2015
+	 */
 	public static class MenuModelConverter extends StringConverter<MenuModel> {
 
 		@Override
@@ -60,10 +78,16 @@ public class MenuModel extends AbstractModel<Integer, Menu> {
 
 	}
 
+	/**
+	 * 
+	 */
 	public MenuModel() {
 		super();
 	}
 
+	/**
+	 * @param entity
+	 */
 	public MenuModel(Menu entity) {
 		super(entity);
 	}

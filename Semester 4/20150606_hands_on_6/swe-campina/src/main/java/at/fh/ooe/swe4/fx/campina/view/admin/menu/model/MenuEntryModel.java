@@ -10,13 +10,25 @@ import at.fh.ooe.swe4.fx.campina.jpa.Menu;
 import at.fh.ooe.swe4.fx.campina.jpa.MenuEntry;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
 import at.fh.ooe.swe4.fx.campina.view.annotation.SelectFormField;
-import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
-import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
+import at.fh.ooe.swe4.fx.campina.view.api.AbstractViewModel;
+import at.fh.ooe.swe4.fx.campina.view.form.FormUtils.FormFieldType;
 
-public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
+/**
+ * The view model which backs the {@link MenuEntry} entity
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
+public class MenuEntryModel extends AbstractViewModel<Integer, MenuEntry> {
 
 	public ObservableList<Menu>	menus;
 
+	/**
+	 * The converter for the {@link Menu} type
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date Jun 5, 2015
+	 */
 	public static class MenuConverter extends StringConverter<Menu> {
 
 		@Override
@@ -31,6 +43,12 @@ public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
 
 	}
 
+	/**
+	 * The converter for the {@link MenuEntryModel} type.
+	 * 
+	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+	 * @date Jun 5, 2015
+	 */
 	public static class MenuEntryModelConverter extends StringConverter<MenuEntryModel> {
 
 		@Override
@@ -44,6 +62,20 @@ public class MenuEntryModel extends AbstractModel<Integer, MenuEntry> {
 			throw new UnsupportedOperationException("Form text not supported by this converter");
 		}
 
+	}
+
+	/**
+	 * 
+	 */
+	public MenuEntryModel() {
+		super();
+	}
+
+	/**
+	 * @param entity
+	 */
+	public MenuEntryModel(MenuEntry entity) {
+		super(entity);
 	}
 
 	@Override

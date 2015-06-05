@@ -11,16 +11,31 @@ import org.apache.commons.lang.StringUtils;
 import at.fh.ooe.swe4.fx.campina.jpa.EntityCache;
 import at.fh.ooe.swe4.fx.campina.jpa.User;
 import at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel;
-import at.fh.ooe.swe4.fx.campina.view.admin.login.part.LoginTab;
-import at.fh.ooe.swe4.fx.campina.view.context.FormContext;
+import at.fh.ooe.swe4.fx.campina.view.admin.login.part.LoginTabViewHandler;
+import at.fh.ooe.swe4.fx.campina.view.api.FormContext;
 
+/**
+ * This class contains all of the action logic:
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
 public class LoginEventControl {
 
 	private User	loggedUser	= null;
 
+	/**
+	 * 
+	 */
 	public LoginEventControl() {
 	}
 
+	/**
+	 * Handles the login event
+	 * 
+	 * @param eventthe
+	 *            {@link ActionEvent}
+	 */
 	public void handleLogin(final ActionEvent event) {
 		final FormContext<LoginModel> ctx = (FormContext<LoginModel>) ((Node) event.getSource()).getUserData();
 		populateFormMessage(null, ctx);
@@ -36,7 +51,7 @@ public class LoginEventControl {
 				ctx.model.increaseCounter();
 				if (ctx.model.getCounter() >= LoginModel.MAX_COUNTER) {
 					populateFormMessage(LoginModel.LOGIN_BLOCKED_MESSAGE, ctx);
-					((Button) ctx.getNode(LoginTab.LOGIN_BUTTON_ID)).setDisable(Boolean.TRUE);
+					((Button) ctx.getNode(LoginTabViewHandler.LOGIN_BUTTON_ID)).setDisable(Boolean.TRUE);
 				} else {
 					populateFormMessage(String.format(LoginModel.LOGIN_FAILED_MESSAGE_PATTERN, (LoginModel.MAX_COUNTER - ctx.model.getCounter())), ctx);
 				}
@@ -58,7 +73,7 @@ public class LoginEventControl {
 	 *            the form context
 	 */
 	private void populateFormMessage(final String message, final FormContext<LoginModel> ctx) {
-		final TextFlow flow = ((TextFlow) ctx.getNode(LoginTab.FORM_MESSAGE));
+		final TextFlow flow = ((TextFlow) ctx.getNode(LoginTabViewHandler.FORM_MESSAGE));
 		flow.getChildren()
 			.clear();
 		flow.setPrefHeight(0);

@@ -4,10 +4,16 @@ import java.util.Objects;
 
 import at.fh.ooe.swe4.fx.campina.jpa.LoginEvent;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
-import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
-import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
+import at.fh.ooe.swe4.fx.campina.view.api.AbstractViewModel;
+import at.fh.ooe.swe4.fx.campina.view.form.FormUtils.FormFieldType;
 
-public class LoginModel extends AbstractModel<Integer, LoginEvent> {
+/**
+ * The model backing the {@link LoginEvent} entity.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
+public class LoginModel extends AbstractViewModel<Integer, LoginEvent> {
 
 	private Integer				counter							= 0;
 	private String				username						= "hello";

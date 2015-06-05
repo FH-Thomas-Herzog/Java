@@ -1,0 +1,215 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.scene}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Arrays}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.stream.Collectors}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.Scene}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.Tab}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.TabPane}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.layout.Pane}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.layout.VBox}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBarBuilder}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBuilder}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuItemBuilder}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.login.part.LoginTabViewHandler}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.menu.part.MenuTabViewHandler}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.user.part.UserTabviewHandler}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.api.EventHandlerFactory}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.api.ViewHandler}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The view ahdnler for the main scene.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 4, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{MainSceneViewHandler} \PYGdefault{k+kd}{implements} \PYGdefault{n}{ViewHandler}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Scene}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}	\PYGdefault{n}{serialVersionUID}	\PYGdefault{o}{=} \PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{l+m+mi}{7630460091326559133L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{UserTabviewHandler}	\PYGdefault{n}{userTab}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{LoginTabViewHandler}	\PYGdefault{n}{loginTab}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{MenuTabViewHandler}	\PYGdefault{n}{menuTab}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Enumeration which specifies the menus placed in the menu bar.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 29, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{MenuDefinition} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{FILE}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}file\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Dateien\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int}						\PYGdefault{n}{ordinal}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}						\PYGdefault{n}{id}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}						\PYGdefault{n}{label}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{EventHandlerFactory}	\PYGdefault{n}{eventHandlerFactory}	\PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param ordinal}
+\PYGdefault{c+cm}{		 * @param id}
+\PYGdefault{c+cm}{		 * @param label}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{MenuDefinition}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{ordinal}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{id}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{ordinal} \PYGdefault{o}{=} \PYGdefault{n}{ordinal}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{id} \PYGdefault{o}{=} \PYGdefault{n}{id}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{label} \PYGdefault{o}{=} \PYGdefault{n}{label}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This enumeration specifies the menu items for the specified menus.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date May 29, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{MenuItemDefinition} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+cm}{/*\PYGdefaultZhy{}\PYGdefaultZhy{} User menu items \PYGdefaultZhy{}\PYGdefaultZhy{}*/}
+		\PYGdefault{n}{CLOSE}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}item\PYGdefaultZhy{}close\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Schließen\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{MenuDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{FILE}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}								\PYGdefault{n}{id}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}								\PYGdefault{n}{label}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Integer}							\PYGdefault{n}{ordinal}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{MenuDefinition}						\PYGdefault{n}{menu}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{EventHandlerFactory}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{eventHandlerFactory}	\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MainSceneEventHandlerFactory}\PYGdefault{o}{();}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param ordinal}
+\PYGdefault{c+cm}{		 * @param id}
+\PYGdefault{c+cm}{		 * @param label}
+\PYGdefault{c+cm}{		 * @param menu}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{MenuItemDefinition}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{ordinal}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{id}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{,} \PYGdefault{n}{MenuDefinition} \PYGdefault{n}{menu}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{id} \PYGdefault{o}{=} \PYGdefault{n}{id}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{label} \PYGdefault{o}{=} \PYGdefault{n}{label}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{ordinal} \PYGdefault{o}{=} \PYGdefault{n}{ordinal}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menu} \PYGdefault{o}{=} \PYGdefault{n}{menu}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Filters the provided enumerations for the given menu.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param menu}
+\PYGdefault{c+cm}{		 *            the menu to get its specified items}
+\PYGdefault{c+cm}{		 * @return the menu related items, an empty list otherwise}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{filterForMenu}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{MenuDefinition} \PYGdefault{n}{menu}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{items}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{menu} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{items} \PYGdefault{o}{=} \PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{asList}\PYGdefault{o}{(}\PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{())}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{stream}\PYGdefault{o}{()}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{filter}\PYGdefault{o}{((}\PYGdefault{n}{el}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZhy{}\PYGdefaultZgt{}} \PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{el}\PYGdefault{o}{.}\PYGdefault{n+na}{menu}\PYGdefault{o}{))}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{collect}\PYGdefault{o}{(}\PYGdefault{n}{Collectors}\PYGdefault{o}{.}\PYGdefault{n+na}{toList}\PYGdefault{o}{());}
+				\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{sort}\PYGdefault{o}{(}\PYGdefault{n}{items}\PYGdefault{o}{,} \PYGdefault{o}{(}\PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{n}{o2}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZhy{}\PYGdefaultZgt{}} \PYGdefault{n}{o1}\PYGdefault{o}{.}\PYGdefault{n+na}{ordinal}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o2}\PYGdefault{o}{.}\PYGdefault{n+na}{ordinal}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{items} \PYGdefault{o}{=} \PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{EMPTY\PYGdefaultZus{}LIST}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{items}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates a main scene definition instance.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * The main components ids are set here.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{MainSceneViewHandler}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Scene} \PYGdefault{n+nf}{createNode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Pane} \PYGdefault{n}{rootPane} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{VBox}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Pane} \PYGdefault{n}{menuBarBox} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{VBox}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{TabPane} \PYGdefault{n}{tabPane} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TabPane}\PYGdefault{o}{();}
+
+		\PYGdefault{n}{rootPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}root\PYGdefaultZhy{}pane\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuBarBox}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}bar\PYGdefaultZhy{}box\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{tabPane}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}tab\PYGdefaultZhy{}pane\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Scene} \PYGdefault{n}{scene} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Scene}\PYGdefault{o}{(}\PYGdefault{n}{rootPane}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{userTab} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{UserTabviewHandler}\PYGdefault{o}{(}\PYGdefault{n}{scene}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{loginTab} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{LoginTabViewHandler}\PYGdefault{o}{(}\PYGdefault{n}{scene}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuTab} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuTabViewHandler}\PYGdefault{o}{(}\PYGdefault{n}{scene}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{prepareMenuBox}\PYGdefault{o}{(}\PYGdefault{n}{menuBarBox}\PYGdefault{o}{);}
+		\PYGdefault{n}{prepareTabs}\PYGdefault{o}{(}\PYGdefault{n}{tabPane}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{rootPane}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menuBarBox}\PYGdefault{o}{);}
+		\PYGdefault{n}{rootPane}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{tabPane}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{scene}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{initHandler}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// this.loginTab.init();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{userTab}\PYGdefault{o}{.}\PYGdefault{n+na}{initHandler}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{menuTab}\PYGdefault{o}{.}\PYGdefault{n+na}{initHandler}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Prepares the menu box by adding all menus and its items.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param menuBox}
+\PYGdefault{c+cm}{	 *            the menu box to provide}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{prepareMenuBox}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Pane} \PYGdefault{n}{menuBox}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{menuBox}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Cannot prepare null menu box\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{MenuBarBuilder} \PYGdefault{n}{mbb} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuBarBuilder}\PYGdefault{o}{();}
+		\PYGdefault{n}{MenuBuilder} \PYGdefault{n}{mb} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuBuilder}\PYGdefault{o}{();}
+		\PYGdefault{n}{MenuItemBuilder} \PYGdefault{n}{mib} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuItemBuilder}\PYGdefault{o}{();}
+
+		\PYGdefault{n}{mbb}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{();}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{MenuDefinition} \PYGdefault{n}{menu} \PYGdefault{o}{:} \PYGdefault{n}{MenuDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{mb}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{();}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{MenuDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{eventHandlerFactory} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{mb}\PYGdefault{o}{.}\PYGdefault{n+na}{registerEventHandlers}\PYGdefault{o}{(}\PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{eventHandlerFactory}\PYGdefault{o}{.}\PYGdefault{n+na}{registerEventHandler}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{id}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{MenuItemDefinition} \PYGdefault{n}{item} \PYGdefault{o}{:} \PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{filterForMenu}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{mib}\PYGdefault{o}{.}\PYGdefault{n+na}{start}\PYGdefault{o}{();}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{eventHandlerFactory} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{mib}\PYGdefault{o}{.}\PYGdefault{n+na}{registerEventHandlers}\PYGdefault{o}{(}\PYGdefault{n}{MenuItemDefinition}\PYGdefault{o}{.}\PYGdefault{n+na}{eventHandlerFactory}\PYGdefault{o}{.}\PYGdefault{n+na}{registerEventHandler}\PYGdefault{o}{(}\PYGdefault{n}{item}\PYGdefault{o}{.}\PYGdefault{n+na}{id}\PYGdefault{o}{));}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{n}{mb}\PYGdefault{o}{.}\PYGdefault{n+na}{addItem}\PYGdefault{o}{(}\PYGdefault{n}{mib}\PYGdefault{o}{.}\PYGdefault{n+na}{build}\PYGdefault{o}{(}\PYGdefault{n}{item}\PYGdefault{o}{.}\PYGdefault{n+na}{id}\PYGdefault{o}{,} \PYGdefault{n}{item}\PYGdefault{o}{.}\PYGdefault{n+na}{label}\PYGdefault{o}{));}
+				\PYGdefault{n}{mib}\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{mbb}\PYGdefault{o}{.}\PYGdefault{n+na}{addMenu}\PYGdefault{o}{(}\PYGdefault{n}{mb}\PYGdefault{o}{.}\PYGdefault{n+na}{build}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{id}\PYGdefault{o}{,} \PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{label}\PYGdefault{o}{));}
+			\PYGdefault{n}{mb}\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{menuBox}\PYGdefault{o}{.}\PYGdefault{n+na}{getChildren}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{mbb}\PYGdefault{o}{.}\PYGdefault{n+na}{build}\PYGdefault{o}{());}
+		\PYGdefault{n}{mbb}\PYGdefault{o}{.}\PYGdefault{n+na}{end}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{prepareTabs}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{TabPane} \PYGdefault{n}{tabPane}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{tabPane}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Cannot prepare null content box\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Tab} \PYGdefault{n}{login} \PYGdefault{o}{=} \PYGdefault{n}{loginTab}\PYGdefault{o}{.}\PYGdefault{n+na}{createNode}\PYGdefault{o}{();}
+		\PYGdefault{n}{login}\PYGdefault{o}{.}\PYGdefault{n+na}{setStyle}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}fx\PYGdefaultZhy{}padding: 10 10 10 10;\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Tab} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{userTab}\PYGdefault{o}{.}\PYGdefault{n+na}{createNode}\PYGdefault{o}{();}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setStyle}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}fx\PYGdefaultZhy{}padding: 10 10 10 10;\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Tab} \PYGdefault{n}{menu} \PYGdefault{o}{=} \PYGdefault{n}{menuTab}\PYGdefault{o}{.}\PYGdefault{n+na}{createNode}\PYGdefault{o}{();}
+		\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{setStyle}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}fx\PYGdefaultZhy{}padding: 10 10 10 10;\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// user.setDisable(Boolean.TRUE);}
+		\PYGdefault{c+c1}{// menu.setDisable(Boolean.TRUE);}
+
+		\PYGdefault{n}{tabPane}\PYGdefault{o}{.}\PYGdefault{n+na}{getTabs}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{login}\PYGdefault{o}{);}
+		\PYGdefault{n}{tabPane}\PYGdefault{o}{.}\PYGdefault{n+na}{getTabs}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+		\PYGdefault{n}{tabPane}\PYGdefault{o}{.}\PYGdefault{n+na}{getTabs}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getId}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{l+s}{\PYGdefaultZdq{}main\PYGdefaultZhy{}scene\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

@@ -1,5 +1,13 @@
 package at.fh.ooe.swe4.fx.campina.jpa;
 
+import at.fh.ooe.swe4.fx.campina.jpa.api.AbstractEntity;
+
+/**
+ * The campina user.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
 public class User extends AbstractEntity<Integer> {
 
 	private static final long	serialVersionUID	= 94057306870207307L;
@@ -11,9 +19,18 @@ public class User extends AbstractEntity<Integer> {
 	private String				password;
 	private Boolean				blockedFlag			= Boolean.FALSE;
 
+	/**
+	 * 
+	 */
 	public User() {
 	}
 
+	/**
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 */
 	public User(Integer id, String firstName, String lastName, String email) {
 		super(id);
 		this.firstName = firstName;

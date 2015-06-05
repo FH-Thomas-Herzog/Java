@@ -2,11 +2,9 @@ package at.fh.ooe.swe4.fx.campina.component.builder.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -14,10 +12,21 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import at.fh.ooe.swe4.fx.campina.component.builder.api.AbstractFxComponentBuilder;
 
+/**
+ * This is the buidler for {@link Menu}
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
 public class MenuBuilder extends AbstractFxComponentBuilder<Menu, MenuBuilder> {
 
 	public List<MenuItem>	items	= null;
 
+	/**
+	 * Starts the builder
+	 * 
+	 * @return the current instance
+	 */
 	public MenuBuilder start() {
 		if (items != null) {
 			throw new IllegalStateException("Builder already initialized");
@@ -28,12 +37,26 @@ public class MenuBuilder extends AbstractFxComponentBuilder<Menu, MenuBuilder> {
 		return this;
 	}
 
+	/**
+	 * Ends the builder. Needs to be restarted i reused.
+	 * 
+	 * @return the current instance
+	 */
 	public MenuBuilder end() {
 		checkIfStarted();
 		items = null;
 		return this;
 	}
 
+	/**
+	 * Builds the menu instance.
+	 * 
+	 * @param id
+	 *            the id of the menu instance
+	 * @param label
+	 *            the label of the menu instance
+	 * @return the menu instance
+	 */
 	public Menu build(final String id, final String label) {
 		checkIfStarted();
 		Objects.requireNonNull(label, "Cannot create menu with null id");
@@ -50,12 +73,21 @@ public class MenuBuilder extends AbstractFxComponentBuilder<Menu, MenuBuilder> {
 															.toString());
 		}
 
-		for (Entry<EventType, EventHandler> event : events.entrySet()) {
-			menu.addEventHandler(event.getKey(), event.getValue());
+		for (Entry<EventType, List<EventHandler>> event : events.entrySet()) {
+			for (EventHandler handler : event.getValue()) {
+				menu.addEventHandler(event.getKey(), handler);
+			}
 		}
 		return menu;
 	}
 
+	/**
+	 * Adds an item to this builder
+	 * 
+	 * @param item
+	 *            the item to be added
+	 * @return the current instance
+	 */
 	public MenuBuilder addItem(final MenuItem item) {
 		checkIfStarted();
 		Objects.requireNonNull(item, "Cannot add nul item");
@@ -64,6 +96,7 @@ public class MenuBuilder extends AbstractFxComponentBuilder<Menu, MenuBuilder> {
 		return this;
 	}
 
+	@Override
 	protected void checkIfStarted() {
 		if (items == null) {
 			throw new IllegalStateException("Builder not initialized");

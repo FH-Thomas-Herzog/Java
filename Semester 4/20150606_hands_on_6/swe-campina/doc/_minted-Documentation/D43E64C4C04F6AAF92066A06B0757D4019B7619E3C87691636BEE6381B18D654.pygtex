@@ -1,0 +1,84 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.SortedSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.TreeSet}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.api.AbstractEntity}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.constants.Day}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The menu.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{Menu} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Menu}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}		\PYGdefault{n}{serialVersionUID}	\PYGdefault{o}{=} \PYGdefault{l+m+mi}{7569033478037865818L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Day}						\PYGdefault{n}{day}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{String}					\PYGdefault{n}{label}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntry}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{entires}				\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{Menu}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param id}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{Menu}\PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{id}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param id}
+\PYGdefault{c+cm}{	 * @param day}
+\PYGdefault{c+cm}{	 * @param label}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{Menu}\PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{,} \PYGdefault{n}{Day} \PYGdefault{n}{day}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{id}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{day} \PYGdefault{o}{=} \PYGdefault{n}{day}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{label} \PYGdefault{o}{=} \PYGdefault{n}{label}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Integer} \PYGdefault{n+nf}{getId}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{\PYGdefaultZus{}getId}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Day} \PYGdefault{n+nf}{getDay}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{day}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setDay}\PYGdefault{o}{(}\PYGdefault{n}{Day} \PYGdefault{n}{day}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{day} \PYGdefault{o}{=} \PYGdefault{n}{day}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getLabel}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{label}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setLabel}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{label} \PYGdefault{o}{=} \PYGdefault{n}{label}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntry}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getEntries}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{entires}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setEntires}\PYGdefault{o}{(}\PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuEntry}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{entires}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{entires} \PYGdefault{o}{=} \PYGdefault{n}{entires}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{Menu} \PYGdefault{n}{o}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{day}\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{getDay}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

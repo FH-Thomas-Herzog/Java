@@ -2,6 +2,7 @@ package at.fh.ooe.swe4.fx.campina.component.builder.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
@@ -43,8 +44,10 @@ public class MenuItemBuilder extends AbstractFxComponentBuilder<MenuItem, MenuIt
 
 		final MenuItem item = new MenuItem(label);
 		item.setId(id);
-		for (Entry<EventType, EventHandler> event : events.entrySet()) {
-			item.addEventHandler(event.getKey(), event.getValue());
+		for (Entry<EventType, List<EventHandler>> event : events.entrySet()) {
+			for (EventHandler handler : event.getValue()) {
+				item.addEventHandler(event.getKey(), handler);
+			}
 		}
 		return item;
 	}

@@ -1,0 +1,56 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.math.BigDecimal}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Set}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.constants.Day}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel}\PYGdefault{o}{;}
+
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{EntityCache} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{n}{Set}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{userCache}	\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{100}\PYGdefault{o}{);}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{n}{Set}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Menu}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{menuCache}	\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{100}\PYGdefault{o}{);}
+
+	\PYGdefault{k+kd}{static} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Thomas\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Herzog\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}t.herzog@bla.bla\PYGdefaultZdq{}}\PYGdefault{o}{));}
+		\PYGdefault{n}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Hugo\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Fichtner\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}h.fichtner@bla.bla\PYGdefaultZdq{}}\PYGdefault{o}{));}
+		\PYGdefault{n}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Christian\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Beikov\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}c.beickov@bla.bla\PYGdefaultZdq{}}\PYGdefault{o}{));}
+		\PYGdefault{n}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{4}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Rainer\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Rudolf\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}r.rudolf@bla.bla\PYGdefaultZdq{}}\PYGdefault{o}{));}
+		\PYGdefault{n}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{5}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Bernd\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Maier\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}b.maier@bla.bla\PYGdefaultZdq{}}\PYGdefault{o}{));}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Menu} \PYGdefault{n}{m1} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Menu}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{Day}\PYGdefault{o}{.}\PYGdefault{n+na}{MONDAY}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Fisch Tag\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Menu} \PYGdefault{n}{m2} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Menu}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{Day}\PYGdefault{o}{.}\PYGdefault{n+na}{WEDNESDAY}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Steak Tag\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Menu} \PYGdefault{n}{m3} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Menu}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{Day}\PYGdefault{o}{.}\PYGdefault{n+na}{THURSDAY}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Nudel Tag\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{m1}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntries}\PYGdefault{o}{()}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuEntry}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Forelle\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{ONE}\PYGdefault{o}{,} \PYGdefault{n}{m1}\PYGdefault{o}{));}
+		\PYGdefault{n}{m1}\PYGdefault{o}{.}\PYGdefault{n+na}{getEntries}\PYGdefault{o}{()}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{MenuEntry}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Zander\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{ONE}\PYGdefault{o}{,} \PYGdefault{n}{m1}\PYGdefault{o}{));}
+
+		\PYGdefault{n}{menuCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{m1}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{m2}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{m3}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{EntityCache}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{User} \PYGdefault{n+nf}{isValidLogin}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{LoginModel} \PYGdefault{n}{model}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{model}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{userCache}\PYGdefault{o}{.}\PYGdefault{n+na}{iterator}\PYGdefault{o}{();}
+		\PYGdefault{k+kt}{boolean} \PYGdefault{n}{valid} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+		\PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{while} \PYGdefault{o}{((}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(!}\PYGdefault{n}{valid}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+			\PYGdefault{n}{valid} \PYGdefault{o}{=} \PYGdefault{o}{((}\PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getUsername}\PYGdefault{o}{().}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getUsername}\PYGdefault{o}{()))} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(}\PYGdefault{n}{model}\PYGdefault{o}{.}\PYGdefault{n+na}{getPassword}\PYGdefault{o}{().}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getPassword}\PYGdefault{o}{())));}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{valid} \PYGdefault{o}{?} \PYGdefault{n}{user} \PYGdefault{o}{:} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

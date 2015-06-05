@@ -4,15 +4,27 @@ import java.util.Objects;
 
 import at.fh.ooe.swe4.fx.campina.jpa.User;
 import at.fh.ooe.swe4.fx.campina.view.annotation.FormField;
-import at.fh.ooe.swe4.fx.campina.view.model.AbstractModel;
-import at.fh.ooe.swe4.fx.campina.view.util.FormUtils.FormFieldType;
+import at.fh.ooe.swe4.fx.campina.view.api.AbstractViewModel;
+import at.fh.ooe.swe4.fx.campina.view.form.FormUtils.FormFieldType;
 
-public class UserModel extends AbstractModel<Integer, User> {
+/**
+ * The view model which backs the {@link User} entity.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 5, 2015
+ */
+public class UserModel extends AbstractViewModel<Integer, User> {
 
+	/**
+	 * 
+	 */
 	public UserModel() {
-		this(new User());
+		super();
 	}
 
+	/**
+	 * @param user
+	 */
 	public UserModel(User user) {
 		super(user);
 	}
