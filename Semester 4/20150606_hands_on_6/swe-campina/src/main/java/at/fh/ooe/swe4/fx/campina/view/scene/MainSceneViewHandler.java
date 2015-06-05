@@ -16,6 +16,7 @@ import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuBuilder;
 import at.fh.ooe.swe4.fx.campina.component.builder.impl.MenuItemBuilder;
 import at.fh.ooe.swe4.fx.campina.view.admin.login.part.LoginTabViewHandler;
 import at.fh.ooe.swe4.fx.campina.view.admin.menu.part.MenuTabViewHandler;
+import at.fh.ooe.swe4.fx.campina.view.admin.order.part.OrderTabViewHandler;
 import at.fh.ooe.swe4.fx.campina.view.admin.user.part.UserTabviewHandler;
 import at.fh.ooe.swe4.fx.campina.view.api.EventHandlerFactory;
 import at.fh.ooe.swe4.fx.campina.view.api.ViewHandler;
@@ -33,6 +34,7 @@ public class MainSceneViewHandler implements ViewHandler<Scene> {
 	private UserTabviewHandler	userTab;
 	private LoginTabViewHandler	loginTab;
 	private MenuTabViewHandler	menuTab;
+	private OrderTabViewHandler	orderTab;
 
 	/**
 	 * Enumeration which specifies the menus placed in the menu bar.
@@ -132,6 +134,7 @@ public class MainSceneViewHandler implements ViewHandler<Scene> {
 		this.userTab = new UserTabviewHandler(scene);
 		this.loginTab = new LoginTabViewHandler(scene);
 		this.menuTab = new MenuTabViewHandler(scene);
+		this.orderTab = new OrderTabViewHandler(scene);
 
 		prepareMenuBox(menuBarBox);
 		prepareTabs(tabPane);
@@ -149,6 +152,7 @@ public class MainSceneViewHandler implements ViewHandler<Scene> {
 		// this.loginTab.init();
 		this.userTab.initHandler();
 		this.menuTab.initHandler();
+		this.orderTab.initHandler();
 	}
 
 	/**
@@ -190,13 +194,12 @@ public class MainSceneViewHandler implements ViewHandler<Scene> {
 		Objects.requireNonNull(tabPane, "Cannot prepare null content box");
 
 		final Tab login = loginTab.createNode();
-		login.setStyle("-fx-padding: 10 10 10 10;");
 		final Tab user = userTab.createNode();
-		user.setStyle("-fx-padding: 10 10 10 10;");
 		final Tab menu = menuTab.createNode();
-		menu.setStyle("-fx-padding: 10 10 10 10;");
+		final Tab order = orderTab.createNode();
 		// user.setDisable(Boolean.TRUE);
 		// menu.setDisable(Boolean.TRUE);
+		// order.setDisable(Boolean.TRUE);
 
 		tabPane.getTabs()
 				.add(login);
@@ -204,6 +207,8 @@ public class MainSceneViewHandler implements ViewHandler<Scene> {
 				.add(user);
 		tabPane.getTabs()
 				.add(menu);
+		tabPane.getTabs()
+				.add(order);
 	}
 
 	@Override

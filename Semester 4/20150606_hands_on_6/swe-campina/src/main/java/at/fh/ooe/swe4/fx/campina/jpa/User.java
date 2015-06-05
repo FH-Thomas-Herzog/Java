@@ -1,5 +1,8 @@
 package at.fh.ooe.swe4.fx.campina.jpa;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import at.fh.ooe.swe4.fx.campina.jpa.api.AbstractEntity;
 
 /**
@@ -17,7 +20,9 @@ public class User extends AbstractEntity<Integer> {
 	private String				email;
 	private String				username;
 	private String				password;
+	private Boolean				adminFlag			= Boolean.FALSE;
 	private Boolean				blockedFlag			= Boolean.FALSE;
+	private Set<Order>			orders				= new HashSet<>();
 
 	/**
 	 * 
@@ -82,6 +87,14 @@ public class User extends AbstractEntity<Integer> {
 		this.password = password;
 	}
 
+	public Boolean getAdminFlag() {
+		return adminFlag;
+	}
+
+	public void setAdminFlag(Boolean adminFlag) {
+		this.adminFlag = adminFlag;
+	}
+
 	public Boolean getBlockedFlag() {
 		return blockedFlag;
 	}
@@ -89,4 +102,13 @@ public class User extends AbstractEntity<Integer> {
 	public void setBlockedFlag(Boolean blockedFlag) {
 		this.blockedFlag = blockedFlag;
 	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+
 }

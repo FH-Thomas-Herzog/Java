@@ -1,6 +1,8 @@
 package at.fh.ooe.swe4.fx.campina.jpa;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import at.fh.ooe.swe4.fx.campina.jpa.api.AbstractEntity;
 
@@ -18,6 +20,7 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 	private String				label;
 	private BigDecimal			price;
 	private Menu				menu;
+	private Set<Order>			orders				= new HashSet<>();
 
 	/**
 	 * 
@@ -83,6 +86,14 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 
 	public void setMenu(Menu menu) {
 		this.menu = menu;
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override
