@@ -1,0 +1,136 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.user.model}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.User}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.annotation.FormField}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.api.AbstractViewModel}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.form.FormUtils.FormFieldType}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * The view model which backs the \PYGdefaultZob{}@link User\PYGdefaultZcb{} entity.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{UserModel} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractViewModel}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Integer}\PYGdefault{o}{,} \PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UserModel}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param user}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UserModel}\PYGdefault{o}{(}\PYGdefault{n}{User} \PYGdefault{n}{user}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{prepare}\PYGdefault{o}{(}\PYGdefault{n}{User} \PYGdefault{n}{user}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{setId}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{());}
+		\PYGdefault{n}{setEntity}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{reset}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{prepare}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getSelectionName}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{getId}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{l+s}{\PYGdefaultZdq{}Neuer Benutzer\PYGdefaultZdq{}}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{StringBuilder}\PYGdefault{o}{().}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{getLastName}\PYGdefault{o}{())}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}, \PYGdefaultZdq{}}\PYGdefault{o}{)}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{getFirstName}\PYGdefault{o}{())}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{} (\PYGdefaultZdq{}}\PYGdefault{o}{)}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{getEmail}\PYGdefault{o}{())}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{})\PYGdefaultZdq{}}\PYGdefault{o}{)}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@FormField}\PYGdefault{o}{(}
+			\PYGdefault{n}{id} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}user\PYGdefaultZhy{}first\PYGdefaultZhy{}name\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{label} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Vorname\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{required} \PYGdefault{o}{=} \PYGdefault{k+kc}{true}\PYGdefault{o}{,}
+			\PYGdefault{n}{ordinal} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,}
+			\PYGdefault{n}{requiredMessage} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Bitte Vornamen angeben\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{type} \PYGdefault{o}{=} \PYGdefault{n}{FormFieldType}\PYGdefault{o}{.}\PYGdefault{n+na}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getFirstName}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{getFirstName}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setFirstName}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{firstName}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{setFirstName}\PYGdefault{o}{(}\PYGdefault{n}{firstName}\PYGdefault{o}{);}
+		\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@FormField}\PYGdefault{o}{(}
+			\PYGdefault{n}{id} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}user\PYGdefaultZhy{}last\PYGdefaultZhy{}name\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{label} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Nachname\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{required} \PYGdefault{o}{=} \PYGdefault{k+kc}{true}\PYGdefault{o}{,}
+			\PYGdefault{n}{ordinal} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{,}
+			\PYGdefault{n}{requiredMessage} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Bitte Nachnamen angeben\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{type} \PYGdefault{o}{=} \PYGdefault{n}{FormFieldType}\PYGdefault{o}{.}\PYGdefault{n+na}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getLastName}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{getLastName}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setLastName}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{lastName}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{setLastName}\PYGdefault{o}{(}\PYGdefault{n}{lastName}\PYGdefault{o}{);}
+		\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@FormField}\PYGdefault{o}{(}
+			\PYGdefault{n}{id} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}user\PYGdefaultZhy{}email\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{label} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}E\PYGdefaultZhy{}Mail\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{ordinal} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{3}\PYGdefault{o}{,}
+			\PYGdefault{n}{type} \PYGdefault{o}{=} \PYGdefault{n}{FormFieldType}\PYGdefault{o}{.}\PYGdefault{n+na}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getEmail}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{getEmail}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setEmail}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{email}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{setEmail}\PYGdefault{o}{(}\PYGdefault{n}{email}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@FormField}\PYGdefault{o}{(}
+			\PYGdefault{n}{id} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}user\PYGdefaultZhy{}username\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{label} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Benutzername\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{required} \PYGdefault{o}{=} \PYGdefault{k+kc}{true}\PYGdefault{o}{,}
+			\PYGdefault{n}{ordinal} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{4}\PYGdefault{o}{,}
+			\PYGdefault{n}{requiredMessage} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Bitte Benutzernamen angeben\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{type} \PYGdefault{o}{=} \PYGdefault{n}{FormFieldType}\PYGdefault{o}{.}\PYGdefault{n+na}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getUsername}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{getUsername}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setUsername}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{username}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{setUsername}\PYGdefault{o}{(}\PYGdefault{n}{username}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@FormField}\PYGdefault{o}{(}
+			\PYGdefault{n}{id} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}user\PYGdefaultZhy{}password\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{label} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Password\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{required} \PYGdefault{o}{=} \PYGdefault{k+kc}{true}\PYGdefault{o}{,}
+			\PYGdefault{n}{ordinal} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{5}\PYGdefault{o}{,}
+			\PYGdefault{n}{requiredMessage} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}Bitte Password angeben\PYGdefaultZdq{}}\PYGdefault{o}{,}
+			\PYGdefault{n}{type} \PYGdefault{o}{=} \PYGdefault{n}{FormFieldType}\PYGdefault{o}{.}\PYGdefault{n+na}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getPassword}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{getPassword}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setPassword}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{password}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{getEntity}\PYGdefault{o}{().}\PYGdefault{n+na}{setPassword}\PYGdefault{o}{(}\PYGdefault{n}{password}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

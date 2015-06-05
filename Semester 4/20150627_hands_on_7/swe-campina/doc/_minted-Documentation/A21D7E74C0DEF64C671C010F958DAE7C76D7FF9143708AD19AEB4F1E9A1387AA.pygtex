@@ -1,0 +1,81 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.component.builder.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Set}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.Menu}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.MenuBar}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.component.builder.api.AbstractFxComponentBuilder}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is the buidler for menu bars}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{MenuBarBuilder} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractFxComponentBuilder}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{MenuBar}\PYGdefault{o}{,} \PYGdefault{n}{MenuBarBuilder}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Set}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Menu}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{menus}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Starts the buidler}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the current instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{MenuBarBuilder} \PYGdefault{n+nf}{start}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{menus} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Builder already initialized\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{menus} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Ads an menu to this builder}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param menu}
+\PYGdefault{c+cm}{	 *            the menu for the menu bar}
+\PYGdefault{c+cm}{	 * @return the current instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{MenuBarBuilder} \PYGdefault{n+nf}{addMenu}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Menu} \PYGdefault{n}{menu}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{checkIfStarted}\PYGdefault{o}{();}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Cannto add null menu to menu bar\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{menus}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{);}
+		\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Buidls anew menu bar isntance with the ormerly set menus.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the menu bar instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{MenuBar} \PYGdefault{n+nf}{build}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{checkIfStarted}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{MenuBar} \PYGdefault{n}{bar} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuBar}\PYGdefault{o}{();}
+		\PYGdefault{n}{bar}\PYGdefault{o}{.}\PYGdefault{n+na}{getMenus}\PYGdefault{o}{()}
+			\PYGdefault{o}{.}\PYGdefault{n+na}{addAll}\PYGdefault{o}{(}\PYGdefault{n}{menus}\PYGdefault{o}{);}
+		\PYGdefault{k}{return} \PYGdefault{n}{bar}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Ends this builder. Will need to be restarted if reused.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the current instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{MenuBarBuilder} \PYGdefault{n+nf}{end}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{checkIfStarted}\PYGdefault{o}{();}
+		\PYGdefault{n}{menus} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{return} \PYGdefault{k}{this}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{checkIfStarted}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{menus} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Buuilder not inititalized\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

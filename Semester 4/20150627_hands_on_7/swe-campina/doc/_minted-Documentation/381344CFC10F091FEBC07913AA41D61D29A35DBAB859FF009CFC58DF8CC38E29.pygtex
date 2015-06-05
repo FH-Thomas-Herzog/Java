@@ -1,0 +1,46 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.constants}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * Enumeration which specifies the available days.}
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{enum} \PYGdefault{n}{Day} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{n}{MONDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Montag\PYGdefaultZdq{}}\PYGdefault{o}{),}
+	\PYGdefault{n}{THUESDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Dienstag\PYGdefaultZdq{}}\PYGdefault{o}{),}
+	\PYGdefault{n}{WEDNESDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Mittwoch\PYGdefaultZdq{}}\PYGdefault{o}{),}
+	\PYGdefault{n}{THURSDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Donnerstag\PYGdefaultZdq{}}\PYGdefault{o}{),}
+	\PYGdefault{n}{FRIDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Freitag\PYGdefaultZdq{}}\PYGdefault{o}{),}
+	\PYGdefault{n}{SATARDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Samstag\PYGdefaultZdq{}}\PYGdefault{o}{),}
+	\PYGdefault{n}{SUNDAY}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Sontag\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}	\PYGdefault{n}{label}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{Day}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{label} \PYGdefault{o}{=} \PYGdefault{n}{label}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Resolve \PYGdefaultZob{}@link Day\PYGdefaultZcb{} by its held label.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param label}
+\PYGdefault{c+cm}{	 *            the label of the enumeration}
+\PYGdefault{c+cm}{	 * @return the found \PYGdefaultZob{}@link Day\PYGdefaultZcb{} instance}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the label is null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Day} \PYGdefault{n+nf}{fromLabel}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{label}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{label}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Day} \PYGdefault{n}{day} \PYGdefault{o}{:} \PYGdefault{n}{Day}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{day}\PYGdefault{o}{.}\PYGdefault{n+na}{label}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{label}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{n}{day}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}No day with label \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{label} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} found\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}
