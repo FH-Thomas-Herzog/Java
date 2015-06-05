@@ -76,15 +76,15 @@ public class MenuEntryEventControl {
 							.add(entry);
 			} else {
 				entry = ctx.model.getEntity();
-				entry.setId(EntityCache.menuCache.size() + 1);
+				entry.setId(EntityCache.menuEntryCache.size() + 1);
+				entry.setOrdinal(entry.getId());
 				EntityCache.menuEntryCache.add(entry);
 			}
 			ctx.model.prepare(entry);
-			handleMenuEntryReload(ctx);
 		} else {
 			populateFormMessage("Formular ungültig !! Bitte Eingaben prüfen", ctx);
-			handleMenuEntryReload(ctx);
 		}
+		handleMenuEntryReload(ctx);
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class MenuEntryEventControl {
 		ctx.model.getMenus()
 					.clear();
 		ctx.model.getMenus()
-					.add(new Menu());
+					.add(null);
 		for (Menu menu : EntityCache.menuCache) {
 			ctx.model.getMenus()
 						.add(menu);

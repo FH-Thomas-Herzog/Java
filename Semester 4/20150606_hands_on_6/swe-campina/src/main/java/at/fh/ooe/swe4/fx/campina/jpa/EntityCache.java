@@ -98,7 +98,8 @@ public class EntityCache {
 		final Iterator<MenuEntry> it = menuEntryCache.iterator();
 		while (it.hasNext()) {
 			final MenuEntry entry = it.next();
-			if (entry.getId()
+			if (entry.getMenu()
+						.getId()
 						.equals(id)) {
 				it.remove();
 			}

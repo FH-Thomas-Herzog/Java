@@ -33,7 +33,7 @@ public class MenuEntryModel extends AbstractViewModel<Integer, MenuEntry> {
 
 		@Override
 		public String toString(Menu object) {
-			return (object.getId() == null) ? "Bitte Wählen" : object.getLabel();
+			return (object == null) ? "Bitte Wählen" : object.getLabel();
 		}
 
 		@Override
@@ -82,7 +82,6 @@ public class MenuEntryModel extends AbstractViewModel<Integer, MenuEntry> {
 	public void reset() {
 		final MenuEntry entry = new MenuEntry();
 		entry.setPrice(BigDecimal.ZERO);
-		entry.setMenu(new Menu());
 		entry.setOrdinal(0);
 		menus = FXCollections.observableArrayList();
 		menus.add(new Menu());
