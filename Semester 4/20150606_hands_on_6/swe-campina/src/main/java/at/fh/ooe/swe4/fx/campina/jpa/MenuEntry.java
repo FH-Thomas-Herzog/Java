@@ -87,6 +87,15 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 
 	@Override
 	public int compareTo(MenuEntry o) {
-		return ordinal.compareTo(o.getOrdinal());
+		if ((getId() == null) && (o.getId() == null)) {
+			return 0;
+		} else if (getId() == null) {
+			return -1;
+		} else if (o.getId() == null) {
+			return 1;
+		} else {
+			return getId().compareTo(o.getId());
+			// return day.compareTo(o.getDay());
+		}
 	}
 }

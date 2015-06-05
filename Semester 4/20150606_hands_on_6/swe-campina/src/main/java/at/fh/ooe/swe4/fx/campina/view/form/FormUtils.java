@@ -234,7 +234,8 @@ public class FormUtils {
 		case SELECT:
 			final ChoiceBox<Object> box = (ChoiceBox<Object>) node;
 			box.getSelectionModel()
-				.select(value);
+				.select(box.getItems()
+							.indexOf(value));
 			return;
 		default:
 		}

@@ -1,5 +1,6 @@
 package at.fh.ooe.swe4.fx.campina.jpa;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,8 +12,9 @@ import at.fh.ooe.swe4.fx.campina.view.admin.login.model.LoginModel;
 
 public class EntityCache {
 
-	public static Set<User>	userCache	= new HashSet<>(100);
-	public static Set<Menu>	menuCache	= new HashSet<>(100);
+	public static Set<User>			userCache		= new HashSet<>(100);
+	public static Set<Menu>			menuCache		= new HashSet<>(100);
+	public static Set<MenuEntry>	menuEntryCache	= new HashSet<>(100);
 
 	static {
 		userCache.add(new User(1, "Thomas", "Herzog", "t.herzog@bla.bla"));
@@ -25,10 +27,14 @@ public class EntityCache {
 		final Menu m2 = new Menu(1, Day.WEDNESDAY, "Steak Tag");
 		final Menu m3 = new Menu(1, Day.THURSDAY, "Nudel Tag");
 
+		final MenuEntry me1 = new MenuEntry(1, 1, "Forelle", BigDecimal.ONE, m1);
+		final MenuEntry me2 = new MenuEntry(2, 2, "Zander", BigDecimal.ONE, m1);
 		m1.getEntries()
-			.add(new MenuEntry(1, 1, "Forelle", BigDecimal.ONE, m1));
+			.add(me1);
 		m1.getEntries()
-			.add(new MenuEntry(2, 2, "Zander", BigDecimal.ONE, m1));
+			.add(me2);
+		menuEntryCache.add(me1);
+		menuEntryCache.add(me2);
 
 		menuCache.add(m1);
 		menuCache.add(m2);
@@ -50,5 +56,29 @@ public class EntityCache {
 		}
 
 		return valid ? user : null;
+	}
+
+	public static final Menu byMenuId(final Serializable id) {
+		Objects.requireNonNull(id);
+
+		for (Menu menu : menuCache) {
+			if (id.equals(menu.getId())) {
+				return menu;
+			}
+		}
+		throw new IllegalArgumentException("id does not correspond to an menu");
+	}
+
+	public static final void deleteForMenuId(final Serializable id) {
+		Objects.requireNonNull(id);
+
+		final Iterator<MenuEntry> it = menuEntryCache.iterator();
+		while (it.hasNext()) {
+			final MenuEntry entry = it.next();
+			if (entry.getId()
+						.equals(id)) {
+				it.remove();
+			}
+		}
 	}
 }

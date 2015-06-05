@@ -15,6 +15,7 @@ import at.fh.ooe.swe4.fx.campina.jpa.EntityCache;
 import at.fh.ooe.swe4.fx.campina.jpa.Menu;
 import at.fh.ooe.swe4.fx.campina.view.admin.menu.model.MenuModel;
 import at.fh.ooe.swe4.fx.campina.view.admin.menu.part.MenuTabViewHandler;
+import at.fh.ooe.swe4.fx.campina.view.admin.user.model.UserModel;
 import at.fh.ooe.swe4.fx.campina.view.api.FormContext;
 
 /**
@@ -27,6 +28,27 @@ public class MenuEventControl {
 
 	public MenuEventControl() {
 		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Handles the new action of the form.
+	 * 
+	 * @param event
+	 *            the {@link ActionEvent}
+	 */
+	public void newAction(final ActionEvent event) {
+		final FormContext<MenuModel> ctx = (FormContext<MenuModel>) ((Node) event.getSource()).getUserData();
+		// clear former set message
+		populateFormMessage(null, ctx);
+		// reset form
+		ctx.formHandler.resetForm(ctx);
+		// create new user model with new user entity
+		ctx.model.reset();
+		// hide buttons
+		ctx.getNode(MenuTabViewHandler.MENU_DELETE_BUTTON_ID)
+			.setVisible(Boolean.FALSE);
+		// reload users
+		handleMenuReload(ctx);
 	}
 
 	/**
@@ -74,12 +96,12 @@ public class MenuEventControl {
 				.setVisible(Boolean.TRUE);
 			final Menu menu = ctx.model.getEntity();
 			EntityCache.menuCache.remove(menu);
+			EntityCache.deleteForMenuId(ctx.model.getEntity()
+													.getId());
 			ctx.formHandler.resetForm(ctx);
 			ctx.model.reset();
-			handleMenuReload(ctx);
 		}
-		((ChoiceBox<MenuModel>) ctx.getNode(MenuTabViewHandler.MENU_SELECTION_KEY)).getSelectionModel()
-																					.select(ctx.model);
+		handleMenuReload(ctx);
 
 	}
 

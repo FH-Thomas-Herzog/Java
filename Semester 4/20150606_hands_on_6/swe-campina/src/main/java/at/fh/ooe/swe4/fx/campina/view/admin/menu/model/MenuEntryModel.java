@@ -83,6 +83,7 @@ public class MenuEntryModel extends AbstractViewModel<Integer, MenuEntry> {
 		final MenuEntry entry = new MenuEntry();
 		entry.setPrice(BigDecimal.ZERO);
 		entry.setMenu(new Menu());
+		entry.setOrdinal(0);
 		menus = FXCollections.observableArrayList();
 		menus.add(new Menu());
 		prepare(entry);
@@ -122,13 +123,18 @@ public class MenuEntryModel extends AbstractViewModel<Integer, MenuEntry> {
 			ordinal = 3,
 			required = true,
 			requiredMessage = "Bitte Menu wählen",
-			type = FormFieldType.SELECT)
+			type = FormFieldType.SELECT,
+			valueClass = Menu.class)
 	public Menu getMenu() {
 		return getEntity().getMenu();
 	}
 
 	public void setMenu(Menu menu) {
 		getEntity().setMenu(menu);
+		if (menu != null) {
+			getEntity().setOrdinal(menu.getEntries()
+										.size() + 1);
+		}
 	}
 
 	@SelectFormField(target = "menu",

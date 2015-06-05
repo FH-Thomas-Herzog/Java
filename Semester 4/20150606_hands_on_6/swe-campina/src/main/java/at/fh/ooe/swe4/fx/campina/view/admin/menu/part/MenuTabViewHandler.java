@@ -76,6 +76,8 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 	public static final String					MENU_DELETE_BUTTON_ID		= "tab-menu-menu-form-delete-button";
 	public static final String					MENU_ENTRY_SAVE_BUTTON_ID	= "tab-menu-menu-entry-form-save-button";
 	public static final String					MENU_ENTRY_DELETE_BUTTON_ID	= "tab-menu-menu-entry-form-delete-button";
+	public static final String					MENU_NEW_BUTTON_ID			= "tab-menu-menu-form-new-button";
+	public static final String					MENU_ENTRY_NEW_BUTTON_ID	= "tab-menu-menu-entry-form-new-button";
 
 	/**
 	 * Enumeration which specifies the edit type. Provides an label too.
@@ -182,7 +184,7 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 				parent.add(menuEntryGroup, 0, 1);
 				final FormContext<MenuEntryModel> menuEntryCtx = (FormContext<MenuEntryModel>) menuEntryGroup.getUserData();
 				menuEntryCtx.model.reset();
-				menuEntryControl.handleMenuEntryLoad(menuEntryCtx);
+				menuEntryControl.handleMenuEntryReload(menuEntryCtx);
 				((ChoiceBox<MenuEntryModel>) menuEntryCtx.getNode(MENU_ENTRY_SELECTION_KEY)).getSelectionModel()
 																							.select(menuEntryCtx.model);
 				menuEntryCtx.getNode(MENU_ENTRY_DELETE_BUTTON_ID)
@@ -470,7 +472,12 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
 
-		// TODO: Register events here
+		final Button newButton = new Button();
+		newButton.setText("Neues Menu");
+		newButton.setId(MENU_NEW_BUTTON_ID);
+		newButton.setUserData(ctx);
+		newButton.setOnAction(menuControl::newAction);
+
 		final Button saveButton = new Button();
 		saveButton.setText("Speichern");
 		saveButton.setId(MENU_SAVE_BUTTON_ID);
@@ -483,10 +490,12 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 		deleteButton.setUserData(ctx);
 		deleteButton.setOnAction(menuControl::deleteMenu);
 
-		gridPane.add(saveButton, 0, 0);
-		gridPane.add(deleteButton, 1, 0);
+		gridPane.add(newButton, 0, 0);
+		gridPane.add(saveButton, 1, 0);
+		gridPane.add(deleteButton, 2, 0);
 
 		// register in context
+		ctx.putNode(MENU_NEW_BUTTON_ID, newButton);
 		ctx.putNode(MENU_SAVE_BUTTON_ID, saveButton);
 		ctx.putNode(MENU_DELETE_BUTTON_ID, deleteButton);
 
@@ -508,7 +517,12 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
 
-		// TODO: Register events here
+		final Button newButton = new Button();
+		newButton.setText("Neuer Menu Eintrag");
+		newButton.setId(MENU_ENTRY_NEW_BUTTON_ID);
+		newButton.setUserData(ctx);
+		newButton.setOnAction(menuEntryControl::newAction);
+
 		final Button saveButton = new Button();
 		saveButton.setText("Speichern");
 		saveButton.setId(MENU_ENTRY_SAVE_BUTTON_ID);
@@ -521,10 +535,12 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 		deleteButton.setUserData(ctx);
 		deleteButton.setOnAction(menuEntryControl::deleteMenuEntry);
 
-		gridPane.add(saveButton, 0, 0);
-		gridPane.add(deleteButton, 1, 0);
+		gridPane.add(newButton, 0, 0);
+		gridPane.add(saveButton, 1, 0);
+		gridPane.add(deleteButton, 2, 0);
 
 		// register in context
+		ctx.putNode(MENU_ENTRY_NEW_BUTTON_ID, newButton);
 		ctx.putNode(MENU_ENTRY_SAVE_BUTTON_ID, saveButton);
 		ctx.putNode(MENU_ENTRY_DELETE_BUTTON_ID, deleteButton);
 

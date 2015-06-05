@@ -77,6 +77,15 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 
 	@Override
 	public int compareTo(Menu o) {
-		return day.compareTo(o.getDay());
+		if ((getId() == null) && (o.getId() == null)) {
+			return 0;
+		} else if (getId() == null) {
+			return -1;
+		} else if (o.getId() == null) {
+			return 1;
+		} else {
+			return getId().compareTo(o.getId());
+			// return day.compareTo(o.getDay());
+		}
 	}
 }
