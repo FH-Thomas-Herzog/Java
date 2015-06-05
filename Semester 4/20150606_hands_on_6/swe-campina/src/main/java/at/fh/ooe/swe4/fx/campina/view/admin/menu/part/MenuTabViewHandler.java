@@ -156,7 +156,7 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 
 		@Override
 		public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-			if ((newValue == null) || ((oldValue != null) && (oldValue.equals(newValue)))) {
+			if (observable.getValue() == null) {
 				return;
 			}
 
@@ -165,12 +165,13 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 			parent.getChildren()
 					.remove(menuGroup);
 
-			switch ((EditMode) newValue.getUserData()) {
+			switch ((EditMode) observable.getValue()
+											.getUserData()) {
 			case MENU:
 				parent.add(menuGroup, 0, 1);
 				final FormContext<MenuModel> menuCtx = (FormContext<MenuModel>) menuGroup.getUserData();
 				menuCtx.model.reset();
-				menuControl.handleMenuLoad(menuCtx);
+				menuControl.handleMenuReload(menuCtx);
 				((ChoiceBox<MenuModel>) menuCtx.getNode(MENU_SELECTION_KEY)).getSelectionModel()
 																			.select(menuCtx.model);
 				menuCtx.getNode(MENU_DELETE_BUTTON_ID)
@@ -190,7 +191,8 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 				menuEntryCtx.formHandler.fillForm(menuEntryCtx);
 				break;
 			default:
-				throw new IllegalArgumentException("'EditMode#" + ((EditMode) newValue.getUserData()).name() + "' node suppported");
+				throw new IllegalArgumentException("'EditMode#" + ((EditMode) observable.getValue()
+																						.getUserData()).name() + "' node suppported");
 			}
 		}
 	}
@@ -221,12 +223,13 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 
 		@Override
 		public void changed(ObservableValue<? extends MenuModel> observable, MenuModel oldValue, MenuModel newValue) {
-			if ((newValue == null) || ((oldValue != null) && (oldValue.equals(newValue)))) {
+			if (observable.getValue() == null) {
 				return;
 			}
 
-			ctx.model = newValue;
-			ctx.model.prepare(newValue.getEntity());
+			ctx.model = observable.getValue();
+			ctx.model.prepare(observable.getValue()
+										.getEntity());
 			if (ctx.model.getId() != null) {
 				ctx.getNode(MENU_DELETE_BUTTON_ID)
 					.setVisible(Boolean.TRUE);
@@ -264,12 +267,13 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 
 		@Override
 		public void changed(ObservableValue<? extends MenuEntryModel> observable, MenuEntryModel oldValue, MenuEntryModel newValue) {
-			if ((newValue == null) || ((oldValue != null) && (oldValue.equals(newValue)))) {
+			if (observable.getValue() == null) {
 				return;
 			}
 
-			ctx.model = newValue;
-			ctx.model.prepare(newValue.getEntity());
+			ctx.model = observable.getValue();
+			ctx.model.prepare(observable.getValue()
+										.getEntity());
 			control.handleMenuLoad(ctx);
 			if (ctx.model.getId() == null) {
 				ctx.getNode(MENU_ENTRY_DELETE_BUTTON_ID)
@@ -529,7 +533,7 @@ public class MenuTabViewHandler implements ViewHandler<Tab> {
 
 	@Override
 	public void initHandler() {
-		menuControl.handleMenuLoad(menuCtx);
+		menuControl.handleMenuReload(menuCtx);
 		menuCtx.formHandler.fillForm(menuCtx);
 		((ChoiceBox<MenuModel>) menuCtx.getNode(MENU_SELECTION_KEY)).getSelectionModel()
 																	.select(menuCtx.model);

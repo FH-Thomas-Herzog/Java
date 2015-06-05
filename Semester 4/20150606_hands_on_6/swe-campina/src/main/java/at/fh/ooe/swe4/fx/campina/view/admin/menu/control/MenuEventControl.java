@@ -43,17 +43,20 @@ public class MenuEventControl {
 		ctx.formHandler.fillModel(ctx);
 
 		if (ctx.valid) {
+			final Menu menu;
 			if (ctx.model.getId() != null) {
-				// TODO: update on database
+				menu = ctx.model.getEntity();
+				EntityCache.menuCache.add(menu);
 			} else {
-				final Menu menu = ctx.model.getEntity();
+				menu = ctx.model.getEntity();
 				menu.setId(EntityCache.menuCache.size() + 1);
 				EntityCache.menuCache.add(menu);
 			}
-			((ChoiceBox<MenuModel>) ctx.getNode(MenuTabViewHandler.MENU_SELECTION_KEY)).getSelectionModel()
-																			.select(ctx.model);
+			ctx.model.prepare(menu);
+			handleMenuReload(ctx);
 		} else {
 			populateFormMessage("Formular ungültig !! Bitte Eingaben prüfen", ctx);
+			handleMenuReload(ctx);
 		}
 	}
 
@@ -69,23 +72,25 @@ public class MenuEventControl {
 		if (ctx.model.getId() != null) {
 			ctx.getNode(MenuTabViewHandler.MENU_DELETE_BUTTON_ID)
 				.setVisible(Boolean.TRUE);
-			EntityCache.menuCache.remove(ctx.model.getEntity());
+			final Menu menu = ctx.model.getEntity();
+			EntityCache.menuCache.remove(menu);
 			ctx.formHandler.resetForm(ctx);
 			ctx.model.reset();
-			ctx.formHandler.fillForm(ctx);
+			handleMenuReload(ctx);
 		}
 		((ChoiceBox<MenuModel>) ctx.getNode(MenuTabViewHandler.MENU_SELECTION_KEY)).getSelectionModel()
-																		.select(ctx.model);
+																					.select(ctx.model);
 
 	}
 
 	/**
-	 * The handles the load of the menus
+	 * The handles the load of the menus. Resets the current ctx.model in the
+	 * observed list and set this model as selected
 	 * 
 	 * @param ctx
 	 *            the form context
 	 */
-	public void handleMenuLoad(final FormContext<MenuModel> ctx) {
+	public void handleMenuReload(final FormContext<MenuModel> ctx) {
 		Objects.requireNonNull(ctx);
 
 		final ObservableList<MenuModel> list = (ObservableList<MenuModel>) ctx.getObserable(MenuTabViewHandler.MENU_SELECTION_KEY);
@@ -96,6 +101,13 @@ public class MenuEventControl {
 			model.prepare(menu);
 			list.add(model);
 		}
+
+		// need to replace observed instance
+		list.set(list.indexOf(ctx.model), ctx.model);
+
+		// need to select current context hold model
+		((ChoiceBox<MenuModel>) ctx.getNode(MenuTabViewHandler.MENU_SELECTION_KEY)).getSelectionModel()
+																					.select(ctx.model);
 	}
 
 	/**

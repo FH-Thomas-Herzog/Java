@@ -48,15 +48,11 @@ public class UserEventControl {
 		// reset form
 		ctx.formHandler.resetForm(ctx);
 		// create new user model with new user entity
-		ctx.model = new UserModel();
-		// sets a new user entity and inits model
 		ctx.model.reset();
-		// set this model as selected ('Please choose')
-		((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
-																		.select(new UserModel());
-
 		// hide buttons
 		setButtonVisibility(ctx, Boolean.FALSE);
+		// reload users
+		handleUserReload(ctx);
 	}
 
 	/**
@@ -82,18 +78,15 @@ public class UserEventControl {
 			// if not already managed increase id by size + 1
 			if (!EntityCache.userCache.contains(user)) {
 				user.setId(EntityCache.userCache.size() + 1);
-			}
-			// init model with new saved user
-			ctx.model.prepare(user);
+			} 
 			// save model in backed list for testing
 			EntityCache.userCache.add(user);
-			// reload data from db (now backing list)
-			handleUserLoad(ctx);
-			// set this model selected
-			((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
-																			.select(ctx.model);
+			// init model with new saved user
+			ctx.model.prepare(user);
 			// enable buttons
 			setButtonVisibility(ctx, Boolean.TRUE);
+			// reload data from db (now backing list)
+			handleUserReload(ctx);
 		} else {
 			populateFormMessage("Formular ungültig !!! Bitte Eingaben prüfen", ctx);
 		}
@@ -114,25 +107,22 @@ public class UserEventControl {
 		// reset the form
 		ctx.formHandler.resetForm(ctx);
 
-		final ChoiceBox<UserModel> userSelection = ((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY));
-		final UserModel model = userSelection.getSelectionModel()
-												.getSelectedItem();
+		final UserModel model = ((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
+																											.getSelectedItem();
 
 		// TODO: Delete entity from db here
 
 		// existing user gets deleted
 		if (model.getId() != null) {
 			EntityCache.userCache.remove(model.getEntity());
-			handleUserLoad(ctx);
 		}
 
 		// reset model
 		ctx.model = new UserModel();
-		// set new user as selected
-		userSelection.getSelectionModel()
-						.select(ctx.model);
 		// disable buttons
 		setButtonVisibility(ctx, Boolean.FALSE);
+		// reload users
+		handleUserReload(ctx);
 	}
 
 	/**
@@ -146,15 +136,18 @@ public class UserEventControl {
 		// clear old set message
 		populateFormMessage(null, ctx);
 		// selected user model
-		final ChoiceBox<UserModel> userSelection = ((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY));
-		final UserModel model = userSelection.getSelectionModel()
-												.getSelectedItem();
+		final UserModel model = ((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
+																											.getSelectedItem();
+
 		final Button blockButton = (Button) ctx.getNode(UserTabviewHandler.BLOCK_BUTTON_ID);
 		final User user = model.getEntity();
 
 		// invert user blocked state
 		user.setBlockedFlag(!model.getEntity()
 									.getBlockedFlag());
+
+		ctx.model.prepare(user);
+		ctx.formHandler.fillForm(ctx);
 
 		// TODO: Update blocked flag on db
 
@@ -167,6 +160,8 @@ public class UserEventControl {
 		else {
 			blockButton.setText("Blockieren");
 		}
+		// user reload
+		handleUserReload(ctx);
 	}
 
 	// #############################################################
@@ -177,18 +172,16 @@ public class UserEventControl {
 		populateFormMessage(null, ctx);
 		// Selection present
 		if (user.getId() != null) {
-			ctx.model = new UserModel(user.getEntity());
-			ctx.formHandler.resetForm(ctx);
+			ctx.model.prepare(user.getEntity());
 			ctx.formHandler.fillForm(ctx);
 			setButtonVisibility(ctx, Boolean.TRUE);
 		}
 		// No selection present
 		else {
-			ctx.formHandler.resetForm(ctx);
-			ctx.model = new UserModel();
+			ctx.model.reset();
+			ctx.formHandler.fillForm(ctx);
 			setButtonVisibility(ctx, Boolean.FALSE);
 		}
-
 	}
 
 	// #############################################################
@@ -200,7 +193,7 @@ public class UserEventControl {
 	 * @param userList
 	 *            the {@link ObservableList} to add users to
 	 */
-	public void handleUserLoad(final FormContext<UserModel> ctx) {
+	public void handleUserReload(final FormContext<UserModel> ctx) {
 		Objects.requireNonNull(ctx);
 
 		final ObservableList<UserModel> userList = (ObservableList<UserModel>) ctx.getObserable(UserTabviewHandler.USER_SELECTION_KEY);
@@ -209,6 +202,11 @@ public class UserEventControl {
 		for (User user : EntityCache.userCache) {
 			userList.add(new UserModel(user));
 		}
+
+		userList.set(userList.indexOf(ctx.model), ctx.model);
+
+		((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
+																					.select(ctx.model);
 	}
 
 	/**

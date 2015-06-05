@@ -76,10 +76,9 @@ public class UserTabviewHandler implements ViewHandler<Tab> {
 
 	@Override
 	public void initHandler() {
-		userControl.handleUserLoad(ctx);
+		userControl.handleUserReload(ctx);
 		((ChoiceBox<UserModel>) ctx.getNode(USER_SELECTION_KEY)).getSelectionModel()
 																.select(0);
-		ctx.formHandler.fillForm(ctx);
 	}
 
 	@Override
@@ -201,10 +200,11 @@ public class UserTabviewHandler implements ViewHandler<Tab> {
 					.addListener(new ChangeListener<UserModel>() {
 						@Override
 						public void changed(ObservableValue<? extends UserModel> observable, UserModel oldValue, UserModel newValue) {
-							if ((newValue != null) && (!ctx.model.equals(newValue))) {
-								userControl.handleUserSelection(ctx,
-																newValue);
+							if (observable.getValue() == null) {
+								return;
 							}
+
+							userControl.handleUserSelection(ctx, observable.getValue());
 						}
 					});
 		userChoice.setConverter(new StringConverter<UserModel>() {
@@ -219,8 +219,6 @@ public class UserTabviewHandler implements ViewHandler<Tab> {
 				throw new UnsupportedOperationException("Not supported conversion from string to object");
 			}
 		});
-		userChoice.getSelectionModel()
-					.select(0);
 		userChoice.setPrefWidth(400);
 		ctx.putObserable(USER_SELECTION_KEY, users);
 		ctx.putNode(USER_SELECTION_KEY, userChoice);
