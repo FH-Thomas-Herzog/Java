@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.service.api;
+package at.fh.ooe.swe4.campina.service.api.spec;
 
 import java.io.Serializable;
 import java.sql.Connection;
