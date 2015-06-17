@@ -27,7 +27,7 @@ public interface RmiServer extends Serializable {
 	 * @throws IllegalStateException
 	 *             if the rmi hasn't been started before
 	 */
-	public <T extends Remote> void bindService(T service, Class<T> interfaceClazz) throws RemoteException;
+	public <T extends Remote> void bindBean(T service, Class<T> interfaceClazz) throws RemoteException;
 
 	/**
 	 * Unbinds a registered service if the service is bind to the backed rmi
@@ -40,7 +40,7 @@ public interface RmiServer extends Serializable {
 	 * @throws NullPointerException
 	 *             if the interface class is null
 	 */
-	public <T extends Remote> void unbindService(Class<T> interfaceClazz) throws RemoteException;
+	public <T extends Remote> void unbindBean(Class<T> interfaceClazz) throws RemoteException;
 
 	/**
 	 * SWtarts the rmi server and hosts the services on the given url.

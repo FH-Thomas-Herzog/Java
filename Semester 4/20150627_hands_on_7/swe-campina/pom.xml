@@ -44,5 +44,10 @@
 			<artifactId>swe-campina-service-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>at.fh.ooe.swe4.campina.service</groupId>
+			<artifactId>swe-campina-service-impl</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

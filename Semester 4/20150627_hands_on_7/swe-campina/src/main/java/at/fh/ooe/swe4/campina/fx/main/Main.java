@@ -1,11 +1,14 @@
 package at.fh.ooe.swe4.campina.fx.main;
 
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import at.fh.ooe.swe4.campina.fx.rmi.service.locator.ServiceLocator;
 import at.fh.ooe.swe4.campina.fx.view.scene.MainSceneViewHandler;
 import at.fh.ooe.swe4.campina.service.api.LoginEventService;
+import at.fh.ooe.swe4.campina.service.api.spec.factory.RmiServiceFactory;
 
 public class Main extends Application {
 
@@ -29,9 +32,15 @@ public class Main extends Application {
 
 	public static void main(String args[]) throws Throwable {
 
-		final LoginEventService service = ServiceLocator.getService(LoginEventService.class);
-		service.save(null);
-		service.delete(null);
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new RMISecurityManager());
+		}
+		RmiServiceFactory f = (RmiServiceFactory) Naming.lookup("rmi://localhost:50555/RmiServiceFactory");
+		for (int i = 0; i < 100000; i++) {
+			LoginEventService es = f.createService(LoginEventService.class);
+			es.save(null);
+			es.delete(null);
+		}
 		// launch(args);
 	}
 

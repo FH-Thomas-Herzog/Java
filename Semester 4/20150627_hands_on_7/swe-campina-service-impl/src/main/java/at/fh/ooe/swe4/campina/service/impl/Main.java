@@ -1,10 +1,8 @@
 package at.fh.ooe.swe4.campina.service.impl;
 
 import java.io.Serializable;
-import java.rmi.Naming;
-import java.util.Objects;
+import java.rmi.RMISecurityManager;
 
-import at.fh.ooe.swe4.campina.service.api.LoginEventService;
 import at.fh.ooe.swe4.campina.service.api.spec.factory.RmiServiceFactory;
 import at.fh.ooe.swe4.campina.service.api.spec.rmi.RmiServer;
 import at.fh.ooe.swe4.campina.service.impl.factory.ServiceFactory;
@@ -17,11 +15,20 @@ public class Main implements Serializable {
 	}
 
 	public static void main(String[] args) throws Throwable {
+
+		// System.setProperty("java.rmi.server.codebase",
+		// ServiceFactory.class.getProtectionDomain()
+		// .getCodeSource()
+		// .getLocation()
+		// .toString());
+		//
+		// System.setProperty("java.security.policy", "/java.policy");
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new RMISecurityManager());
+		}
 		final RmiServiceFactory serviceFactory = new ServiceFactory();
 		final RmiServer rmiServer = new RmiServerImpl(50555);
 		rmiServer.start();
-		rmiServer.bindService(serviceFactory.createService(LoginEventService.class), LoginEventService.class);
-
-		rmiServer.stop();
+		rmiServer.bindBean(serviceFactory, RmiServiceFactory.class);
 	}
 }

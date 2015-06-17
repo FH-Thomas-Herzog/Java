@@ -71,7 +71,7 @@ public class RmiServerImpl implements RmiServer {
 	}
 
 	@Override
-	public <T extends Remote> void bindService(T service, Class<T> interfaceClazz) throws RemoteException {
+	public <T extends Remote> void bindBean(T service, Class<T> interfaceClazz) throws RemoteException {
 		Objects.requireNonNull(service);
 		Objects.requireNonNull(interfaceClazz);
 
@@ -80,7 +80,10 @@ public class RmiServerImpl implements RmiServer {
 			log.info("Service '" + name + "' will get bound");
 		}
 		try {
-			Remote rmiService = UnicastRemoteObject.exportObject(service, port);
+			Remote rmiService = service;
+			if (!(service instanceof UnicastRemoteObject)) {
+				rmiService = UnicastRemoteObject.exportObject(service, port);
+			}
 			serviceRegistry.bind(name, rmiService);
 			registeredServiceNames.add(name);
 		} catch (AlreadyBoundException e) {
@@ -90,7 +93,7 @@ public class RmiServerImpl implements RmiServer {
 	}
 
 	@Override
-	public <T extends Remote> void unbindService(final Class<T> interfaceClazz) throws RemoteException {
+	public <T extends Remote> void unbindBean(final Class<T> interfaceClazz) throws RemoteException {
 		Objects.requireNonNull(interfaceClazz);
 
 		if (registeredServiceNames.contains(interfaceClazz.getSimpleName())) {

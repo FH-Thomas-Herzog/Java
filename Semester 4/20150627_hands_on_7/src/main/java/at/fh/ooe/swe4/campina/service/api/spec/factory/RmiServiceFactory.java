@@ -1,7 +1,7 @@
 package at.fh.ooe.swe4.campina.service.api.spec.factory;
 
-import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * This interface specifies a rmi service factory which creates instances for
@@ -10,7 +10,7 @@ import java.rmi.Remote;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 15, 2015
  */
-public interface RmiServiceFactory extends Serializable {
+public interface RmiServiceFactory extends Remote {
 
 	/**
 	 * Creates a service for the given name.
@@ -22,5 +22,5 @@ public interface RmiServiceFactory extends Serializable {
 	 * @throws IllegalArgumentException
 	 *             if the name does not map to a service interface
 	 */
-	public <T extends Remote> T createService(Class<T> interfaze);
+	public <T extends Remote> T createService(Class<T> interfaze) throws RemoteException;
 }
