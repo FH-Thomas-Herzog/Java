@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.service.impl;
+package at.fh.ooe.swe4.campina.service.impl.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

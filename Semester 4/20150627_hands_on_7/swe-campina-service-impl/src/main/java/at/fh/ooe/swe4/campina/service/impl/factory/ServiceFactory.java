@@ -15,7 +15,10 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
+import at.fh.ooe.swe4.campina.service.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.service.api.spec.factory.RmiServiceFactory;
+import at.fh.ooe.swe4.campina.service.impl.jdbc.ConnectionManagerImpl;
+import at.fh.ooe.swe4.campina.service.impl.jdbc.ConnectionManagerImpl.DbMetadata;
 
 /**
  * This class creates the remote object for the client so that multiple instance
@@ -32,6 +35,7 @@ public class ServiceFactory extends UnicastRemoteObject implements RmiServiceFac
 
 	private Timer												cleanupTimer;
 	private final Map<Class<Remote>, SortedSet<ServiceWrapper>>	beanCache			= new HashMap<>(100, (float) 0.75);
+	private final DbMetadata									databaseMeta;
 	private final Object										lockObject			= new Object();
 
 	private static final Logger									log					= Logger.getLogger(ServiceFactory.class);
@@ -116,9 +120,16 @@ public class ServiceFactory extends UnicastRemoteObject implements RmiServiceFac
 	 * @throws RemoteException
 	 *             if remote object could not be created
 	 */
-	public ServiceFactory() throws RemoteException {
+	public ServiceFactory(final DbMetadata databaseMeta) throws RemoteException {
+		Objects.requireNonNull(databaseMeta);
+
 		this.cleanupTimer = new Timer();
 		this.cleanupTimer.schedule(new CleanupTask(this), 0, (int) (1 * 1000));
+		this.databaseMeta = databaseMeta;
+
+		// constructor tries to establish a connection and therefore validates
+		// the provided metadata
+		new ConnectionManagerImpl(databaseMeta);
 	}
 
 	@Override
@@ -136,7 +147,7 @@ public class ServiceFactory extends UnicastRemoteObject implements RmiServiceFac
 			// -- empty cache --
 			if ((cache.isEmpty()) || (cache.first().clientCount >= CLIENT_COUNT)) {
 				cache.add(new ServiceWrapper(newServiceInstance(interfaze)));
-				log.info("Caching first instance: '" + interfaze.getSimpleName() + "'");
+				log.info("Caching new instance: '" + interfaze.getSimpleName() + "'");
 			}
 
 			// -- get first bean with lowest client count --
@@ -166,7 +177,8 @@ public class ServiceFactory extends UnicastRemoteObject implements RmiServiceFac
 		T instance = null;
 		try {
 			Class<T> clazz = (Class<T>) Class.forName(IMPL_NAME_SPACE + interfaze.getSimpleName() + "Impl");
-			instance = clazz.newInstance();
+			instance = clazz.getConstructor(ConnectionManager.class)
+							.newInstance(new ConnectionManagerImpl(databaseMeta));
 		} catch (Throwable e) {
 			e.printStackTrace();
 			log.error("Could create service instance", e);

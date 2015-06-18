@@ -2,14 +2,22 @@ package at.fh.ooe.swe4.campina.service.impl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.util.Objects;
 
 import at.fh.ooe.swe4.campina.jpa.LoginEvent;
+import at.fh.ooe.swe4.campina.service.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.service.api.LoginEventService;
 
 public class LoginEventServiceImpl extends UnicastRemoteObject implements LoginEventService {
 
-	public LoginEventServiceImpl() throws RemoteException {
+	private final ConnectionManager	connectionManager;
+
+	public LoginEventServiceImpl(ConnectionManager connectionManager) throws RemoteException {
 		super();
+		Objects.requireNonNull(connectionManager);
+
+		this.connectionManager = connectionManager;
 	}
 
 	private static final long	serialVersionUID	= 8411763221630572942L;
