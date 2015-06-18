@@ -17,6 +17,9 @@ import javax.persistence.Table;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import at.fh.ooe.swe4.campina.jdbc.Menu;
+import at.fh.ooe.swe4.campina.jdbc.MenuEntry;
+import at.fh.ooe.swe4.campina.jdbc.Order;
 import at.fh.ooe.swe4.campina.jdbc.User;
 import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 
@@ -171,6 +174,9 @@ public class ServiceDaoUtil<E extends AbstractEntity> {
 	public static void main(String args[]) {
 		try {
 			new ServiceDaoUtil<>(User.class);
+			new ServiceDaoUtil<>(Menu.class);
+			new ServiceDaoUtil<>(MenuEntry.class);
+			new ServiceDaoUtil<>(Order.class);
 
 		} catch (Throwable e) {
 			e.printStackTrace();

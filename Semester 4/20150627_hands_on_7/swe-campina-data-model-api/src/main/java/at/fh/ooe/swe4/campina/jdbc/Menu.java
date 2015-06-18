@@ -3,6 +3,9 @@ package at.fh.ooe.swe4.campina.jdbc;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 import at.fh.ooe.swe4.campina.jdbc.constants.Day;
 
@@ -12,6 +15,7 @@ import at.fh.ooe.swe4.campina.jdbc.constants.Day;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 5, 2015
  */
+@Table(name = "MENU", schema = "CAMPINA")
 public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 
 	private static final long		serialVersionUID	= 7569033478037865818L;
@@ -46,11 +50,7 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 		this.label = label;
 	}
 
-	@Override
-	public Integer getId() {
-		return _getId();
-	}
-
+	@Column(name = "DAY")
 	public Day getDay() {
 		return day;
 	}
@@ -59,6 +59,7 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 		this.day = day;
 	}
 
+	@Column(name = "LABEL")
 	public String getLabel() {
 		return label;
 	}
@@ -67,25 +68,9 @@ public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
 		this.label = label;
 	}
 
-	public SortedSet<MenuEntry> getEntries() {
-		return entires;
-	}
-
-	public void setEntires(SortedSet<MenuEntry> entires) {
-		this.entires = entires;
-	}
-
 	@Override
 	public int compareTo(Menu o) {
-		if ((getId() == null) && (o.getId() == null)) {
-			return 0;
-		} else if (getId() == null) {
-			return -1;
-		} else if (o.getId() == null) {
-			return 1;
-		} else {
-			return getId().compareTo(o.getId());
-			// return day.compareTo(o.getDay());
-		}
+		return Integer.valueOf(day.ordinal)
+						.compareTo(o.getDay().ordinal);
 	}
 }

@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 
 /**
@@ -12,6 +15,7 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 5, 2015
  */
+@Table(name = "MENU_ENTRY", schema = "CAMPINA")
 public class MenuEntry extends AbstractEntity<Integer> implements Comparable<MenuEntry> {
 
 	private static final long	serialVersionUID	= -1771596592654083392L;
@@ -51,11 +55,7 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 		this.menu = menu;
 	}
 
-	@Override
-	public Integer getId() {
-		return _getId();
-	}
-
+	@Column(name = "ORDINAL")
 	public Integer getOrdinal() {
 		return ordinal;
 	}
@@ -64,6 +64,7 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 		this.ordinal = ordinal;
 	}
 
+	@Column(name = "LABEL")
 	public String getLabel() {
 		return label;
 	}
@@ -72,6 +73,7 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 		this.label = label;
 	}
 
+	@Column(name = "PRICE")
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -80,20 +82,13 @@ public class MenuEntry extends AbstractEntity<Integer> implements Comparable<Men
 		this.price = price;
 	}
 
+	@Column(name = "MENU_ID")
 	public Menu getMenu() {
 		return menu;
 	}
 
 	public void setMenu(Menu menu) {
 		this.menu = menu;
-	}
-
-	public Set<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(Set<Order> orders) {
-		this.orders = orders;
 	}
 
 	@Override

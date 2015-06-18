@@ -2,6 +2,9 @@ package at.fh.ooe.swe4.campina.jdbc.api;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 public abstract class AbstractEntity<I extends Serializable> implements Serializable {
 
 	private static final long	serialVersionUID	= 1095329951571671581L;
@@ -16,9 +19,9 @@ public abstract class AbstractEntity<I extends Serializable> implements Serializ
 		this.id = id;
 	}
 
-	public abstract I getId();
-
-	protected I _getId() {
+	@Id
+	@Column(name = "ID")
+	public I getId() {
 		return id;
 	}
 

@@ -4,22 +4,25 @@ import java.util.Objects;
 
 /**
  * Enumeration which specifies the available days.
+ * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 5, 2015
  */
 public enum Day {
-	MONDAY("Montag"),
-	THUESDAY("Dienstag"),
-	WEDNESDAY("Mittwoch"),
-	THURSDAY("Donnerstag"),
-	FRIDAY("Freitag"),
-	SATARDAY("Samstag"),
-	SUNDAY("Sontag");
+	MONDAY("Montag", 0),
+	THUESDAY("Dienstag", 1),
+	WEDNESDAY("Mittwoch", 2),
+	THURSDAY("Donnerstag", 3),
+	FRIDAY("Freitag", 4),
+	SATARDAY("Samstag", 5),
+	SUNDAY("Sontag", 6);
 
 	public final String	label;
+	public final int	ordinal;
 
-	private Day(String label) {
+	private Day(String label, int ordinal) {
 		this.label = label;
+		this.ordinal = ordinal;
 	}
 
 	/**

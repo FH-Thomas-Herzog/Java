@@ -1,10 +1,6 @@
 package at.fh.ooe.swe4.campina.jdbc;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
@@ -45,12 +41,6 @@ public class User extends AbstractEntity<Integer> {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-	}
-
-	@Id
-	@Column(name = "ID")
-	public Integer getId() {
-		return _getId();
 	}
 
 	@Column(name = "FIRST_NAME")

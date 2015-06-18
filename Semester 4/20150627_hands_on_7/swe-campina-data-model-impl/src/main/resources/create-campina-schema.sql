@@ -6,6 +6,8 @@ CREATE TABLE campina.user (
 	email VARCHAR(255) NOT NULL,
 	username VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
+	admin_flag smallint NOT NULL default 0,
+	blocked_flag smallint NOT NULL default 0,
 	PRIMARY KEY(id)
 );
 

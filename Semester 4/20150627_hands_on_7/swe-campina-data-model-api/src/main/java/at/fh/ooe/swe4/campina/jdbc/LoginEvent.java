@@ -27,9 +27,4 @@ public class LoginEvent extends AbstractEntity<Integer> {
 	public LoginEvent(Integer id) {
 		super(id);
 	}
-
-	@Override
-	public Integer getId() {
-		return _getId();
-	}
 }

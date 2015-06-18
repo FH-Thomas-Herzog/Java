@@ -2,6 +2,9 @@ package at.fh.ooe.swe4.campina.jdbc;
 
 import java.util.Calendar;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 
 /**
@@ -10,6 +13,7 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 5, 2015
  */
+@Table(name = "ORDER", schema = "CAMPINA")
 public class Order extends AbstractEntity<Integer> {
 
 	private static final long	serialVersionUID	= -4218683353334647328L;
@@ -40,11 +44,7 @@ public class Order extends AbstractEntity<Integer> {
 		super(id);
 	}
 
-	@Override
-	public Integer getId() {
-		return _getId();
-	}
-
+	@Column(name = "USER_ID")
 	public User getUser() {
 		return user;
 	}
@@ -53,6 +53,7 @@ public class Order extends AbstractEntity<Integer> {
 		this.user = user;
 	}
 
+	@Column(name = "MENU_ENTRY_ID")
 	public MenuEntry getMenuEntry() {
 		return menuEntry;
 	}
@@ -61,6 +62,7 @@ public class Order extends AbstractEntity<Integer> {
 		this.menuEntry = menuEntry;
 	}
 
+	@Column(name = "ORDER_DATE")
 	public Calendar getOrderDate() {
 		return orderDate;
 	}
@@ -69,6 +71,7 @@ public class Order extends AbstractEntity<Integer> {
 		this.orderDate = orderDate;
 	}
 
+	@Column(name = "COLLECT")
 	public Calendar getCollectDate() {
 		return collectDate;
 	}
