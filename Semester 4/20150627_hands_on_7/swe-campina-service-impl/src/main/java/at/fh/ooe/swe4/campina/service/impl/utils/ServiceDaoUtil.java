@@ -1,7 +1,9 @@
-package at.fh.ooe.swe4.campina.service.utils;
+package at.fh.ooe.swe4.campina.service.impl.utils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,12 +31,17 @@ public class ServiceDaoUtil<E extends AbstractEntity> {
 
 	private final Class<E>																clazz;
 	private final Table																	table;
+	private List<Column>																columns;
 
 	private static final Map<Class<? extends AbstractEntity>, Map<Statement, String>>	cache			= new ConcurrentHashMap<Class<? extends AbstractEntity>, Map<Statement, String>>();
-	private static final String															INSERT_TEMPLATE	= "INSERT INTO %s (%s) VALUES (%s);";
-	private static final String															UPDATE_TEMPLATE	= "UPDATE %s SET %s WHERE ID=:ID;";
-	private static final String															DELETE_TEMPLATE	= "DELETE FROM %s WHERE ID=:ID;";
+	private static final String															INSERT_TEMPLATE	= "INSERT INTO %s (%s, version) VALUES (%s, 1);";
+	private static final String															UPDATE_TEMPLATE	= "UPDATE %s SET %s, version=version+1 WHERE id=:id AND version=:version;";
+	private static final String															DELETE_TEMPLATE	= "DELETE FROM %s WHERE id=:id AND version=:version;";
 	private static final Logger															log				= Logger.getLogger(ServiceDaoUtil.class);
+	private static final List<String>													EXCLUDE_FIELDS	= Arrays.asList(new String[] {
+																																		"id",
+																																		"version"
+																										});
 
 	private static enum Statement {
 		INSERT,
@@ -73,11 +80,11 @@ public class ServiceDaoUtil<E extends AbstractEntity> {
 		log.info("--------------------------------------------");
 
 		Map<Statement, String> newCache = new HashMap<Statement, String>();
+		this.columns = getColumns();
 		Map<Statement, String> statementCache = cache.putIfAbsent(clazz, newCache);
 
 		// only if no other instance has initialized cache for this class
 		if (statementCache == null) {
-			final List<Column> columns = getColumns();
 			final List<String> columnNames = new ArrayList<>(columns.size());
 			final List<String> parameters = new ArrayList<>(columns.size());
 			final List<String> updateParameters = new ArrayList<>(columns.size());
@@ -130,11 +137,12 @@ public class ServiceDaoUtil<E extends AbstractEntity> {
 		final Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
 			final Column col = method.getAnnotation(Column.class);
-			if (col != null) {
+			if ((col != null) && (!EXCLUDE_FIELDS.contains(col.name()
+																.toLowerCase()))) {
 				columns.add(col);
 			}
 		}
-		return columns;
+		return Collections.unmodifiableList(columns);
 	}
 
 	private List<Object> getValues(final E entity, final List<String> names) throws IllegalStateException {
