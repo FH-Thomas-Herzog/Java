@@ -1,0 +1,247 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.form}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.math.BigDecimal}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.math.RoundingMode}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.text.NumberFormat}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.time.Instant}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.time.LocalDate}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.time.ZoneId}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Calendar}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Date}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.Node}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.ChoiceBox}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.DatePicker}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.scene.control.TextField}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.util.converter.BigDecimalStringConverter}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * Utility class for handling form fields.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{FormUtils} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{FormUtils}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Enumeration whcih specifies the supported JavaFX components.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{enum} \PYGdefault{n}{FormFieldType} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{n}{TextField}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{),}
+		\PYGdefault{n}{DATE\PYGdefaultZus{}PICKER}\PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{n}{DatePicker}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{),}
+		\PYGdefault{n}{DECIMAL}\PYGdefault{o}{(}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{n}{TextField}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{),}
+		\PYGdefault{n}{SELECT}\PYGdefault{o}{(}\PYGdefault{n}{Object}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{,} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}}				\PYGdefault{n}{valueClass}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Node}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{nodeClass}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param valueClass}
+\PYGdefault{c+cm}{		 * @param nodeClass}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{private} \PYGdefault{n+nf}{FormFieldType}\PYGdefault{o}{(}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}} \PYGdefault{n}{valueClass}\PYGdefault{o}{,} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Node}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{nodeClass}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{valueClass} \PYGdefault{o}{=} \PYGdefault{n}{valueClass}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{nodeClass} \PYGdefault{o}{=} \PYGdefault{n}{nodeClass}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Interface which marks an Validator}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link Node\PYGdefaultZcb{} type this validator is for}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{FormFieldValidator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Node}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Answers the question if the current instance is valid.}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param type}
+\PYGdefault{c+cm}{		 * @param inst}
+\PYGdefault{c+cm}{		 * @return true if valid, false otherwise}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{valid}\PYGdefault{o}{(}\PYGdefault{n}{FormFieldType} \PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{n}{T} \PYGdefault{n}{inst}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * A required validator for Form Fields.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 5, 2015}
+\PYGdefault{c+cm}{	 * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *            the \PYGdefaultZob{}@link Node\PYGdefaultZcb{} type fo the to validate node}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{RequiredFormFieldValidator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Node}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{FormFieldValidator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{valid}\PYGdefault{o}{(}\PYGdefault{n}{FormFieldType} \PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{n}{T} \PYGdefault{n}{node}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Object} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{getFormFieldValue}\PYGdefault{o}{(}\PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{n}{node}\PYGdefault{o}{);}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{k}{instanceof} \PYGdefault{n}{String}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{o}{!((}\PYGdefault{n}{String}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{trim}\PYGdefault{o}{()}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates a node regarding the given \PYGdefaultZob{}@link FormFieldType\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param type}
+\PYGdefault{c+cm}{	 *            the type of the form field}
+\PYGdefault{c+cm}{	 * @return the new corresponding node instance}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{n}{Node} \PYGdefault{n+nf}{create}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormFieldType} \PYGdefault{n}{type}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{type}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{switch} \PYGdefault{o}{(}\PYGdefault{n}{type}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{case} \PYGdefault{n}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{:}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{TextField}\PYGdefault{o}{();}
+		\PYGdefault{k}{case} \PYGdefault{n}{DATE\PYGdefaultZus{}PICKER}\PYGdefault{o}{:}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{DatePicker}\PYGdefault{o}{();}
+		\PYGdefault{k}{case} \PYGdefault{n}{DECIMAL}\PYGdefault{o}{:}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{TextField}\PYGdefault{o}{();}
+		\PYGdefault{k}{case} \PYGdefault{n}{SELECT}\PYGdefault{o}{:}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{default}\PYGdefault{o}{:}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}FormFieldType: \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{type}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} is not managed here\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the node value.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param type}
+\PYGdefault{c+cm}{	 *            the type of the form field}
+\PYGdefault{c+cm}{	 * @param node}
+\PYGdefault{c+cm}{	 *            the node to get value from}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the node\PYGdefaultZsq{}s value}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the given node is null}
+\PYGdefault{c+cm}{	 * @throws IllegalArgumentException}
+\PYGdefault{c+cm}{	 *             if the node is of an unmanaged type}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{n}{Object} \PYGdefault{n+nf}{getFormFieldValue}\PYGdefault{o}{(}\PYGdefault{n}{FormFieldType} \PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{Node} \PYGdefault{n}{node}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Need node to get its value\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{switch} \PYGdefault{o}{(}\PYGdefault{n}{type}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{case} \PYGdefault{n}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{:}
+			\PYGdefault{k}{return} \PYGdefault{o}{((}\PYGdefault{n}{TextField}\PYGdefault{o}{)} \PYGdefault{n}{node}\PYGdefault{o}{).}\PYGdefault{n+na}{getText}\PYGdefault{o}{();}
+		\PYGdefault{k}{case} \PYGdefault{n}{DATE\PYGdefaultZus{}PICKER}\PYGdefault{o}{:}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{DatePicker} \PYGdefault{n}{picker} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{DatePicker}\PYGdefault{o}{)} \PYGdefault{n}{node}\PYGdefault{o}{;}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Calendar} \PYGdefault{n}{cal}\PYGdefault{o}{;}
+			\PYGdefault{n}{LocalDate} \PYGdefault{n}{localDate} \PYGdefault{o}{=} \PYGdefault{n}{picker}\PYGdefault{o}{.}\PYGdefault{n+na}{getValue}\PYGdefault{o}{();}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{localDate} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{Instant} \PYGdefault{n}{instant} \PYGdefault{o}{=} \PYGdefault{n}{Instant}\PYGdefault{o}{.}\PYGdefault{n+na}{from}\PYGdefault{o}{(}\PYGdefault{n}{localDate}\PYGdefault{o}{.}\PYGdefault{n+na}{atStartOfDay}\PYGdefault{o}{(}\PYGdefault{n}{ZoneId}\PYGdefault{o}{.}\PYGdefault{n+na}{systemDefault}\PYGdefault{o}{()));}
+				\PYGdefault{n}{cal} \PYGdefault{o}{=} \PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{getInstance}\PYGdefault{o}{();}
+				\PYGdefault{n}{cal}\PYGdefault{o}{.}\PYGdefault{n+na}{setTime}\PYGdefault{o}{(}\PYGdefault{n}{Date}\PYGdefault{o}{.}\PYGdefault{n+na}{from}\PYGdefault{o}{(}\PYGdefault{n}{instant}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{cal} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{cal}\PYGdefault{o}{;}
+		\PYGdefault{k}{case} \PYGdefault{n}{DECIMAL}\PYGdefault{o}{:}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{o}{((}\PYGdefault{n}{TextField}\PYGdefault{o}{)} \PYGdefault{n}{node}\PYGdefault{o}{).}\PYGdefault{n+na}{getText}\PYGdefault{o}{();}
+			\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{value} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(!}\PYGdefault{n}{value}\PYGdefault{o}{.}\PYGdefault{n+na}{trim}\PYGdefault{o}{()}
+											\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{()))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{BigDecimal}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{)} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{case} \PYGdefault{n}{SELECT}\PYGdefault{o}{:}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}} \PYGdefault{n}{box} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{})} \PYGdefault{n}{node}\PYGdefault{o}{;}
+			\PYGdefault{k}{return} \PYGdefault{n}{box}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectedItem}\PYGdefault{o}{();}
+		\PYGdefault{k}{default}\PYGdefault{o}{:}
+			\PYGdefault{k}{break}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Nod of type \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{()}
+																	\PYGdefault{o}{.}\PYGdefault{n+na}{getName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} unknown\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Resets the node value by setting it to null.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param type}
+\PYGdefault{c+cm}{	 *            the form field type}
+\PYGdefault{c+cm}{	 * @param node}
+\PYGdefault{c+cm}{	 *            the node to be reset}
+\PYGdefault{c+cm}{	 * @see FormFieldType\PYGdefaultZsh{}setFormValue(Node, Object)}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{resetFormValue}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormFieldType} \PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{Node} \PYGdefault{n}{node}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{setFormValue}\PYGdefault{o}{(}\PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{n}{node}\PYGdefault{o}{,} \PYGdefault{k+kc}{null}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Sets a value on the given node.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param type}
+\PYGdefault{c+cm}{	 *            the form field type}
+\PYGdefault{c+cm}{	 * @param node}
+\PYGdefault{c+cm}{	 *            the node to set value on}
+\PYGdefault{c+cm}{	 * @param value}
+\PYGdefault{c+cm}{	 *            the value to be set. (Model held type)}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the given node is null}
+\PYGdefault{c+cm}{	 * @throws IllegalArgumentException}
+\PYGdefault{c+cm}{	 *             if the node is of an unmanaged type}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setFormValue}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{FormFieldType} \PYGdefault{n}{type}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{Node} \PYGdefault{n}{node}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{Object} \PYGdefault{n}{value}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{node}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}Need node to get its value\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{switch} \PYGdefault{o}{(}\PYGdefault{n}{type}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k}{case} \PYGdefault{n}{INPUT\PYGdefaultZus{}TEXT}\PYGdefault{o}{:}
+			\PYGdefault{o}{((}\PYGdefault{n}{TextField}\PYGdefault{o}{)} \PYGdefault{n}{node}\PYGdefault{o}{).}\PYGdefault{n+na}{setText}\PYGdefault{o}{((}\PYGdefault{n}{String}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{);}
+			\PYGdefault{k}{return}\PYGdefault{o}{;}
+
+		\PYGdefault{k}{case} \PYGdefault{n}{DATE\PYGdefaultZus{}PICKER}\PYGdefault{o}{:}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{LocalDate} \PYGdefault{n}{localDate}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{Date} \PYGdefault{n}{date} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Date}\PYGdefault{o}{();}
+				\PYGdefault{n}{Instant} \PYGdefault{n}{instant} \PYGdefault{o}{=} \PYGdefault{n}{date}\PYGdefault{o}{.}\PYGdefault{n+na}{toInstant}\PYGdefault{o}{();}
+				\PYGdefault{n}{localDate} \PYGdefault{o}{=} \PYGdefault{n}{instant}\PYGdefault{o}{.}\PYGdefault{n+na}{atZone}\PYGdefault{o}{(}\PYGdefault{n}{ZoneId}\PYGdefault{o}{.}\PYGdefault{n+na}{systemDefault}\PYGdefault{o}{())}
+									\PYGdefault{o}{.}\PYGdefault{n+na}{toLocalDate}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{localDate} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{((}\PYGdefault{n}{DatePicker}\PYGdefault{o}{)} \PYGdefault{n}{node}\PYGdefault{o}{).}\PYGdefault{n+na}{setValue}\PYGdefault{o}{(}\PYGdefault{n}{localDate}\PYGdefault{o}{);}
+			\PYGdefault{k}{return}\PYGdefault{o}{;}
+		\PYGdefault{k}{case} \PYGdefault{n}{DECIMAL}\PYGdefault{o}{:}
+			\PYGdefault{n}{String} \PYGdefault{n}{formatted} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{NumberFormat} \PYGdefault{n}{nf} \PYGdefault{o}{=} \PYGdefault{n}{NumberFormat}\PYGdefault{o}{.}\PYGdefault{n+na}{getCurrencyInstance}\PYGdefault{o}{();}
+				\PYGdefault{n}{nf}\PYGdefault{o}{.}\PYGdefault{n+na}{setMaximumFractionDigits}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+				\PYGdefault{n}{nf}\PYGdefault{o}{.}\PYGdefault{n+na}{setMinimumFractionDigits}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{n}{nf}\PYGdefault{o}{.}\PYGdefault{n+na}{setRoundingMode}\PYGdefault{o}{(}\PYGdefault{n}{RoundingMode}\PYGdefault{o}{.}\PYGdefault{n+na}{UNNECESSARY}\PYGdefault{o}{);}
+				\PYGdefault{n}{nf}\PYGdefault{o}{.}\PYGdefault{n+na}{setMinimumIntegerDigits}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{n}{nf}\PYGdefault{o}{.}\PYGdefault{n+na}{setMaximumFractionDigits}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{3}\PYGdefault{o}{);}
+				\PYGdefault{n}{formatted} \PYGdefault{o}{=} \PYGdefault{n}{nf}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(((}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{doubleValue}\PYGdefault{o}{());}
+				\PYGdefault{n}{formatted} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{BigDecimalStringConverter}\PYGdefault{o}{().}\PYGdefault{n+na}{toString}\PYGdefault{o}{((}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{((}\PYGdefault{n}{TextField}\PYGdefault{o}{)} \PYGdefault{n}{node}\PYGdefault{o}{).}\PYGdefault{n+na}{setText}\PYGdefault{o}{(}\PYGdefault{n}{formatted}\PYGdefault{o}{);}
+			\PYGdefault{k}{return}\PYGdefault{o}{;}
+		\PYGdefault{k}{case} \PYGdefault{n}{SELECT}\PYGdefault{o}{:}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Object}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{box} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{ChoiceBox}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Object}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{node}\PYGdefault{o}{;}
+			\PYGdefault{n}{box}\PYGdefault{o}{.}\PYGdefault{n+na}{getSelectionModel}\PYGdefault{o}{()}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{select}\PYGdefault{o}{(}\PYGdefault{n}{box}\PYGdefault{o}{.}\PYGdefault{n+na}{getItems}\PYGdefault{o}{()}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{indexOf}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{));}
+			\PYGdefault{k}{return}\PYGdefault{o}{;}
+		\PYGdefault{k}{default}\PYGdefault{o}{:}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Nod of type \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{node}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{()}
+																	\PYGdefault{o}{.}\PYGdefault{n+na}{getName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} unknown\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

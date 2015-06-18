@@ -1,0 +1,67 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.annotation}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.lang.annotation.ElementType}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.lang.annotation.Retention}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.lang.annotation.RetentionPolicy}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.lang.annotation.Target}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.form.FormUtils.FormFieldType}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This annotation marks an method as an form field and connects the form field}
+\PYGdefault{c+cm}{ * to the model method.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * This annotation must be placed on valid java bean getter method.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 5, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@Retention}\PYGdefault{o}{(}\PYGdefault{n}{RetentionPolicy}\PYGdefault{o}{.}\PYGdefault{n+na}{RUNTIME}\PYGdefault{o}{)}
+\PYGdefault{n+nd}{@Target}\PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{ElementType}\PYGdefault{o}{.}\PYGdefault{n+na}{METHOD}
+\PYGdefault{o}{\PYGdefaultZcb{})}
+\PYGdefault{k+kd}{public} \PYGdefault{n+nd}{@interface} \PYGdefault{n}{FormField} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return the form field id}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n}{String} \PYGdefault{n+nf}{id}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return the backed form field type}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n}{FormFieldType} \PYGdefault{n+nf}{type}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return the form field label}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n}{String} \PYGdefault{n+nf}{label}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return Message displayed if required but not set. Default \PYGdefaultZdq{}\PYGdefaultZdq{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n}{String} \PYGdefault{n+nf}{requiredMessage}\PYGdefault{o}{()} \PYGdefault{k}{default} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZdq{}}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return Flag which marks an form field as required. Default false}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{required}\PYGdefault{o}{()} \PYGdefault{k}{default} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return the ordinal of this form field in the form}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kt}{int} \PYGdefault{n+nf}{ordinal}\PYGdefault{o}{()} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @return additional value class. Must be used when form field of type}
+\PYGdefault{c+cm}{	 *         \PYGdefaultZob{}@link FormFieldType\PYGdefaultZsh{}SELECT\PYGdefaultZcb{}.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}} \PYGdefault{n}{valueClass}\PYGdefault{o}{()} \PYGdefault{k}{default} \PYGdefault{n}{Object}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * An event handler factory which can be used to provide event listener for}
+\PYGdefault{c+cm}{	 * the generate form field}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n}{EventHandlerFactories} \PYGdefault{n+nf}{eventHandlerFactories}\PYGdefault{o}{()} \PYGdefault{k}{default} \PYGdefault{n+nd}{@EventHandlerFactories}\PYGdefault{o}{();}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

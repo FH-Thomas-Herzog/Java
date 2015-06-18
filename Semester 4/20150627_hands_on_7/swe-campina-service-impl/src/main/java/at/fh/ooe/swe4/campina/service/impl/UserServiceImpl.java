@@ -2,9 +2,9 @@ package at.fh.ooe.swe4.campina.service.impl;
 
 import java.rmi.RemoteException;
 
-import at.fh.ooe.swe4.campina.jpa.User;
+import at.fh.ooe.swe4.campina.jdbc.User;
+import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.service.api.AbstractService;
-import at.fh.ooe.swe4.campina.service.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.service.api.UserService;
 
 public class UserServiceImpl extends AbstractService implements UserService {

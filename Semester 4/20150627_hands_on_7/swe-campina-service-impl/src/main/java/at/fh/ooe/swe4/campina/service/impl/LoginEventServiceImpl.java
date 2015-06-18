@@ -5,8 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.util.Objects;
 
-import at.fh.ooe.swe4.campina.jpa.LoginEvent;
-import at.fh.ooe.swe4.campina.service.api.ConnectionManager;
+import at.fh.ooe.swe4.campina.jdbc.LoginEvent;
+import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.service.api.LoginEventService;
 
 public class LoginEventServiceImpl extends UnicastRemoteObject implements LoginEventService {

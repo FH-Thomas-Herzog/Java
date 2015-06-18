@@ -21,8 +21,8 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>at.fh.ooe.swe4.campina.jpa</groupId>
-			<artifactId>swe-campina-data-model</artifactId>
+			<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
+			<artifactId>swe-campina-data-model-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -46,23 +46,10 @@
 			<version>1.2.12</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.35</version>
-		</dependency>
-		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>6.0</version>
 		</dependency>
 
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>campina-local-repo</id>
-			<name>campina-local-repo</name>
-			<url>file://${project.basedir}/repo</url>
-		</repository>
-	</repositories>
 </project>

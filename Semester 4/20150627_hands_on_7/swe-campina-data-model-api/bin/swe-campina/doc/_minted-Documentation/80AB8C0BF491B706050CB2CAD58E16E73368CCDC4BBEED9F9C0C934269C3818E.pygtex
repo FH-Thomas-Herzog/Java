@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.order.control}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javafx.collections.ObservableList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.EntityCache}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.jpa.Order}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.fx.campina.view.admin.order.model.OrderModel}\PYGdefault{o}{;}
+
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{OrderEventHandler} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{OrderEventHandler}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{reloadOrders}\PYGdefault{o}{(}\PYGdefault{n}{ObservableList}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{OrderModel}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{list}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{list}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{list}\PYGdefault{o}{.}\PYGdefault{n+na}{clear}\PYGdefault{o}{();}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Order} \PYGdefault{n}{order} \PYGdefault{o}{:} \PYGdefault{n}{EntityCache}\PYGdefault{o}{.}\PYGdefault{n+na}{orderCache}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{list}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{OrderModel}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{));}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}
