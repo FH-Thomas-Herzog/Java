@@ -5,28 +5,38 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-public abstract class AbstractEntity<I extends Serializable> implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
 	private static final long	serialVersionUID	= 1095329951571671581L;
 
-	private I					id;
+	private Integer				id;
+	private Long				version;
 
 	public AbstractEntity() {
 	}
 
-	public AbstractEntity(I id) {
+	public AbstractEntity(Integer id) {
 		super();
 		this.id = id;
 	}
 
 	@Id
 	@Column(name = "ID")
-	public I getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(I id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Column(name = "version")
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 	@Override
@@ -45,7 +55,7 @@ public abstract class AbstractEntity<I extends Serializable> implements Serializ
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractEntity<I> other = (AbstractEntity<I>) obj;
+		AbstractEntity other = (AbstractEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

@@ -16,7 +16,7 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * @date Jun 5, 2015
  */
 @Table(name = "MENU_ENTRY", schema = "CAMPINA")
-public class MenuEntry extends AbstractEntity<Integer> implements Comparable<MenuEntry> {
+public class MenuEntry extends AbstractEntity implements Comparable<MenuEntry> {
 
 	private static final long	serialVersionUID	= -1771596592654083392L;
 

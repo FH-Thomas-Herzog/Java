@@ -14,7 +14,7 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * @date Jun 5, 2015
  */
 @Table(name = "ORDER", schema = "CAMPINA")
-public class Order extends AbstractEntity<Integer> {
+public class Order extends AbstractEntity {
 
 	private static final long	serialVersionUID	= -4218683353334647328L;
 

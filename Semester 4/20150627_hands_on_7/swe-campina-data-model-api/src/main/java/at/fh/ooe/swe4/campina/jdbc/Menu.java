@@ -16,7 +16,7 @@ import at.fh.ooe.swe4.campina.jdbc.constants.Day;
  * @date Jun 5, 2015
  */
 @Table(name = "MENU", schema = "CAMPINA")
-public class Menu extends AbstractEntity<Integer> implements Comparable<Menu> {
+public class Menu extends AbstractEntity implements Comparable<Menu> {
 
 	private static final long		serialVersionUID	= 7569033478037865818L;
 

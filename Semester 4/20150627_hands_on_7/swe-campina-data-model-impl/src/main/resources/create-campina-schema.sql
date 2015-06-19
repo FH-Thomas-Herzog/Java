@@ -1,3 +1,8 @@
+drop table campina.order;
+drop table campina.menu_entry;
+drop table campina.menu;
+drop table campina.user;
+
 CREATE TABLE campina.user (
 	id INTEGER NOT NULL AUTO_INCREMENT,
 	version INTEGER NOT NULL default 1,
@@ -39,8 +44,6 @@ CREATE TABLE campina.menu_entry(
 	PRIMARY KEY (id)
 );
 
-commit;
-
 ALTER TABLE campina.order 
 ADD CONSTRAINT fk_menu_entry_id
 FOREIGN KEY (menu_entry_id)
@@ -56,4 +59,5 @@ ADD CONSTRAINT fk_menu_id
 FOREIGN KEY (menu_id)
 REFERENCES campina.menu(id);
 
+-- Need sequence otherwise entity manager has no access to entity id !!!
 commit;

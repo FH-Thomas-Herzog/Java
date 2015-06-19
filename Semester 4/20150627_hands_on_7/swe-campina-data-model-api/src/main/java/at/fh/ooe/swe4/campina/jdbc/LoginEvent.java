@@ -8,7 +8,7 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 5, 2015
  */
-public class LoginEvent extends AbstractEntity<Integer> {
+public class LoginEvent extends AbstractEntity {
 
 	private static final long	serialVersionUID	= 1782498743658504195L;
 
