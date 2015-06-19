@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
-import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
+import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl;
 import at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl.DbMetadata;
 import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import javafx.collections.ObservableList;
 import at.fh.ooe.swe4.campina.fx.view.admin.order.model.OrderModel;
-import at.fh.ooe.swe4.campina.jdbc.Order;
+import at.fh.ooe.swe4.campina.persistence.api.Order;
 
 public class OrderEventHandler {
 

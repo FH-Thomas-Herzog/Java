@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Objects;
 
-import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
+import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 
 /**
  * This class is the base class for entity daos which are accessible via rmi and

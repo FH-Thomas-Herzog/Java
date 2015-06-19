@@ -3,7 +3,7 @@ package at.fh.ooe.swe4.campina.fx.view.api;
 import java.io.Serializable;
 import java.util.Objects;
 
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
+import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
 
 /**
  * This model is the base for all entity amanging models.

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.apache.log4j.Logger;
 
-import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
+import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 
 /**
  * This is the default implementation for the {@link ConnectionManager}

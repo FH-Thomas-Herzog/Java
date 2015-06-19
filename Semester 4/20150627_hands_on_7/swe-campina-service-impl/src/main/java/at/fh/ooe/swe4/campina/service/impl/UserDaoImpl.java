@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import at.fh.ooe.swe4.campina.jdbc.User;
-import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
-import at.fh.ooe.swe4.campina.jdbc.api.EntityManager;
+import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
+import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
+import at.fh.ooe.swe4.campina.persistence.api.User;
 import at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl;
 import at.fh.ooe.swe4.campina.service.api.AbstractRemoteDao;
 import at.fh.ooe.swe4.campina.service.api.UserDao;

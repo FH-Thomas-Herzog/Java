@@ -3,8 +3,8 @@ package at.fh.ooe.swe4.campina.fx.view.admin.order.model;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
-import at.fh.ooe.swe4.campina.jdbc.Order;
-import at.fh.ooe.swe4.campina.jdbc.User;
+import at.fh.ooe.swe4.campina.persistence.api.Order;
+import at.fh.ooe.swe4.campina.persistence.api.User;
 
 /**
  * The view model backing the {@link Order} entity.

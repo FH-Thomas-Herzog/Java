@@ -26,13 +26,13 @@ import javax.persistence.Table;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import at.fh.ooe.swe4.campina.jdbc.Menu;
-import at.fh.ooe.swe4.campina.jdbc.MenuEntry;
-import at.fh.ooe.swe4.campina.jdbc.Order;
-import at.fh.ooe.swe4.campina.jdbc.User;
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
-import at.fh.ooe.swe4.campina.jdbc.api.ConnectionManager;
-import at.fh.ooe.swe4.campina.jdbc.api.EntityManager;
+import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
+import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
+import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
+import at.fh.ooe.swe4.campina.persistence.api.Menu;
+import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
+import at.fh.ooe.swe4.campina.persistence.api.Order;
+import at.fh.ooe.swe4.campina.persistence.api.User;
 import at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl.DbMetadata;
 
 /**

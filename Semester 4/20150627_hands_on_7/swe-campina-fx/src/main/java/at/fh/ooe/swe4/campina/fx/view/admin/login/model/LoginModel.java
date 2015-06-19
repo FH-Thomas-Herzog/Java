@@ -5,7 +5,7 @@ import java.util.Objects;
 import at.fh.ooe.swe4.campina.fx.view.annotation.FormField;
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
 import at.fh.ooe.swe4.campina.fx.view.form.FormUtils.FormFieldType;
-import at.fh.ooe.swe4.campina.jdbc.LoginEvent;
+import at.fh.ooe.swe4.campina.persistence.api.LoginEvent;
 
 /**
  * The model backing the {@link LoginEvent} entity.

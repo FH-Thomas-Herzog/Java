@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import at.fh.ooe.swe4.campina.fx.view.admin.login.model.LoginModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.login.part.LoginTabViewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
-import at.fh.ooe.swe4.campina.jdbc.User;
+import at.fh.ooe.swe4.campina.persistence.api.User;
 
 /**
  * This class contains all of the action logic:
@@ -44,7 +44,7 @@ public class LoginEventControl {
 			ctx.formHandler.fillModel(ctx);
 
 			// TODO: Search for username and password on db
-			loggedUser = EntityCache.isValidLogin(ctx.model);
+//			loggedUser = EntityCache.isValidLogin(ctx.model);
 			// increase counter
 			if (loggedUser == null) {
 				ctx.model.increaseCounter();

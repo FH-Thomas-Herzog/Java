@@ -1,6 +1,5 @@
-package at.fh.ooe.swe4.campina.jdbc;
+package at.fh.ooe.swe4.campina.persistence.api;
 
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 
 /**
  * The login event which represents an valid login maybe an invalid too.

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
+import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
 
 /**
  * This interface marks an interface as an service which needs to provide at
@@ -12,12 +12,10 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 17, 2015
- * @param <I>
- *            the type of the id
  * @param <T>
  *            the type of the entity
  */
-public interface RemoteDaoService<I extends Serializable, T extends AbstractEntity> extends Remote {
+public interface RemoteDao<T extends AbstractEntity> extends Remote {
 
 	/**
 	 * Saves or updates the entity

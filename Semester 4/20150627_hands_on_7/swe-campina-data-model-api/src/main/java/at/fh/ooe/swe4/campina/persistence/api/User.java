@@ -1,9 +1,7 @@
-package at.fh.ooe.swe4.campina.jdbc;
+package at.fh.ooe.swe4.campina.persistence.api;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 
 /**
  * The campina user.

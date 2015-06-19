@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import at.fh.ooe.swe4.campina.fx.view.admin.menu.model.MenuEntryModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.menu.part.MenuTabViewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
-import at.fh.ooe.swe4.campina.jdbc.MenuEntry;
+import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
 
 /**
  * The event handler for the {@link MenuEntry} entity.

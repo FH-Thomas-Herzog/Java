@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.jdbc.api;
+package at.fh.ooe.swe4.campina.persistence.api;
 
 import java.io.Serializable;
 

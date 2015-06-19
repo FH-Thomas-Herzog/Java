@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.jdbc.constants;
+package at.fh.ooe.swe4.campina.persistence.constants;
 
 import java.util.Objects;
 

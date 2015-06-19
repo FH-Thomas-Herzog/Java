@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.jdbc;
+package at.fh.ooe.swe4.campina.persistence.api;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -6,8 +6,7 @@ import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
-import at.fh.ooe.swe4.campina.jdbc.constants.Day;
+import at.fh.ooe.swe4.campina.persistence.constants.Day;
 
 /**
  * The menu.

@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.jdbc;
+package at.fh.ooe.swe4.campina.persistence.api;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -6,8 +6,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-
-import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
 
 /**
  * The menu entry
