@@ -51,5 +51,10 @@
 			<version>6.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
+			<artifactId>swe-campina-data-model-impl</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

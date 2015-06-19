@@ -7,8 +7,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import at.fh.ooe.swe4.campina.fx.view.scene.MainSceneViewHandler;
+import at.fh.ooe.swe4.campina.jdbc.User;
+import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
 import at.fh.ooe.swe4.campina.service.api.LoginEventService;
-import at.fh.ooe.swe4.campina.service.api.spec.factory.RmiServiceFactory;
+import at.fh.ooe.swe4.campina.service.api.UserDao;
 
 public class Main extends Application {
 
@@ -36,11 +38,18 @@ public class Main extends Application {
 			System.setSecurityManager(new RMISecurityManager());
 		}
 		RmiServiceFactory f = (RmiServiceFactory) Naming.lookup("rmi://localhost:50555/RmiServiceFactory");
-		for (int i = 0; i < 100000; i++) {
-			LoginEventService es = f.createService(LoginEventService.class);
-			es.save(null);
-			es.delete(null);
-		}
+		UserDao es = f.createService(UserDao.class);
+
+		final User user = new User();
+		user.setId(9);
+		user.setFirstName("markus");
+		user.setLastName("maierhofer");
+		user.setUsername("marki");
+		user.setEmail("marki@t.at");
+		user.setPassword("xxxxxxx");
+		user.setAdminFlag(Boolean.TRUE);
+		user.setBlockedFlag(Boolean.FALSE);
+		es.save(user);
 		// launch(args);
 	}
 

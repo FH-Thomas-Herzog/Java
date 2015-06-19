@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>at.fh.ooe.swe4.campina.rmi</groupId>
-  <artifactId>swe-campina-rmi-impl</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>swe-campina-rmi-impl</name>
-  <description>swe-campina-rmi-impl</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>at.fh.ooe.swe4.campina.rmi</groupId>
+	<artifactId>swe-campina-rmi-impl</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>swe-campina-rmi-impl</name>
+	<description>swe-campina-rmi-impl</description>
 	<build>
 		<plugins>
 			<plugin>
@@ -32,6 +33,16 @@
 		<dependency>
 			<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
 			<artifactId>swe-campina-data-model-impl</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>at.fh.ooe.swe4.campina.service</groupId>
+			<artifactId>swe-campina-service-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>at.fh.ooe.swe4.campina.service</groupId>
+			<artifactId>swe-campina-service-impl</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
