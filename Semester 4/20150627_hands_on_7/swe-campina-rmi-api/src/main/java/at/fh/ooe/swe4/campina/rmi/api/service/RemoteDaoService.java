@@ -17,7 +17,7 @@ import at.fh.ooe.swe4.campina.jdbc.api.AbstractEntity;
  * @param <T>
  *            the type of the entity
  */
-public interface RemoteDaoService<I extends Serializable, T extends AbstractEntity<I>> extends Remote {
+public interface RemoteDaoService<I extends Serializable, T extends AbstractEntity> extends Remote {
 
 	/**
 	 * Saves or updates the entity
