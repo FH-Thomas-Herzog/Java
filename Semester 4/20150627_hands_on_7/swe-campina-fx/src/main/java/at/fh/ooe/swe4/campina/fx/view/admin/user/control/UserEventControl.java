@@ -33,12 +33,19 @@ import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
  */
 public class UserEventControl {
 
+	private final UserDao		dao;
 	private static final Logger	log	= Logger.getLogger(UserEventControl.class);
 
 	/**
 	 * Creates test data since we have no back-end yet
 	 */
 	public UserEventControl() {
+		try {
+			final String name = "rmi://localhost:50555/" + RmiServiceFactory.class.getSimpleName();
+			this.dao = ((RmiServiceFactory) Naming.lookup(name)).createService(UserDao.class);
+		} catch (Throwable e) {
+			throw new IllegalStateException("Could not obtains UserDao bean", e);
+		}
 	}
 
 	// #############################################################
@@ -72,8 +79,6 @@ public class UserEventControl {
 	 */
 	public void handleSaveAction(final ActionEvent event) {
 		final FormContext<UserModel> ctx = (FormContext<UserModel>) ((Node) event.getSource()).getUserData();
-		// clear former set messages
-		populateFormMessage(null, ctx);
 		// validate form
 		ctx.formHandler.validateForm(ctx);
 		// is valid
@@ -84,16 +89,16 @@ public class UserEventControl {
 			// TODO: Persist entity here
 			User user = ctx.model.getEntity();
 			try {
-				user = getUserDao().save(user);
-				user = getUserDao().byId(user.getId());
+				user = dao.save(user);
+				user = dao.byId(user.getId());
+				populateFormMessage(null, ctx);
 			} catch (RemoteException e) {
 				log.error("Could not save user", e);
-				// TODO: Error handling here
-				if (e.getCause() != null) {
-					if (e.getCause() instanceof EmailAlreadyUsedException) {
-
-					} else if (e.getCause() instanceof UsernameAlreadyUsedException) {
-
+				if (e.detail != null) {
+					if (e.detail instanceof EmailAlreadyUsedException) {
+						populateFormMessage("Email bereits vergeben", ctx);
+					} else if (e.detail instanceof UsernameAlreadyUsedException) {
+						populateFormMessage("Bentuezrname bereits vergeben", ctx);
 					}
 				}
 			}
@@ -131,10 +136,10 @@ public class UserEventControl {
 		// existing user gets deleted
 		if (model.getId() != null) {
 			try {
-				getUserDao().delete(model.getEntity());
+				dao.delete(model.getEntity());
 			} catch (RemoteException e) {
 				log.error("Could not delete user", e);
-				// TODO: Exception handling here
+				populateFormMessage("Benutzer konnte nicht gelöscht werden", ctx);
 			}
 		}
 
@@ -155,7 +160,6 @@ public class UserEventControl {
 	public void handleBlockAction(final ActionEvent event) {
 		final FormContext<UserModel> ctx = (FormContext<UserModel>) ((Node) event.getSource()).getUserData();
 		// clear old set message
-		populateFormMessage(null, ctx);
 		// selected user model
 		final UserModel model = ((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
 																											.getSelectedItem();
@@ -167,11 +171,12 @@ public class UserEventControl {
 		user.setBlockedFlag(!model.getEntity()
 									.getBlockedFlag());
 		try {
-			user = getUserDao().save(user);
-			user = getUserDao().byId(user.getId());
+			user = dao.save(user);
+			user = dao.byId(user.getId());
+			populateFormMessage(null, ctx);
 		} catch (RemoteException e) {
 			log.error("Could not block user", e);
-			// TODO: handle exception
+			populateFormMessage("Konnte Benutzer nicht sperren", ctx);
 		}
 
 		ctx.model.prepare(user);
@@ -196,20 +201,24 @@ public class UserEventControl {
 	// Selection controls
 	// #############################################################
 	public void handleUserSelection(final FormContext<UserModel> ctx, final UserModel user) {
-		// clear former set message
-		populateFormMessage(null, ctx);
+		// clear former set message if new user
+		if (!ctx.model.equals(user)) {
+			populateFormMessage(null, ctx);
+		}
 		// Selection present
 		if (user.getId() != null) {
 			try {
-				final User userDB = getUserDao().byId(user.getId());
+				final User userDB = dao.byId(user.getId());
 				user.prepare(userDB);
+				ctx.model.prepare(user.getEntity());
+				ctx.formHandler.fillForm(ctx);
+				setButtonVisibility(ctx, Boolean.TRUE);
 			} catch (RemoteException e) {
 				log.error("Could not load selected user", e);
-				// TODO: handle exception
+				ctx.model.reset();
+				ctx.formHandler.fillForm(ctx);
+				setButtonVisibility(ctx, Boolean.FALSE);
 			}
-			ctx.model.prepare(user.getEntity());
-			ctx.formHandler.fillForm(ctx);
-			setButtonVisibility(ctx, Boolean.TRUE);
 		}
 		// No selection present
 		else {
@@ -234,9 +243,13 @@ public class UserEventControl {
 		final ObservableList<UserModel> userList = (ObservableList<UserModel>) ctx.getObserable(UserTabviewHandler.USER_SELECTION_KEY);
 		userList.clear();
 		userList.add(new UserModel());
+		boolean found = Boolean.FALSE;
 		try {
-			final List<User> users = getUserDao().getAll();
+			final List<User> users = dao.getAll();
 			for (User user : users) {
+				if (user.equals(ctx.model.getEntity())) {
+					found = Boolean.TRUE;
+				}
 				userList.add(new UserModel(user));
 			}
 		} catch (RemoteException e) {
@@ -244,6 +257,11 @@ public class UserEventControl {
 			// TODO: handle exception
 		}
 
+		if (!found) {
+			ctx.model.reset();
+			ctx.formHandler.fillForm(ctx);
+			setButtonVisibility(ctx, Boolean.FALSE);
+		}
 		userList.set(userList.indexOf(ctx.model), ctx.model);
 
 		((ChoiceBox<UserModel>) ctx.getNode(UserTabviewHandler.USER_SELECTION_KEY)).getSelectionModel()
@@ -286,22 +304,6 @@ public class UserEventControl {
 			flow.getChildren()
 				.add(new Text(message));
 			flow.setPrefHeight(30);
-		}
-	}
-
-	/**
-	 * Gets the user dao from the rmi server
-	 * 
-	 * @return the remote instance
-	 * @throws IllegalStateException
-	 *             if the bean could not be obtained
-	 */
-	private UserDao getUserDao() {
-		try {
-			final String name = "rmi://localhost:50555/" + RmiServiceFactory.class.getSimpleName();
-			return ((RmiServiceFactory) Naming.lookup(name)).createService(UserDao.class);
-		} catch (Throwable e) {
-			throw new IllegalStateException("Could not obtains UserDao bean", e);
 		}
 	}
 }

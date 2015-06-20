@@ -57,6 +57,6 @@ public interface RemoteDao<T extends AbstractEntity> extends Remote {
 	 * @throws RemoteException
 	 *             if the load fails
 	 */
-	public List<User> getAll() throws RemoteException;
+	public List<T> getAll() throws RemoteException;
 
 }

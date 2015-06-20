@@ -1,8 +1,9 @@
 package at.fh.ooe.swe4.campina.dao.exception;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
-public class EmailAlreadyUsedException extends RemoteException {
+public class EmailAlreadyUsedException extends RuntimeException {
 
 	public EmailAlreadyUsedException() {
 		// TODO Auto-generated constructor stub

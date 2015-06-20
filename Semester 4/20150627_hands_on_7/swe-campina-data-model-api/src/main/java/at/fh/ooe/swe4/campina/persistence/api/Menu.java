@@ -21,7 +21,6 @@ public class Menu extends AbstractEntity implements Comparable<Menu> {
 
 	private Day						day;
 	private String					label;
-	private SortedSet<MenuEntry>	entires				= new TreeSet<>();
 
 	/**
 	 * 

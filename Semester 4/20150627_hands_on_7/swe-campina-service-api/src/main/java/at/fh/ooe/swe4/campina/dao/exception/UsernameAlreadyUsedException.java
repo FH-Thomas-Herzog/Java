@@ -1,8 +1,9 @@
 package at.fh.ooe.swe4.campina.dao.exception;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
-public class UsernameAlreadyUsedException extends RemoteException {
+public class UsernameAlreadyUsedException extends RuntimeException {
 
 	public UsernameAlreadyUsedException() {
 		// TODO Auto-generated constructor stub

@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+
+import javax.jws.soap.SOAPBinding.Use;
 
 import at.fh.ooe.swe4.campina.dao.api.AbstractRemoteDao;
 import at.fh.ooe.swe4.campina.dao.api.UserDao;
@@ -18,6 +19,12 @@ import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
 import at.fh.ooe.swe4.campina.persistence.api.User;
 import at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl;
 
+/**
+ * This interface is the dao implementation for the {@link Use} entity type.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 20, 2015
+ */
 public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 
 	private static final long			serialVersionUID	= 8350405718897091714L;
@@ -64,15 +71,15 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 			user = userEm.saveOrUpdate(con, user);
 			con.commit();
 			return user;
-		} catch (SQLException e) {
+		} catch (Throwable e) {
 			throw new RemoteException("Could not save user", e);
 		}
 	}
 
 	@Override
 	public void delete(User user) throws RemoteException {
-		if (user == null) {
-			throw new RemoteException("Cannot delete null entity", new NullPointerException());
+		if ((user == null) || (user.getId() == null)) {
+			throw new RemoteException("Cannot delete null entity or entity with null id", new NullPointerException());
 		}
 
 		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {

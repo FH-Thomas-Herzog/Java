@@ -31,7 +31,7 @@ CREATE TABLE campina.order(
 CREATE TABLE campina.menu(
 	id INTEGER NOT NULL auto_increment,
 	version INTEGER NOT NULL default 1,
-	day INTEGER NOT NULL,
+	day VARCHAR(255) NOT NULL,
 	label VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 );

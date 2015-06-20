@@ -237,6 +237,31 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		return entities;
 	}
 
+	@Override
+	public List<E> byQuery(final Connection con, final String query, Object... args) throws SQLException {
+		Objects.requireNonNull(query);
+		Objects.requireNonNull(args);
+
+		final List<E> entities = new ArrayList<>();
+		try (final PreparedStatement pstmt = con.prepareStatement(query)) {
+			for (int i = 0; i < args.length; i++) {
+				pstmt.setObject(i + 1, args[i]);
+			}
+			final ResultSet result = pstmt.executeQuery();
+			while (result.next()) {
+				final E entity = newEntity();
+				entity.setId(result.getInt(1));
+				fillEntity(result, entity);
+				entity.setVersion(result.getLong(columnMetataDataList.size() + 2));
+				entities.add(entity);
+			}
+		} catch (SQLException e) {
+			throw new SQLException("Could not execute custom query: " + query, e);
+		}
+
+		return entities;
+	}
+
 	/**
 	 * Setup this service util by creating all supported statements for the
 	 * backed entity class if and only if no other instance which backs this
@@ -306,14 +331,19 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		log.info("--------------------------------------------");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see at.fh.ooe.swe4.campina.persistence.impl.EntityManager#getTableName()
-	 */
 	@Override
 	public String getTableName() {
 		return table.name();
+	}
+
+	@Override
+	public String getColumnNames() {
+		final List<String> names = new ArrayList<>(columnMetataDataList.size());
+		for (ColumnMetadata colMeta : columnMetataDataList) {
+			names.add(colMeta.column.name()
+									.toLowerCase());
+		}
+		return StringUtils.join(names, ",");
 	}
 
 	/**
@@ -414,10 +444,12 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		Objects.requireNonNull(result);
 		Objects.requireNonNull(entity);
 
+		ColumnMetadata colMeta = null;
+		Object value = null;
 		try {
 			for (int i = 0; i < columnMetataDataList.size(); i++) {
-				final ColumnMetadata colMeta = columnMetataDataList.get(i);
-				final Object value = result.getObject(i + 2);
+				colMeta = columnMetataDataList.get(i);
+				value = result.getObject(i + 2);
 				final Object convertedValue;
 				if (value != null) {
 					convertedValue = convertValueToEntity(colMeta, value);
@@ -428,7 +460,10 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 						.invoke(entity, convertedValue);
 			}
 		} catch (Throwable e) {
-			throw new java.lang.IllegalStateException("Could not fill entity", e);
+			if (value != null) {
+
+			}
+			throw new java.lang.IllegalStateException("Could not fill entity: " + ((colMeta != null) ? colMeta.setter : ""), e);
 		}
 	}
 
@@ -446,21 +481,24 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 	private Object convertValueToEntity(ColumnMetadata colMeta, Object value) {
 		if (value == null) {
 			return value;
-		} else if (colMeta.typeClass.equals(Calendar.class)) {
+		} else if (Calendar.class.isAssignableFrom(colMeta.typeClass)) {
 			final Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(((Timestamp) value).getTime());
-		} else if (colMeta.typeClass.equals(BigDecimal.class)) {
-			return BigDecimal.valueOf((Double) value);
+		} else if (BigDecimal.class.isAssignableFrom(colMeta.typeClass)) {
+			return ((BigDecimal) value);
+		} else if (Enum.class.isAssignableFrom(colMeta.typeClass)) {
+			return Enum.valueOf((Class<Enum>) colMeta.typeClass, (String) value);
 		}
-		if ((AbstractEntity.class.isAssignableFrom(value.getClass()))) {
+		if ((AbstractEntity.class.isAssignableFrom(colMeta.typeClass))) {
 			try {
 				final AbstractEntity fk = (AbstractEntity) colMeta.typeClass.newInstance();
 				fk.setId((Integer) value);
+				return fk;
 			} catch (Exception e) {
 				throw new IllegalStateException("Could not create many-to-one relation entity '" + colMeta.typeClass.getName() + "'");
 			}
 
-		} else if (colMeta.typeClass.equals(Boolean.class)) {
+		} else if (Boolean.class.isAssignableFrom(colMeta.typeClass)) {
 			return (((Integer) value).equals(1)) ? Boolean.TRUE : Boolean.FALSE;
 		}
 		return value;
@@ -484,6 +522,8 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			return ((AbstractEntity) value).getId();
 		} else if (value instanceof BigDecimal) {
 			return ((BigDecimal) value).doubleValue();
+		} else if (value instanceof Enum) {
+			return ((Enum) value).name();
 		} else {
 			return value;
 		}
@@ -499,13 +539,13 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 	private int converttoSqlType(final Class<?> clazz) {
 		Objects.requireNonNull(clazz);
 
-		if (clazz.equals(String.class)) {
+		if (String.class.isAssignableFrom(clazz)) {
 			return Types.VARCHAR;
-		} else if (clazz.equals(Integer.class)) {
+		} else if (Integer.class.isAssignableFrom(clazz)) {
 			return Types.INTEGER;
-		} else if (clazz.equals(BigInteger.class)) {
+		} else if (BigDecimal.class.isAssignableFrom(clazz)) {
 			return Types.DOUBLE;
-		} else if (clazz.equals(Boolean.class)) {
+		} else if (Boolean.class.isAssignableFrom(clazz)) {
 			return Types.SMALLINT;
 		} else if (AbstractEntity.class.isAssignableFrom(clazz)) {
 			return Types.INTEGER;

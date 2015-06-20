@@ -76,4 +76,13 @@ public interface EntityManager<E extends AbstractEntity> {
 	 */
 	public String getTableName();
 
+	/**
+	 * Gets the column names of the backed entity in the form of name-1, name-2,
+	 * ... , name-n
+	 * 
+	 * @return the backed entity column names
+	 */
+	public String getColumnNames();
+
+	public List<E> byQuery(Connection con, String query, Object... args) throws SQLException;
 }
