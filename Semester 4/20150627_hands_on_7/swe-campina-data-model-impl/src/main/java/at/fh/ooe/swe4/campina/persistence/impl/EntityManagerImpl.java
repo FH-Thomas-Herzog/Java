@@ -53,9 +53,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 	private static final String															INSERT_TEMPLATE			= "INSERT INTO %s (%s, version) VALUES (%s, 1);";
 	private static final String															UPDATE_TEMPLATE			= "UPDATE %s SET %s, version=version+1 WHERE id=?;";
 	private static final String															DELETE_TEMPLATE			= "DELETE FROM %s WHERE id=?;";
-	private static final String															SELECT_BY_ID_TEMPLATE	= "SELECT id, %s FROM %s WHERE id=?";
+	private static final String															SELECT_BY_ID_TEMPLATE	= "SELECT id, %s, version FROM %s WHERE id=?";
 	private static final String															SELECT_ID_BY_ID_VERSION	= "SELECT id FROM %s WHERE id=? AND version=?";
-	private static final String															SELECT_BY_TYPE			= "SELECT %s FROM %s";
+	private static final String															SELECT_BY_TYPE			= "SELECT id, %s, version FROM %s";
 	private static final String															SELECT_LAST_INSERT_ID	= "SELECT LAST_INSERT_ID();";
 	private static final Logger															log						= Logger.getLogger(EntityManagerImpl.class);
 	private static final List<String>													EXCLUDE_FIELDS			= Arrays.asList(new String[] {
@@ -206,7 +206,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			pstmt.setInt(1, id);
 			final ResultSet result = pstmt.executeQuery();
 			if (result.next()) {
+				entity.setId(result.getInt(1));
 				fillEntity(result, entity);
+				entity.setVersion(result.getLong(columnMetataDataList.size() + 2));
 			} else {
 				throw new SQLException("Entity not found for id");
 			}
@@ -226,7 +228,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 
 			while (result.next()) {
 				final E entity = newEntity();
+				entity.setId(result.getInt(1));
 				fillEntity(result, entity);
+				entity.setVersion(result.getLong(columnMetataDataList.size() + 2));
 				entities.add(entity);
 			}
 		}
@@ -282,7 +286,7 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			cache.get(clazz)
 					.put(Statement.SELECT_ID_BY_ID_VERSION, String.format(SELECT_ID_BY_ID_VERSION, tableName));
 			cache.get(clazz)
-					.put(Statement.SELECT_BY_TYPE, String.format(SELECT_ID_BY_ID_VERSION, cols, tableName));
+					.put(Statement.SELECT_BY_TYPE, String.format(SELECT_BY_TYPE, cols, tableName));
 
 			log.info(cache.get(clazz)
 							.get(Statement.INSERT));
@@ -411,8 +415,6 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		Objects.requireNonNull(entity);
 
 		try {
-			clazz.getMethod("setId", Integer.class)
-					.invoke(entity, result.getInt(1));
 			for (int i = 0; i < columnMetataDataList.size(); i++) {
 				final ColumnMetadata colMeta = columnMetataDataList.get(i);
 				final Object value = result.getObject(i + 2);
@@ -427,10 +429,6 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			}
 		} catch (Throwable e) {
 			throw new java.lang.IllegalStateException("Could not fill entity", e);
-		}
-
-		if (result.next()) {
-			throw new IllegalStateException("Select by id returned multiple rows");
 		}
 	}
 

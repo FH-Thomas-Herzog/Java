@@ -60,6 +60,3 @@ ALTER TABLE campina.menu_entry
 ADD CONSTRAINT fk_menu_id
 FOREIGN KEY (menu_id)
 REFERENCES campina.menu(id);
-
--- Need sequence otherwise entity manager has no access to entity id !!!
-commit;

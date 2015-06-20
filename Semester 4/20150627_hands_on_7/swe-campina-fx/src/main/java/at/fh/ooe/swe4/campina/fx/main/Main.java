@@ -33,23 +33,24 @@ public class Main extends Application {
 
 	public static void main(String args[]) throws Throwable {
 
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new RMISecurityManager());
-		}
-		RmiServiceFactory f = (RmiServiceFactory) Naming.lookup("rmi://localhost:50555/RmiServiceFactory");
-		UserDao es = f.createService(UserDao.class);
-
-		final User user = new User();
-		user.setId(9);
-		user.setFirstName("markus");
-		user.setLastName("maierhofer");
-		user.setUsername("marki");
-		user.setEmail("marki@t.at");
-		user.setPassword("xxxxxxx");
-		user.setAdminFlag(Boolean.TRUE);
-		user.setBlockedFlag(Boolean.FALSE);
-		es.save(user);
-		// launch(args);
+//		if (System.getSecurityManager() == null) {
+//			System.setSecurityManager(new RMISecurityManager());
+//		}
+//		RmiServiceFactory f = (RmiServiceFactory) Naming.lookup("rmi://localhost:50555/RmiServiceFactory");
+//		UserDao es = f.createService(UserDao.class);
+//
+//		final User user = new User();
+//		user.setId(9);
+//		user.setFirstName("markus");
+//		user.setLastName("maierhofer");
+//		user.setUsername("marki");
+//		user.setEmail("marki@t.at");
+//		user.setPassword("xxxxxxx");
+//		user.setAdminFlag(Boolean.TRUE);
+//		user.setBlockedFlag(Boolean.FALSE);
+//		es.save(user);
+		
+		 launch(args);
 	}
 
 }

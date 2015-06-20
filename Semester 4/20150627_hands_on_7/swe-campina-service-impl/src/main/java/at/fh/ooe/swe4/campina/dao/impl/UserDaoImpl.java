@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,11 +70,13 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 	}
 
 	@Override
-	public void delete(User entity) throws RemoteException {
-		Objects.requireNonNull(entity);
+	public void delete(User user) throws RemoteException {
+		if (user == null) {
+			throw new RemoteException("Cannot delete null entity", new NullPointerException());
+		}
 
 		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
-			userEm.delete(con, entity);
+			userEm.delete(con, user);
 			con.commit();
 		} catch (SQLException e) {
 			throw new RemoteException("Could not delete entity", e);
@@ -81,13 +85,15 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 
 	@Override
 	public User byId(final Integer id) throws RemoteException {
-		Objects.requireNonNull(id);
+		if (id == null) {
+			throw new RemoteException("Cannot find entity with null id", new NullPointerException());
+		}
 
 		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
 			final User user = userEm.byId(con, id);
 			return user;
 		} catch (SQLException e) {
-			throw new RemoteException("Could not get user by id");
+			throw new RemoteException("Could not get user by id", e);
 		}
 	}
 
@@ -95,9 +101,16 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 	public List<User> getAll() throws RemoteException {
 		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
 			final List<User> users = userEm.byType(con);
+			Collections.sort(users, new Comparator<User>() {
+				@Override
+				public int compare(User o1, User o2) {
+					return o1.getLastName()
+								.compareTo(o2.getLastName());
+				}
+			});
 			return users;
 		} catch (SQLException e) {
-			throw new RemoteException("Could not get all users");
+			throw new RemoteException("Could not get all users", e);
 		}
 	}
 }

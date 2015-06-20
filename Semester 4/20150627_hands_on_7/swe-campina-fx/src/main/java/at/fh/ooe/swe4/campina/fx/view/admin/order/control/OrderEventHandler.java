@@ -16,8 +16,8 @@ public class OrderEventHandler {
 		Objects.requireNonNull(list);
 
 		list.clear();
-		for (Order order : EntityCache.orderCache) {
-			list.add(new OrderModel(order));
-		}
+//		for (Order order : EntityCache.orderCache) {
+//			list.add(new OrderModel(order));
+//		}
 	}
 }

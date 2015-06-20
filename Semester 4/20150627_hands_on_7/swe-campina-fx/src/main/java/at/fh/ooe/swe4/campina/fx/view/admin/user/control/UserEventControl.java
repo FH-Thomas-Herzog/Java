@@ -23,6 +23,7 @@ import at.fh.ooe.swe4.campina.fx.view.admin.user.model.UserModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.user.part.UserTabviewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
 import at.fh.ooe.swe4.campina.persistence.api.User;
+import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
 
 /**
  * The control bean for the user tab.
@@ -297,9 +298,10 @@ public class UserEventControl {
 	 */
 	private UserDao getUserDao() {
 		try {
-			return (UserDao) Naming.lookup(UserDao.class.getSimpleName());
+			final String name = "rmi://localhost:50555/" + RmiServiceFactory.class.getSimpleName();
+			return ((RmiServiceFactory) Naming.lookup(name)).createService(UserDao.class);
 		} catch (Throwable e) {
-			throw new IllegalStateException("Could not obtains UserDao bean");
+			throw new IllegalStateException("Could not obtains UserDao bean", e);
 		}
 	}
 }

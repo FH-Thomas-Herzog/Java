@@ -3,7 +3,6 @@ package at.fh.ooe.swe4.campina.fx.view.admin.menu.model;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.SortedSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +11,7 @@ import at.fh.ooe.swe4.campina.fx.view.annotation.FormField;
 import at.fh.ooe.swe4.campina.fx.view.annotation.SelectFormField;
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
 import at.fh.ooe.swe4.campina.fx.view.form.FormUtils.FormFieldType;
-import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
+import at.fh.ooe.swe4.campina.persistence.api.Menu;
 import at.fh.ooe.swe4.campina.persistence.constants.Day;
 
 /**
@@ -140,9 +139,4 @@ public class MenuModel extends AbstractViewModel<Integer, Menu> {
 	public List<Day> getDays() {
 		return days;
 	}
-
-	public SortedSet<MenuEntry> getMenuEntries() {
-		return getEntity().getEntries();
-	}
-
 }

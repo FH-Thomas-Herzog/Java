@@ -10,6 +10,7 @@ import at.fh.ooe.swe4.campina.fx.view.annotation.FormField;
 import at.fh.ooe.swe4.campina.fx.view.annotation.SelectFormField;
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
 import at.fh.ooe.swe4.campina.fx.view.form.FormUtils.FormFieldType;
+import at.fh.ooe.swe4.campina.persistence.api.Menu;
 import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
 
 /**
@@ -129,10 +130,6 @@ public class MenuEntryModel extends AbstractViewModel<Integer, MenuEntry> {
 
 	public void setMenu(Menu menu) {
 		getEntity().setMenu(menu);
-		if (menu != null) {
-			getEntity().setOrdinal(menu.getEntries()
-										.size() + 1);
-		}
 	}
 
 	@SelectFormField(target = "menu",

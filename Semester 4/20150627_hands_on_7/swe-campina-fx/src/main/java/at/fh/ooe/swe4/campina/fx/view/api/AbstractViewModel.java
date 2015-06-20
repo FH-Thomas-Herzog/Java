@@ -15,7 +15,7 @@ import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
  * @param <T>
  *            the entity type the current instance is managing
  */
-public abstract class AbstractViewModel<I extends Serializable, T extends AbstractEntity<I>> {
+public abstract class AbstractViewModel<I extends Serializable, T extends AbstractEntity> {
 
 	private I	id;
 	private T	entity;
@@ -59,7 +59,7 @@ public abstract class AbstractViewModel<I extends Serializable, T extends Abstra
 		Objects.requireNonNull(entity);
 
 		setEntity(entity);
-		setId(entity.getId());
+		setId((I) entity.getId());
 	}
 
 	/**

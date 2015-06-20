@@ -39,7 +39,7 @@ public class ServiceFactory extends UnicastRemoteObject implements RmiServiceFac
 	private final Object										lockObject			= new Object();
 
 	private static final Logger									log					= Logger.getLogger(ServiceFactory.class);
-	private static final String									IMPL_NAME_SPACE		= "at.fh.ooe.swe4.campina.service.impl.";
+	private static final String									IMPL_NAME_SPACE		= "at.fh.ooe.swe4.campina.dao.impl.";
 
 	private static final int									CLIENT_COUNT		= 10;
 

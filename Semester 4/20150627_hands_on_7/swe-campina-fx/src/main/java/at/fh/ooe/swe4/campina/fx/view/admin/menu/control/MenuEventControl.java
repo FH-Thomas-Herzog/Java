@@ -62,17 +62,17 @@ public class MenuEventControl {
 		ctx.formHandler.fillModel(ctx);
 
 		if (ctx.valid) {
-			final Menu menu;
-			if (ctx.model.getId() != null) {
-				menu = ctx.model.getEntity();
-				EntityCache.menuCache.add(menu);
-			} else {
-				menu = ctx.model.getEntity();
-				menu.setId(EntityCache.menuCache.size() + 1);
-				EntityCache.menuCache.add(menu);
-			}
-			ctx.model.prepare(menu);
-			handleMenuReload(ctx);
+//			final Menu menu;
+//			if (ctx.model.getId() != null) {
+//				menu = ctx.model.getEntity();
+//				EntityCache.menuCache.add(menu);
+//			} else {
+//				menu = ctx.model.getEntity();
+//				menu.setId(EntityCache.menuCache.size() + 1);
+//				EntityCache.menuCache.add(menu);
+//			}
+//			ctx.model.prepare(menu);
+//			handleMenuReload(ctx);
 		} else {
 			populateFormMessage("Formular ungültig !! Bitte Eingaben prüfen", ctx);
 			handleMenuReload(ctx);
@@ -89,14 +89,14 @@ public class MenuEventControl {
 		final FormContext<MenuModel> ctx = (FormContext<MenuModel>) ((Node) event.getSource()).getUserData();
 
 		if (ctx.model.getId() != null) {
-			ctx.getNode(MenuTabViewHandler.MENU_DELETE_BUTTON_ID)
-				.setVisible(Boolean.TRUE);
-			final Menu menu = ctx.model.getEntity();
-			EntityCache.menuCache.remove(menu);
-			EntityCache.deleteForMenuId(ctx.model.getEntity()
-													.getId());
-			ctx.formHandler.resetForm(ctx);
-			ctx.model.reset();
+//			ctx.getNode(MenuTabViewHandler.MENU_DELETE_BUTTON_ID)
+//				.setVisible(Boolean.TRUE);
+//			final Menu menu = ctx.model.getEntity();
+//			EntityCache.menuCache.remove(menu);
+//			EntityCache.deleteForMenuId(ctx.model.getEntity()
+//													.getId());
+//			ctx.formHandler.resetForm(ctx);
+//			ctx.model.reset();
 		}
 		handleMenuReload(ctx);
 
@@ -115,11 +115,11 @@ public class MenuEventControl {
 		final ObservableList<MenuModel> list = (ObservableList<MenuModel>) ctx.getObserable(MenuTabViewHandler.MENU_SELECTION_KEY);
 		list.clear();
 		list.add(new MenuModel());
-		for (Menu menu : EntityCache.menuCache) {
-			final MenuModel model = new MenuModel();
-			model.prepare(menu);
-			list.add(model);
-		}
+//		for (Menu menu : EntityCache.menuCache) {
+//			final MenuModel model = new MenuModel();
+//			model.prepare(menu);
+//			list.add(model);
+//		}
 
 		// need to replace observed instance
 		list.set(list.indexOf(ctx.model), ctx.model);

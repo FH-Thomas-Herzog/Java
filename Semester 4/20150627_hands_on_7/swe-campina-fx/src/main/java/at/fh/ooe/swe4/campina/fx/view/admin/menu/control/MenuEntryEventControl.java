@@ -63,21 +63,21 @@ public class MenuEntryEventControl {
 		ctx.formHandler.fillModel(ctx);
 
 		if (ctx.valid) {
-			final MenuEntry entry;
-			if (ctx.model.getId() != null) {
-				entry = ctx.model.getEntity();
-				EntityCache.menuEntryCache.add(entry);
-				EntityCache.byMenuId(entry.getMenu()
-											.getId())
-							.getEntries()
-							.add(entry);
-			} else {
-				entry = ctx.model.getEntity();
-				entry.setId(EntityCache.menuEntryCache.size() + 1);
-				entry.setOrdinal(entry.getId());
-				EntityCache.menuEntryCache.add(entry);
-			}
-			ctx.model.prepare(entry);
+			// final MenuEntry entry;
+			// if (ctx.model.getId() != null) {
+			// entry = ctx.model.getEntity();
+			// EntityCache.menuEntryCache.add(entry);
+			// EntityCache.byMenuId(entry.getMenu()
+			// .getId())
+			// .getEntries()
+			// .add(entry);
+			// } else {
+			// entry = ctx.model.getEntity();
+			// entry.setId(EntityCache.menuEntryCache.size() + 1);
+			// entry.setOrdinal(entry.getId());
+			// EntityCache.menuEntryCache.add(entry);
+			// }
+			// ctx.model.prepare(entry);
 		} else {
 			populateFormMessage("Formular ungültig !! Bitte Eingaben prüfen", ctx);
 		}
@@ -94,17 +94,17 @@ public class MenuEntryEventControl {
 		final FormContext<MenuEntryModel> ctx = (FormContext<MenuEntryModel>) ((Node) event.getSource()).getUserData();
 
 		if (ctx.model.getId() != null) {
-			ctx.getNode(MenuTabViewHandler.MENU_ENTRY_DELETE_BUTTON_ID)
-				.setVisible(Boolean.TRUE);
-			final MenuEntry entry = ctx.model.getEntity();
-			EntityCache.menuEntryCache.remove(entry);
-			EntityCache.byMenuId(ctx.model.getEntity()
-											.getMenu()
-											.getId())
-						.getEntries()
-						.remove(entry);
-			ctx.formHandler.resetForm(ctx);
-			ctx.model.reset();
+			// ctx.getNode(MenuTabViewHandler.MENU_ENTRY_DELETE_BUTTON_ID)
+			// .setVisible(Boolean.TRUE);
+			// final MenuEntry entry = ctx.model.getEntity();
+			// EntityCache.menuEntryCache.remove(entry);
+			// EntityCache.byMenuId(ctx.model.getEntity()
+			// .getMenu()
+			// .getId())
+			// .getEntries()
+			// .remove(entry);
+			// ctx.formHandler.resetForm(ctx);
+			// ctx.model.reset();
 		}
 		handleMenuEntryReload(ctx);
 	}
@@ -118,11 +118,11 @@ public class MenuEntryEventControl {
 		final ObservableList<MenuEntryModel> list = (ObservableList<MenuEntryModel>) ctx.getObserable(MenuTabViewHandler.MENU_ENTRY_SELECTION_KEY);
 		list.clear();
 		list.add(new MenuEntryModel());
-		for (MenuEntry entry : EntityCache.menuEntryCache) {
-			final MenuEntryModel model = new MenuEntryModel();
-			model.prepare(entry);
-			list.add(model);
-		}
+		// for (MenuEntry entry : EntityCache.menuEntryCache) {
+		// final MenuEntryModel model = new MenuEntryModel();
+		// model.prepare(entry);
+		// list.add(model);
+		// }
 
 		// need to replace observed instance
 		list.set(list.indexOf(ctx.model), ctx.model);
@@ -141,18 +141,18 @@ public class MenuEntryEventControl {
 	public void handleMenuLoad(final FormContext<MenuEntryModel> ctx) {
 		Objects.requireNonNull(ctx);
 
-		ctx.model.getMenus()
-					.clear();
-		ctx.model.getMenus()
-					.add(null);
-		for (Menu menu : EntityCache.menuCache) {
-			ctx.model.getMenus()
-						.add(menu);
-		}
+		// ctx.model.getMenus()
+		// .clear();
+		// ctx.model.getMenus()
+		// .add(null);
+		// for (Menu menu : EntityCache.menuCache) {
+		// ctx.model.getMenus()
+		// .add(menu);
+		// }
 
-		ctx.model.getMenus()
-					.set(ctx.model.getMenus()
-									.indexOf(ctx.model.getMenu()), ctx.model.getMenu());
+		// ctx.model.getMenus()
+		// .set(ctx.model.getMenus()
+		// .indexOf(ctx.model.getMenu()), ctx.model.getMenu());
 	}
 
 	/**
