@@ -26,6 +26,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
+			<artifactId>swe-campina-data-model-impl</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>at.fh.ooe.swe4.campina.service</groupId>
 			<artifactId>swe-campina-service-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -50,10 +55,9 @@
 			<artifactId>javaee-api</artifactId>
 			<version>6.0</version>
 		</dependency>
-
 		<dependency>
-			<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
-			<artifactId>swe-campina-data-model-impl</artifactId>
+			<groupId>at.fh.ooe.swe4</groupId>
+			<artifactId>junit4-test-suite</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

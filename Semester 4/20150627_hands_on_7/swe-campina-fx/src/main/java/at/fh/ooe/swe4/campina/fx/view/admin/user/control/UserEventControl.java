@@ -1,5 +1,8 @@
 package at.fh.ooe.swe4.campina.fx.view.admin.user.control;
 
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Objects;
 
 import javafx.collections.ObservableList;
@@ -11,7 +14,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
+import at.fh.ooe.swe4.campina.dao.api.UserDao;
+import at.fh.ooe.swe4.campina.dao.exception.EmailAlreadyUsedException;
+import at.fh.ooe.swe4.campina.dao.exception.UsernameAlreadyUsedException;
 import at.fh.ooe.swe4.campina.fx.view.admin.user.model.UserModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.user.part.UserTabviewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
@@ -24,6 +31,8 @@ import at.fh.ooe.swe4.campina.persistence.api.User;
  * @date Jun 3, 2015
  */
 public class UserEventControl {
+
+	private static final Logger	log	= Logger.getLogger(UserEventControl.class);
 
 	/**
 	 * Creates test data since we have no back-end yet
@@ -72,14 +81,21 @@ public class UserEventControl {
 			ctx.formHandler.fillModel(ctx);
 
 			// TODO: Persist entity here
-			final User user = ctx.model.getEntity();
+			User user = ctx.model.getEntity();
+			try {
+				user = getUserDao().save(user);
+				user = getUserDao().byId(user.getId());
+			} catch (RemoteException e) {
+				log.error("Could not save user", e);
+				// TODO: Error handling here
+				if (e.getCause() != null) {
+					if (e.getCause() instanceof EmailAlreadyUsedException) {
 
-			// if not already managed increase id by size + 1
-			if (!EntityCache.userCache.contains(user)) {
-				user.setId(EntityCache.userCache.size() + 1);
-			} 
-			// save model in backed list for testing
-			EntityCache.userCache.add(user);
+					} else if (e.getCause() instanceof UsernameAlreadyUsedException) {
+
+					}
+				}
+			}
 			// init model with new saved user
 			ctx.model.prepare(user);
 			// enable buttons
@@ -113,7 +129,12 @@ public class UserEventControl {
 
 		// existing user gets deleted
 		if (model.getId() != null) {
-			EntityCache.userCache.remove(model.getEntity());
+			try {
+				getUserDao().delete(model.getEntity());
+			} catch (RemoteException e) {
+				log.error("Could not delete user", e);
+				// TODO: Exception handling here
+			}
 		}
 
 		// reset model
@@ -139,11 +160,18 @@ public class UserEventControl {
 																											.getSelectedItem();
 
 		final Button blockButton = (Button) ctx.getNode(UserTabviewHandler.BLOCK_BUTTON_ID);
-		final User user = model.getEntity();
+		User user = model.getEntity();
 
 		// invert user blocked state
 		user.setBlockedFlag(!model.getEntity()
 									.getBlockedFlag());
+		try {
+			user = getUserDao().save(user);
+			user = getUserDao().byId(user.getId());
+		} catch (RemoteException e) {
+			log.error("Could not block user", e);
+			// TODO: handle exception
+		}
 
 		ctx.model.prepare(user);
 		ctx.formHandler.fillForm(ctx);
@@ -171,6 +199,13 @@ public class UserEventControl {
 		populateFormMessage(null, ctx);
 		// Selection present
 		if (user.getId() != null) {
+			try {
+				final User userDB = getUserDao().byId(user.getId());
+				user.prepare(userDB);
+			} catch (RemoteException e) {
+				log.error("Could not load selected user", e);
+				// TODO: handle exception
+			}
 			ctx.model.prepare(user.getEntity());
 			ctx.formHandler.fillForm(ctx);
 			setButtonVisibility(ctx, Boolean.TRUE);
@@ -198,8 +233,14 @@ public class UserEventControl {
 		final ObservableList<UserModel> userList = (ObservableList<UserModel>) ctx.getObserable(UserTabviewHandler.USER_SELECTION_KEY);
 		userList.clear();
 		userList.add(new UserModel());
-		for (User user : EntityCache.userCache) {
-			userList.add(new UserModel(user));
+		try {
+			final List<User> users = getUserDao().getAll();
+			for (User user : users) {
+				userList.add(new UserModel(user));
+			}
+		} catch (RemoteException e) {
+			log.error("Coul not load users", e);
+			// TODO: handle exception
 		}
 
 		userList.set(userList.indexOf(ctx.model), ctx.model);
@@ -244,6 +285,21 @@ public class UserEventControl {
 			flow.getChildren()
 				.add(new Text(message));
 			flow.setPrefHeight(30);
+		}
+	}
+
+	/**
+	 * Gets the user dao from the rmi server
+	 * 
+	 * @return the remote instance
+	 * @throws IllegalStateException
+	 *             if the bean could not be obtained
+	 */
+	private UserDao getUserDao() {
+		try {
+			return (UserDao) Naming.lookup(UserDao.class.getSimpleName());
+		} catch (Throwable e) {
+			throw new IllegalStateException("Could not obtains UserDao bean");
 		}
 	}
 }

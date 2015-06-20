@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.service.api;
+package at.fh.ooe.swe4.campina.dao.api;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

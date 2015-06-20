@@ -1,19 +1,20 @@
-package at.fh.ooe.swe4.campina.service.impl;
+package at.fh.ooe.swe4.campina.dao.impl;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
+import at.fh.ooe.swe4.campina.dao.api.AbstractRemoteDao;
+import at.fh.ooe.swe4.campina.dao.api.UserDao;
+import at.fh.ooe.swe4.campina.dao.exception.EmailAlreadyUsedException;
+import at.fh.ooe.swe4.campina.dao.exception.UsernameAlreadyUsedException;
 import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
 import at.fh.ooe.swe4.campina.persistence.api.User;
 import at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl;
-import at.fh.ooe.swe4.campina.service.api.AbstractRemoteDao;
-import at.fh.ooe.swe4.campina.service.api.UserDao;
-import at.fh.ooe.swe4.campina.service.exception.EmailAlreadyUsedException;
-import at.fh.ooe.swe4.campina.service.exception.UsernameAlreadyUsedException;
 
 public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 
@@ -34,12 +35,13 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 
 	@Override
 	public User save(User user) throws RemoteException {
-		Objects.requireNonNull(user);
+		if (user == null) {
+			throw new RemoteException("Cannot save or update null entity", new NullPointerException());
+		}
 
 		Integer id = (user.getId() == null) ? -1 : user.getId();
-		Connection con = connectionManager.getConnection(Boolean.TRUE);
-		PreparedStatement pstmt;
-		try {
+		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
+			PreparedStatement pstmt;
 			// Email already used
 			pstmt = con.prepareStatement(USER_ID_BY_EMAIL);
 			pstmt.setString(1, user.getEmail());
@@ -69,8 +71,7 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 	public void delete(User entity) throws RemoteException {
 		Objects.requireNonNull(entity);
 
-		Connection con = connectionManager.getConnection(Boolean.TRUE);
-		try {
+		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
 			userEm.delete(con, entity);
 			con.commit();
 		} catch (SQLException e) {
@@ -78,4 +79,25 @@ public class UserDaoImpl extends AbstractRemoteDao implements UserDao {
 		}
 	}
 
+	@Override
+	public User byId(final Integer id) throws RemoteException {
+		Objects.requireNonNull(id);
+
+		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
+			final User user = userEm.byId(con, id);
+			return user;
+		} catch (SQLException e) {
+			throw new RemoteException("Could not get user by id");
+		}
+	}
+
+	@Override
+	public List<User> getAll() throws RemoteException {
+		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
+			final List<User> users = userEm.byType(con);
+			return users;
+		} catch (SQLException e) {
+			throw new RemoteException("Could not get all users");
+		}
+	}
 }

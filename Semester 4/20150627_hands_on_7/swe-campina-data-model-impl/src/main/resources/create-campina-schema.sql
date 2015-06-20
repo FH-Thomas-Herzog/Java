@@ -1,7 +1,9 @@
-drop table campina.order;
-drop table campina.menu_entry;
-drop table campina.menu;
-drop table campina.user;
+CREATE SCHEMA if not exists campina;
+USE campina;
+DROP TABLE IF EXISTS campina.order;
+DROP TABLE IF EXISTS campina.menu_entry;
+DROP TABLE IF EXISTS campina.menu;
+DROP TABLE IF EXISTS campina.user;
 
 CREATE TABLE campina.user (
 	id INTEGER NOT NULL AUTO_INCREMENT,

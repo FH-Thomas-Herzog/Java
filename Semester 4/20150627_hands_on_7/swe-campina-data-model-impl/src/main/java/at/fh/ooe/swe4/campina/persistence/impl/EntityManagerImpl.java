@@ -55,6 +55,8 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 	private static final String															DELETE_TEMPLATE			= "DELETE FROM %s WHERE id=?;";
 	private static final String															SELECT_BY_ID_TEMPLATE	= "SELECT id, %s FROM %s WHERE id=?";
 	private static final String															SELECT_ID_BY_ID_VERSION	= "SELECT id FROM %s WHERE id=? AND version=?";
+	private static final String															SELECT_BY_TYPE			= "SELECT %s FROM %s";
+	private static final String															SELECT_LAST_INSERT_ID	= "SELECT LAST_INSERT_ID();";
 	private static final Logger															log						= Logger.getLogger(EntityManagerImpl.class);
 	private static final List<String>													EXCLUDE_FIELDS			= Arrays.asList(new String[] {
 																																				"id",
@@ -105,7 +107,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		UPDATE,
 		DELETE,
 		SELECT_BY_ID,
-		SELECT_ID_BY_ID_VERSION;
+		SELECT_ID_BY_ID_VERSION,
+		SELECT_BY_TYPE,
+		SELECT_LAST_INSERT_ID;
 	}
 
 	/**
@@ -127,44 +131,48 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		setup();
 	}
 
-	/* (non-Javadoc)
-	 * @see at.fh.ooe.swe4.campina.persistence.impl.EntityManager#saveOrUpdate(java.sql.Connection, E)
-	 */
 	@Override
 	public E saveOrUpdate(final Connection con, final E entity) throws SQLException {
 		Objects.requireNonNull(con);
 		Objects.requireNonNull(entity);
 
 		final Statement stmt = (entity.getId() == null) ? Statement.INSERT : Statement.UPDATE;
-		final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
-																	.get(stmt));
+		try (final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
+																		.get(stmt));) {
+			final List<Object> values = getValues(entity);
 
-		final List<Object> values = getValues(entity);
+			for (int i = 0; i < columnMetataDataList.size(); i++) {
+				final ColumnMetadata col = columnMetataDataList.get(i);
+				final Object value = values.get(i);
+				final int sqlType = converttoSqlType(col.typeClass);
 
-		for (int i = 0; i < columnMetataDataList.size(); i++) {
-			final ColumnMetadata col = columnMetataDataList.get(i);
-			final Object value = values.get(i);
-			final int sqlType = converttoSqlType(col.typeClass);
+				if (value == null) {
+					pstmt.setNull(i + 1, sqlType);
+				} else {
+					pstmt.setObject(i + 1, convertValueFromEntity(value), sqlType);
+				}
+			}
 
-			if (value == null) {
-				pstmt.setNull(i + 1, sqlType);
+			if (entity.getId() != null) {
+				pstmt.setInt(columnMetataDataList.size() + 1, entity.getId());
+			}
+
+			pstmt.executeUpdate();
+
+			// set id
+			if (entity.getId() == null) {
+				final PreparedStatement lastInsertIdPstmt = con.prepareStatement(SELECT_LAST_INSERT_ID);
+				final ResultSet resultId = lastInsertIdPstmt.executeQuery();
+				resultId.next();
+				entity.setId(resultId.getInt(1));
+				entity.setVersion(Long.valueOf(1));
 			} else {
-				pstmt.setObject(i + 1, convertValueFromEntity(value), sqlType);
+				entity.setVersion(entity.getVersion() + 1);
 			}
 		}
-
-		if (entity.getId() != null) {
-			pstmt.setInt(columnMetataDataList.size() + 1, entity.getId());
-		}
-
-		pstmt.executeUpdate();
-
 		return entity;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.fh.ooe.swe4.campina.persistence.impl.EntityManager#delete(java.sql.Connection, E)
-	 */
 	@Override
 	public void delete(final Connection con, final E entity) throws SQLException {
 		Objects.requireNonNull(con);
@@ -175,36 +183,54 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		checkForExistingWithVersion(con, entity);
 
 		// delete entity
-		final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
-																	.get(Statement.DELETE));
-		System.out.println(cache.get(clazz)
-								.get(Statement.DELETE));
-		pstmt.setInt(1, entity.getId());
-		pstmt.executeUpdate();
+		try (
+				final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
+																			.get(Statement.DELETE));) {
+			System.out.println(cache.get(clazz)
+									.get(Statement.DELETE));
+			pstmt.setInt(1, entity.getId());
+			pstmt.executeUpdate();
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see at.fh.ooe.swe4.campina.persistence.impl.EntityManager#byId(java.sql.Connection, E)
-	 */
 	@Override
-	public E byId(final Connection con, final E entity) throws SQLException {
+	public E byId(final Connection con, Integer id) throws SQLException {
 		Objects.requireNonNull(con);
-		Objects.requireNonNull(entity);
-		Objects.requireNonNull(entity.getId(), "Cannot fetch entity with null id");
-
-		// check for existing with set id and version
-		checkForExistingWithVersion(con, entity);
+		Objects.requireNonNull(id);
 
 		// full by id
-		final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
-																	.get(Statement.SELECT_BY_ID));
-		pstmt.setInt(1, entity.getId());
-		System.out.println(cache.get(clazz)
-								.get(Statement.SELECT_BY_ID));
-		final ResultSet result = pstmt.executeQuery();
-		fillEntity(result, entity);
-
+		final E entity = newEntity();
+		try (
+				final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
+																			.get(Statement.SELECT_BY_ID));) {
+			pstmt.setInt(1, id);
+			final ResultSet result = pstmt.executeQuery();
+			if (result.next()) {
+				fillEntity(result, entity);
+			} else {
+				throw new SQLException("Entity not found for id");
+			}
+		}
 		return entity;
+	}
+
+	@Override
+	public List<E> byType(final Connection con) throws SQLException {
+		Objects.requireNonNull(con);
+
+		final List<E> entities = new ArrayList<>();
+		try (
+				final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
+																			.get(Statement.SELECT_BY_TYPE));) {
+			final ResultSet result = pstmt.executeQuery();
+
+			while (result.next()) {
+				final E entity = newEntity();
+				fillEntity(result, entity);
+				entities.add(entity);
+			}
+		}
+		return entities;
 	}
 
 	/**
@@ -255,6 +281,8 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 					.put(Statement.SELECT_BY_ID, String.format(SELECT_BY_ID_TEMPLATE, cols, tableName));
 			cache.get(clazz)
 					.put(Statement.SELECT_ID_BY_ID_VERSION, String.format(SELECT_ID_BY_ID_VERSION, tableName));
+			cache.get(clazz)
+					.put(Statement.SELECT_BY_TYPE, String.format(SELECT_ID_BY_ID_VERSION, cols, tableName));
 
 			log.info(cache.get(clazz)
 							.get(Statement.INSERT));
@@ -264,6 +292,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 							.get(Statement.SELECT_BY_ID));
 			log.info(cache.get(clazz)
 							.get(Statement.SELECT_ID_BY_ID_VERSION));
+			log.info(cache.get(clazz)
+							.get(Statement.SELECT_BY_TYPE));
+			log.info(SELECT_LAST_INSERT_ID);
 		}
 		log.info("--------------------------------------------");
 		log.info("Finished Setup for " + this.getClass()
@@ -271,7 +302,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		log.info("--------------------------------------------");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.fh.ooe.swe4.campina.persistence.impl.EntityManager#getTableName()
 	 */
 	@Override
@@ -378,7 +411,6 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		Objects.requireNonNull(entity);
 
 		try {
-			result.next();
 			clazz.getMethod("setId", Integer.class)
 					.invoke(entity, result.getInt(1));
 			for (int i = 0; i < columnMetataDataList.size(); i++) {
@@ -464,7 +496,7 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 	 * 
 	 * @param clazz
 	 *            the return type class of the entity getter
-	 * @return the int representing the sql type
+	 * @return the integer representing the sql type
 	 */
 	private int converttoSqlType(final Class<?> clazz) {
 		Objects.requireNonNull(clazz);
@@ -487,6 +519,23 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		return 0;
 	}
 
+	/**
+	 * Creates a new entity instance of the backed tpye
+	 * 
+	 * @return the new instance
+	 * @throws IllegalStateException
+	 *             if the instantiation fails
+	 */
+	private E newEntity() {
+		final E entity;
+		try {
+			entity = clazz.newInstance();
+		} catch (Throwable e) {
+			throw new IllegalStateException("Could not create new isntance");
+		}
+		return entity;
+	}
+
 	public static void main(String args[]) {
 		try {
 			final EntityManager<User> em = new EntityManagerImpl<>(User.class);
@@ -494,7 +543,7 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			new EntityManagerImpl<>(MenuEntry.class);
 			new EntityManagerImpl<>(Order.class);
 
-			final User user = new User();
+			User user = new User();
 			user.setFirstName("Thomas");
 			user.setLastName("Herzog");
 			user.setUsername("cchet");
@@ -510,13 +559,10 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 					Integer.valueOf(DbConfigParam.ISOLATION.val()));
 			final ConnectionManager cm = new ConnectionManagerImpl(metadata);
 			final Connection con = cm.getConnection(Boolean.TRUE);
-			// em.saveOrUpdate(con, user);
-			// con.commit();
-			user.setId(3);
-			user.setVersion(Long.valueOf(1));
-			// em.delete(con, user);
-			// con.commit();
-			final User userDB = em.byId(con, user);
+			user = em.saveOrUpdate(con, user);
+			con.commit();
+			em.delete(con, user);
+			con.commit();
 
 		} catch (Throwable e) {
 			e.printStackTrace();

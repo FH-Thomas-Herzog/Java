@@ -6,10 +6,10 @@ import java.rmi.RMISecurityManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import at.fh.ooe.swe4.campina.dao.api.UserDao;
 import at.fh.ooe.swe4.campina.fx.view.scene.MainSceneViewHandler;
 import at.fh.ooe.swe4.campina.persistence.api.User;
 import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
-import at.fh.ooe.swe4.campina.service.api.UserDao;
 
 public class Main extends Application {
 

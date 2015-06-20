@@ -1,10 +1,11 @@
 package at.fh.ooe.swe4.campina.rmi.api.service;
 
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
+import at.fh.ooe.swe4.campina.persistence.api.User;
 
 /**
  * This interface marks an interface as an service which needs to provide at
@@ -37,4 +38,25 @@ public interface RemoteDao<T extends AbstractEntity> extends Remote {
 	 *             if the remote invocation fails
 	 */
 	public void delete(T entity) throws RemoteException;
+
+	/**
+	 * Gets the entity by its id
+	 * 
+	 * @param id
+	 *            the entity id
+	 * @return the found entity
+	 * @throws RemoteException
+	 *             if the load fails
+	 */
+	public T byId(Integer id) throws RemoteException;
+
+	/**
+	 * Gets all entities.
+	 * 
+	 * @return the list of entities
+	 * @throws RemoteException
+	 *             if the load fails
+	 */
+	public List<User> getAll() throws RemoteException;
+
 }

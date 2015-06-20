@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.service.exception;
+package at.fh.ooe.swe4.campina.dao.exception;
 
 import java.rmi.RemoteException;
 

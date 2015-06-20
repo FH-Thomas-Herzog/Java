@@ -2,6 +2,7 @@ package at.fh.ooe.swe4.campina.persistence.api;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * This interface specifies an entity manager which is used for entity types .
@@ -43,19 +44,30 @@ public interface EntityManager<E extends AbstractEntity> {
 	public void delete(Connection con, E entity) throws SQLException;
 
 	/**
+	 * Gets all entries from the backed entity type.
+	 * 
+	 * @param con
+	 *            the underlying connection
+	 * @return the found entity
+	 * @throws SQLException
+	 *             if the entity could not be found
+	 */
+	public List<E> byType(Connection con) throws SQLException;
+
+	/**
 	 * Gets the entity by its id.
 	 * 
 	 * @param con
 	 *            the underlying connection
-	 * @param entity
-	 *            the entity to be fetched with set id
+	 * @param id
+	 *            TODO
 	 * @return the given instance with filled result
 	 * @throws SQLException
 	 *             if the fetch fails
 	 * @throws NullPointerException
 	 *             if con or entity are null
 	 */
-	public E byId(Connection con, E entity) throws SQLException;
+	public E byId(Connection con, Integer id) throws SQLException;
 
 	/**
 	 * Gets the table name with schema (if set) of the backed entity type.
