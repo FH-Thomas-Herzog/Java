@@ -19,11 +19,12 @@ import org.apache.log4j.Logger;
 import at.fh.ooe.swe4.campina.dao.api.UserDao;
 import at.fh.ooe.swe4.campina.dao.exception.EmailAlreadyUsedException;
 import at.fh.ooe.swe4.campina.dao.exception.UsernameAlreadyUsedException;
+import at.fh.ooe.swe4.campina.fx.rmi.service.locator.DaoLocator;
 import at.fh.ooe.swe4.campina.fx.view.admin.user.model.UserModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.user.part.UserTabviewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
-import at.fh.ooe.swe4.campina.persistence.api.User;
-import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
+import at.fh.ooe.swe4.campina.persistence.api.entity.User;
+import at.fh.ooe.swe4.campina.rmi.api.factory.RmiDaoFactory;
 
 /**
  * The control bean for the user tab.
@@ -40,12 +41,7 @@ public class UserEventControl {
 	 * Creates test data since we have no back-end yet
 	 */
 	public UserEventControl() {
-		try {
-			final String name = "rmi://localhost:50555/" + RmiServiceFactory.class.getSimpleName();
-			this.dao = ((RmiServiceFactory) Naming.lookup(name)).createService(UserDao.class);
-		} catch (Throwable e) {
-			throw new IllegalStateException("Could not obtains UserDao bean", e);
-		}
+		dao = DaoLocator.getDao(UserDao.class);
 	}
 
 	// #############################################################

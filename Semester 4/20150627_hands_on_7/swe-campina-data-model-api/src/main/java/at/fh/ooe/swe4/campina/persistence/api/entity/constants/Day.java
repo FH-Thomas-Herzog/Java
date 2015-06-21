@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.persistence.constants;
+package at.fh.ooe.swe4.campina.persistence.api.entity.constants;
 
 import java.util.Objects;
 

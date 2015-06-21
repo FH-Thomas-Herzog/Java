@@ -141,6 +141,15 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	// #######################################################################
 	// Private Section
 	// #######################################################################
+	/**
+	 * Setups the connection manager with the provide config and tries to
+	 * connect to the backing database.
+	 * 
+	 * @param metadata
+	 *            the provide database metadata
+	 * @throws IllegalArgumentException
+	 *             if the metadata is invalid
+	 */
 	private void setup(final DbMetadata metadata) throws IllegalArgumentException {
 		final String ln = System.lineSeparator();
 		log.info("----------------------------------------------");

@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import at.fh.ooe.swe4.campina.rmi.api.rmi.RmiServer;
 
 /**
- * This is the rmi server implementation.
+ * This is the RMI server implementation.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 15, 2015
@@ -32,7 +32,7 @@ public class RmiServerImpl implements RmiServer {
 
 	/**
 	 * @param port
-	 *            TODO
+	 *            the prot to host the beans on.
 	 */
 	public RmiServerImpl(int port) {
 		if ((port <= 1024) || (port >= 65535)) {
@@ -105,8 +105,4 @@ public class RmiServerImpl implements RmiServer {
 			}
 		}
 	}
-	// ###########################################################
-	// Private section
-	// ###########################################################
-
 }

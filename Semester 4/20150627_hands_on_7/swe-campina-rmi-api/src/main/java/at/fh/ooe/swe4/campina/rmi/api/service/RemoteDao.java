@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
-import at.fh.ooe.swe4.campina.persistence.api.User;
+import at.fh.ooe.swe4.campina.persistence.api.entity.User;
 
 /**
  * This interface marks an interface as an service which needs to provide at

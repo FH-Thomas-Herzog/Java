@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import at.fh.ooe.swe4.campina.fx.view.admin.login.model.LoginModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.login.part.LoginTabViewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
-import at.fh.ooe.swe4.campina.persistence.api.User;
+import at.fh.ooe.swe4.campina.persistence.api.entity.User;
 
 /**
  * This class contains all of the action logic:

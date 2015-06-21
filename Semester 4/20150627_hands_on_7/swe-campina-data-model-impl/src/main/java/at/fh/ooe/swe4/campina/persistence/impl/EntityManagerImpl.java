@@ -2,7 +2,6 @@ package at.fh.ooe.swe4.campina.persistence.impl;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,17 +26,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
-import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
-import at.fh.ooe.swe4.campina.persistence.api.Menu;
-import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
-import at.fh.ooe.swe4.campina.persistence.api.Order;
-import at.fh.ooe.swe4.campina.persistence.api.User;
-import at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl.DbMetadata;
 
 /**
  * This is a light weight entity manager which allows to perform JPA like
- * operations on the entity.
+ * operations on the backed entity.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 18, 2015
@@ -62,39 +55,6 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 																																				"id",
 																																				"version"
 																												});
-
-	/**
-	 * This is a helper class which hold the metadata from the @Column annotated
-	 * methods which represent the dataabse columns
-	 * 
-	 * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
-	 * @date Jun 19, 2015
-	 */
-	private static final class ColumnMetadata {
-
-		public final Column		column;
-		public final String		getter;
-		public final String		setter;
-		public final Class<?>	typeClass;
-
-		/**
-		 * @param column
-		 * @param methodName
-		 * @param typeClass
-		 */
-		public ColumnMetadata(Column column, String methodName, Class<?> typeClass) {
-			super();
-			Objects.requireNonNull(column);
-			Objects.requireNonNull(methodName);
-			Objects.requireNonNull(typeClass);
-
-			this.column = column;
-			this.getter = methodName;
-			this.setter = methodName.replace("get", "set");
-			this.typeClass = typeClass;
-		}
-
-	}
 
 	/**
 	 * This enumeration specifies the supported statements.
@@ -137,8 +97,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		Objects.requireNonNull(entity);
 
 		final Statement stmt = (entity.getId() == null) ? Statement.INSERT : Statement.UPDATE;
-		try (final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
-																		.get(stmt));) {
+		String sql = cache.get(clazz)
+							.get(stmt);
+		try (final PreparedStatement pstmt = con.prepareStatement(sql);) {
 			final List<Object> values = getValues(entity);
 
 			for (int i = 0; i < columnMetataDataList.size(); i++) {
@@ -161,7 +122,8 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 
 			// set id
 			if (entity.getId() == null) {
-				final PreparedStatement lastInsertIdPstmt = con.prepareStatement(SELECT_LAST_INSERT_ID);
+				sql = SELECT_LAST_INSERT_ID;
+				final PreparedStatement lastInsertIdPstmt = con.prepareStatement(sql);
 				final ResultSet resultId = lastInsertIdPstmt.executeQuery();
 				resultId.next();
 				entity.setId(resultId.getInt(1));
@@ -169,6 +131,10 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			} else {
 				entity.setVersion(entity.getVersion() + 1);
 			}
+		} catch (Throwable e) {
+			log.error("Error on saveOrUpdate");
+			log.error(sql);
+			throw e;
 		}
 		return entity;
 	}
@@ -183,13 +149,18 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		checkForExistingWithVersion(con, entity);
 
 		// delete entity
+		final String sql = cache.get(clazz)
+								.get(Statement.DELETE);
 		try (
-				final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
-																			.get(Statement.DELETE));) {
+				final PreparedStatement pstmt = con.prepareStatement(sql);) {
 			System.out.println(cache.get(clazz)
 									.get(Statement.DELETE));
 			pstmt.setInt(1, entity.getId());
 			pstmt.executeUpdate();
+		} catch (Throwable e) {
+			log.error("Error on delete");
+			log.error(sql);
+			throw e;
 		}
 	}
 
@@ -200,18 +171,23 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 
 		// full by id
 		final E entity = newEntity();
+		final String sql = cache.get(clazz)
+								.get(Statement.SELECT_BY_ID);
 		try (
-				final PreparedStatement pstmt = con.prepareStatement(cache.get(clazz)
-																			.get(Statement.SELECT_BY_ID));) {
+				final PreparedStatement pstmt = con.prepareStatement(sql);) {
 			pstmt.setInt(1, id);
 			final ResultSet result = pstmt.executeQuery();
 			if (result.next()) {
 				entity.setId(result.getInt(1));
-				fillEntity(result, entity);
+				fillEntity(result, entity, 1);
 				entity.setVersion(result.getLong(columnMetataDataList.size() + 2));
 			} else {
 				throw new SQLException("Entity not found for id");
 			}
+		} catch (Throwable e) {
+			log.error("Error on byId");
+			log.error(sql);
+			throw e;
 		}
 		return entity;
 	}
@@ -229,7 +205,7 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			while (result.next()) {
 				final E entity = newEntity();
 				entity.setId(result.getInt(1));
-				fillEntity(result, entity);
+				fillEntity(result, entity, 1);
 				entity.setVersion(result.getLong(columnMetataDataList.size() + 2));
 				entities.add(entity);
 			}
@@ -251,15 +227,80 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			while (result.next()) {
 				final E entity = newEntity();
 				entity.setId(result.getInt(1));
-				fillEntity(result, entity);
+				fillEntity(result, entity, 1);
 				entity.setVersion(result.getLong(columnMetataDataList.size() + 2));
 				entities.add(entity);
 			}
 		} catch (SQLException e) {
-			throw new SQLException("Could not execute custom query: " + query, e);
+			log.error("Error on bybyQuery");
+			log.error(query);
+			throw new SQLException("Could not execute custom query", e);
 		}
 
 		return entities;
+	}
+
+	@Override
+	public List<ColumnMetadata> getColumnMeta() {
+		return Collections.unmodifiableList(columnMetataDataList);
+	}
+
+	@Override
+	public String getTableName() {
+		return table.name();
+	}
+
+	@Override
+	public String getColumnNames(String prefix) {
+		final List<String> names = new ArrayList<>(columnMetataDataList.size());
+		for (ColumnMetadata colMeta : columnMetataDataList) {
+			final String name;
+			if (prefix != null) {
+				name = prefix + "." + colMeta.column.name()
+													.toLowerCase();
+			} else {
+				name = colMeta.column.name()
+										.toLowerCase();
+			}
+			names.add(name);
+		}
+		return StringUtils.join(names, ",");
+	}
+
+	/**
+	 * Files the given entity instance with the in the {@link ResultSet}
+	 * contained values. The result set ust hold all columns including the id.
+	 * 
+	 * @param result
+	 * @param entity
+	 * @throws SQLException
+	 */
+	@Override
+	public void fillEntity(ResultSet result, AbstractEntity entity, int offset) throws SQLException {
+		Objects.requireNonNull(result);
+		Objects.requireNonNull(entity);
+
+		ColumnMetadata colMeta = null;
+		Object value = null;
+		try {
+			for (int i = 0; i < columnMetataDataList.size(); i++) {
+				colMeta = columnMetataDataList.get(i);
+				value = result.getObject(offset + i + 1);
+				final Object convertedValue;
+				if (value != null) {
+					convertedValue = convertValueToEntity(colMeta, value);
+				} else {
+					convertedValue = value;
+				}
+				clazz.getMethod(colMeta.setter, colMeta.typeClass)
+						.invoke(entity, convertedValue);
+			}
+		} catch (Throwable e) {
+			if (value != null) {
+
+			}
+			throw new java.lang.IllegalStateException("Could not fill entity: " + ((colMeta != null) ? colMeta.setter : ""), e);
+		}
 	}
 
 	/**
@@ -331,20 +372,9 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		log.info("--------------------------------------------");
 	}
 
-	@Override
-	public String getTableName() {
-		return table.name();
-	}
-
-	@Override
-	public String getColumnNames() {
-		final List<String> names = new ArrayList<>(columnMetataDataList.size());
-		for (ColumnMetadata colMeta : columnMetataDataList) {
-			names.add(colMeta.column.name()
-									.toLowerCase());
-		}
-		return StringUtils.join(names, ",");
-	}
+	// ####################################################################
+	// Private section
+	// ####################################################################
 
 	/**
 	 * Checks if the given entity exists on the database with its set id and
@@ -433,41 +463,6 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 	}
 
 	/**
-	 * Files the given entity instance with the in the {@link ResultSet}
-	 * contained values. The result set ust hold all columns including the id.
-	 * 
-	 * @param result
-	 * @param entity
-	 * @throws SQLException
-	 */
-	private void fillEntity(ResultSet result, AbstractEntity entity) throws SQLException {
-		Objects.requireNonNull(result);
-		Objects.requireNonNull(entity);
-
-		ColumnMetadata colMeta = null;
-		Object value = null;
-		try {
-			for (int i = 0; i < columnMetataDataList.size(); i++) {
-				colMeta = columnMetataDataList.get(i);
-				value = result.getObject(i + 2);
-				final Object convertedValue;
-				if (value != null) {
-					convertedValue = convertValueToEntity(colMeta, value);
-				} else {
-					convertedValue = value;
-				}
-				clazz.getMethod(colMeta.setter, colMeta.typeClass)
-						.invoke(entity, convertedValue);
-			}
-		} catch (Throwable e) {
-			if (value != null) {
-
-			}
-			throw new java.lang.IllegalStateException("Could not fill entity: " + ((colMeta != null) ? colMeta.setter : ""), e);
-		}
-	}
-
-	/**
 	 * Converts the sql result returned value to the proper entity type.
 	 * 
 	 * @param colMeta
@@ -484,6 +479,7 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 		} else if (Calendar.class.isAssignableFrom(colMeta.typeClass)) {
 			final Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(((Timestamp) value).getTime());
+			return cal;
 		} else if (BigDecimal.class.isAssignableFrom(colMeta.typeClass)) {
 			return ((BigDecimal) value);
 		} else if (Enum.class.isAssignableFrom(colMeta.typeClass)) {
@@ -572,38 +568,5 @@ public class EntityManagerImpl<E extends AbstractEntity> implements EntityManage
 			throw new IllegalStateException("Could not create new isntance");
 		}
 		return entity;
-	}
-
-	public static void main(String args[]) {
-		try {
-			final EntityManager<User> em = new EntityManagerImpl<>(User.class);
-			new EntityManagerImpl<>(Menu.class);
-			new EntityManagerImpl<>(MenuEntry.class);
-			new EntityManagerImpl<>(Order.class);
-
-			User user = new User();
-			user.setFirstName("Thomas");
-			user.setLastName("Herzog");
-			user.setUsername("cchet");
-			user.setEmail("t.t@t.at");
-			user.setPassword("xxxxxxx");
-			user.setAdminFlag(Boolean.TRUE);
-			user.setBlockedFlag(Boolean.FALSE);
-
-			final DbMetadata metadata = new DbMetadata(DbConfigParam.DRIVER.val(),
-					DbConfigParam.URL.val(),
-					DbConfigParam.USER.val(),
-					DbConfigParam.PASSWORD.val(),
-					Integer.valueOf(DbConfigParam.ISOLATION.val()));
-			final ConnectionManager cm = new ConnectionManagerImpl(metadata);
-			final Connection con = cm.getConnection(Boolean.TRUE);
-			user = em.saveOrUpdate(con, user);
-			con.commit();
-			em.delete(con, user);
-			con.commit();
-
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -1,9 +1,11 @@
-package at.fh.ooe.swe4.campina.persistence.api;
+package at.fh.ooe.swe4.campina.persistence.api.entity;
 
 import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+
+import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
 
 /**
  * The order on the database.
@@ -21,6 +23,13 @@ public class Order extends AbstractEntity {
 	private Calendar			orderDate;
 	private Calendar			collectDate;
 
+	/**
+	 * @param id
+	 * @param user
+	 * @param menuEntry
+	 * @param orderDate
+	 * @param collectDate
+	 */
 	public Order(Integer id, User user, MenuEntry menuEntry, Calendar orderDate, Calendar collectDate) {
 		super(id);
 		this.user = user;
@@ -69,7 +78,7 @@ public class Order extends AbstractEntity {
 		this.orderDate = orderDate;
 	}
 
-	@Column(name = "COLLECT")
+	@Column(name = "COLLECT_DATE")
 	public Calendar getCollectDate() {
 		return collectDate;
 	}

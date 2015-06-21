@@ -11,8 +11,8 @@ import at.fh.ooe.swe4.campina.fx.view.annotation.FormField;
 import at.fh.ooe.swe4.campina.fx.view.annotation.SelectFormField;
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
 import at.fh.ooe.swe4.campina.fx.view.form.FormUtils.FormFieldType;
-import at.fh.ooe.swe4.campina.persistence.api.Menu;
-import at.fh.ooe.swe4.campina.persistence.constants.Day;
+import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
+import at.fh.ooe.swe4.campina.persistence.api.entity.constants.Day;
 
 /**
  * The view model which backs the {@link Menu} entity.

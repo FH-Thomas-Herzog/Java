@@ -1,5 +1,8 @@
 package at.fh.ooe.swe4.campina.fx.view.admin.menu.control;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javafx.collections.ObservableList;
@@ -10,11 +13,16 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
+import at.fh.ooe.swe4.campina.dao.api.MenuDao;
+import at.fh.ooe.swe4.campina.dao.api.MenuEntryDao;
+import at.fh.ooe.swe4.campina.fx.rmi.service.locator.DaoLocator;
 import at.fh.ooe.swe4.campina.fx.view.admin.menu.model.MenuEntryModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.menu.part.MenuTabViewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
-import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
+import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
+import at.fh.ooe.swe4.campina.persistence.api.entity.MenuEntry;
 
 /**
  * The event handler for the {@link MenuEntry} entity.
@@ -24,8 +32,11 @@ import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
  */
 public class MenuEntryEventControl {
 
+	private final MenuEntryDao	dao		= DaoLocator.getDao(MenuEntryDao.class);
+	private final MenuDao		menuDao	= DaoLocator.getDao(MenuDao.class);
+	private static final Logger	log		= Logger.getLogger(MenuEntryEventControl.class);
+
 	public MenuEntryEventControl() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -63,21 +74,14 @@ public class MenuEntryEventControl {
 		ctx.formHandler.fillModel(ctx);
 
 		if (ctx.valid) {
-			// final MenuEntry entry;
-			// if (ctx.model.getId() != null) {
-			// entry = ctx.model.getEntity();
-			// EntityCache.menuEntryCache.add(entry);
-			// EntityCache.byMenuId(entry.getMenu()
-			// .getId())
-			// .getEntries()
-			// .add(entry);
-			// } else {
-			// entry = ctx.model.getEntity();
-			// entry.setId(EntityCache.menuEntryCache.size() + 1);
-			// entry.setOrdinal(entry.getId());
-			// EntityCache.menuEntryCache.add(entry);
-			// }
-			// ctx.model.prepare(entry);
+			try {
+				final MenuEntry menuEntry = dao.save(ctx.model.getEntity());
+				ctx.model.prepare(dao.byId(menuEntry.getId()));
+				ctx.formHandler.fillForm(ctx);
+			} catch (RemoteException e) {
+				log.error("Menu entry saving failed", e);
+				populateFormMessage("Menu Eintrag konnte nicht gespeichert werden", ctx);
+			}
 		} else {
 			populateFormMessage("Formular ungültig !! Bitte Eingaben prüfen", ctx);
 		}
@@ -94,17 +98,14 @@ public class MenuEntryEventControl {
 		final FormContext<MenuEntryModel> ctx = (FormContext<MenuEntryModel>) ((Node) event.getSource()).getUserData();
 
 		if (ctx.model.getId() != null) {
-			// ctx.getNode(MenuTabViewHandler.MENU_ENTRY_DELETE_BUTTON_ID)
-			// .setVisible(Boolean.TRUE);
-			// final MenuEntry entry = ctx.model.getEntity();
-			// EntityCache.menuEntryCache.remove(entry);
-			// EntityCache.byMenuId(ctx.model.getEntity()
-			// .getMenu()
-			// .getId())
-			// .getEntries()
-			// .remove(entry);
-			// ctx.formHandler.resetForm(ctx);
-			// ctx.model.reset();
+			try {
+				dao.delete(ctx.model.getEntity());
+				ctx.model.reset();
+				ctx.formHandler.fillForm(ctx);
+			} catch (RemoteException e) {
+				log.error("Could not delete menu entry", e);
+				populateFormMessage("Konnte Menu Enintrag nicht löschen", ctx);
+			}
 		}
 		handleMenuEntryReload(ctx);
 	}
@@ -118,11 +119,26 @@ public class MenuEntryEventControl {
 		final ObservableList<MenuEntryModel> list = (ObservableList<MenuEntryModel>) ctx.getObserable(MenuTabViewHandler.MENU_ENTRY_SELECTION_KEY);
 		list.clear();
 		list.add(new MenuEntryModel());
-		// for (MenuEntry entry : EntityCache.menuEntryCache) {
-		// final MenuEntryModel model = new MenuEntryModel();
-		// model.prepare(entry);
-		// list.add(model);
-		// }
+		List<MenuEntry> entries = new ArrayList<>();
+		boolean found = Boolean.FALSE;
+		try {
+			entries = dao.getAll();
+			for (MenuEntry menuEntry : entries) {
+				if (menuEntry.equals(ctx.model.getEntity())) {
+					found = Boolean.TRUE;
+				}
+				final MenuEntryModel model = new MenuEntryModel();
+				model.prepare(menuEntry);
+				list.add(model);
+			}
+		} catch (RemoteException e) {
+			log.error("Could ot load all menu entries", e);
+		}
+
+		if (!found) {
+			ctx.model.reset();
+			ctx.formHandler.fillForm(ctx);
+		}
 
 		// need to replace observed instance
 		list.set(list.indexOf(ctx.model), ctx.model);
@@ -141,18 +157,19 @@ public class MenuEntryEventControl {
 	public void handleMenuLoad(final FormContext<MenuEntryModel> ctx) {
 		Objects.requireNonNull(ctx);
 
-		// ctx.model.getMenus()
-		// .clear();
-		// ctx.model.getMenus()
-		// .add(null);
-		// for (Menu menu : EntityCache.menuCache) {
-		// ctx.model.getMenus()
-		// .add(menu);
-		// }
-
-		// ctx.model.getMenus()
-		// .set(ctx.model.getMenus()
-		// .indexOf(ctx.model.getMenu()), ctx.model.getMenu());
+		ctx.model.getMenus()
+					.clear();
+		ctx.model.getMenus()
+					.add(null);
+		try {
+			ctx.model.getMenus()
+						.addAll(menuDao.getAll());
+			ctx.model.getMenus()
+						.set(ctx.model.getMenus()
+										.indexOf(ctx.model.getMenu()), ctx.model.getMenu());
+		} catch (RemoteException e) {
+			log.error("Cannot load referencing menu entry menus", e);
+		}
 	}
 
 	/**

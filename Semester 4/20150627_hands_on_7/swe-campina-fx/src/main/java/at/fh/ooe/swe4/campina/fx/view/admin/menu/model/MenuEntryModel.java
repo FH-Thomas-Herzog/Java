@@ -10,8 +10,8 @@ import at.fh.ooe.swe4.campina.fx.view.annotation.FormField;
 import at.fh.ooe.swe4.campina.fx.view.annotation.SelectFormField;
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
 import at.fh.ooe.swe4.campina.fx.view.form.FormUtils.FormFieldType;
-import at.fh.ooe.swe4.campina.persistence.api.Menu;
-import at.fh.ooe.swe4.campina.persistence.api.MenuEntry;
+import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
+import at.fh.ooe.swe4.campina.persistence.api.entity.MenuEntry;
 
 /**
  * The view model which backs the {@link MenuEntry} entity

@@ -1,12 +1,10 @@
-package at.fh.ooe.swe4.campina.persistence.api;
-
-import java.util.SortedSet;
-import java.util.TreeSet;
+package at.fh.ooe.swe4.campina.persistence.api.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-import at.fh.ooe.swe4.campina.persistence.constants.Day;
+import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
+import at.fh.ooe.swe4.campina.persistence.api.entity.constants.Day;
 
 /**
  * The menu.
@@ -17,10 +15,10 @@ import at.fh.ooe.swe4.campina.persistence.constants.Day;
 @Table(name = "MENU", schema = "CAMPINA")
 public class Menu extends AbstractEntity implements Comparable<Menu> {
 
-	private static final long		serialVersionUID	= 7569033478037865818L;
+	private static final long	serialVersionUID	= 7569033478037865818L;
 
-	private Day						day;
-	private String					label;
+	private Day					day;
+	private String				label;
 
 	/**
 	 * 

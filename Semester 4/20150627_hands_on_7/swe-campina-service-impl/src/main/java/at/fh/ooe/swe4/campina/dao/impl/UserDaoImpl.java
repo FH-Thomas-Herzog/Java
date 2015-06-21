@@ -8,19 +8,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.jws.soap.SOAPBinding.Use;
-
 import at.fh.ooe.swe4.campina.dao.api.AbstractRemoteDao;
 import at.fh.ooe.swe4.campina.dao.api.UserDao;
 import at.fh.ooe.swe4.campina.dao.exception.EmailAlreadyUsedException;
 import at.fh.ooe.swe4.campina.dao.exception.UsernameAlreadyUsedException;
 import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
-import at.fh.ooe.swe4.campina.persistence.api.User;
+import at.fh.ooe.swe4.campina.persistence.api.entity.User;
 import at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl;
 
 /**
- * This interface is the dao implementation for the {@link Use} entity type.
+ * This is the implementation of the {@link UserDao} specification.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 20, 2015

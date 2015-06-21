@@ -1,6 +1,5 @@
 package at.fh.ooe.swe4.campina.fx.view.admin.menu.control;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Objects;
@@ -16,11 +15,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import at.fh.ooe.swe4.campina.dao.api.MenuDao;
+import at.fh.ooe.swe4.campina.fx.rmi.service.locator.DaoLocator;
 import at.fh.ooe.swe4.campina.fx.view.admin.menu.model.MenuModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.menu.part.MenuTabViewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
-import at.fh.ooe.swe4.campina.persistence.api.Menu;
-import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
+import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
 
 /**
  * The event control for the {@link Menu} entity.
@@ -30,16 +29,10 @@ import at.fh.ooe.swe4.campina.rmi.api.factory.RmiServiceFactory;
  */
 public class MenuEventControl {
 
-	private final MenuDao		dao;
+	private final MenuDao		dao	= DaoLocator.getDao(MenuDao.class);
 	private static final Logger	log	= Logger.getLogger(MenuEventControl.class);
 
 	public MenuEventControl() {
-		try {
-			final String name = "rmi://localhost:50555/" + RmiServiceFactory.class.getSimpleName();
-			this.dao = ((RmiServiceFactory) Naming.lookup(name)).createService(MenuDao.class);
-		} catch (Throwable e) {
-			throw new IllegalStateException("Could not obtains MenuDao bean", e);
-		}
 	}
 
 	/**

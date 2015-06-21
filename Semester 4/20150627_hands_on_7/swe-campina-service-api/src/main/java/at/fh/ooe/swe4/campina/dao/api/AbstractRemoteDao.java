@@ -7,7 +7,7 @@ import java.util.Objects;
 import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 
 /**
- * This class is the base class for entity daos which are accessible via rmi and
+ * This class is the base class for entity DAOs which are accessible via RMI and
  * therefore remote DAOs.
  * 
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>

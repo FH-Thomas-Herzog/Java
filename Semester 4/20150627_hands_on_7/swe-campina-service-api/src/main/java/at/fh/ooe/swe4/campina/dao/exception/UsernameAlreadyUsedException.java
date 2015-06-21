@@ -1,9 +1,14 @@
 package at.fh.ooe.swe4.campina.dao.exception;
 
-import java.rmi.RemoteException;
-import java.sql.SQLException;
-
+/**
+ * This exception indicates that an username is already used by another user.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 21, 2015
+ */
 public class UsernameAlreadyUsedException extends RuntimeException {
+
+	private static final long	serialVersionUID	= 2301658696430408670L;
 
 	public UsernameAlreadyUsedException() {
 		// TODO Auto-generated constructor stub

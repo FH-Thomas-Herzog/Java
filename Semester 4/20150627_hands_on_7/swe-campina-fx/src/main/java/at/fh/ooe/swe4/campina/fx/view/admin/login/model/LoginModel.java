@@ -5,7 +5,7 @@ import java.util.Objects;
 import at.fh.ooe.swe4.campina.fx.view.annotation.FormField;
 import at.fh.ooe.swe4.campina.fx.view.api.AbstractViewModel;
 import at.fh.ooe.swe4.campina.fx.view.form.FormUtils.FormFieldType;
-import at.fh.ooe.swe4.campina.persistence.api.LoginEvent;
+import at.fh.ooe.swe4.campina.persistence.api.entity.User;
 
 /**
  * The model backing the {@link LoginEvent} entity.
@@ -13,7 +13,7 @@ import at.fh.ooe.swe4.campina.persistence.api.LoginEvent;
  * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
  * @date Jun 5, 2015
  */
-public class LoginModel extends AbstractViewModel<Integer, LoginEvent> {
+public class LoginModel extends AbstractViewModel<Integer, User> {
 
 	private Integer				counter							= 0;
 	private String				username						= "hello";
@@ -26,15 +26,15 @@ public class LoginModel extends AbstractViewModel<Integer, LoginEvent> {
 
 	@Override
 	public void reset() {
-		prepare(new LoginEvent());
+		prepare(new User());
 	}
 
 	@Override
-	public void prepare(LoginEvent loginEvent) {
-		Objects.requireNonNull(loginEvent);
+	public void prepare(User user) {
+		Objects.requireNonNull(user);
 
-		setEntity(loginEvent);
-		setId(loginEvent.getId());
+		setEntity(user);
+		setId(user.getId());
 	}
 
 	public void increaseCounter() {

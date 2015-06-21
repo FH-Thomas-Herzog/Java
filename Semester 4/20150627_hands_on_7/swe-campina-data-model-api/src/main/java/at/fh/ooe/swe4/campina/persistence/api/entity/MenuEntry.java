@@ -1,4 +1,4 @@
-package at.fh.ooe.swe4.campina.persistence.api;
+package at.fh.ooe.swe4.campina.persistence.api.entity;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+
+import at.fh.ooe.swe4.campina.persistence.api.AbstractEntity;
 
 /**
  * The menu entry
@@ -22,7 +24,6 @@ public class MenuEntry extends AbstractEntity implements Comparable<MenuEntry> {
 	private String				label;
 	private BigDecimal			price;
 	private Menu				menu;
-	private Set<Order>			orders				= new HashSet<>();
 
 	/**
 	 * 

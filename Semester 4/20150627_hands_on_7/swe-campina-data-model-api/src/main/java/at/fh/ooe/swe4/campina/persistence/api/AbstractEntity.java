@@ -5,6 +5,13 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
+/**
+ * This class represents the root of each entity with an integer id. Should be
+ * generic in the future.
+ * 
+ * @author Thomas Herzog <thomas.herzog@students.fh-hagenberg.at>
+ * @date Jun 21, 2015
+ */
 public abstract class AbstractEntity implements Serializable {
 
 	private static final long	serialVersionUID	= 1095329951571671581L;
@@ -49,18 +56,23 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		AbstractEntity other = (AbstractEntity) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		return true;
 	}
 
