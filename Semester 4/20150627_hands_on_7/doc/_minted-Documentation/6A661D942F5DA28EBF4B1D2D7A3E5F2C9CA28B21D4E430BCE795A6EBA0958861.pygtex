@@ -1,0 +1,25 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This interface specifies an conection manager which provides connections for}
+\PYGdefault{c+cm}{ * services. The implementation decides if the connections are either cached or}
+\PYGdefault{c+cm}{ * created new each time \PYGdefaultZob{}@link ConnectionManager\PYGdefaultZsh{}getClass()\PYGdefaultZcb{} is called.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 18, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{ConnectionManager} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Returns a jdbc connection.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param batchStatements}
+\PYGdefault{c+cm}{	 *            true if multiple statements per transaction shall be supported}
+\PYGdefault{c+cm}{	 * @return the jdbc connection}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Connection} \PYGdefault{n+nf}{getConnection}\PYGdefault{o}{(}\PYGdefault{k+kt}{boolean} \PYGdefault{n}{batchStatements}\PYGdefault{o}{);}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

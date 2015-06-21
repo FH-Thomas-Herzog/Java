@@ -1,0 +1,65 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.rmi.api.rmi}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.io.Serializable}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.Remote}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.RemoteException}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This interface is the specification for the RMI server.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 15, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{RmiServer} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Serializable} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Registers an bean. The RMI server must have been started before.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param bean}
+\PYGdefault{c+cm}{	 *            the bean instance to register}
+\PYGdefault{c+cm}{	 * @param interfaceClazz}
+\PYGdefault{c+cm}{	 *            the class of the current instance which will be used for name}
+\PYGdefault{c+cm}{	 *            resolving.}
+\PYGdefault{c+cm}{	 * @throws RemoteException}
+\PYGdefault{c+cm}{	 *             if the bean could not be registered}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the bean or the interface are null}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the RMI hasn\PYGdefaultZsq{}t been started before}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{bindBean}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{bean}\PYGdefault{o}{,} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{interfaceClazz}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Unbinds a registered bean if the service is bind to the backed RMI}
+\PYGdefault{c+cm}{	 * server.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param interfaceClazz}
+\PYGdefault{c+cm}{	 *            the registered bean interface class}
+\PYGdefault{c+cm}{	 * @throws RemoteException}
+\PYGdefault{c+cm}{	 *             if the RMI server is not started}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the interface class is null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{unbindBean}\PYGdefault{o}{(}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{interfaceClazz}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * SWtarts the RMI server.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws RemoteException}
+\PYGdefault{c+cm}{	 *             if the RMI server could not be started}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the URL is null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{start}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Stops the RMI server and ends all connections, therefore client could}
+\PYGdefault{c+cm}{	 * experience \PYGdefaultZob{}@link RemoteException\PYGdefaultZcb{}.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @throws RemoteException}
+\PYGdefault{c+cm}{	 *             if the rmi server could not be started}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{stop}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException}\PYGdefault{o}{;}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

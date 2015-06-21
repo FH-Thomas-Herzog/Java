@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.exception}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This exception indicates that an username is already used by another user.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 21, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{UsernameAlreadyUsedException} \PYGdefault{k+kd}{extends} \PYGdefault{n}{RuntimeException} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}	\PYGdefault{n}{serialVersionUID}	\PYGdefault{o}{=} \PYGdefault{l+m+mi}{2301658696430408670L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UsernameAlreadyUsedException}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UsernameAlreadyUsedException}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{s}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{s}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UsernameAlreadyUsedException}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{s}\PYGdefault{o}{,} \PYGdefault{n}{Throwable} \PYGdefault{n}{cause}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{s}\PYGdefault{o}{,} \PYGdefault{n}{cause}\PYGdefault{o}{);}
+		\PYGdefault{c+c1}{// TODO Auto\PYGdefaultZhy{}generated constructor stub}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

@@ -1,0 +1,81 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.io.Serializable}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javax.persistence.Column}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javax.persistence.Id}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class represents the root of each entity with an integer id. Should be}
+\PYGdefault{c+cm}{ * generic in the future.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 21, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{abstract} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{AbstractEntity} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Serializable} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}	\PYGdefault{n}{serialVersionUID}	\PYGdefault{o}{=} \PYGdefault{l+m+mi}{1095329951571671581L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Integer}				\PYGdefault{n}{id}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Long}				\PYGdefault{n}{version}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{AbstractEntity}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{AbstractEntity}\PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{id} \PYGdefault{o}{=} \PYGdefault{n}{id}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Id}
+	\PYGdefault{n+nd}{@Column}\PYGdefault{o}{(}\PYGdefault{n}{name} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}ID\PYGdefaultZdq{}}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Integer} \PYGdefault{n+nf}{getId}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{id}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setId}\PYGdefault{o}{(}\PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{id} \PYGdefault{o}{=} \PYGdefault{n}{id}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Column}\PYGdefault{o}{(}\PYGdefault{n}{name} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}version\PYGdefaultZdq{}}\PYGdefault{o}{)}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Long} \PYGdefault{n+nf}{getVersion}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{version}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setVersion}\PYGdefault{o}{(}\PYGdefault{n}{Long} \PYGdefault{n}{version}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{version} \PYGdefault{o}{=} \PYGdefault{n}{version}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{hashCode}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{prime} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{31}\PYGdefault{o}{;}
+		\PYGdefault{k+kt}{int} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{prime} \PYGdefault{o}{*} \PYGdefault{n}{result} \PYGdefault{o}{+} \PYGdefault{o}{((}\PYGdefault{n}{id} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{l+m+mi}{0} \PYGdefault{o}{:} \PYGdefault{n}{id}\PYGdefault{o}{.}\PYGdefault{n+na}{hashCode}\PYGdefault{o}{());}
+		\PYGdefault{k}{return} \PYGdefault{n}{result}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{boolean} \PYGdefault{n+nf}{equals}\PYGdefault{o}{(}\PYGdefault{n}{Object} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{k}{this} \PYGdefault{o}{==} \PYGdefault{n}{obj}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{obj} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{getClass}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{n}{obj}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{AbstractEntity} \PYGdefault{n}{other} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{AbstractEntity}\PYGdefault{o}{)} \PYGdefault{n}{obj}\PYGdefault{o}{;}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{id} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{id} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{id}\PYGdefault{o}{.}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{n}{other}\PYGdefault{o}{.}\PYGdefault{n+na}{id}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k+kc}{false}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{k+kc}{true}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

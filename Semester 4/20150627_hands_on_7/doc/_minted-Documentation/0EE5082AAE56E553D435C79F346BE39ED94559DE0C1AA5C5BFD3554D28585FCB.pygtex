@@ -1,0 +1,168 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.test.dao.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertEquals}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{assertTrue}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{static} \PYGdefault{n}{org}\PYGdefault{o}{.}\PYGdefault{n+na}{junit}\PYGdefault{o}{.}\PYGdefault{n+na}{Assert}\PYGdefault{o}{.}\PYGdefault{n+na}{fail}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.math.BigDecimal}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.RemoteException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.SQLException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Calendar}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.After}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Before}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Test}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.api.OrderDao}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.impl.OrderDaoImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.entity.Menu}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.entity.MenuEntry}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.entity.Order}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.entity.User}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.entity.constants.Day}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.test.dao.api.AbstractDaoTest}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.test.dao.api.RemoteDetailMatcher}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This test class represents the test class for the \PYGdefaultZob{}@link OrderDao\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{ * implementation.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 20, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{OrderDaoTest} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractDaoTest}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Order}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{OrderDao}	\PYGdefault{n}{dao}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{OrderDaoTest}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{Order}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{dao} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{OrderDaoImpl}\PYGdefault{o}{(}\PYGdefault{n}{conManager}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Before}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{beforeTest}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{setupDB}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@After}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{afterTest}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{setupDB}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{saveNull}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Order} \PYGdefault{n}{order} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{n}{expectedException}\PYGdefault{o}{.}\PYGdefault{n+na}{expect}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{RemoteDetailMatcher}\PYGdefault{o}{(}\PYGdefault{n}{NullPointerException}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{));}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When | Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{save}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{save}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{();}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setFirstName}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Thomas\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setLastName}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Herzog\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setUsername}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}cchet\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setEmail}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}t.t@t.at\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setPassword}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}xxxxxxx\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setAdminFlag}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setBlockedFlag}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+		\PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{Menu} \PYGdefault{n}{menu} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Menu}\PYGdefault{o}{();}
+		\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{setDay}\PYGdefault{o}{(}\PYGdefault{n}{Day}\PYGdefault{o}{.}\PYGdefault{n+na}{MONDAY}\PYGdefault{o}{);}
+		\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{setLabel}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}1\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menu} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{MenuEntry} \PYGdefault{n}{menuEntry} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuEntry}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setLabel}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}\PYGdefaultZhy{}entry\PYGdefaultZhy{}1\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setMenu}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setOrdinal}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setPrice}\PYGdefault{o}{(}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{ONE}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{menuEntry}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{Order} \PYGdefault{n}{order} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Order}\PYGdefault{o}{();}
+		\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setMenuEntry}\PYGdefault{o}{(}\PYGdefault{n}{menuEntry}\PYGdefault{o}{);}
+		\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setOrderDate}\PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{getInstance}\PYGdefault{o}{());}
+		\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setCollectDate}\PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{getInstance}\PYGdefault{o}{());}
+		\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setUser}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+		\PYGdefault{n}{order} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{order} \PYGdefault{o}{=} \PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{save}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{conManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Order} \PYGdefault{n}{orderDB} \PYGdefault{o}{=} \PYGdefault{n}{em}\PYGdefault{o}{.}\PYGdefault{n+na}{byId}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{());}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{,} \PYGdefault{n}{orderDB}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{fail}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not obtain connection\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{getAllEmpty}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given | When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Order}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{fetchedOrders} \PYGdefault{o}{=} \PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{getAll}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertTrue}\PYGdefault{o}{(}\PYGdefault{n}{fetchedOrders}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{());}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Test}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{getAll}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Given \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Order}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{orders} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{5}\PYGdefault{o}{);}
+		\PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{User}\PYGdefault{o}{();}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setFirstName}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Thomas\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setLastName}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Herzog\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setUsername}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}cchet\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setEmail}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}t.t@t.at\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setPassword}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}xxxxxxx\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setAdminFlag}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);}
+		\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{setBlockedFlag}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{);}
+		\PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{Menu} \PYGdefault{n}{menu} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Menu}\PYGdefault{o}{();}
+		\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{setDay}\PYGdefault{o}{(}\PYGdefault{n}{Day}\PYGdefault{o}{.}\PYGdefault{n+na}{MONDAY}\PYGdefault{o}{);}
+		\PYGdefault{n}{menu}\PYGdefault{o}{.}\PYGdefault{n+na}{setLabel}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}1\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menu} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{MenuEntry} \PYGdefault{n}{menuEntry} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{MenuEntry}\PYGdefault{o}{();}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setLabel}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}menu\PYGdefaultZhy{}\PYGdefaultZhy{}entry\PYGdefaultZhy{}1\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setMenu}\PYGdefault{o}{(}\PYGdefault{n}{menu}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setOrdinal}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry}\PYGdefault{o}{.}\PYGdefault{n+na}{setPrice}\PYGdefault{o}{(}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{ONE}\PYGdefault{o}{);}
+		\PYGdefault{n}{menuEntry} \PYGdefault{o}{=} \PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{menuEntry}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Order} \PYGdefault{n}{order} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Order}\PYGdefault{o}{();}
+			\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setMenuEntry}\PYGdefault{o}{(}\PYGdefault{n}{menuEntry}\PYGdefault{o}{);}
+			\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setOrderDate}\PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{getInstance}\PYGdefault{o}{());}
+			\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setCollectDate}\PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{getInstance}\PYGdefault{o}{());}
+			\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{setUser}\PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{orders} \PYGdefault{o}{=} \PYGdefault{n}{saveEntities}\PYGdefault{o}{(}\PYGdefault{n}{orders}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} When \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Order}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{fetchedOrders} \PYGdefault{o}{=} \PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{getAll}\PYGdefault{o}{();}
+
+		\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} Then \PYGdefaultZhy{}\PYGdefaultZhy{}}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{orders}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{(),} \PYGdefault{n}{fetchedOrders}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{orders}\PYGdefault{o}{,} \PYGdefault{n}{fetchedOrders}\PYGdefault{o}{);}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Order} \PYGdefault{n}{order} \PYGdefault{o}{:} \PYGdefault{n}{fetchedOrders}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{getUser}\PYGdefault{o}{(),} \PYGdefault{n}{user}\PYGdefault{o}{);}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{getMenuEntry}\PYGdefault{o}{(),} \PYGdefault{n}{menuEntry}\PYGdefault{o}{);}
+			\PYGdefault{n}{assertEquals}\PYGdefault{o}{(}\PYGdefault{n}{order}\PYGdefault{o}{.}\PYGdefault{n+na}{getMenuEntry}\PYGdefault{o}{()}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{getMenu}\PYGdefault{o}{(),} \PYGdefault{n}{menu}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

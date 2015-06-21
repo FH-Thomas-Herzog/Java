@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n+na}{log4j.rootLogger}\PYGdefault{o}{=}\PYGdefault{l+s}{INFO,STDOUT}
+
+\PYGdefault{n+na}{log4j.appender.STDOUT}\PYGdefault{o}{=}\PYGdefault{l+s}{org.apache.log4j.ConsoleAppender}
+\PYGdefault{n+na}{log4j.appender.STDOUT.layout}\PYGdefault{o}{=}\PYGdefault{l+s}{org.apache.log4j.PatternLayout}
+\PYGdefault{n+na}{log4j.appender.STDOUT.layout.ConversionPattern}\PYGdefault{o}{=}\PYGdefault{l+s}{\PYGdefaultZpc{}p\PYGdefaultZbs{}t\PYGdefaultZpc{}d\PYGdefaultZob{}HH:mm:ss,SSS\PYGdefaultZcb{}\PYGdefaultZbs{}t\PYGdefaultZhy{} \PYGdefaultZpc{}m\PYGdefaultZpc{}n}
+\end{Verbatim}

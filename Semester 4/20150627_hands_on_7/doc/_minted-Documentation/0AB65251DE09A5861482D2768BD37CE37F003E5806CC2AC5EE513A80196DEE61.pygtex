@@ -1,0 +1,191 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.rmi.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.Remote}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.RemoteException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.server.UnicastRemoteObject}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashMap}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Iterator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Map}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Map.Entry}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.SortedSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Timer}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.TimerTask}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.TreeSet}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.ConnectionManager}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl.DbMetadata}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.rmi.api.factory.RmiDaoFactory}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class creates the remote object for the client so that multiple instance}
+\PYGdefault{c+cm}{ * can be used on the client site. Therefore the produced beans are considered}
+\PYGdefault{c+cm}{ * to be stateless implemented beans, because the client is not supposed to}
+\PYGdefault{c+cm}{ * expect anything more but an stateless bean.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 17, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{RmiDaofactoryImpl} \PYGdefault{k+kd}{extends} \PYGdefault{n}{UnicastRemoteObject} \PYGdefault{k+kd}{implements} \PYGdefault{n}{RmiDaoFactory} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}								\PYGdefault{n}{serialVersionUID}	\PYGdefault{o}{=} \PYGdefault{l+m+mi}{9162336931859659503L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Timer}											\PYGdefault{n}{cleanupTimer}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{DaoWrapper}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}}	\PYGdefault{n}{daoCache}			\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashMap}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{l+m+mi}{100}\PYGdefault{o}{,} \PYGdefault{o}{(}\PYGdefault{k+kt}{float}\PYGdefault{o}{)} \PYGdefault{l+m+mf}{0.75}\PYGdefault{o}{);}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{DbMetadata}								\PYGdefault{n}{databaseMeta}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{ConnectionManager}							\PYGdefault{n}{connectionManager}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Object}									\PYGdefault{n}{lockObject}			\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Object}\PYGdefault{o}{();}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Logger}								\PYGdefault{n}{log}					\PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{n}{RmiDaofactoryImpl}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}								\PYGdefault{n}{IMPL\PYGdefaultZus{}NAME\PYGdefaultZus{}SPACE}		\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}at.fh.ooe.swe4.campina.dao.impl.\PYGdefaultZdq{}}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int}								\PYGdefault{n}{CLIENT\PYGdefaultZus{}COUNT}		\PYGdefault{o}{=} \PYGdefault{l+m+mi}{10}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Helper class for wrapping the cached DAO for caching purposes.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 17, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{DaoWrapper} \PYGdefault{k+kd}{implements} \PYGdefault{n}{Comparable}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{DaoWrapper}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int}			\PYGdefault{n}{clientCount}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Remote}	\PYGdefault{n}{instance}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param instance}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{DaoWrapper}\PYGdefault{o}{(}\PYGdefault{n}{Remote} \PYGdefault{n}{instance}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{instance} \PYGdefault{o}{=} \PYGdefault{n}{instance}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{clientCount} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * Ensures that the lowest client count DAO is the first element of the}
+\PYGdefault{c+cm}{		 * sorted container}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{DaoWrapper} \PYGdefault{n}{o}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Integer}\PYGdefault{o}{.}\PYGdefault{n+na}{valueOf}\PYGdefault{o}{(}\PYGdefault{n}{clientCount}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o}\PYGdefault{o}{.}\PYGdefault{n+na}{clientCount}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Cleanup time task which ensures that not more than 10 references are}
+\PYGdefault{c+cm}{	 * bound to one DAO. If the service has the client count breached then the}
+\PYGdefault{c+cm}{	 * reference to this DAO will be released.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 17, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{CleanupTask} \PYGdefault{k+kd}{extends} \PYGdefault{n}{TimerTask} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{RmiDaofactoryImpl}	\PYGdefault{n}{factory}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param factory}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{CleanupTask}\PYGdefault{o}{(}\PYGdefault{n}{RmiDaofactoryImpl} \PYGdefault{n}{factory}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{factory} \PYGdefault{o}{=} \PYGdefault{n}{factory}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{run}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{c+c1}{// ensures that clients have to wait for cleanup finished}
+			\PYGdefault{k+kd}{synchronized} \PYGdefault{o}{(}\PYGdefault{n}{factory}\PYGdefault{o}{.}\PYGdefault{n+na}{lockObject}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kt}{int} \PYGdefault{n}{count} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+				\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Entry}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{DaoWrapper}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}} \PYGdefault{n}{entry} \PYGdefault{o}{:} \PYGdefault{n}{factory}\PYGdefault{o}{.}\PYGdefault{n+na}{daoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{entrySet}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k+kd}{final} \PYGdefault{n}{Iterator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{DaoWrapper}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{it} \PYGdefault{o}{=} \PYGdefault{n}{entry}\PYGdefault{o}{.}\PYGdefault{n+na}{getValue}\PYGdefault{o}{()}
+															\PYGdefault{o}{.}\PYGdefault{n+na}{iterator}\PYGdefault{o}{();}
+					\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{hasNext}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{k+kd}{final} \PYGdefault{n}{DaoWrapper} \PYGdefault{n}{service} \PYGdefault{o}{=} \PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+						\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{service}\PYGdefault{o}{.}\PYGdefault{n+na}{clientCount} \PYGdefault{o}{\PYGdefaultZgt{}=} \PYGdefault{n}{CLIENT\PYGdefaultZus{}COUNT}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+							\PYGdefault{n}{it}\PYGdefault{o}{.}\PYGdefault{n+na}{remove}\PYGdefault{o}{();}
+							\PYGdefault{n}{count}\PYGdefault{o}{++;}
+						\PYGdefault{o}{\PYGdefaultZcb{}}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Finished DAO cache cleanup (\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{count} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{} removed)\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @throws RemoteException}
+\PYGdefault{c+cm}{	 *             if remote object could not be created}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{RmiDaofactoryImpl}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{DbMetadata} \PYGdefault{n}{databaseMeta}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{databaseMeta}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{cleanupTimer} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{Timer}\PYGdefault{o}{();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{cleanupTimer}\PYGdefault{o}{.}\PYGdefault{n+na}{schedule}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{CleanupTask}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{),} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{,} \PYGdefault{o}{(}\PYGdefault{k+kt}{int}\PYGdefault{o}{)} \PYGdefault{o}{(}\PYGdefault{l+m+mi}{10} \PYGdefault{o}{*} \PYGdefault{l+m+mi}{1000}\PYGdefault{o}{));}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{databaseMeta} \PYGdefault{o}{=} \PYGdefault{n}{databaseMeta}\PYGdefault{o}{;}
+
+		\PYGdefault{c+c1}{// constructor tries to establish a connection and therefore validates}
+		\PYGdefault{c+c1}{// the provided metadata}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{connectionManager} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ConnectionManagerImpl}\PYGdefault{o}{(}\PYGdefault{n}{databaseMeta}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{T} \PYGdefault{n+nf}{createDao}\PYGdefault{o}{(}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{interfaze}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{synchronized} \PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{lockObject}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+
+			\PYGdefault{n}{DaoWrapper} \PYGdefault{n}{dao}\PYGdefault{o}{;}
+			\PYGdefault{n}{SortedSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{DaoWrapper}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{typedDaoCache} \PYGdefault{o}{=} \PYGdefault{n}{daoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{interfaze}\PYGdefault{o}{);}
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} No instance cached \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{typedDaoCache} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Init DAO cache: \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{interfaze}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+				\PYGdefault{n}{typedDaoCache} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{TreeSet}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{DaoWrapper}\PYGdefault{o}{\PYGdefaultZgt{}();}
+				\PYGdefault{n}{daoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{((}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{interfaze}\PYGdefault{o}{,} \PYGdefault{n}{typedDaoCache}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} empty cache \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{typedDaoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())} \PYGdefault{o}{||} \PYGdefault{o}{(}\PYGdefault{n}{typedDaoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{first}\PYGdefault{o}{().}\PYGdefault{n+na}{clientCount} \PYGdefault{o}{\PYGdefaultZgt{}=} \PYGdefault{n}{CLIENT\PYGdefaultZus{}COUNT}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{typedDaoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{DaoWrapper}\PYGdefault{o}{(}\PYGdefault{n}{newDaoInstance}\PYGdefault{o}{(}\PYGdefault{n}{interfaze}\PYGdefault{o}{)));}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Caching new DAO: \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{interfaze}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} get first bean with lowest client count \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{n}{dao} \PYGdefault{o}{=} \PYGdefault{n}{typedDaoCache}\PYGdefault{o}{.}\PYGdefault{n+na}{first}\PYGdefault{o}{();}
+
+			\PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{clientCount}\PYGdefault{o}{++;}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Retrieved cached DAO: \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{interfaze}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{instance} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Creation of DAO: \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{interfaze}\PYGdefault{o}{.}\PYGdefault{n+na}{getName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} failed\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{k}{return} \PYGdefault{o}{(}\PYGdefault{n}{T}\PYGdefault{o}{)} \PYGdefault{n}{dao}\PYGdefault{o}{.}\PYGdefault{n+na}{instance}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates a new DAO instance.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param interfaze}
+\PYGdefault{c+cm}{	 *            the DAO interface class}
+\PYGdefault{c+cm}{	 * @return the DAO instance or null if the creation failed}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{T} \PYGdefault{n+nf}{newDaoInstance}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{interfaze}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{interfaze}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{T} \PYGdefault{n}{instance} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{clazz} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{Class}\PYGdefault{o}{.}\PYGdefault{n+na}{forName}\PYGdefault{o}{(}\PYGdefault{n}{IMPL\PYGdefaultZus{}NAME\PYGdefaultZus{}SPACE} \PYGdefault{o}{+} \PYGdefault{n}{interfaze}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}Impl\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{instance} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getConstructor}\PYGdefault{o}{(}\PYGdefault{n}{ConnectionManager}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{newInstance}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{connectionManager}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{e}\PYGdefault{o}{.}\PYGdefault{n+na}{printStackTrace}\PYGdefault{o}{();}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could create service instance\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{instance}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

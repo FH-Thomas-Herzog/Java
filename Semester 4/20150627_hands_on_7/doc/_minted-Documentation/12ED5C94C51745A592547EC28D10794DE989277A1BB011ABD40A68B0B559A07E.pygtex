@@ -1,0 +1,64 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k}{CREATE} \PYGdefault{k}{SCHEMA} \PYGdefault{n}{if} \PYGdefault{k}{not} \PYGdefault{k}{exists} \PYGdefault{n}{campina}\PYGdefault{p}{;}
+\PYGdefault{n}{USE} \PYGdefault{n}{campina}\PYGdefault{p}{;}
+\PYGdefault{k}{DROP} \PYGdefault{k}{TABLE} \PYGdefault{n}{IF} \PYGdefault{k}{EXISTS} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{order}\PYGdefault{p}{;}
+\PYGdefault{k}{DROP} \PYGdefault{k}{TABLE} \PYGdefault{n}{IF} \PYGdefault{k}{EXISTS} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu\PYGdefaultZus{}entry}\PYGdefault{p}{;}
+\PYGdefault{k}{DROP} \PYGdefault{k}{TABLE} \PYGdefault{n}{IF} \PYGdefault{k}{EXISTS} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu}\PYGdefault{p}{;}
+\PYGdefault{k}{DROP} \PYGdefault{k}{TABLE} \PYGdefault{n}{IF} \PYGdefault{k}{EXISTS} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{user}\PYGdefault{p}{;}
+
+\PYGdefault{k}{CREATE} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{user} \PYGdefault{p}{(}
+	\PYGdefault{n}{id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{n}{AUTO\PYGdefaultZus{}INCREMENT}\PYGdefault{p}{,}
+	\PYGdefault{k}{version} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{1}\PYGdefault{p}{,}
+	\PYGdefault{n}{first\PYGdefaultZus{}name} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{last\PYGdefaultZus{}name} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{email} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{username} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{password} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{admin\PYGdefaultZus{}flag} \PYGdefault{n+nb}{smallint} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{0}\PYGdefault{p}{,}
+	\PYGdefault{n}{blocked\PYGdefaultZus{}flag} \PYGdefault{n+nb}{smallint} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{0}\PYGdefault{p}{,}
+	\PYGdefault{k}{PRIMARY} \PYGdefault{k}{KEY}\PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{)}
+\PYGdefault{p}{);}
+
+\PYGdefault{k}{CREATE} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{order}\PYGdefault{p}{(}
+	\PYGdefault{n}{id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{n}{auto\PYGdefaultZus{}increment}\PYGdefault{p}{,}
+	\PYGdefault{k}{version} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{1}\PYGdefault{p}{,}
+	\PYGdefault{n}{order\PYGdefaultZus{}date} \PYGdefault{k}{TIMESTAMP} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{k}{CURRENT\PYGdefaultZus{}TIMESTAMP}\PYGdefault{p}{,}
+	\PYGdefault{n}{collect\PYGdefaultZus{}date} \PYGdefault{k}{TIMESTAMP} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{user\PYGdefaultZus{}id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{menu\PYGdefaultZus{}entry\PYGdefaultZus{}id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{k}{PRIMARY} \PYGdefault{k}{KEY}\PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{)}
+\PYGdefault{p}{);}
+
+\PYGdefault{k}{CREATE} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu}\PYGdefault{p}{(}
+	\PYGdefault{n}{id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{n}{auto\PYGdefaultZus{}increment}\PYGdefault{p}{,}
+	\PYGdefault{k}{version} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{1}\PYGdefault{p}{,}
+	\PYGdefault{k}{day} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{label} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{k}{PRIMARY} \PYGdefault{k}{KEY} \PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{)}
+\PYGdefault{p}{);}
+
+\PYGdefault{k}{CREATE} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu\PYGdefaultZus{}entry}\PYGdefault{p}{(}
+	\PYGdefault{n}{id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{n}{auto\PYGdefaultZus{}increment}\PYGdefault{p}{,}
+	\PYGdefault{k}{version} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL} \PYGdefault{k}{default} \PYGdefault{l+m+mi}{1}\PYGdefault{p}{,}
+	\PYGdefault{n}{ordinal} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{label} \PYGdefault{n+nb}{VARCHAR}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{255}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{price} \PYGdefault{n+nb}{DECIMAL}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{4}\PYGdefault{p}{,}\PYGdefault{l+m+mi}{2}\PYGdefault{p}{)} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{n}{menu\PYGdefaultZus{}id} \PYGdefault{n+nb}{INTEGER} \PYGdefault{k}{NOT} \PYGdefault{k}{NULL}\PYGdefault{p}{,}
+	\PYGdefault{k}{PRIMARY} \PYGdefault{k}{KEY} \PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{)}
+\PYGdefault{p}{);}
+
+\PYGdefault{k}{ALTER} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{order} 
+\PYGdefault{k}{ADD} \PYGdefault{k}{CONSTRAINT} \PYGdefault{n}{fk\PYGdefaultZus{}menu\PYGdefaultZus{}entry\PYGdefaultZus{}id}
+\PYGdefault{k}{FOREIGN} \PYGdefault{k}{KEY} \PYGdefault{p}{(}\PYGdefault{n}{menu\PYGdefaultZus{}entry\PYGdefaultZus{}id}\PYGdefault{p}{)}
+\PYGdefault{k}{REFERENCES} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu\PYGdefaultZus{}entry}\PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{);}
+
+\PYGdefault{k}{ALTER} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{order} 
+\PYGdefault{k}{ADD} \PYGdefault{k}{CONSTRAINT} \PYGdefault{n}{fk\PYGdefaultZus{}user\PYGdefaultZus{}id}
+\PYGdefault{k}{FOREIGN} \PYGdefault{k}{KEY} \PYGdefault{p}{(}\PYGdefault{n}{user\PYGdefaultZus{}id}\PYGdefault{p}{)}
+\PYGdefault{k}{REFERENCES} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{k}{user}\PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{);}
+
+\PYGdefault{k}{ALTER} \PYGdefault{k}{TABLE} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu\PYGdefaultZus{}entry} 
+\PYGdefault{k}{ADD} \PYGdefault{k}{CONSTRAINT} \PYGdefault{n}{fk\PYGdefaultZus{}menu\PYGdefaultZus{}id}
+\PYGdefault{k}{FOREIGN} \PYGdefault{k}{KEY} \PYGdefault{p}{(}\PYGdefault{n}{menu\PYGdefaultZus{}id}\PYGdefault{p}{)}
+\PYGdefault{k}{REFERENCES} \PYGdefault{n}{campina}\PYGdefault{p}{.}\PYGdefault{n}{menu}\PYGdefault{p}{(}\PYGdefault{n}{id}\PYGdefault{p}{);}
+\end{Verbatim}

@@ -1,0 +1,166 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.test.dao.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.nio.charset.Charset}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.nio.file.Files}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.nio.file.Paths}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.PreparedStatement}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.SQLException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Level}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.ClassRule}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.Rule}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.rules.ExpectedException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.RunWith}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runners.JUnit4}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.AbstractEntity}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.ConnectionManager}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.ConnectionManagerImpl.DbMetadata}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.DbConfigParam}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.junit.test.suite.watcher.LoggingTestClassWatcher}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.junit.test.suite.watcher.LoggingTestInvocationWatcher}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is the base class for all dao test.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * It provides the connection manager for the underlying test database.\PYGdefaultZlt{}br\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * It provides utility methods for saving all types of entities and an}
+\PYGdefault{c+cm}{ * entitymanager for the tested entity dao.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 21, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}T\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{n+nd}{@RunWith}\PYGdefault{o}{(}\PYGdefault{n}{JUnit4}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{)}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{abstract} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{AbstractDaoTest}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kd}{final} \PYGdefault{n}{DbMetadata}					\PYGdefault{n}{dbMeta}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kd}{final} \PYGdefault{n}{ConnectionManager}			\PYGdefault{n}{conManager}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kd}{final} \PYGdefault{n}{EntityManagerImpl}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}}		\PYGdefault{n}{em}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Logger}						\PYGdefault{n}{log}\PYGdefault{o}{;}
+	\PYGdefault{n+nd}{@ClassRule}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{LoggingTestClassWatcher}	\PYGdefault{n}{testClassWatcher}		\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{LoggingTestClassWatcher}\PYGdefault{o}{(}\PYGdefault{n}{Level}\PYGdefault{o}{.}\PYGdefault{n+na}{INFO}\PYGdefault{o}{);}
+	\PYGdefault{n+nd}{@Rule}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{LoggingTestInvocationWatcher}	\PYGdefault{n}{testWatcher}				\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{LoggingTestInvocationWatcher}\PYGdefault{o}{(}\PYGdefault{n}{Level}\PYGdefault{o}{.}\PYGdefault{n+na}{INFO}\PYGdefault{o}{);}
+	\PYGdefault{n+nd}{@Rule}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{RemoteExceptionLogger}				\PYGdefault{n}{remoteExceptionLogger}	\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{RemoteExceptionLogger}\PYGdefault{o}{();}
+	\PYGdefault{n+nd}{@Rule}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{ExpectedException}					\PYGdefault{n}{expectedException}		\PYGdefault{o}{=} \PYGdefault{n}{ExpectedException}\PYGdefault{o}{.}\PYGdefault{n+na}{none}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param entityClazz}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{AbstractDaoTest}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{entityClazz}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+		\PYGdefault{n}{log} \PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{());}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Initialization started\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{dbMeta} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{DbMetadata}\PYGdefault{o}{(}\PYGdefault{n}{DbConfigParam}\PYGdefault{o}{.}\PYGdefault{n+na}{DRIVER}\PYGdefault{o}{.}\PYGdefault{n+na}{val}\PYGdefault{o}{(),}
+				\PYGdefault{n}{DbConfigParam}\PYGdefault{o}{.}\PYGdefault{n+na}{URL}\PYGdefault{o}{.}\PYGdefault{n+na}{val}\PYGdefault{o}{(),}
+				\PYGdefault{n}{DbConfigParam}\PYGdefault{o}{.}\PYGdefault{n+na}{USER}\PYGdefault{o}{.}\PYGdefault{n+na}{val}\PYGdefault{o}{(),}
+				\PYGdefault{n}{DbConfigParam}\PYGdefault{o}{.}\PYGdefault{n+na}{PASSWORD}\PYGdefault{o}{.}\PYGdefault{n+na}{val}\PYGdefault{o}{(),}
+				\PYGdefault{l+m+mi}{2}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{conManager} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ConnectionManagerImpl}\PYGdefault{o}{(}\PYGdefault{n}{dbMeta}\PYGdefault{o}{);}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{em} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{EntityManagerImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{entityClazz}\PYGdefault{o}{);}
+		\PYGdefault{n}{setupDB}\PYGdefault{o}{();}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Initialization finished\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Drops and recreates the test database. Should be called before each test}
+\PYGdefault{c+cm}{	 * method invocation.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setupDB}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Initialization database started\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}ddl: db\PYGdefaultZhy{}config.xml\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{lines} \PYGdefault{o}{=} \PYGdefault{n}{Files}\PYGdefault{o}{.}\PYGdefault{n+na}{readAllLines}\PYGdefault{o}{(}\PYGdefault{n}{Paths}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{()}
+																		\PYGdefault{o}{.}\PYGdefault{n+na}{getClassLoader}\PYGdefault{o}{()}
+																		\PYGdefault{o}{.}\PYGdefault{n+na}{getResource}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}create\PYGdefaultZhy{}campina\PYGdefaultZhy{}schema.sql\PYGdefaultZdq{}}\PYGdefault{o}{)}
+																		\PYGdefault{o}{.}\PYGdefault{n+na}{toURI}\PYGdefault{o}{()),} \PYGdefault{n}{Charset}\PYGdefault{o}{.}\PYGdefault{n+na}{forName}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}UTF\PYGdefaultZhy{}8\PYGdefaultZdq{}}\PYGdefault{o}{));}
+
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{statements} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{lines}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+			\PYGdefault{n}{String} \PYGdefault{n}{statement} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZdq{}}\PYGdefault{o}{;}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{string} \PYGdefault{o}{:} \PYGdefault{n}{lines}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{statement} \PYGdefault{o}{+=} \PYGdefault{l+s}{\PYGdefaultZdq{} \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{string}\PYGdefault{o}{;}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{string}\PYGdefault{o}{.}\PYGdefault{n+na}{endsWith}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{};\PYGdefaultZdq{}}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{statements}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{statement}\PYGdefault{o}{);}
+					\PYGdefault{n}{statement} \PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZdq{}}\PYGdefault{o}{;}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{conManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}DROP SCHEMA IF EXISTS campina\PYGdefaultZdq{}}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeUpdate}\PYGdefault{o}{();}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{string} \PYGdefault{o}{:} \PYGdefault{n}{statements}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Executing ddl: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{string}\PYGdefault{o}{);}
+					\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{string}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+						\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeUpdate}\PYGdefault{o}{();}
+					\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not setup db\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not setup database\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}ddl file load failed\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Initialization database finished\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Saves the collection of entities.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param entities}
+\PYGdefault{c+cm}{	 *            the entities to be saved}
+\PYGdefault{c+cm}{	 * @return the saved entities}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{protected} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{saveEntities}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{entities}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entities}\PYGdefault{o}{);}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{saved} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{entities}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{E} \PYGdefault{n}{entity} \PYGdefault{o}{:} \PYGdefault{n}{entities}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{saved}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{saveEntity}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{));}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{saved}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Saves the given entity.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 *            the entity to be saved.}
+\PYGdefault{c+cm}{	 * @return the saved entity}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n+nd}{@SuppressWarnings}\PYGdefault{o}{(\PYGdefaultZob{}}
+						\PYGdefault{l+s}{\PYGdefaultZdq{}rawtypes\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}unchecked\PYGdefaultZdq{}} \PYGdefault{o}{\PYGdefaultZcb{})}
+	\PYGdefault{k+kd}{protected} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{E} \PYGdefault{n+nf}{saveEntity}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{E} \PYGdefault{n}{entityDB}\PYGdefault{o}{;}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{conManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{entityDB} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{E}\PYGdefault{o}{)} \PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{EntityManagerImpl}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{())).}\PYGdefault{n+na}{saveOrUpdate}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Entity save failed\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{entityDB}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

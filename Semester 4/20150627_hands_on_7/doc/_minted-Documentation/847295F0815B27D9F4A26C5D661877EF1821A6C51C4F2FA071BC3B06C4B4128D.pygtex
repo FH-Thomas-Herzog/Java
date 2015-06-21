@@ -1,0 +1,165 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.ResultSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.SQLException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javax.persistence.Column}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This interface specifies an entity manager which is used for entity types .}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 19, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}E\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ *            the entity type the isntance is for}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{interface} \PYGdefault{n+nc}{EntityManager}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This is a helper class which hold the metadata from the @Column annotated}
+\PYGdefault{c+cm}{	 * methods which represent the dataabse columns}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 19, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{ColumnMetadata} \PYGdefault{o}{\PYGdefaultZob{}}
+
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Column}		\PYGdefault{n}{column}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}		\PYGdefault{n}{getter}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}		\PYGdefault{n}{setter}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}}	\PYGdefault{n}{typeClass}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * @param column}
+\PYGdefault{c+cm}{		 * @param methodName}
+\PYGdefault{c+cm}{		 * @param typeClass}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{ColumnMetadata}\PYGdefault{o}{(}\PYGdefault{n}{Column} \PYGdefault{n}{column}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{methodName}\PYGdefault{o}{,} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}} \PYGdefault{n}{typeClass}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{column}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{methodName}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{typeClass}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{column} \PYGdefault{o}{=} \PYGdefault{n}{column}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{getter} \PYGdefault{o}{=} \PYGdefault{n}{methodName}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{setter} \PYGdefault{o}{=} \PYGdefault{n}{methodName}\PYGdefault{o}{.}\PYGdefault{n+na}{replace}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}get\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}set\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass} \PYGdefault{o}{=} \PYGdefault{n}{typeClass}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Saves or updates the given entity depending on set id or not.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param con}
+\PYGdefault{c+cm}{	 *            the underlying connection}
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 *            the entity to save or update}
+\PYGdefault{c+cm}{	 * @return the saved or updated entity}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the save or update fails due an sql error.}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the entity is null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{E} \PYGdefault{n+nf}{saveOrUpdate}\PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Deletes the given entity.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param con}
+\PYGdefault{c+cm}{	 *            the underlying connection}
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 *            the entity to be deleted}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the deletion fails}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if con or entity are null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{delete}\PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets all entries from the backed entity type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param con}
+\PYGdefault{c+cm}{	 *            the underlying connection}
+\PYGdefault{c+cm}{	 * @return the found entity}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the entity could not be found}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{byType}\PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the entity by its id.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param con}
+\PYGdefault{c+cm}{	 *            the underlying connection}
+\PYGdefault{c+cm}{	 * @param id}
+\PYGdefault{c+cm}{	 *            TODO}
+\PYGdefault{c+cm}{	 * @return the given instance with filled result}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the fetch fails}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if con or entity are null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{E} \PYGdefault{n+nf}{byId}\PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the entities by custom query.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param con}
+\PYGdefault{c+cm}{	 *            the underlying connection}
+\PYGdefault{c+cm}{	 * @param query}
+\PYGdefault{c+cm}{	 *            the query to execute}
+\PYGdefault{c+cm}{	 * @param args}
+\PYGdefault{c+cm}{	 *            the arguments for the query}
+\PYGdefault{c+cm}{	 * @return the entity list}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the query execution fails}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{byQuery}\PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{query}\PYGdefault{o}{,} \PYGdefault{n}{Object}\PYGdefault{o}{...} \PYGdefault{n}{args}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Fills the entity with the values of the result set. It is assumed that}
+\PYGdefault{c+cm}{	 * the columns in the same order as this entity managers relys on and that}
+\PYGdefault{c+cm}{	 * all of the columns are present.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param result}
+\PYGdefault{c+cm}{	 *            the result set}
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 *            the entity to fill}
+\PYGdefault{c+cm}{	 * @param offset}
+\PYGdefault{c+cm}{	 *            the offset of the column index}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the filling fails}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{fillEntity}\PYGdefault{o}{(}\PYGdefault{n}{ResultSet} \PYGdefault{n}{result}\PYGdefault{o}{,} \PYGdefault{n}{AbstractEntity} \PYGdefault{n}{entity}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{offset}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the table name with schema (if set) of the backed entity type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the table name}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getTableName}\PYGdefault{o}{();}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the column names of the backed entity in the form of name\PYGdefaultZhy{}1, name\PYGdefaultZhy{}2,}
+\PYGdefault{c+cm}{	 * ... , name\PYGdefaultZhy{}n}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param prefix}
+\PYGdefault{c+cm}{	 *            TODO}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the backed entity column names}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getColumnNames}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{prefix}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Returns an unmodifiable list containing the column metadata.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the column metadata}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{ColumnMetadata}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getColumnMeta}\PYGdefault{o}{();}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

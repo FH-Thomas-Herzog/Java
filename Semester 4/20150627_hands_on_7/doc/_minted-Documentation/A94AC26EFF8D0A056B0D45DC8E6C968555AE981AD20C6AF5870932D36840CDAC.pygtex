@@ -1,0 +1,37 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.test.dao.api}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.RemoteException}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.rules.TestWatcher}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.junit.runner.Description}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This class logs the detail of the thrown remoteException which the client}
+\PYGdefault{c+cm}{ * would also do.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 21, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{RemoteExceptionLogger} \PYGdefault{k+kd}{extends} \PYGdefault{n}{TestWatcher} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Logger}	\PYGdefault{n}{log}	\PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{n}{RemoteExceptionLogger}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{RemoteExceptionLogger}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{protected} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{failed}\PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{,} \PYGdefault{n}{Description} \PYGdefault{n}{description}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{.}\PYGdefault{n+na}{failed}\PYGdefault{o}{(}\PYGdefault{n}{e}\PYGdefault{o}{,} \PYGdefault{n}{description}\PYGdefault{o}{);}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{e} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{e} \PYGdefault{k}{instanceof} \PYGdefault{n}{RemoteException}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{RemoteException} \PYGdefault{n}{re} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{RemoteException}\PYGdefault{o}{)} \PYGdefault{n}{e}\PYGdefault{o}{;}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{re}\PYGdefault{o}{.}\PYGdefault{n+na}{detail} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}RemoteException with detail: \PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

@@ -1,0 +1,194 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.DriverManager}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.ConnectionManager}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is the default implementation for the \PYGdefaultZob{}@link ConnectionManager\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{ * interface. Each time the method}
+\PYGdefault{c+cm}{ * \PYGdefaultZob{}@link ConnectionManager\PYGdefaultZsh{}getConnection(boolean)\PYGdefaultZcb{} is called a new connection}
+\PYGdefault{c+cm}{ * will be created with the provided metadata.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 18, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{ConnectionManagerImpl} \PYGdefault{k+kd}{implements} \PYGdefault{n}{ConnectionManager} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{DbMetadata}	\PYGdefault{n}{metadata}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Logger}	\PYGdefault{n}{log}	\PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{n}{ConnectionManagerImpl}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This class holds the metadata information for the used database.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 18, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{DbMetadata} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}		\PYGdefault{n}{driverName}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}		\PYGdefault{n}{url}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}		\PYGdefault{n}{username}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}		\PYGdefault{n}{password}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int}		\PYGdefault{n}{isolationLevel}\PYGdefault{o}{;}
+		\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{boolean}	\PYGdefault{n}{useCredentials}\PYGdefault{o}{;}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * For user connections}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param driverName}
+\PYGdefault{c+cm}{		 *            the driver class name}
+\PYGdefault{c+cm}{		 * @param url}
+\PYGdefault{c+cm}{		 *            the db location}
+\PYGdefault{c+cm}{		 * @param username}
+\PYGdefault{c+cm}{		 *            the username}
+\PYGdefault{c+cm}{		 * @param password}
+\PYGdefault{c+cm}{		 *            the users password}
+\PYGdefault{c+cm}{		 * @param isolationLevel}
+\PYGdefault{c+cm}{		 *            the isolation level}
+\PYGdefault{c+cm}{		 * @see Connection for the isolation levels}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{DbMetadata}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{driverName}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{url}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{username}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{password}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{isolationLevel}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{driverName}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{url}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{username}\PYGdefault{o}{);}
+			\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{password}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{driverName} \PYGdefault{o}{=} \PYGdefault{n}{driverName}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{url} \PYGdefault{o}{=} \PYGdefault{n}{url}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{username} \PYGdefault{o}{=} \PYGdefault{n}{username}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{password} \PYGdefault{o}{=} \PYGdefault{n}{password}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{isolationLevel} \PYGdefault{o}{=} \PYGdefault{n}{isolationLevel}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{useCredentials} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{		 * For anonymous connections}
+\PYGdefault{c+cm}{		 * }
+\PYGdefault{c+cm}{		 * @param driverName}
+\PYGdefault{c+cm}{		 *            the dirver class name}
+\PYGdefault{c+cm}{		 * @param url}
+\PYGdefault{c+cm}{		 *            the db location}
+\PYGdefault{c+cm}{		 */}
+		\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{DbMetadata}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{driverName}\PYGdefault{o}{,} \PYGdefault{n}{String} \PYGdefault{n}{url}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{isolationLevel}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{super}\PYGdefault{o}{();}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{driverName} \PYGdefault{o}{=} \PYGdefault{n}{driverName}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{url} \PYGdefault{o}{=} \PYGdefault{n}{url}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{username} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{password} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{isolationLevel} \PYGdefault{o}{=} \PYGdefault{n}{isolationLevel}\PYGdefault{o}{;}
+			\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{useCredentials} \PYGdefault{o}{=} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n+nd}{@Override}
+		\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{toString}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{StringBuilder} \PYGdefault{n}{sb} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{StringBuilder}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{100}\PYGdefault{o}{);}
+			\PYGdefault{n}{sb}\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZpc{}1\PYGdefaultZdl{}10s\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}driver: \PYGdefaultZdq{}}\PYGdefault{o}{))}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{driverName}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZpc{}1\PYGdefaultZdl{}10s\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}url: \PYGdefaultZdq{}}\PYGdefault{o}{))}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{url}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZpc{}1\PYGdefaultZdl{}10s\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}ISO.: \PYGdefaultZdq{}}\PYGdefault{o}{))}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{isolationLevel}\PYGdefault{o}{)}
+				\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{());}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{useCredentials}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{sb}\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZpc{}1\PYGdefaultZdl{}10s\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}username: \PYGdefaultZdq{}}\PYGdefault{o}{))}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{username}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{())}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZpc{}1\PYGdefaultZdl{}10s\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}password: \PYGdefaultZdq{}}\PYGdefault{o}{))}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{password}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{());}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{sb}\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param metadata}
+\PYGdefault{c+cm}{	 *            the database metadata for creating the connections}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{ConnectionManagerImpl}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{DbMetadata} \PYGdefault{n}{metadata}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{setup}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{metadata} \PYGdefault{o}{=} \PYGdefault{n}{metadata}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{Connection} \PYGdefault{n+nf}{getConnection}\PYGdefault{o}{(}\PYGdefault{k+kt}{boolean} \PYGdefault{n}{batchStatements}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{useCredentials}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{DriverManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{url}\PYGdefault{o}{,} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{username}\PYGdefault{o}{,} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{password}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{DriverManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{url}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{setTransactionIsolation}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{isolationLevel}\PYGdefault{o}{);}
+			\PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{setAutoCommit}\PYGdefault{o}{(!}\PYGdefault{n}{batchStatements}\PYGdefault{o}{);}
+			\PYGdefault{k}{return} \PYGdefault{n}{con}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Exception} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Should not happen :(\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Private Section}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Setups the connection manager with the provide config and tries to}
+\PYGdefault{c+cm}{	 * connect to the backing database.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param metadata}
+\PYGdefault{c+cm}{	 *            the provide database metadata}
+\PYGdefault{c+cm}{	 * @throws IllegalArgumentException}
+\PYGdefault{c+cm}{	 *             if the metadata is invalid}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setup}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{DbMetadata} \PYGdefault{n}{metadata}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{IllegalArgumentException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{ln} \PYGdefault{o}{=} \PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{lineSeparator}\PYGdefault{o}{();}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Beginn Setup Connection manager\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Provided DbMetadata:\PYGdefaultZdq{}}
+				\PYGdefault{o}{+} \PYGdefault{n}{ln}
+				\PYGdefault{o}{+} \PYGdefault{n}{ln}
+				\PYGdefault{o}{+} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{()}
+			\PYGdefault{o}{);}
+
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{Class}\PYGdefault{o}{.}\PYGdefault{n+na}{forName}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{driverName}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{ClassNotFoundException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}driver class not found\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Driver class \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{driverName} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} not found\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Trying to connect to database: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{url}\PYGdefault{o}{);}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{useCredentials}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{DriverManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{url}\PYGdefault{o}{,} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{username}\PYGdefault{o}{,} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{password}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{DriverManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{url}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Trying to set isolation level: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{isolationLevel}\PYGdefault{o}{);}
+			\PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{setTransactionIsolation}\PYGdefault{o}{(}\PYGdefault{n}{metadata}\PYGdefault{o}{.}\PYGdefault{n+na}{isolationLevel}\PYGdefault{o}{);}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Trying to close connection\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{close}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Exception} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Setup failed for: \PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Exception occured during initial setup\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}End Setup Connection manager\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

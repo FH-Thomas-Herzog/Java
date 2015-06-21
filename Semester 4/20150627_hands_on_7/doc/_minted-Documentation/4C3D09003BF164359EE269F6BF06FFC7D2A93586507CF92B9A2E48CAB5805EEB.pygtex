@@ -1,0 +1,574 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.lang.reflect.Method}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.math.BigDecimal}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.PreparedStatement}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.ResultSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.SQLException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Timestamp}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Types}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.ArrayList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Arrays}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Calendar}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashMap}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.LinkedList}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Map}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.concurrent.ConcurrentHashMap}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javax.persistence.Column}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{javax.persistence.Table}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.commons.lang.StringUtils}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.AbstractEntity}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.EntityManager}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is a light weight entity manager which allows to perform JPA like}
+\PYGdefault{c+cm}{ * operations on the backed entity.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 18, 2015}
+\PYGdefault{c+cm}{ * @param \PYGdefaultZlt{}E\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{EntityManagerImpl}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kd}{implements} \PYGdefault{n}{EntityManager}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}}																\PYGdefault{n}{clazz}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{Table}																	\PYGdefault{n}{table}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{ColumnMetadata}\PYGdefault{o}{\PYGdefaultZgt{}}														\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Statement}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}}	\PYGdefault{n}{cache}					\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ConcurrentHashMap}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{\PYGdefaultZgt{},} \PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Statement}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}\PYGdefaultZgt{}();}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{INSERT\PYGdefaultZus{}TEMPLATE}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}INSERT INTO \PYGdefaultZpc{}s (\PYGdefaultZpc{}s, version) VALUES (\PYGdefaultZpc{}s, 1);\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{UPDATE\PYGdefaultZus{}TEMPLATE}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}UPDATE \PYGdefaultZpc{}s SET \PYGdefaultZpc{}s, version=version+1 WHERE id=?;\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{DELETE\PYGdefaultZus{}TEMPLATE}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}DELETE FROM \PYGdefaultZpc{}s WHERE id=?;\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}TEMPLATE}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}SELECT id, \PYGdefaultZpc{}s, version FROM \PYGdefaultZpc{}s WHERE id=?\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{SELECT\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}VERSION}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}SELECT id FROM \PYGdefaultZpc{}s WHERE id=? AND version=?\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}TYPE}			\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}SELECT id, \PYGdefaultZpc{}s, version FROM \PYGdefaultZpc{}s\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}															\PYGdefault{n}{SELECT\PYGdefaultZus{}LAST\PYGdefaultZus{}INSERT\PYGdefaultZus{}ID}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}SELECT LAST\PYGdefaultZus{}INSERT\PYGdefaultZus{}ID();\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Logger}															\PYGdefault{n}{log}						\PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{n}{EntityManagerImpl}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}}													\PYGdefault{n}{EXCLUDE\PYGdefaultZus{}FIELDS}			\PYGdefault{o}{=} \PYGdefault{n}{Arrays}\PYGdefault{o}{.}\PYGdefault{n+na}{asList}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{String}\PYGdefault{o}{[]} \PYGdefault{o}{\PYGdefaultZob{}}
+																																				\PYGdefault{l+s}{\PYGdefaultZdq{}id\PYGdefaultZdq{}}\PYGdefault{o}{,}
+																																				\PYGdefault{l+s}{\PYGdefaultZdq{}version\PYGdefaultZdq{}}
+																												\PYGdefault{o}{\PYGdefaultZcb{});}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * This enumeration specifies the supported statements.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 * @date Jun 19, 2015}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{enum} \PYGdefault{n}{Statement} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{INSERT}\PYGdefault{o}{,}
+		\PYGdefault{n}{UPDATE}\PYGdefault{o}{,}
+		\PYGdefault{n}{DELETE}\PYGdefault{o}{,}
+		\PYGdefault{n}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}ID}\PYGdefault{o}{,}
+		\PYGdefault{n}{SELECT\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}VERSION}\PYGdefault{o}{,}
+		\PYGdefault{n}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}TYPE}\PYGdefault{o}{,}
+		\PYGdefault{n}{SELECT\PYGdefaultZus{}LAST\PYGdefaultZus{}INSERT\PYGdefaultZus{}ID}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param clazz}
+\PYGdefault{c+cm}{	 *            the backed entity class}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}clazz is null\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}clazz has no @Table annotation\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}/ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{EntityManagerImpl}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{clazz}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getAnnotation}\PYGdefault{o}{(}\PYGdefault{n}{Table}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{),} \PYGdefault{l+s}{\PYGdefaultZdq{}Given entity class has no Table annotation\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{clazz} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{;}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{table} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getAnnotation}\PYGdefault{o}{(}\PYGdefault{n}{Table}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{setup}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{E} \PYGdefault{n+nf}{saveOrUpdate}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{Statement} \PYGdefault{n}{stmt} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{INSERT} \PYGdefault{o}{:} \PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{UPDATE}\PYGdefault{o}{;}
+		\PYGdefault{n}{String} \PYGdefault{n}{sql} \PYGdefault{o}{=} \PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{stmt}\PYGdefault{o}{);}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Object}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{values} \PYGdefault{o}{=} \PYGdefault{n}{getValues}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{ColumnMetadata} \PYGdefault{n}{col} \PYGdefault{o}{=} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{);}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{Object} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{values}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{);}
+				\PYGdefault{k+kd}{final} \PYGdefault{k+kt}{int} \PYGdefault{n}{sqlType} \PYGdefault{o}{=} \PYGdefault{n}{converttoSqlType}\PYGdefault{o}{(}\PYGdefault{n}{col}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{);}
+
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setNull}\PYGdefault{o}{(}\PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{sqlType}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setObject}\PYGdefault{o}{(}\PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{convertValueFromEntity}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{),} \PYGdefault{n}{sqlType}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setInt}\PYGdefault{o}{(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{());}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeUpdate}\PYGdefault{o}{();}
+
+			\PYGdefault{c+c1}{// set id}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{sql} \PYGdefault{o}{=} \PYGdefault{n}{SELECT\PYGdefaultZus{}LAST\PYGdefaultZus{}INSERT\PYGdefaultZus{}ID}\PYGdefault{o}{;}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{lastInsertIdPstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{ResultSet} \PYGdefault{n}{resultId} \PYGdefault{o}{=} \PYGdefault{n}{lastInsertIdPstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{();}
+				\PYGdefault{n}{resultId}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{();}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{resultId}\PYGdefault{o}{.}\PYGdefault{n+na}{getInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{));}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setVersion}\PYGdefault{o}{(}\PYGdefault{n}{Long}\PYGdefault{o}{.}\PYGdefault{n+na}{valueOf}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setVersion}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getVersion}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Error on saveOrUpdate\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{n}{e}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{entity}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{delete}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{(),} \PYGdefault{l+s}{\PYGdefaultZdq{}Cannot delete entity with null id\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// check for existing entity with set id}
+		\PYGdefault{n}{checkForExistingWithVersion}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// delete entity}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{sql} \PYGdefault{o}{=} \PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{DELETE}\PYGdefault{o}{);}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{System}\PYGdefault{o}{.}\PYGdefault{n+na}{out}\PYGdefault{o}{.}\PYGdefault{n+na}{println}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+									\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{DELETE}\PYGdefault{o}{));}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{());}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeUpdate}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Error on delete\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{n}{e}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{E} \PYGdefault{n+nf}{byId}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{id}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// full by id}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity} \PYGdefault{o}{=} \PYGdefault{n}{newEntity}\PYGdefault{o}{();}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{sql} \PYGdefault{o}{=} \PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{id}\PYGdefault{o}{);}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{ResultSet} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{();}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{));}
+				\PYGdefault{n}{fillEntity}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setVersion}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getLong}\PYGdefault{o}{(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{SQLException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Entity not found for id\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Error on byId\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{n}{sql}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{n}{e}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{entity}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{byType}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{entities} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+																			\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}TYPE}\PYGdefault{o}{));)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{ResultSet} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{();}
+
+			\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity} \PYGdefault{o}{=} \PYGdefault{n}{newEntity}\PYGdefault{o}{();}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{));}
+				\PYGdefault{n}{fillEntity}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setVersion}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getLong}\PYGdefault{o}{(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+				\PYGdefault{n}{entities}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{entities}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{byQuery}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{query}\PYGdefault{o}{,} \PYGdefault{n}{Object}\PYGdefault{o}{...} \PYGdefault{n}{args}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{query}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{args}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{E}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{entities} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{query}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{args}\PYGdefault{o}{.}\PYGdefault{n+na}{length}\PYGdefault{o}{;} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setObject}\PYGdefault{o}{(}\PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{args}\PYGdefault{o}{[}\PYGdefault{n}{i}\PYGdefault{o}{]);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{ResultSet} \PYGdefault{n}{result} \PYGdefault{o}{=} \PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{();}
+			\PYGdefault{k}{while} \PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity} \PYGdefault{o}{=} \PYGdefault{n}{newEntity}\PYGdefault{o}{();}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{));}
+				\PYGdefault{n}{fillEntity}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{,} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{setVersion}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getLong}\PYGdefault{o}{(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{2}\PYGdefault{o}{));}
+				\PYGdefault{n}{entities}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Error on bybyQuery\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{error}\PYGdefault{o}{(}\PYGdefault{n}{query}\PYGdefault{o}{);}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{SQLException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not execute custom query\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{return} \PYGdefault{n}{entities}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{ColumnMetadata}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getColumnMeta}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{unmodifiableList}\PYGdefault{o}{(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getTableName}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{table}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{String} \PYGdefault{n+nf}{getColumnNames}\PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{prefix}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{names} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{ColumnMetadata} \PYGdefault{n}{colMeta} \PYGdefault{o}{:} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{name}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{prefix} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{name} \PYGdefault{o}{=} \PYGdefault{n}{prefix} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}.\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{column}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()}
+													\PYGdefault{o}{.}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{name} \PYGdefault{o}{=} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{column}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()}
+										\PYGdefault{o}{.}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{names}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{name}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{join}\PYGdefault{o}{(}\PYGdefault{n}{names}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{},\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Files the given entity instance with the in the \PYGdefaultZob{}@link ResultSet\PYGdefaultZcb{}}
+\PYGdefault{c+cm}{	 * contained values. The result set ust hold all columns including the id.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param result}
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{fillEntity}\PYGdefault{o}{(}\PYGdefault{n}{ResultSet} \PYGdefault{n}{result}\PYGdefault{o}{,} \PYGdefault{n}{AbstractEntity} \PYGdefault{n}{entity}\PYGdefault{o}{,} \PYGdefault{k+kt}{int} \PYGdefault{n}{offset}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{result}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{ColumnMetadata} \PYGdefault{n}{colMeta} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{n}{Object} \PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{i} \PYGdefault{o}{=} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;} \PYGdefault{n}{i} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{();} \PYGdefault{n}{i}\PYGdefault{o}{++)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{colMeta} \PYGdefault{o}{=} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{i}\PYGdefault{o}{);}
+				\PYGdefault{n}{value} \PYGdefault{o}{=} \PYGdefault{n}{result}\PYGdefault{o}{.}\PYGdefault{n+na}{getObject}\PYGdefault{o}{(}\PYGdefault{n}{offset} \PYGdefault{o}{+} \PYGdefault{n}{i} \PYGdefault{o}{+} \PYGdefault{l+m+mi}{1}\PYGdefault{o}{);}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{Object} \PYGdefault{n}{convertedValue}\PYGdefault{o}{;}
+				\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{convertedValue} \PYGdefault{o}{=} \PYGdefault{n}{convertValueToEntity}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{,} \PYGdefault{n}{value}\PYGdefault{o}{);}
+				\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{convertedValue} \PYGdefault{o}{=} \PYGdefault{n}{value}\PYGdefault{o}{;}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+				\PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getMethod}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{setter}\PYGdefault{o}{,} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{)}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{invoke}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{,} \PYGdefault{n}{convertedValue}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{java}\PYGdefault{o}{.}\PYGdefault{n+na}{lang}\PYGdefault{o}{.}\PYGdefault{n+na}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not fill entity: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{o}{((}\PYGdefault{n}{colMeta} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{setter} \PYGdefault{o}{:} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZdq{}}\PYGdefault{o}{),} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Setup this service util by creating all supported statements for the}
+\PYGdefault{c+cm}{	 * backed entity class if and only if no other instance which backs this}
+\PYGdefault{c+cm}{	 * entity type has already created the statements.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{setup}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Started Setup for \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{()}
+											\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZlt{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZgt{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+
+		\PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Statement}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{newCache} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashMap}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Statement}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}();}
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{columnMetataDataList} \PYGdefault{o}{=} \PYGdefault{n}{getColumnMetataDataList}\PYGdefault{o}{();}
+		\PYGdefault{n}{Map}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Statement}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{statementCache} \PYGdefault{o}{=} \PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{putIfAbsent}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{,} \PYGdefault{n}{newCache}\PYGdefault{o}{);}
+
+		\PYGdefault{c+c1}{// only if no other instance has initialized cache for this class}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{statementCache} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{columnNames} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{parameters} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{updateParameters} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{ArrayList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{.}\PYGdefault{n+na}{size}\PYGdefault{o}{());}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{ColumnMetadata} \PYGdefault{n}{col} \PYGdefault{o}{:} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{name} \PYGdefault{o}{=} \PYGdefault{n}{col}\PYGdefault{o}{.}\PYGdefault{n+na}{column}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()}
+												\PYGdefault{o}{.}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{();}
+				\PYGdefault{n}{columnNames}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{name}\PYGdefault{o}{);}
+				\PYGdefault{n}{parameters}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}?\PYGdefaultZdq{}}\PYGdefault{o}{);}
+				\PYGdefault{n}{updateParameters}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{name} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}=?\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{c+c1}{// \PYGdefaultZhy{}\PYGdefaultZhy{} prepare statements \PYGdefaultZhy{}\PYGdefaultZhy{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{cols} \PYGdefault{o}{=} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{join}\PYGdefault{o}{(}\PYGdefault{n}{columnNames}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}, \PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{params} \PYGdefault{o}{=} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{join}\PYGdefault{o}{(}\PYGdefault{n}{parameters}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}, \PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{updateParams} \PYGdefault{o}{=} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{join}\PYGdefault{o}{(}\PYGdefault{n}{updateParameters}\PYGdefault{o}{,} \PYGdefault{l+s}{\PYGdefaultZdq{}, \PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{tableName} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{table}\PYGdefault{o}{.}\PYGdefault{n+na}{schema}\PYGdefault{o}{().}\PYGdefault{n+na}{isEmpty}\PYGdefault{o}{())} \PYGdefault{o}{?} \PYGdefault{n}{table}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()}
+																		\PYGdefault{o}{.}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{()} \PYGdefault{o}{:} \PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{StringBuilder}\PYGdefault{o}{(}\PYGdefault{n}{table}\PYGdefault{o}{.}\PYGdefault{n+na}{schema}\PYGdefault{o}{()).}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}.\PYGdefaultZdq{}}\PYGdefault{o}{)}
+																															\PYGdefault{o}{.}\PYGdefault{n+na}{append}\PYGdefault{o}{(}\PYGdefault{n}{table}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{())}
+																															\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{().}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{());}
+
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Creating \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{StringUtils}\PYGdefault{o}{.}\PYGdefault{n+na}{join}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{values}\PYGdefault{o}{(),} \PYGdefault{l+s}{\PYGdefaultZdq{}, \PYGdefaultZdq{}}\PYGdefault{o}{)} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{} Statements\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{INSERT}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{INSERT\PYGdefaultZus{}TEMPLATE}\PYGdefault{o}{,} \PYGdefault{n}{tableName}\PYGdefault{o}{,} \PYGdefault{n}{cols}\PYGdefault{o}{,} \PYGdefault{n}{params}\PYGdefault{o}{));}
+			\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{UPDATE}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{UPDATE\PYGdefaultZus{}TEMPLATE}\PYGdefault{o}{,} \PYGdefault{n}{tableName}\PYGdefault{o}{,} \PYGdefault{n}{updateParams}\PYGdefault{o}{));}
+			\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{DELETE}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{DELETE\PYGdefaultZus{}TEMPLATE}\PYGdefault{o}{,} \PYGdefault{n}{tableName}\PYGdefault{o}{));}
+			\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}ID}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}TEMPLATE}\PYGdefault{o}{,} \PYGdefault{n}{cols}\PYGdefault{o}{,} \PYGdefault{n}{tableName}\PYGdefault{o}{));}
+			\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}VERSION}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{SELECT\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}VERSION}\PYGdefault{o}{,} \PYGdefault{n}{tableName}\PYGdefault{o}{));}
+			\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+					\PYGdefault{o}{.}\PYGdefault{n+na}{put}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}TYPE}\PYGdefault{o}{,} \PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{format}\PYGdefault{o}{(}\PYGdefault{n}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}TYPE}\PYGdefault{o}{,} \PYGdefault{n}{cols}\PYGdefault{o}{,} \PYGdefault{n}{tableName}\PYGdefault{o}{));}
+
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{INSERT}\PYGdefault{o}{));}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{UPDATE}\PYGdefault{o}{));}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}ID}\PYGdefault{o}{));}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}VERSION}\PYGdefault{o}{));}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+							\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}BY\PYGdefaultZus{}TYPE}\PYGdefault{o}{));}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{n}{SELECT\PYGdefaultZus{}LAST\PYGdefaultZus{}INSERT\PYGdefaultZus{}ID}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Finished Setup for \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{getClass}\PYGdefault{o}{()}
+												\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZlt{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZgt{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZhy{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+	\PYGdefault{c+c1}{// Private section}
+	\PYGdefault{c+c1}{// \PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}\PYGdefaultZsh{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Checks if the given entity exists on the database with its set id and}
+\PYGdefault{c+cm}{	 * version.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param con}
+\PYGdefault{c+cm}{	 *            the underlying connection}
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 *            the entity to check}
+\PYGdefault{c+cm}{	 * @throws SQLException}
+\PYGdefault{c+cm}{	 *             if the entity is not found with its id and version on the}
+\PYGdefault{c+cm}{	 *             database}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}con is null\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}entity is null\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}li\PYGdefaultZgt{}entity id is null\PYGdefaultZlt{}/li\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 *             \PYGdefaultZlt{}/ul\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{checkForExistingWithVersion}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Connection} \PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{SQLException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{());}
+
+		\PYGdefault{c+c1}{// entity does exist with its set version}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{PreparedStatement} \PYGdefault{n}{existPstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{cache}\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{)}
+																		\PYGdefault{o}{.}\PYGdefault{n+na}{get}\PYGdefault{o}{(}\PYGdefault{n}{Statement}\PYGdefault{o}{.}\PYGdefault{n+na}{SELECT\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}ID\PYGdefaultZus{}VERSION}\PYGdefault{o}{));}
+		\PYGdefault{n}{existPstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{());}
+		\PYGdefault{n}{existPstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setLong}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getVersion}\PYGdefault{o}{());}
+		\PYGdefault{k}{if} \PYGdefault{o}{(!}\PYGdefault{n}{existPstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{SQLException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Entity not found for set id and version !!! id: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()}
+																								\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{} | version: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{entity}\PYGdefault{o}{.}\PYGdefault{n+na}{getVersion}\PYGdefault{o}{()}
+																																		\PYGdefault{o}{.}\PYGdefault{n+na}{toString}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets the \PYGdefaultZob{}@link Column\PYGdefaultZcb{} annotations of the backed entity class.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the list of column annotations}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{ColumnMetadata}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getColumnMetataDataList}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{ColumnMetadata}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{columns} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{LinkedList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Method}\PYGdefault{o}{[]} \PYGdefault{n}{methods} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getMethods}\PYGdefault{o}{();}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{Method} \PYGdefault{n}{method} \PYGdefault{o}{:} \PYGdefault{n}{methods}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{Column} \PYGdefault{n}{col} \PYGdefault{o}{=} \PYGdefault{n}{method}\PYGdefault{o}{.}\PYGdefault{n+na}{getAnnotation}\PYGdefault{o}{(}\PYGdefault{n}{Column}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+				\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{col} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} \PYGdefault{o}{(!}\PYGdefault{n}{EXCLUDE\PYGdefaultZus{}FIELDS}\PYGdefault{o}{.}\PYGdefault{n+na}{contains}\PYGdefault{o}{(}\PYGdefault{n}{col}\PYGdefault{o}{.}\PYGdefault{n+na}{name}\PYGdefault{o}{()}
+																	\PYGdefault{o}{.}\PYGdefault{n+na}{toLowerCase}\PYGdefault{o}{())))} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{n}{columns}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{k}{new} \PYGdefault{n}{ColumnMetadata}\PYGdefault{o}{(}\PYGdefault{n}{col}\PYGdefault{o}{,} \PYGdefault{n}{method}\PYGdefault{o}{.}\PYGdefault{n+na}{getName}\PYGdefault{o}{(),} \PYGdefault{n}{method}\PYGdefault{o}{.}\PYGdefault{n+na}{getReturnType}\PYGdefault{o}{()));}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{unmodifiableList}\PYGdefault{o}{(}\PYGdefault{n}{columns}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not get column information\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Gets a list of values from the given entity}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param entity}
+\PYGdefault{c+cm}{	 *            the entity to retrieve values from}
+\PYGdefault{c+cm}{	 * @return the list of the retrieved values}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the value could not be retrieved by reflection}
+\PYGdefault{c+cm}{	 * @throws NullPointerException}
+\PYGdefault{c+cm}{	 *             if the entity is null}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Object}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getValues}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{IllegalStateException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Object}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{values} \PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{LinkedList}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+
+		\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{ColumnMetadata} \PYGdefault{n}{colMeta} \PYGdefault{o}{:} \PYGdefault{n}{columnMetataDataList}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{values}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getMethod}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{getter}\PYGdefault{o}{)}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{invoke}\PYGdefault{o}{(}\PYGdefault{n}{entity}\PYGdefault{o}{));}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not invoke \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{getter} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{values}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Converts the sql result returned value to the proper entity type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param colMeta}
+\PYGdefault{c+cm}{	 *            the current column}
+\PYGdefault{c+cm}{	 * @param value}
+\PYGdefault{c+cm}{	 *            the current column value}
+\PYGdefault{c+cm}{	 * @return the converted value}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the many to one relation entity could not be instantiated}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Object} \PYGdefault{n+nf}{convertValueToEntity}\PYGdefault{o}{(}\PYGdefault{n}{ColumnMetadata} \PYGdefault{n}{colMeta}\PYGdefault{o}{,} \PYGdefault{n}{Object} \PYGdefault{n}{value}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{value}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{Calendar} \PYGdefault{n}{cal} \PYGdefault{o}{=} \PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{getInstance}\PYGdefault{o}{();}
+			\PYGdefault{n}{cal}\PYGdefault{o}{.}\PYGdefault{n+na}{setTimeInMillis}\PYGdefault{o}{(((}\PYGdefault{n}{Timestamp}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{getTime}\PYGdefault{o}{());}
+			\PYGdefault{k}{return} \PYGdefault{n}{cal}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{((}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Enum}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Enum}\PYGdefault{o}{.}\PYGdefault{n+na}{valueOf}\PYGdefault{o}{((}\PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{Enum}\PYGdefault{o}{\PYGdefaultZgt{})} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{,} \PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{AbstractEntity}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{)))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k+kd}{final} \PYGdefault{n}{AbstractEntity} \PYGdefault{n}{fk} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{AbstractEntity}\PYGdefault{o}{)} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{.}\PYGdefault{n+na}{newInstance}\PYGdefault{o}{();}
+				\PYGdefault{n}{fk}\PYGdefault{o}{.}\PYGdefault{n+na}{setId}\PYGdefault{o}{((}\PYGdefault{n}{Integer}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{);}
+				\PYGdefault{k}{return} \PYGdefault{n}{fk}\PYGdefault{o}{;}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Exception} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not create many\PYGdefaultZhy{}to\PYGdefaultZhy{}one relation entity \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{.}\PYGdefault{n+na}{getName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{colMeta}\PYGdefault{o}{.}\PYGdefault{n+na}{typeClass}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{(((}\PYGdefault{n}{Integer}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{equals}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{))} \PYGdefault{o}{?} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE} \PYGdefault{o}{:} \PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{FALSE}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{value}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Converts the given value to the proper sql type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param value}
+\PYGdefault{c+cm}{	 *            the value ot be converted}
+\PYGdefault{c+cm}{	 * @return the converted value}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the value type cannot be converted}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Object} \PYGdefault{n+nf}{convertValueFromEntity}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Object} \PYGdefault{n}{value}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{value}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{k}{instanceof} \PYGdefault{n}{Calendar}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{k}{new} \PYGdefault{n}{Timestamp}\PYGdefault{o}{(((}\PYGdefault{n}{Calendar}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{getTimeInMillis}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{k}{instanceof} \PYGdefault{n}{AbstractEntity}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{((}\PYGdefault{n}{AbstractEntity}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{getId}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{k}{instanceof} \PYGdefault{n}{BigDecimal}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{((}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{doubleValue}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{value} \PYGdefault{k}{instanceof} \PYGdefault{n}{Enum}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{o}{((}\PYGdefault{n}{Enum}\PYGdefault{o}{)} \PYGdefault{n}{value}\PYGdefault{o}{).}\PYGdefault{n+na}{name}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{value}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Converts the entity value type to the proper sql type.}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @param clazz}
+\PYGdefault{c+cm}{	 *            the return type class of the entity getter}
+\PYGdefault{c+cm}{	 * @return the integer representing the sql type}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{converttoSqlType}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}?\PYGdefaultZgt{}} \PYGdefault{n}{clazz}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{String}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{VARCHAR}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Integer}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{INTEGER}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{BigDecimal}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{DOUBLE}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{SMALLINT}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{AbstractEntity}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{INTEGER}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Enum}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{VARCHAR}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{else} \PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{Calendar}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{.}\PYGdefault{n+na}{isAssignableFrom}\PYGdefault{o}{(}\PYGdefault{n}{clazz}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{return} \PYGdefault{n}{Types}\PYGdefault{o}{.}\PYGdefault{n+na}{TIMESTAMP}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{l+m+mi}{0}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * Creates a new entity instance of the backed tpye}
+\PYGdefault{c+cm}{	 * }
+\PYGdefault{c+cm}{	 * @return the new instance}
+\PYGdefault{c+cm}{	 * @throws IllegalStateException}
+\PYGdefault{c+cm}{	 *             if the instantiation fails}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{E} \PYGdefault{n+nf}{newEntity}\PYGdefault{o}{()} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{E} \PYGdefault{n}{entity}\PYGdefault{o}{;}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{entity} \PYGdefault{o}{=} \PYGdefault{n}{clazz}\PYGdefault{o}{.}\PYGdefault{n+na}{newInstance}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not create new isntance\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{return} \PYGdefault{n}{entity}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

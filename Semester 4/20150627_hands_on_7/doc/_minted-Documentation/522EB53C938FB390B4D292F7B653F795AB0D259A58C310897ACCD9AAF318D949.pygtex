@@ -1,0 +1,110 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.rmi.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.AlreadyBoundException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.NotBoundException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.Remote}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.RemoteException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.registry.LocateRegistry}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.registry.Registry}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.server.UnicastRemoteObject}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.HashSet}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Objects}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Set}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{org.apache.log4j.Logger}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.rmi.api.rmi.RmiServer}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is the RMI server implementation.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 15, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{RmiServerImpl} \PYGdefault{k+kd}{implements} \PYGdefault{n}{RmiServer} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}	\PYGdefault{n}{serialVersionUID}		\PYGdefault{o}{=} \PYGdefault{l+m+mi}{164219497553939223L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Registry}			\PYGdefault{n}{serviceRegistry}			\PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kt}{int}					\PYGdefault{n}{port}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{n}{Set}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{String}\PYGdefault{o}{\PYGdefaultZgt{}}			\PYGdefault{n}{registeredServiceNames}	\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{HashSet}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}();}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{Logger}	\PYGdefault{n}{log}						\PYGdefault{o}{=} \PYGdefault{n}{Logger}\PYGdefault{o}{.}\PYGdefault{n+na}{getLogger}\PYGdefault{o}{(}\PYGdefault{n}{RmiServerImpl}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param port}
+\PYGdefault{c+cm}{	 *            the prot to host the beans on.}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{RmiServerImpl}\PYGdefault{o}{(}\PYGdefault{k+kt}{int} \PYGdefault{n}{port}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{port} \PYGdefault{o}{\PYGdefaultZlt{}=} \PYGdefault{l+m+mi}{1024}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{(}\PYGdefault{n}{port} \PYGdefault{o}{\PYGdefaultZgt{}=} \PYGdefault{l+m+mi}{65535}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalArgumentException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}port is invalid: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{port}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{this}\PYGdefault{o}{.}\PYGdefault{n+na}{port} \PYGdefault{o}{=} \PYGdefault{n}{port}\PYGdefault{o}{;}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{start}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{serviceRegistry} \PYGdefault{o}{!=} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The rmi server is already started\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Starting service regsitry on: \PYGdefaultZsq{}rmi://localhost:\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{port} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{n}{serviceRegistry} \PYGdefault{o}{=} \PYGdefault{n}{LocateRegistry}\PYGdefault{o}{.}\PYGdefault{n+na}{createRegistry}\PYGdefault{o}{(}\PYGdefault{n}{port}\PYGdefault{o}{);}
+		\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Service regsitry registered\PYGdefaultZdq{}}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{stop}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{serviceRegistry} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}The rmi server is not started\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{for} \PYGdefault{o}{(}\PYGdefault{n}{String} \PYGdefault{n}{name} \PYGdefault{o}{:} \PYGdefault{n}{registeredServiceNames}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{serviceRegistry}\PYGdefault{o}{.}\PYGdefault{n+na}{unbind}\PYGdefault{o}{(}\PYGdefault{n}{name}\PYGdefault{o}{);}
+				\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Service \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{name} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} unbound\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{NotBoundException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Should not happen :(\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{n}{serviceRegistry} \PYGdefault{o}{=} \PYGdefault{k+kc}{null}\PYGdefault{o}{;}
+		\PYGdefault{n}{port} \PYGdefault{o}{=} \PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{;}
+		\PYGdefault{n}{registeredServiceNames}\PYGdefault{o}{.}\PYGdefault{n+na}{clear}\PYGdefault{o}{();}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{bindBean}\PYGdefault{o}{(}\PYGdefault{n}{T} \PYGdefault{n}{service}\PYGdefault{o}{,} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{interfaceClazz}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{service}\PYGdefault{o}{);}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{interfaceClazz}\PYGdefault{o}{);}
+
+		\PYGdefault{k+kd}{final} \PYGdefault{n}{String} \PYGdefault{n}{name} \PYGdefault{o}{=} \PYGdefault{n}{interfaceClazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{();}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{registeredServiceNames}\PYGdefault{o}{.}\PYGdefault{n+na}{contains}\PYGdefault{o}{(}\PYGdefault{n}{name}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Service \PYGdefaultZsq{}\PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{name} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZsq{} will get bound\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{Remote} \PYGdefault{n}{rmiService} \PYGdefault{o}{=} \PYGdefault{n}{service}\PYGdefault{o}{;}
+			\PYGdefault{k}{if} \PYGdefault{o}{(!(}\PYGdefault{n}{service} \PYGdefault{k}{instanceof} \PYGdefault{n}{UnicastRemoteObject}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{rmiService} \PYGdefault{o}{=} \PYGdefault{n}{UnicastRemoteObject}\PYGdefault{o}{.}\PYGdefault{n+na}{exportObject}\PYGdefault{o}{(}\PYGdefault{n}{service}\PYGdefault{o}{,} \PYGdefault{n}{port}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{n}{serviceRegistry}\PYGdefault{o}{.}\PYGdefault{n+na}{bind}\PYGdefault{o}{(}\PYGdefault{n}{name}\PYGdefault{o}{,} \PYGdefault{n}{rmiService}\PYGdefault{o}{);}
+			\PYGdefault{n}{registeredServiceNames}\PYGdefault{o}{.}\PYGdefault{n+na}{add}\PYGdefault{o}{(}\PYGdefault{n}{name}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{AlreadyBoundException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Should not happen :(\PYGdefaultZdq{}}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T} \PYGdefault{k+kd}{extends} \PYGdefault{n}{Remote}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{unbindBean}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Class}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{T}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{interfaceClazz}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{n}{Objects}\PYGdefault{o}{.}\PYGdefault{n+na}{requireNonNull}\PYGdefault{o}{(}\PYGdefault{n}{interfaceClazz}\PYGdefault{o}{);}
+
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{registeredServiceNames}\PYGdefault{o}{.}\PYGdefault{n+na}{contains}\PYGdefault{o}{(}\PYGdefault{n}{interfaceClazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{()))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{log}\PYGdefault{o}{.}\PYGdefault{n+na}{info}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Unbind Service: \PYGdefaultZdq{}} \PYGdefault{o}{+} \PYGdefault{n}{interfaceClazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getName}\PYGdefault{o}{()} \PYGdefault{o}{+} \PYGdefault{l+s}{\PYGdefaultZdq{}\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{k}{try} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n}{serviceRegistry}\PYGdefault{o}{.}\PYGdefault{n+na}{unbind}\PYGdefault{o}{(}\PYGdefault{n}{interfaceClazz}\PYGdefault{o}{.}\PYGdefault{n+na}{getSimpleName}\PYGdefault{o}{());}
+			\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{NotBoundException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{IllegalStateException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Should not happen :(\PYGdefaultZdq{}}\PYGdefault{o}{);}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}

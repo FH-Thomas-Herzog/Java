@@ -1,0 +1,123 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{k+kn}{package} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.impl}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.rmi.RemoteException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.Connection}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.PreparedStatement}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.sql.SQLException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Collections}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.Comparator}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{java.util.List}\PYGdefault{o}{;}
+
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.api.AbstractRemoteDao}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.api.UserDao}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.exception.EmailAlreadyUsedException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.dao.exception.UsernameAlreadyUsedException}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.ConnectionManager}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.EntityManager}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.api.entity.User}\PYGdefault{o}{;}
+\PYGdefault{k+kn}{import} \PYGdefault{n+nn}{at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl}\PYGdefault{o}{;}
+
+\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{ * This is the implementation of the \PYGdefaultZob{}@link UserDao\PYGdefaultZcb{} specification.}
+\PYGdefault{c+cm}{ * }
+\PYGdefault{c+cm}{ * @author Thomas Herzog \PYGdefaultZlt{}thomas.herzog@students.fh\PYGdefaultZhy{}hagenberg.at\PYGdefaultZgt{}}
+\PYGdefault{c+cm}{ * @date Jun 20, 2015}
+\PYGdefault{c+cm}{ */}
+\PYGdefault{k+kd}{public} \PYGdefault{k+kd}{class} \PYGdefault{n+nc}{UserDaoImpl} \PYGdefault{k+kd}{extends} \PYGdefault{n}{AbstractRemoteDao} \PYGdefault{k+kd}{implements} \PYGdefault{n}{UserDao} \PYGdefault{o}{\PYGdefaultZob{}}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{k+kt}{long}			\PYGdefault{n}{serialVersionUID}	\PYGdefault{o}{=} \PYGdefault{l+m+mi}{8350405718897091714L}\PYGdefault{o}{;}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{final} \PYGdefault{n}{EntityManager}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}}	\PYGdefault{n}{userEm}				\PYGdefault{o}{=} \PYGdefault{k}{new} \PYGdefault{n}{EntityManagerImpl}\PYGdefault{o}{\PYGdefaultZlt{}\PYGdefaultZgt{}(}\PYGdefault{n}{User}\PYGdefault{o}{.}\PYGdefault{n+na}{class}\PYGdefault{o}{);}
+
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}			\PYGdefault{n}{USER\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}EMAIL}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}SELECT id FROM campina.user WHERE email=? AND id\PYGdefaultZlt{}\PYGdefaultZgt{}?\PYGdefaultZdq{}}\PYGdefault{o}{;}
+	\PYGdefault{k+kd}{private} \PYGdefault{k+kd}{static} \PYGdefault{k+kd}{final} \PYGdefault{n}{String}			\PYGdefault{n}{USER\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}USERNAME}	\PYGdefault{o}{=} \PYGdefault{l+s}{\PYGdefaultZdq{}SELECT id FROM campina.user WHERE username=? AND id\PYGdefaultZlt{}\PYGdefaultZgt{}?\PYGdefaultZdq{}}\PYGdefault{o}{;}
+
+	\PYGdefault{c+cm}{/**}
+\PYGdefault{c+cm}{	 * @param connectionManager}
+\PYGdefault{c+cm}{	 * @throws RemoteException}
+\PYGdefault{c+cm}{	 */}
+	\PYGdefault{k+kd}{public} \PYGdefault{n+nf}{UserDaoImpl}\PYGdefault{o}{(}\PYGdefault{n}{ConnectionManager} \PYGdefault{n}{connectionManager}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k+kd}{super}\PYGdefault{o}{(}\PYGdefault{n}{connectionManager}\PYGdefault{o}{);}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{User} \PYGdefault{n+nf}{save}\PYGdefault{o}{(}\PYGdefault{n}{User} \PYGdefault{n}{user}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{user} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot save or update null entity\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{NullPointerException}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{n}{Integer} \PYGdefault{n}{id} \PYGdefault{o}{=} \PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{?} \PYGdefault{o}{\PYGdefaultZhy{}}\PYGdefault{l+m+mi}{1} \PYGdefault{o}{:} \PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{();}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{connectionManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{PreparedStatement} \PYGdefault{n}{pstmt}\PYGdefault{o}{;}
+			\PYGdefault{c+c1}{// Email already used}
+			\PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{USER\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}EMAIL}\PYGdefault{o}{);}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setString}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getEmail}\PYGdefault{o}{());}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{n}{id}\PYGdefault{o}{);}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{EmailAlreadyUsedException}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{c+c1}{// Username already used}
+			\PYGdefault{n}{pstmt} \PYGdefault{o}{=} \PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{prepareStatement}\PYGdefault{o}{(}\PYGdefault{n}{USER\PYGdefaultZus{}ID\PYGdefaultZus{}BY\PYGdefaultZus{}USERNAME}\PYGdefault{o}{);}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setString}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{1}\PYGdefault{o}{,} \PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getUsername}\PYGdefault{o}{());}
+			\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{setInt}\PYGdefault{o}{(}\PYGdefault{l+m+mi}{2}\PYGdefault{o}{,} \PYGdefault{n}{id}\PYGdefault{o}{);}
+			\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{pstmt}\PYGdefault{o}{.}\PYGdefault{n+na}{executeQuery}\PYGdefault{o}{()}
+						\PYGdefault{o}{.}\PYGdefault{n+na}{next}\PYGdefault{o}{())} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{UsernameAlreadyUsedException}\PYGdefault{o}{();}
+			\PYGdefault{o}{\PYGdefaultZcb{}}
+
+			\PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{userEm}\PYGdefault{o}{.}\PYGdefault{n+na}{saveOrUpdate}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{user}\PYGdefault{o}{);}
+			\PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{commit}\PYGdefault{o}{();}
+			\PYGdefault{k}{return} \PYGdefault{n}{user}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{Throwable} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not save user\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{void} \PYGdefault{n+nf}{delete}\PYGdefault{o}{(}\PYGdefault{n}{User} \PYGdefault{n}{user}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{((}\PYGdefault{n}{user} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{||} \PYGdefault{o}{(}\PYGdefault{n}{user}\PYGdefault{o}{.}\PYGdefault{n+na}{getId}\PYGdefault{o}{()} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{))} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot delete null entity or entity with null id\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{NullPointerException}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{connectionManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{n}{userEm}\PYGdefault{o}{.}\PYGdefault{n+na}{delete}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{user}\PYGdefault{o}{);}
+			\PYGdefault{n}{con}\PYGdefault{o}{.}\PYGdefault{n+na}{commit}\PYGdefault{o}{();}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not delete entity\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{User} \PYGdefault{n+nf}{byId}\PYGdefault{o}{(}\PYGdefault{k+kd}{final} \PYGdefault{n}{Integer} \PYGdefault{n}{id}\PYGdefault{o}{)} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{if} \PYGdefault{o}{(}\PYGdefault{n}{id} \PYGdefault{o}{==} \PYGdefault{k+kc}{null}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Cannot find entity with null id\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{NullPointerException}\PYGdefault{o}{());}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{connectionManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{User} \PYGdefault{n}{user} \PYGdefault{o}{=} \PYGdefault{n}{userEm}\PYGdefault{o}{.}\PYGdefault{n+na}{byId}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{,} \PYGdefault{n}{id}\PYGdefault{o}{);}
+			\PYGdefault{k}{return} \PYGdefault{n}{user}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not get user by id\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+
+	\PYGdefault{n+nd}{@Override}
+	\PYGdefault{k+kd}{public} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n+nf}{getAll}\PYGdefault{o}{()} \PYGdefault{k+kd}{throws} \PYGdefault{n}{RemoteException} \PYGdefault{o}{\PYGdefaultZob{}}
+		\PYGdefault{k}{try} \PYGdefault{o}{(}\PYGdefault{n}{Connection} \PYGdefault{n}{con} \PYGdefault{o}{=} \PYGdefault{n}{connectionManager}\PYGdefault{o}{.}\PYGdefault{n+na}{getConnection}\PYGdefault{o}{(}\PYGdefault{n}{Boolean}\PYGdefault{o}{.}\PYGdefault{n+na}{TRUE}\PYGdefault{o}{);)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k+kd}{final} \PYGdefault{n}{List}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}} \PYGdefault{n}{users} \PYGdefault{o}{=} \PYGdefault{n}{userEm}\PYGdefault{o}{.}\PYGdefault{n+na}{byType}\PYGdefault{o}{(}\PYGdefault{n}{con}\PYGdefault{o}{);}
+			\PYGdefault{n}{Collections}\PYGdefault{o}{.}\PYGdefault{n+na}{sort}\PYGdefault{o}{(}\PYGdefault{n}{users}\PYGdefault{o}{,} \PYGdefault{k}{new} \PYGdefault{n}{Comparator}\PYGdefault{o}{\PYGdefaultZlt{}}\PYGdefault{n}{User}\PYGdefault{o}{\PYGdefaultZgt{}()} \PYGdefault{o}{\PYGdefaultZob{}}
+				\PYGdefault{n+nd}{@Override}
+				\PYGdefault{k+kd}{public} \PYGdefault{k+kt}{int} \PYGdefault{n+nf}{compare}\PYGdefault{o}{(}\PYGdefault{n}{User} \PYGdefault{n}{o1}\PYGdefault{o}{,} \PYGdefault{n}{User} \PYGdefault{n}{o2}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+					\PYGdefault{k}{return} \PYGdefault{n}{o1}\PYGdefault{o}{.}\PYGdefault{n+na}{getLastName}\PYGdefault{o}{()}
+								\PYGdefault{o}{.}\PYGdefault{n+na}{compareTo}\PYGdefault{o}{(}\PYGdefault{n}{o2}\PYGdefault{o}{.}\PYGdefault{n+na}{getLastName}\PYGdefault{o}{());}
+				\PYGdefault{o}{\PYGdefaultZcb{}}
+			\PYGdefault{o}{\PYGdefaultZcb{});}
+			\PYGdefault{k}{return} \PYGdefault{n}{users}\PYGdefault{o}{;}
+		\PYGdefault{o}{\PYGdefaultZcb{}} \PYGdefault{k}{catch} \PYGdefault{o}{(}\PYGdefault{n}{SQLException} \PYGdefault{n}{e}\PYGdefault{o}{)} \PYGdefault{o}{\PYGdefaultZob{}}
+			\PYGdefault{k}{throw} \PYGdefault{k}{new} \PYGdefault{n}{RemoteException}\PYGdefault{o}{(}\PYGdefault{l+s}{\PYGdefaultZdq{}Could not get all users\PYGdefaultZdq{}}\PYGdefault{o}{,} \PYGdefault{n}{e}\PYGdefault{o}{);}
+		\PYGdefault{o}{\PYGdefaultZcb{}}
+	\PYGdefault{o}{\PYGdefaultZcb{}}
+\PYGdefault{o}{\PYGdefaultZcb{}}
+\end{Verbatim}
