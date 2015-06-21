@@ -100,7 +100,8 @@ public class MenuEntryEventControl {
 		if (ctx.model.getId() != null) {
 			try {
 				dao.delete(ctx.model.getEntity());
-				ctx.model.reset();
+				ctx.model.prepare(new MenuEntry());
+				// handleMenuLoad(ctx);
 				ctx.formHandler.fillForm(ctx);
 			} catch (RemoteException e) {
 				log.error("Could not delete menu entry", e);
@@ -164,9 +165,13 @@ public class MenuEntryEventControl {
 		try {
 			ctx.model.getMenus()
 						.addAll(menuDao.getAll());
-			ctx.model.getMenus()
-						.set(ctx.model.getMenus()
-										.indexOf(ctx.model.getMenu()), ctx.model.getMenu());
+			int idx = 0;
+			if ((idx = ctx.model.getMenus()
+								.indexOf(ctx.model.getMenu())) != -1) {
+				ctx.model.getEntity()
+							.setMenu(ctx.model.getMenus()
+												.get(idx));
+			}
 		} catch (RemoteException e) {
 			log.error("Cannot load referencing menu entry menus", e);
 		}
