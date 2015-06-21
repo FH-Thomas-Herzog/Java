@@ -1,6 +1,5 @@
 package at.fh.ooe.swe4.campina.fx.view.admin.user.control;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +23,6 @@ import at.fh.ooe.swe4.campina.fx.view.admin.user.model.UserModel;
 import at.fh.ooe.swe4.campina.fx.view.admin.user.part.UserTabviewHandler;
 import at.fh.ooe.swe4.campina.fx.view.api.FormContext;
 import at.fh.ooe.swe4.campina.persistence.api.entity.User;
-import at.fh.ooe.swe4.campina.rmi.api.factory.RmiDaoFactory;
 
 /**
  * The control bean for the user tab.

@@ -9,7 +9,7 @@ import at.fh.ooe.swe4.campina.rmi.api.factory.RmiDaoFactory;
 
 public class DaoLocator {
 
-	private static final String				url	= "rmi://localhost:50555/";
+	private static final String			url	= "rmi://localhost:50555/";
 	private static final RmiDaoFactory	factory;
 
 	static {

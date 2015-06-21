@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<name>swe-campina-data-model-impl</name>
 	<description>swe-campina-data-model-impl</description>
-	<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
+	<groupId>at.fh.ooe.swe4.campina</groupId>
 	<artifactId>swe-campina-data-model-impl</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
@@ -31,7 +31,7 @@
 			<version>1.2.12</version>
 		</dependency>
 		<dependency>
-			<groupId>at.fh.ooe.swe4.campina.persistence</groupId>
+			<groupId>at.fh.ooe.swe4.campina</groupId>
 			<artifactId>swe-campina-data-model-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
