@@ -1,0 +1,61 @@
+package swe4.dal;
+
+import java.sql.*;
+
+public class Database {
+  /**
+   * holds connection to data base
+   */
+  private Connection connection;
+  private String     connectionString;
+
+  public Database(String connectionString) {
+    this.connectionString = connectionString;
+  }
+
+  /**
+   * opens connection to data base named dsn
+   * @param dsn
+   *          data source name
+   */
+  private void openConnection() {
+    // In previous versions of JDBC (< JDBC 4.0), to obtain a connection,
+    // you first had to initialize your JDBC driver by calling
+    // the method Class.forName.
+    // try {
+    // Class.forName("org.apache.derby.jdbc.ClientDriver");
+    // }
+    // catch (ClassNotFoundException ex) {
+    // throw new DataAccessException("JDBC driver cannot be loaded.");
+    // } // try/catch user, password
+
+    try {
+      connection = DriverManager.getConnection(connectionString);
+    }
+    catch (SQLException ex) {
+      throw new DataAccessException("Can't establish connection to database.");
+    } // try/catch
+  } // openConnection
+
+  /**
+   * @return Connection object
+   */
+  public Connection getConnection() {
+    // in production: use a connection pool and select an available connection
+    if (connection == null) openConnection();
+    return connection;
+  } // getConnection
+
+  /**
+   * closes connection to data base
+   */
+  public void disposeConnection() {
+    try {
+      if (connection != null) connection.close();
+      connection = null;
+    }
+    catch (SQLException ex) {
+      throw new DataAccessException("Can't close database connection.");
+    } // catch
+  } // closeConnection
+} // DataBase

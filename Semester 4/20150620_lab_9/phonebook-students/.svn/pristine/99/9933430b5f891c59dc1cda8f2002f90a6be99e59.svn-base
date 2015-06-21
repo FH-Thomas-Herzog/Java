@@ -1,0 +1,63 @@
+package swe4.simpledal;
+
+import java.io.*;
+import java.sql.*;
+
+public class PhoneBookApplication {
+
+  static String promptFor(BufferedReader in, String p) {
+    System.out.print(p + "> ");
+    
+    try {
+      return in.readLine();
+    } 
+	catch (Exception e) {
+      return promptFor(in, p);
+    } // try/catch
+    
+  } // prompt
+
+  public static void main(String args[]) {
+    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    String allowedCmds = "commands: quit, list, find, insert, update, delete, meta";
+    String userCmd;
+
+    Connection connection = null;
+    PreparedStatement prepFindStmt = null;
+
+	System.out.println();
+	System.out.println(allowedCmds);
+	System.out.println();
+
+	userCmd = promptFor(in, "");
+
+	while (!userCmd.equals("quit")) {
+
+		if (userCmd.equals("list")) {
+			
+		} 
+		else if (userCmd.equals("find")) {
+				
+		} 
+		else if (userCmd.equals("insert")) {
+					 
+		} 
+		else if (userCmd.equals("update")) {
+					 
+		} 
+		else if (userCmd.equals("delete")) {
+			
+		} 
+		else if (userCmd.equals("meta")) {
+			
+		} 
+		else {
+			System.out.println("ERROR: invalid command; " + allowedCmds);
+		} // else
+
+		userCmd = promptFor(in, "");
+	} // while
+
+
+  } // main
+} // PhoneBookApplication

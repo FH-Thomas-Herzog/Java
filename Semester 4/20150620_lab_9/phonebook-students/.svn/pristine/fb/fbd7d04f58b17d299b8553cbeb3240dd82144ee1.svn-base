@@ -1,0 +1,8 @@
+MYSQL_DRIVER=/usr/share/java/mysql.jar
+
+if ! [ -f "${MYSQL_DRIVER}" ]; then
+  echo "Error: MySql JDBC driver ${MYSQL_DRIVER} not found."
+  exit 1
+fi
+
+java -cp "${MYSQL_DRIVER}:bin" simpledal.PhoneBookApplication
