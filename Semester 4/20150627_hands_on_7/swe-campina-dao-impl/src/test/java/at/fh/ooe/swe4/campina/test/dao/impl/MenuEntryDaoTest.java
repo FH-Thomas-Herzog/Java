@@ -168,4 +168,59 @@ public class MenuEntryDaoTest extends AbstractDaoTest<MenuEntry> {
 		// -- Then --
 		assertEquals(menu.getId(), menuEntryDB.getId());
 	}
+
+	@Test
+	public void delete() throws RemoteException {
+		// -- Given --
+		MenuEntry menuEntry = new MenuEntry();
+		menuEntry.setLabel("menu-entry-1");
+		menuEntry.setMenu(menu);
+		menuEntry.setOrdinal(0);
+		menuEntry.setPrice(BigDecimal.ONE);
+		menuEntry = saveEntity(menuEntry);
+
+		// -- When --
+		dao.delete(menuEntry);
+
+		// -- Then --
+		try {
+			dao.byId(menuEntry.getId());
+			fail("Entity could be found but shouldn't");
+		} catch (RemoteException e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Test
+	public void deleteByMenuIdNone() throws RemoteException {
+		// -- Given | When --
+		dao.deleteByMenuId(menu.getId());
+
+		// -- Then --
+		final List<MenuEntry> result = dao.getAll();
+		assertTrue(result.isEmpty());
+	}
+
+	@Test
+	public void deleteByMenuId() throws RemoteException {
+		// -- Given --
+		// -- Given --
+		List<MenuEntry> menuEntries = new ArrayList<>(5);
+		for (int i = 0; i < 5; i++) {
+			MenuEntry menuEntry = new MenuEntry();
+			menuEntry.setLabel("menu-entry-1-" + i);
+			menuEntry.setMenu(menu);
+			menuEntry.setOrdinal(i);
+			menuEntry.setPrice(BigDecimal.ONE);
+			menuEntries.add(menuEntry);
+		}
+		menuEntries = saveEntities(menuEntries);
+
+		// -- When --
+		dao.deleteByMenuId(menu.getId());
+
+		// -- Then --
+		final List<MenuEntry> result = dao.getAll();
+		assertTrue(result.isEmpty());
+	}
 }

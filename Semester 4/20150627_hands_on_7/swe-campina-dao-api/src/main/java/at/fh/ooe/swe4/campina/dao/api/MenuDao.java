@@ -9,5 +9,4 @@ import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
  * @date Jun 20, 2015
  */
 public interface MenuDao extends RemoteDao<Menu> {
-
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import at.fh.ooe.swe4.campina.dao.api.MenuDao;
 import at.fh.ooe.swe4.campina.dao.impl.MenuDaoImpl;
 import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
+import at.fh.ooe.swe4.campina.persistence.api.entity.MenuEntry;
 import at.fh.ooe.swe4.campina.persistence.api.entity.constants.Day;
 import at.fh.ooe.swe4.campina.test.dao.api.AbstractDaoTest;
 import at.fh.ooe.swe4.campina.test.dao.api.RemoteDetailMatcher;
@@ -123,5 +125,53 @@ public class MenuDaoTest extends AbstractDaoTest<Menu> {
 
 		// -- Then --
 		assertEquals(menu, menuDB);
+	}
+
+	@Test
+	public void deleteSingle() throws RemoteException {
+		// -- Given --
+		Menu menu = new Menu();
+		menu.setDay(Day.MONDAY);
+		menu.setLabel("menu-1");
+		menu = saveEntity(menu);
+
+		// -- When --
+		dao.delete(menu);
+
+		// -- Then --
+		try {
+			dao.byId(menu.getId());
+			fail("Entity could be found but shouldn't");
+		} catch (RemoteException e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Test
+	public void deleteWithEntries() throws RemoteException {
+		// -- Given --
+		Menu menu = new Menu();
+		menu.setDay(Day.MONDAY);
+		menu.setLabel("menu-1");
+		menu = saveEntity(menu);
+		for (int i = 0; i < 10; i++) {
+			MenuEntry menuEntry = new MenuEntry();
+			menuEntry.setLabel("menu-1");
+			menuEntry.setMenu(menu);
+			menuEntry.setOrdinal(0);
+			menuEntry.setPrice(BigDecimal.ONE);
+			saveEntity(menuEntry);
+		}
+
+		// -- When --
+		dao.delete(menu);
+
+		// -- Then --
+		try {
+			dao.byId(menu.getId());
+			fail("Entity could be found but shouldn't");
+		} catch (RemoteException e) {
+			// TODO: handle exception
+		}
 	}
 }

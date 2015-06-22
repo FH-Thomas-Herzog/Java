@@ -25,4 +25,11 @@ public interface MenuEntryDao extends RemoteDao<MenuEntry> {
 	 */
 	public List<MenuEntry> getAllForMenu(int id) throws RemoteException;
 
+	/**
+	 * Deletes all menu entries for the given menu id.
+	 * 
+	 * @param id
+	 *            the menu id
+	 */
+	public void deleteByMenuId(int id) throws RemoteException;
 }

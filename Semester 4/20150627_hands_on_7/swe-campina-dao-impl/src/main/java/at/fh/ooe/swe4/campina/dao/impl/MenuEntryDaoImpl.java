@@ -2,6 +2,7 @@ package at.fh.ooe.swe4.campina.dao.impl;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ public class MenuEntryDaoImpl extends AbstractRemoteDao implements MenuEntryDao 
 
 	private final EntityManager<MenuEntry>	menuEntryEm			= new EntityManagerImpl<>(MenuEntry.class);
 	private static final String				SELECT_FOR_MENU		= "SELECT id, %s, version FROM %s WHERE menu_id=?";
+	private static final String				DELETE_FOR_MENU		= "DELETE FROM %s WHERE menu_id=?";
 
 	/**
 	 * @param connectionManager
@@ -107,6 +109,19 @@ public class MenuEntryDaoImpl extends AbstractRemoteDao implements MenuEntryDao 
 																	Integer.valueOf(id));
 			Collections.sort(menuEntries);
 			return menuEntries;
+		} catch (SQLException e) {
+			throw new RemoteException("Could not get all menu entries for menu", e);
+		}
+	}
+
+	@Override
+	public void deleteByMenuId(int id) throws RemoteException {
+		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
+			try (final PreparedStatement pstmt = con.prepareStatement(String.format(DELETE_FOR_MENU, menuEntryEm.getTableName()))) {
+				pstmt.setInt(1, id);
+				pstmt.executeUpdate();
+				con.commit();
+			}
 		} catch (SQLException e) {
 			throw new RemoteException("Could not get all menu entries for menu", e);
 		}

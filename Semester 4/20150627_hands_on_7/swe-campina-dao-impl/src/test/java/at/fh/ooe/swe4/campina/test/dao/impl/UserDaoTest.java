@@ -178,4 +178,29 @@ public class UserDaoTest extends AbstractDaoTest<User> {
 		// -- Then --
 		assertEquals(user, userDB);
 	}
+
+	@Test
+	public void deleteSingle() throws RemoteException {
+		// -- Given --
+		User user = new User();
+		user.setFirstName("Thomas");
+		user.setLastName("Herzog");
+		user.setUsername("cchet");
+		user.setEmail("t.t@t.at");
+		user.setPassword("xxxxxxx");
+		user.setAdminFlag(Boolean.TRUE);
+		user.setBlockedFlag(Boolean.FALSE);
+		user = saveEntity(user);
+
+		// -- When --
+		dao.delete(user);
+
+		// -- Then --
+		try {
+			dao.byId(user.getId());
+			fail("Entity could be found but shouldn't");
+		} catch (RemoteException e) {
+			// TODO: handle exception
+		}
+	}
 }

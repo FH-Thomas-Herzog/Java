@@ -9,9 +9,11 @@ import java.util.List;
 
 import at.fh.ooe.swe4.campina.dao.api.AbstractRemoteDao;
 import at.fh.ooe.swe4.campina.dao.api.MenuDao;
+import at.fh.ooe.swe4.campina.dao.api.MenuEntryDao;
 import at.fh.ooe.swe4.campina.persistence.api.ConnectionManager;
 import at.fh.ooe.swe4.campina.persistence.api.EntityManager;
 import at.fh.ooe.swe4.campina.persistence.api.entity.Menu;
+import at.fh.ooe.swe4.campina.persistence.api.entity.MenuEntry;
 import at.fh.ooe.swe4.campina.persistence.impl.EntityManagerImpl;
 
 /**
@@ -25,6 +27,7 @@ public class MenuDaoImpl extends AbstractRemoteDao implements MenuDao {
 	private static final long	serialVersionUID	= 2017517222109172291L;
 
 	final EntityManager<Menu>	menuEm				= new EntityManagerImpl<>(Menu.class);
+	final MenuEntryDao			menuEntryDao;
 
 	/**
 	 * @param connectionManager
@@ -32,6 +35,8 @@ public class MenuDaoImpl extends AbstractRemoteDao implements MenuDao {
 	 */
 	public MenuDaoImpl(ConnectionManager connectionManager) throws RemoteException {
 		super(connectionManager);
+
+		this.menuEntryDao = new MenuEntryDaoImpl(connectionManager);
 	}
 
 	@Override
@@ -60,6 +65,7 @@ public class MenuDaoImpl extends AbstractRemoteDao implements MenuDao {
 		}
 
 		try (Connection con = connectionManager.getConnection(Boolean.TRUE);) {
+			menuEntryDao.deleteByMenuId(menu.getId());
 			menuEm.delete(con, menu);
 			con.commit();
 		} catch (SQLException e) {
